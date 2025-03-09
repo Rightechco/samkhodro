@@ -1,0 +1,176 @@
+.allComment{
+    margin: auto;
+    margin-top: 6rem;
+    padding-bottom: 4rem;
+    .top{
+        position: relative;
+        text-align: center;
+        margin-bottom: 5rem;
+        h3{
+            font-size: 2rem;
+            font-weight: 900;
+            color: $purple2;
+        }
+        p{
+            font-size: 1rem;
+            font-weight: 300;
+            color: $text1;
+            margin-top: .5rem;
+        }
+        &:before{
+            position: absolute;
+            content: "";
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            height: 10rem;
+            background-image: url('http://localhost:8000/img/country.png');
+        }
+    }
+    .slider-comment{
+        margin-top: 2rem;
+        button.owl-prev{
+            position: absolute;
+            right: 0;
+            top: 0;
+            left: 0;
+            bottom: -14rem;
+            margin: auto;
+            span{
+                font-size: 2rem;
+                background: white;
+                width: 3rem;
+                display: grid;
+                border-radius: 5rem;
+                height: 3rem;
+                align-items: center;
+                box-shadow: 0 0 10px rgba(0,0,0,.1);
+            }
+        }
+        button.owl-next{
+            position: absolute;
+            left: -8rem;
+            top: 0;
+            bottom: -14rem;
+            right: 0;
+            margin: auto;
+            span{
+                font-size: 2rem;
+                background: white;
+                width: 3rem;
+                display: grid;
+                border-radius: 5rem;
+                height: 3rem;
+                box-shadow: 0 0 10px rgba(0,0,0,.1);
+                align-items: center;
+            }
+        }
+    }
+    .commentItem{
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        grid-gap: 1rem;
+        .pic{
+            border-radius: 100%;
+            overflow: hidden;
+            img{
+                width: 6rem;
+                height: 6rem;
+                object-fit: cover;
+            }
+        }
+        .comment{
+            background: #4B4A4A;
+            padding: 1rem;
+            border-radius: 5px;
+            border-top-right-radius: 0;
+            position: relative;
+            p{
+                font-size: 1.1rem;
+                font-weight: 300;
+                color: white;
+            }
+            .user{
+                position: relative;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: .5rem;
+                align-items: center;
+                h5{
+                    font-size: .9rem;
+                    font-weight: 500;
+                    color: white;
+                }
+                span{
+                    font-size: .9rem;
+                    font-weight: 300;
+                    color: white;
+                    opacity: .7;
+                }
+                &:before{
+                    content: "";
+                    height: 5px;
+                    width: 3rem;
+                    background: $purple2;
+                    position: absolute;
+                    top: 0;
+                    border-radius: 5px;
+                }
+            }
+            &:before{
+                content: '';
+                z-index: -1;
+                width: 50px;
+                height: 16px;
+                background-color: #000;
+                position: absolute;
+                top: 0;
+                right: -10px;
+                -webkit-transform: skewX(51deg);
+                -khtml-transform: skewX(51deg);
+                -moz-transform: skewX(51deg);
+                -ms-transform: skewX(51deg);
+                -o-transform: skewX(51deg);
+                transform: skewX(51deg);
+            }
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allComment{
+        margin-top: 4rem;
+        .top{
+            h3{
+                font-size: 1.2rem;
+            }
+            p{
+                font-size: .7rem;
+            }
+        }
+        .commentItem{
+            .pic{
+                img{
+                    width: 4rem;
+                    height: 4rem;
+                }
+            }
+            .comment{
+                p{
+                    font-size: .8rem;
+                }
+                .user{
+                    h5{
+                        font-size: .7rem;
+                    }
+                    span{
+                        font-size: .7rem;
+                    }
+                }
+            }
+        }
+    }
+}

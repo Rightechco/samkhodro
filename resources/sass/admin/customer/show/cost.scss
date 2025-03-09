@@ -1,0 +1,1316 @@
+.allCost{
+    .success{
+        background: rgba(0, 128, 0, 0.26);
+        color: #006200;
+        padding: 1rem;
+        border-radius: .3rem;
+        font-size: .85rem;
+        font-weight: 300;
+        margin: 1rem 0;
+    }
+    .costIndex{
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+        background: white;
+        border-radius: .3rem;
+        padding: 1rem;
+        .addCost{
+            background: $green;
+            box-shadow: 0 2px 4px 0 rgba(163, 175, 189, 0.5);
+            padding: .6rem 1rem;
+            transition: all .3s ease-in-out;
+            border-radius: .3rem;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+        .filterItems{
+            position: relative;
+            .filterTitle{
+                display: grid;
+                cursor: pointer;
+                grid-template-columns: auto auto;
+                justify-content: center;
+                grid-gap: .5rem;
+                align-items: center;
+                background-color: #A3AFBD;
+                box-shadow: 0 2px 4px 0 rgba(163, 175, 189, 0.5);
+                padding: .6rem 1rem;
+                transition: all .3s ease-in-out;
+                border-radius: .3rem;
+                color: #FFFFFF;
+                svg{
+                    width: 1rem;
+                    height: 1rem;
+                    fill: white;
+                }
+                &:hover{
+                    background: #394C62;
+                    box-shadow: 0 4px 12px 0 rgba(163, 175, 189, 0.6) !important;
+                }
+            }
+            .filterContent{
+                position: absolute;
+                top: 120%;
+                left: 0;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+                background: white;
+                border-radius: .2rem;
+                padding: .5rem;
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-gap: 1rem;
+                width: 20rem;
+                &::before{
+                    content: '';
+                    position: absolute;
+                    top: -10px;
+                    left: 8px;
+                    border-style: solid;
+                    border-width: 0 10px 10px 10px;
+                    border-color: transparent transparent #fff transparent;
+                }
+                .filterContentItem{
+                    display: grid;
+                    grid-gap: .5rem;
+                    label{
+                        color: $text1;
+                        font-weight: 300;
+                        font-size:.7rem;
+                    }
+                    input{
+                        border: 1px solid $border1;
+                        padding: 0.4rem .5rem;
+                        color: $text1;
+                        border-radius: .3rem;
+                        font-size: .7rem;
+                        width: 100%;
+                        transition: all .3s ease-in-out;
+                        outline: transparent;
+                        &:focus{
+                            box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                            border: 1px solid $blue;
+                        }
+                    }
+                }
+                button{
+                    background: $green;
+                    color: white;
+                    box-shadow: 0 0 10px rgba(0,0,0,.05);
+                    padding: .3rem;
+                    text-align: center;
+                    border-radius: 5px;
+                }
+            }
+        }
+    }
+    .widgetItems{
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(10rem,1fr));
+        grid-gap: 1rem;
+        .widgetItem{
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            h4{
+                font-size: .9rem;
+                font-weight: 300;
+                color: $text1;
+                margin-bottom: .5rem;
+            }
+            p{
+                font-size: 1rem;
+                font-weight: 500;
+                color: green;
+                letter-spacing: .1px;
+            }
+            &:nth-child(even){
+                p{
+                    color: red;
+                }
+            }
+        }
+    }
+    .allTables{
+        margin-top: 1rem;
+        .allData{
+            overflow-x: scroll;
+        }
+        table{
+            background: white;
+            border-radius: .3rem;
+            box-shadow: 0 0 10px rgba(0,0,0,.05);
+            clear: both;
+            margin-top: 6px !important;
+            margin-bottom: 6px !important;
+            max-width: none !important;
+            border-collapse: separate !important;
+            width: 100%;
+            tr{
+                display: grid;
+                grid-template-columns: 6rem 6rem 14rem 10rem 10rem 10rem 10rem 8rem 10rem 15rem;
+                align-items: center;
+                border-top: 1px solid #eee;
+                th{
+                    font-weight: 700;
+                    color: $text1;
+                    font-size: .85rem;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    height: 100%;
+                    overflow: hidden;
+                    border-left: 1px solid #eee;
+                    padding: .8rem;
+                    &:last-child{
+                        border-left: 0;
+                    }
+                }
+                td{
+                    display: grid;
+                    align-items: center;
+                    font-weight: 300;
+                    font-size: .85rem;
+                    text-align: center;
+                    color: $text1;
+                    height: 100%;
+                    border-left: 1px solid #eee;
+                    padding: .8rem;
+                    svg{
+                        fill: $text1;
+                        width: 1rem;
+                        height: 1rem;
+                        cursor: pointer;
+                    }
+                    i{
+                        display: grid;
+                        align-items: center;
+                        justify-content: center;
+                        svg{
+                            width: 1rem;
+                            height: 1rem;
+                        }
+                    }
+                    .checked{
+                        svg{
+                            fill: green;
+                        }
+                    }
+                    .canceled{
+                        svg{
+                            fill: red;
+                        }
+                    }
+                    .check{
+                        background: $blue;
+                        color: white;
+                        padding: .2rem .5rem;
+                        border-radius: 5px;
+                    }
+                    .unActive{
+                        background: $red;
+                        color: white;
+                        padding: .2rem .5rem;
+                        border-radius: 5px;
+                    }
+                    .active{
+                        background: $green;
+                        color: white;
+                        padding: .2rem .5rem;
+                        border-radius: 5px;
+                    }
+                    a{
+                        display: grid;
+                        align-items: center;
+                        svg{
+                            margin-left: .5rem;
+                        }
+                    }
+                    .pics{
+                        display: flex;
+                        justify-content: center;
+                        .pic{
+                            margin-right: 5px;
+                            img{
+                                width: 2rem;
+                                height: 2rem;
+                                object-fit: cover;
+                                border-radius: 100%;
+                            }
+                            &:first-child{
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                    .sign{
+                        img{
+                            height: 2rem;
+                            object-fit: cover;
+                        }
+                    }
+                    &:last-child{
+                        border-left: 0;
+                    }
+                }
+                .roleTd{
+                    display: flex;
+                    justify-content: center;
+                    gap: 1rem;
+                    @supports(-webkit-appearance: none) or (-moz-appearance: none) {
+                        input[type='checkbox'],
+                        input[type='radio'] {
+                            --active: #275EFE;
+                            --active-inner: #fff;
+                            --focus: 2px rgba(39, 94, 254, .3);
+                            --border: #BBC1E1;
+                            --border-hover: #275EFE;
+                            --background: #fff;
+                            --disabled: #F6F8FF;
+                            --disabled-inner: #E1E6F9;
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            height: 21px;
+                            outline: none;
+                            display: inline-block;
+                            vertical-align: top;
+                            position: relative;
+                            margin: 0;
+                            cursor: pointer;
+                            border: 1px solid var(--bc, var(--border));
+                            background: var(--b, var(--background));
+                            transition: background .3s, border-color .3s, box-shadow .2s;
+                            &:after {
+                                content: '';
+                                display: block;
+                                left: 0;
+                                top: 0;
+                                position: absolute;
+                                transition: transform var(--d-t)  var(--d-t-e, ease), opacity var(--d-o, .2s);
+                            }
+                            &:checked {
+                                --b: var(--active);
+                                --bc: var(--active);
+                                --d-o: .3s;
+                                --d-t: .6s;
+                                --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+                            }
+                            &:disabled {
+                                --b: var(--disabled);
+                                cursor: not-allowed;
+                                opacity: .9;
+                                &:checked {
+                                    --b: var(--disabled-inner);
+                                    --bc: var(--border);
+                                }
+                                & + label {
+                                    cursor: not-allowed;
+                                }
+                            }
+                            &:hover {
+                                &:not(:checked) {
+                                    &:not(:disabled) {
+                                        --bc: var(--border-hover);
+                                    }
+                                }
+                            }
+                            &:focus {
+                                box-shadow: 0 0 0 var(--focus);
+                            }
+                            &:not(.switch) {
+                                width: 21px;
+                                &:after {
+                                    opacity: var(--o, 0);
+                                }
+                                &:checked {
+                                    --o: 1;
+                                }
+                            }
+                            & + label {
+                                font-size: 14px;
+                                line-height: 21px;
+                                display: inline-block;
+                                vertical-align: top;
+                                cursor: pointer;
+                                margin-left: 4px;
+                            }
+                        }
+                        input[type='checkbox'] {
+                            &:not(.switch) {
+                                border-radius: 7px;
+                                &:after {
+                                    width: 5px;
+                                    height: 9px;
+                                    border: 2px solid var(--active-inner);
+                                    border-top: 0;
+                                    border-left: 0;
+                                    left: 7px;
+                                    top: 4px;
+                                    transform: rotate(var(--r, 20deg));
+                                }
+                                &:checked {
+                                    --r: 43deg;
+                                }
+                            }
+                            &.switch {
+                                width: 38px;
+                                border-radius: 11px;
+                                &:after {
+                                    left: 2px;
+                                    top: 2px;
+                                    border-radius: 50%;
+                                    width: 15px;
+                                    height: 15px;
+                                    background: var(--ab, var(--border));
+                                    transform: translateX(var(--x, 0));
+                                }
+                                &:checked {
+                                    --ab: var(--active-inner);
+                                    --x: 17px;
+                                }
+                                &:disabled {
+                                    &:not(:checked) {
+                                        &:after {
+                                            opacity: .6;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        input[type='radio'] {
+                            border-radius: 50%;
+                            &:after {
+                                width: 19px;
+                                height: 19px;
+                                border-radius: 50%;
+                                background: var(--active-inner);
+                                opacity: 0;
+                                transform: scale(var(--s, .7));
+                            }
+                            &:checked {
+                                --s: .5;
+                            }
+                        }
+                    }
+                    label{
+                        height: 100%;
+                        display: grid;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+                .buttons{
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit,minmax(1rem,auto));
+                    grid-gap: .5rem;
+                    a{
+                        font-size: .8rem;
+                        padding: .3rem;
+                        border-radius: 5px;
+                        color: white;
+                        background: green;
+                    }
+                }
+                .button2{
+                    grid-template-columns: 1fr 1fr;
+                }
+                button{
+                    font-size: .8rem;
+                    padding: .3rem;
+                    border-radius: 5px;
+                    color: white;
+                    background: darkorange;
+                    &:last-child{
+                        background: red;
+                    }
+                }
+                button[disabled]{
+                    opacity: .6;
+                    cursor: auto;
+                }
+                &:first-child{
+                    border-top: 0;
+                }
+            }
+        }
+        .grid5{
+            tr{
+                grid-template-columns: repeat(auto-fit,minmax(1px ,1fr));
+            }
+        }
+        .invoiceT{
+            tr {
+                grid-template-columns: 6rem 6rem 14rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 12rem 12rem;
+            }
+        }
+        .invoiceT2{
+            tr {
+                grid-template-columns: 6rem 6rem 14rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 12rem 12rem;
+            }
+        }
+        .proposalT{
+            tr {
+                grid-template-columns: 6rem 6rem 14rem 10rem 10rem 10rem 10rem 10rem 10rem 13rem;
+            }
+        }
+        .tasT{
+            tr {
+                grid-template-columns: 15rem 8rem 10rem 8rem 12rem 12rem 15rem;
+                .buttons{
+                    button{
+                        &:nth-child(2){
+                            background: $green;
+                        }
+                    }
+                }
+            }
+        }
+        .orderT2{
+            tr {
+                grid-template-columns: 6rem 6rem 14rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 10rem 12rem 12rem;
+            }
+        }
+        .grid2{
+            tr{
+                grid-template-columns: 1fr 15rem;
+                .enterTemplate{
+                    background: $green;
+                }
+                a{
+                    &:nth-child(2){
+                        background: orange;
+                    }
+                    &:last-child{
+                        background: red;
+                    }
+                }
+            }
+        }
+        .createFilled{
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-gap: 1rem;
+            margin-top: 1rem;
+            .alert{
+                font-size: .8rem;
+                font-weight: 500;
+                color: red;
+            }
+            .allCreatePostSubject{
+                background: white;
+                border-radius: .3rem;
+                padding: 1rem;
+                label{
+                    color: $text1;
+                    font-weight: 500;
+                    font-size: .9rem;
+                }
+                select,input{
+                    background: white;
+                    border: 1px solid #DFE3E7;
+                    padding: 0.3rem .5rem;
+                    color: $text1;
+                    border-radius: .3rem;
+                    font-size: .8rem;
+                    width: 100%;
+                    height: 2rem;
+                    transition: all .3s ease-in-out;
+                    &:focus{
+                        box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                        border: 1px solid $blue;
+                    }
+                }
+                .allCreatePostItems{
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit,minmax(10rem,1fr));
+                    grid-gap: 1rem;
+                    align-items: center;
+                }
+                .allCreatePostItem{
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-gap: .5rem;
+                    margin-bottom: 1rem;
+                    textarea{
+                        border: 1px solid #DFE3E7;
+                        padding: 0.4rem .5rem;
+                        color: $text1;
+                        border-radius: .3rem;
+                        font-size: .7rem;
+                        width: 100%;
+                        height: 15rem;
+                        transition: all .3s ease-in-out;
+                        resize: vertical;
+                        outline: transparent;
+                        &:focus{
+                            box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                            border: 1px solid $blue;
+                        }
+                    }
+                }
+                .grid2{
+                    display: grid;
+                    grid-template-columns: 1fr auto;
+                    grid-gap: .5rem;
+                }
+                .grid3{
+                    display: grid;
+                    grid-template-columns: 1fr auto auto;
+                    grid-gap: .5rem;
+                }
+                .abilityPost{
+                    margin: 1rem 0;
+                    .abilityTitle{
+                        display: grid;
+                        grid-template-columns: auto auto;
+                        justify-content: space-between;
+                        grid-gap: .5rem;
+                        align-items: center;
+                        margin-top: .5rem;
+                        h4{
+                            font-size: 1rem;
+                            font-weight: 300;
+                            color: $text1;
+                        }
+                        i{
+                            cursor: pointer;
+                            svg{
+                                width: 1.2rem;
+                                height: 1.2rem;
+                                fill: $text1;
+                                transition: all .3s ease-in-out;
+                            }
+                            &:hover{
+                                svg{
+                                    fill: black;
+                                }
+                            }
+                        }
+                    }
+                    .abilityTable{
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        margin: 1rem 0;
+                        box-shadow: 0 0 0 0;
+                        border-radius: .3rem;
+                        overflow: hidden;
+                        tr{
+                            display: grid;
+                            grid-template-columns: 2fr 1fr 4rem;
+                            text-align: right;
+                            align-items: center;
+                            grid-gap: 1rem;
+                            background: #f5f5f5;
+                            padding: 0 1rem;
+                            th{
+                                font-weight: 300;
+                                color: $text1;
+                                font-size: .75rem;
+                                text-align: right;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                padding-right: 1rem;
+                                border-left: 0;
+                            }
+                            td{
+                                display: grid;
+                                grid-template-columns: 1fr;
+                                color: $text1;
+                                font-size: .7rem;
+                                font-weight: 200;
+                                overflow: hidden;
+                                padding: .5rem 0;
+                                border-left: 0;
+                                i{
+                                    cursor: pointer;
+                                    svg{
+                                        width: 1rem;
+                                        height: 1rem;
+                                        fill: $text1;
+                                    }
+                                }
+                                textarea,input{
+                                    border: 1px solid #DFE3E7;
+                                    padding: 0.3rem .5rem;
+                                    color: $text1;
+                                    border-radius: .3rem;
+                                    font-size: .8rem;
+                                    width: 100%;
+                                    transition: all .3s ease-in-out;
+                                    resize: vertical;
+                                    height: 2rem;
+                                    &:focus{
+                                        box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                                        border: 1px solid $blue;
+                                    }
+                                }
+                                textarea{
+                                    height: 6rem;
+                                }
+                            }
+                            &:nth-child(2){
+                                border-top: 2px solid #DFE3E7;
+                            }
+                        }
+                    }
+                }
+                .sendGallery{
+                    background: white;
+                    border-radius: .2rem;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    justify-content: center;
+                    margin-bottom: 1rem;
+                    .getImageItem{
+                        min-height: 12rem;
+                        border-radius: .4rem;
+                        border: 2px dashed #DFE3E7;
+                        display: grid;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        grid-template-columns: repeat(auto-fit , minmax(10rem , auto));
+                        grid-gap: 1rem;
+                        padding: 1rem;
+                        span{
+                            color: #494f56;
+                            font-size: .7rem;
+                            font-weight: 300;
+                            text-align: center;
+                        }
+                        .getImagePic{
+                            position: relative;
+                            &:hover{
+                                i{
+                                    visibility: visible;
+                                    opacity: 1;
+                                }
+                            }
+                            i{
+                                display: grid;
+                                justify-content: center;
+                                align-items: center;
+                                width: 2.5rem;
+                                height: 2.5rem;
+                                border-radius: 5rem;
+                                visibility: hidden;
+                                opacity: 0;
+                                transition: all .3s ease-in-out;
+                                background: #cbbdbd;
+                                position: absolute;
+                                top: 0;
+                                bottom: 0;
+                                left: 0;
+                                right: 0;
+                                margin: auto;
+                                svg{
+                                    width: 1.5rem;
+                                    height: 1.5rem;
+                                    fill: black;
+                                }
+                            }
+                        }
+                        img{
+                            height: 10rem;
+                            width: 10rem;
+                            object-fit: cover;
+                        }
+                    }
+                    .sendFileItem{
+                        border-radius: .4rem;
+                        display: grid;
+                        justify-content: center;
+                        align-items: center;
+                        grid-template-columns: 1fr;
+                        cursor: pointer;
+                        grid-gap: 1rem;
+                        border: 2px dashed $border1;
+                        background: white;
+                        margin-bottom: 1rem;
+                        padding: 1rem;
+                        margin-top: .5rem;
+                        position: relative;
+                        .vue-dropzone{
+                            border-radius: .3rem;
+                            color: black;
+                            border: 0;
+                            span{
+                                margin-right: .5rem;
+                                font-size: 1rem;
+                                font-weight: 500;
+                                color: black;
+                            }
+                            .dropzone-custom-content {
+                                text-align: center;
+                            }
+
+                            .dropzone-custom-title {
+                                margin-top: 0;
+                                color: orange;
+                                font-family: 'irsans';
+                                font-style: normal;
+                                font-weight: 900;
+                                font-size: 1rem;
+                            }
+
+                            .subtitle {
+                                margin-top: 1rem;
+                                color: $text1;
+                                font-family: 'irsans';
+                                font-style: normal;
+                                font-weight: 500;
+                                font-size: .8rem;
+                            }
+                        }
+                        .sendFileItemPic{
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            right: 1rem;
+                            margin: auto;
+                            img{
+                                object-fit: contain;
+                                width: 7rem;
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+                .button{
+                    padding: .5rem 1rem;
+                    border-radius: .3rem;
+                    background-color: $blue;
+                    color: white;
+                    box-shadow: 0 2px 4px 0 rgba(90, 141, 238, 0.5);
+                    transition: all .3s ease-in-out;
+                    &:hover{
+                        background-color: blue;
+                    }
+                }
+            }
+            .allCreatePostDetails{
+                width: 25rem;
+                .allCreatePostDetail{
+                    box-shadow: 0 10px 15px -5px rgba(172, 172, 172, 0.1);
+                    margin-bottom: 1rem;
+                    .allCreatePostDetailItemsTitle{
+                        background: white;
+                        display: grid;
+                        grid-template-columns: auto auto;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: $text1;
+                        font-weight: 500;
+                        font-size: .85rem;
+                        padding: .8rem;
+                        letter-spacing: .5px;
+                        border-radius: .3rem;
+                        z-index: 10;
+                        svg{
+                            width: .75rem;
+                            height: .75rem;
+                            fill: $text1;
+                        }
+                    }
+                    .allCreatePostDetailItems{
+                        background: white;
+                        width: 100%;
+                        border-bottom-left-radius: .3rem;
+                        border-bottom-right-radius: .3rem;
+                        padding: .5rem;
+                        margin-top: -.3rem;
+                        z-index: 2;
+                        .allCreatePostDetailItem{
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            grid-gap: .5rem;
+                            margin-top: 1rem;
+                            .grid2{
+                                display: grid;
+                                grid-template-columns: 1fr auto;
+                                grid-gap: .5rem;
+                            }
+                            label{
+                                color: $text1;
+                                font-weight: 500;
+                                font-size: .8rem;
+                            }
+                            input,select{
+                                background: white;
+                                border: 1px solid #DFE3E7;
+                                padding: 0.4rem .5rem;
+                                color: $text1;
+                                border-radius: .3rem;
+                                font-size: .7rem;
+                                width: 100%;
+                                transition: all .3s ease-in-out;
+                                resize: vertical;
+                                outline: transparent;
+                                &:focus{
+                                    box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                                    border: 1px solid $blue;
+                                }
+                            }
+                            &:first-child{
+                                margin-top: 0;
+                            }
+                        }
+                        .allCreatePostDetailItem2{
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            grid-gap: .5rem;
+                            margin-top: 1rem;
+                            label{
+                                color: $text1;
+                                font-weight: 500;
+                                font-size: .8rem;
+                            }
+                            input,select,textarea{
+                                background: white;
+                                border: 1px solid #DFE3E7;
+                                padding: 0.4rem .5rem;
+                                color: $text1;
+                                border-radius: .3rem;
+                                font-size: .7rem;
+                                width: 100%;
+                                transition: all .3s ease-in-out;
+                                resize: vertical;
+                                outline: transparent;
+                                &:focus{
+                                    box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                                    border: 1px solid $blue;
+                                }
+                            }
+                            input[type='checkbox']{
+                                width: 2rem;
+                            }
+                            &:first-child{
+                                margin-top: 0;
+                            }
+                        }
+                        .select2-container{
+                            width: 100% !important;
+                        }
+                        .costCheck{
+                            display: grid;
+                            grid-template-columns: auto auto;
+                            align-items: center;
+                            justify-content: space-between;
+                            grid-gap: .5rem;
+                            padding: 0 .5rem;
+                            border-radius: .4rem;
+                            height: 3rem;
+                            color: $text1;
+                            cursor: pointer;
+                            font-size: .85rem;
+                            font-weight: 300;
+                            margin-top: 1rem;
+                            @supports(-webkit-appearance: none) or (-moz-appearance: none) {
+                                input[type='checkbox'],
+                                input[type='radio'] {
+                                    --active: #275EFE;
+                                    --active-inner: #fff;
+                                    --focus: 2px rgba(39, 94, 254, .3);
+                                    --border: #BBC1E1;
+                                    --border-hover: #275EFE;
+                                    --background: #fff;
+                                    --disabled: #F6F8FF;
+                                    --disabled-inner: #E1E6F9;
+                                    -webkit-appearance: none;
+                                    -moz-appearance: none;
+                                    height: 21px;
+                                    outline: none;
+                                    display: inline-block;
+                                    vertical-align: top;
+                                    position: relative;
+                                    margin: 0;
+                                    cursor: pointer;
+                                    border: 1px solid var(--bc, var(--border));
+                                    background: var(--b, var(--background));
+                                    transition: background .3s, border-color .3s, box-shadow .2s;
+                                    &:after {
+                                        content: '';
+                                        display: block;
+                                        left: 0;
+                                        top: 0;
+                                        position: absolute;
+                                        transition: transform var(--d-t)  var(--d-t-e, ease), opacity var(--d-o, .2s);
+                                    }
+                                    &:checked {
+                                        --b: var(--active);
+                                        --bc: var(--active);
+                                        --d-o: .3s;
+                                        --d-t: .6s;
+                                        --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+                                    }
+                                    &:disabled {
+                                        --b: var(--disabled);
+                                        cursor: not-allowed;
+                                        opacity: .9;
+                                        &:checked {
+                                            --b: var(--disabled-inner);
+                                            --bc: var(--border);
+                                        }
+                                        & + label {
+                                            cursor: not-allowed;
+                                        }
+                                    }
+                                    &:hover {
+                                        &:not(:checked) {
+                                            &:not(:disabled) {
+                                                --bc: var(--border-hover);
+                                            }
+                                        }
+                                    }
+                                    &:focus {
+                                        box-shadow: 0 0 0 var(--focus);
+                                    }
+                                    &:not(.switch) {
+                                        width: 21px;
+                                        &:after {
+                                            opacity: var(--o, 0);
+                                        }
+                                        &:checked {
+                                            --o: 1;
+                                        }
+                                    }
+                                    & + label {
+                                        font-size: 14px;
+                                        line-height: 21px;
+                                        display: inline-block;
+                                        vertical-align: top;
+                                        cursor: pointer;
+                                        margin-left: 4px;
+                                    }
+                                }
+                                input[type='checkbox'] {
+                                    &:not(.switch) {
+                                        border-radius: 7px;
+                                        &:after {
+                                            width: 5px;
+                                            height: 9px;
+                                            border: 2px solid var(--active-inner);
+                                            border-top: 0;
+                                            border-left: 0;
+                                            left: 7px;
+                                            top: 4px;
+                                            transform: rotate(var(--r, 20deg));
+                                        }
+                                        &:checked {
+                                            --r: 43deg;
+                                        }
+                                    }
+                                    &.switch {
+                                        width: 38px;
+                                        border-radius: 11px;
+                                        &:after {
+                                            left: 2px;
+                                            top: 2px;
+                                            border-radius: 50%;
+                                            width: 15px;
+                                            height: 15px;
+                                            background: var(--ab, var(--border));
+                                            transform: translateX(var(--x, 0));
+                                        }
+                                        &:checked {
+                                            --ab: var(--active-inner);
+                                            --x: 17px;
+                                        }
+                                        &:disabled {
+                                            &:not(:checked) {
+                                                &:after {
+                                                    opacity: .6;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                input[type='radio'] {
+                                    border-radius: 50%;
+                                    &:after {
+                                        width: 19px;
+                                        height: 19px;
+                                        border-radius: 50%;
+                                        background: var(--active-inner);
+                                        opacity: 0;
+                                        transform: scale(var(--s, .7));
+                                    }
+                                    &:checked {
+                                        --s: .5;
+                                    }
+                                }
+                            }
+                            input[type='number']{
+                                border: 1px solid #DFE3E7;
+                                width: 3rem;
+                                padding: 0.3rem;
+                                color: $text1;
+                                border-radius: .3rem;
+                                font-size: .7rem;
+                                transition: all .3s ease-in-out;
+                                resize: vertical;
+                                &:focus{
+                                    box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                                    border: 1px solid $blue;
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(3){
+                        position: sticky;
+                        top: 5.5rem;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+    .addField{
+        .formItem{
+            label{
+                color: $text1;
+                font-weight: 500;
+                font-size: .9rem;
+                margin-bottom: .5rem;
+                display: grid;
+            }
+            select,input{
+                background: white;
+                border: 1px solid #DFE3E7;
+                padding: .5rem;
+                color: $text1;
+                border-radius: .3rem;
+                font-size: .9rem;
+                width: 100%;
+                transition: all .3s ease-in-out;
+                &:focus{
+                    box-shadow: 0 3px 8px 0 rgba(0,0,0,.1);
+                    border: 1px solid $blue;
+                }
+            }
+        }
+        .addBtn{
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+            background: green;
+            padding: .3rem 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+    }
+    .showTicket{
+        background: rgba(0,0,0,.5);
+        z-index: 4000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        overflow-y: scroll;
+        .ticketData {
+            width: 40%;
+            margin: auto;
+            background: white;
+            border-radius: .4rem;
+            position: relative;
+            padding: 1rem;
+            .itemsAnswer{
+                margin-top: 2rem;
+            }
+            .itemsTicket{
+                margin-bottom: 1rem;
+            }
+            h4{
+                font-size: .9rem;
+                font-weight: 500;
+                color: $text1;
+                margin-bottom: .5rem;
+            }
+            textarea,input,select{
+                padding: .5rem;
+                background: #f5f5f5;
+                width: 100%;
+                border-radius: 5px;
+                font-size: .85rem;
+                font-weight: 300;
+                color: $text1;
+            }
+            p{
+                font-size: .8rem;
+                font-weight: 300;
+                color: $text1;
+                opacity: .7;
+            }
+            .buttonsPop{
+                display: grid;
+                grid-template-columns: auto auto;
+                justify-content: center;
+                align-items: center;
+                grid-gap: 1rem;
+                margin-top: 2rem;
+                button{
+                    font-size: .9rem;
+                    padding: .3rem 1rem;
+                    border-radius: 5px;
+                    background: green;
+                    color: white;
+                }
+                h5{
+                    font-size: .9rem;
+                    padding: .3rem 1rem;
+                    border-radius: 5px;
+                    color: white;
+                    background: red;
+                }
+            }
+        }
+    }
+    .popUp{
+        background: rgba(0,0,0,.5);
+        z-index: 4000;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        .popUpItem {
+            width: 40%;
+            margin: auto;
+            background: white;
+            border-radius: .4rem;
+            position: relative;
+            padding: 1rem;
+            .title{
+                font-size: 1.2rem;
+                font-weight: 500;
+                color: $text1;
+                text-align: center;
+            }
+            p{
+                margin-top: .5rem;
+                font-size: 1rem;
+                font-weight: 300;
+                color: $text1;
+                text-align: center;
+            }
+            .buttonsPop{
+                display: grid;
+                grid-template-columns: auto auto;
+                justify-content: center;
+                align-items: center;
+                grid-gap: 1rem;
+                margin-top: 2rem;
+                button{
+                    font-size: .9rem;
+                    padding: .3rem 1rem;
+                    border-radius: 5px;
+                    background: green;
+                    color: white;
+                    &:nth-child(2){
+                        background: red;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width:800px) {
+        .costIndex{
+            padding: .5rem;
+            .addCost{
+                padding: .3rem .5rem;
+            }
+            .filterItems{
+                .filterTitle{
+                    padding: .3rem .5rem;
+                    svg{
+                        width: .8rem;
+                        height: .8rem;
+                    }
+                }
+                .filterContent{
+                    grid-gap: .5rem;
+                    width: 15rem;
+                    .filterContentItem{
+                        label{
+                            font-size:.6rem;
+                        }
+                        input{
+                            padding: 0.4rem .5rem;
+                            font-size: .65rem;
+                        }
+                    }
+                    button{
+                        font-size: .6rem;
+                    }
+                }
+            }
+        }
+        .widgetItems{
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            grid-gap: .5rem;
+            .widgetItem{
+                padding: .5rem;
+                h4{
+                    font-size: .6rem;
+                }
+                p{
+                    font-size: .6rem;
+                }
+            }
+        }
+        .allTables{
+            .createFilled{
+                grid-template-columns: 1fr;
+                .allCreatePostDetails{
+                    width: auto;
+                }
+                .allCreatePostSubject{
+                    .abilityPost{
+                        .abilityTable{
+                            tr{
+                                th,td{
+                                    font-size: .6rem;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            table{
+                clear: both;
+                margin-top: 6px !important;
+                margin-bottom: 6px !important;
+                max-width: none !important;
+                border-collapse: separate !important;
+                width: 100%;
+                tbody{
+                    background: white;
+                }
+                tr{
+                    display: flex;
+                    td,th{
+                        min-width: 12rem;
+                    }
+                    .buttons{
+                        min-width: 15rem;
+                    }
+                }
+            }
+        }
+        .showTicket{
+            .ticketData{
+                width: 95%;
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+.allContactIndex{
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    padding: 4rem;
+    margin: auto;
+    margin-top: 6rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    .right{
+        h3{
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: black;
+            letter-spacing: .1px;
+            margin-bottom: 2rem;
+        }
+    }
+    .left{
+        .item{
+            display: grid;
+            margin-bottom: 2rem;
+            label{
+                font-size: 1rem;
+                font-weight: 700;
+                color: $text1;
+                opacity: .7;
+                margin-bottom: .5rem;
+            }
+            input,textarea{
+                resize: vertical;
+                padding: .5rem;
+                border-radius: 5px;
+                color: $text1;
+                font-weight: 300;
+                font-size: 1rem;
+                background: #e4e4e4;
+            }
+        }
+        button{
+            width: 100%;
+            background: $purple2;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            padding: .5rem;
+            border-radius: 5px;
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allContactIndex{
+        display: block;
+        padding: 1rem;
+        margin-top: 2rem;
+        .right{
+            h3{
+                display: none;
+            }
+        }
+    }
+}

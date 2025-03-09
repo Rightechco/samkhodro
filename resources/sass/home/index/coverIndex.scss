@@ -1,0 +1,156 @@
+.allCoversIndex{
+    direction: ltr;
+    position: relative;
+    height: 100vh;
+    .allCoverIndex{
+        height: 100vh;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+        position: relative;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        direction: rtl;
+        align-items: center;
+        display: grid;
+        &:before{
+            content: "";
+            background: rgba(0,0,0,.4);
+            position: absolute;
+            right: 0;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+        .width{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin: auto;
+            position: relative;
+            z-index: 101;
+            margin-top: 2rem;
+            height: 100%;
+            align-items: center;
+            .container{
+                h3{
+                    font-size: 3rem;
+                    font-weight: 900;
+                    color: white;
+                    opacity: 0;
+                    transform: translateY(-10rem);
+                    transition: all 1s ease-in-out;
+                }
+                p{
+                    margin: 3rem 0;
+                    font-size: 1.2rem;
+                    font-weight: 500;
+                    color: white;
+                    opacity: 0;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                    transition: all 1s ease-in-out;
+                    transform: translateX(-10rem);
+                }
+                .sendHeader{
+                    display: grid;
+                    grid-template-columns: auto auto;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 10px;
+                    background: white;
+                    padding: 10px 20px;
+                    color: $text1;
+                    font-size: 1rem;
+                    font-weight: 300;
+                    width: 12rem;
+                    text-align: center;
+                    opacity: 0;
+                    grid-gap: 1rem;
+                    transition: all 2s ease-in-out;
+                    i{
+                        display: grid;
+                        align-items: center;
+                        justify-content: center;
+                        svg{
+                            width: .9rem;
+                            height: .9rem;
+                            fill: $text1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .active{
+        .allCoverIndex{
+            .width{
+                .container{
+                    h3{
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                    p{
+                        opacity: .7;
+                        transform: translateX(0);
+                    }
+                    .sendHeader{
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+    .owl-nav{
+        display: none;
+    }
+    .downCover{
+        position: absolute;
+        right: -40rem;
+        left: -40rem;
+        bottom: 0;
+        z-index: 100;
+        img{
+            height: 8rem;
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allCoversIndex{
+        .allCoverIndex{
+            height: auto;
+            .width{
+                display: block;
+                .container{
+                    h3{
+                        font-size: 1.5rem;
+                    }
+                    p{
+                        margin: 3rem 0;
+                        font-size: .8rem;
+                        transform: translateX(0);
+                    }
+                    .sendHeader{
+                        font-size: .8rem;
+                        width: 8rem;
+                        grid-gap: .5rem;
+                        line-height: 40px;
+                        padding: 0;
+                        i{
+                            svg{
+                                width: .8rem;
+                                height: .8rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .downCover{
+            display: none;
+        }
+    }
+}

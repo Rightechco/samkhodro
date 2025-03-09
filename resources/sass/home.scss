@@ -1,0 +1,158 @@
+@font-face {
+    font-family: 'irsans';
+    font-style: normal;
+    font-weight: 900;
+    src: url(fonts/irsans-b.eot);
+    src: url(fonts/irsans-b.eot?#iefix) format("embedded-opentype"), url(fonts/irsans-b.woff) format("woff"), url(fonts/irsans-b.ttf) format("truetype")
+}
+@font-face {
+    font-family: 'irsans';
+    font-style: normal;
+    font-weight: 700;
+    src: url(fonts/irsans-m.eot);
+    src: url(fonts/irsans-m.eot?#iefix) format("embedded-opentype"), url(fonts/irsans-m.woff) format("woff"), url(fonts/irsans-m.ttf) format("truetype")
+}
+@font-face {
+    font-family: 'irsans';
+    font-style: normal;
+    font-weight: 500;
+    src: url(fonts/irsans.eot);
+    src: url(fonts/irsans.eot?#iefix) format("embedded-opentype"), url(fonts/irsans.woff) format("woff"), url(fonts/irsans.ttf) format("truetype")
+}
+@font-face {
+    font-family: 'irsans';
+    font-style: normal;
+    font-weight: 300;
+    src: url(fonts/irsans-l.eot);
+    src: url(fonts/irsans-l.eot?#iefix) format("embedded-opentype"), url(fonts/irsans-l.woff) format("woff"), url(fonts/irsans-l.ttf) format("truetype")
+}
+@font-face {
+    font-family: 'irsans';
+    font-style: normal;
+    font-weight: 100;
+    src: url(fonts/irsans-u.eot);
+    src: url(fonts/irsans-u.eot?#iefix) format("embedded-opentype"), url(fonts/irsans-u.woff) format("woff"), url(fonts/irsans-u.ttf) format("truetype")
+}
+i,
+html {
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    font-family: 'irsans', irsans, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    height: 100%;
+    scroll-behavior: smooth;
+}
+* {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-style: normal;
+    line-height: normal;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: bottom;
+    display: inline-block
+}
+input, textarea, select, select option, button{
+    font-family: 'irsans', irsans, sans-serif;
+    outline-style: none;
+}
+button, input[type='submit']{
+    cursor: pointer;
+}
+input:focus{
+    outline: 0;
+}
+li,
+a {
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+    outline: 0;
+}
+li{
+    transition:none
+}
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+.siteMeta{
+    position: absolute;
+    visibility: hidden;
+}
+body {
+    direction: rtl;
+    font-family: 'irsans', irsans, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+    overflow-x: hidden;
+    height: 100%;
+    background: #F8F8F8;
+    .width{
+        width: 70%;
+    }
+    @media screen and (max-width:1800px) {
+        .width{
+            width: 85%;
+        }
+    }
+    @media screen and (max-width:1600px) {
+        .width{
+            width: 90%;
+        }
+    }
+    @media screen and (max-width:1400px) {
+        .width{
+            width: 97%;
+        }
+    }
+    @media screen and (max-width:700px) {
+        .width{
+            width: 95%;
+        }
+    }
+    .hidden{
+        position: absolute;
+        opacity: 0;
+        top: 0;
+    }
+    .seoTag{
+        display: none;
+    }
+}
+@import "variablesLight";
+@import "home/header/index";
+@import "home/index/coverIndex";
+@import "home/index/popUpIndex";
+@import "home/index/numberIndex";
+@import "home/index/workIndex";
+@import "home/index/serviceIndex";
+@import "home/index/teamIndex";
+@import "home/index/commentIndex";
+@import "home/index/contactIndex";
+@import "home/index/index";
+@import "home/index/blogIndex";
+@import "home/index/productIndex";
+@import "home/single/product";
+@import "home/single/blog";
+@import "home/page/index";
+@import "home/archive/blog";
+@import "home/archive/product";
+@import "home/footer/index";
+@import "home/auth/authIndex";
+@import "home/faq/index";
+@import "profile/index";
+@import "profile/like";
+@import "profile/list";
+@import "profile/ticket/index";
+@import "admin/filemanager";

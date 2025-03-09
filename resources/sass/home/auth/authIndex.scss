@@ -1,0 +1,228 @@
+.authIndex{
+    margin: auto;
+    margin-top: 10rem;
+    .sign-panels {
+        width: 650px;
+        box-shadow: 0 0 20px rgba(0,0,0,.2);
+        padding: 40px 80px;
+        margin: 40px auto;
+        border-radius: 20px;
+        background: white;
+        text-align: center;
+    }
+    .login,.signup {
+        position: relative;
+    }
+
+
+    .title {
+        color: $text1;
+        margin-bottom: 1rem;
+    }
+
+    .title span {
+        display: block;
+        font-size: 46px;
+        font-weight: bold;
+    }
+
+    .title p {
+        font-size: .9rem;
+        color: $text1;
+        font-weight: 500;
+        opacity: .7;
+        margin: .5rem 0;
+    }
+
+    .btn-face{
+        color: #fff;
+        font-size: .8rem;
+        border-radius: 50px;
+        font-weight: 500;
+        padding: .5rem 2rem;
+    }
+
+    .btn-face {
+        background: red;
+        opacity: .7;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    .or {
+        margin: 35px 0;
+        font-weight: 600;
+        color: #9f9f9f;
+    }
+
+    .or:after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #cecece;
+        position: absolute;
+        margin-top: -10px;
+        z-index: 0;
+    }
+
+    .or span {
+        display: block;
+        background: #fff;
+        width: 50px;
+        margin: auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    .sign-panels input {
+        width: 100%;
+        display: block;
+        margin-bottom: 15px;
+        border-radius: 50px;
+        border: none;
+        background: #ededed;
+        text-align: center;
+        padding: 10px;
+        font-size: 15px;
+        color: #7c7c7c;
+        font-weight: 500;
+    }
+
+    .sign-panels input:focus {
+        outline:none;
+    }
+
+    .sign-panels input[type="checkbox"] {
+        display: none;
+    }
+
+    .sign-panels input[type="checkbox"] + label {
+        display: block;
+        width: 50%;
+        text-align: left;
+        padding-left: 60px;
+        cursor: pointer;
+        color: #828282;
+        font-weight: 500;
+        margin-top: 10px;
+        float: left;
+        height: 50px;
+        padding-top: 15px;
+    }
+
+    .sign-panels input[type="checkbox"] + label:before {
+        content: '';
+        display: block;
+        width: 15px;
+        height: 15px;
+        background: #dbdbdb;
+        position: absolute;
+        left: 30px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 0 0 5px #ededed;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+    .sign-panels input[type="checkbox"]:checked + label:before {
+        background: $purple1;
+        box-shadow: 0 0 0 5px $purple1;
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+    }
+
+    .btn-signin {
+        display: inline-block;
+        width: 50%;
+        margin-top: 10px;
+        background: $blue1;
+        border-radius: 50px;
+        font-size: 1rem;
+        color: #fff;
+        font-weight: 500;
+        cursor: pointer;
+        padding: .5rem 1rem;
+    }
+    .forget{
+        background: transparent;
+        font-size: .8rem;
+        border-bottom: 2px dashed $blue2;
+        color: $blue2;
+        padding-bottom: .5rem;
+        font-weight: 300;
+        margin-right: 1rem;
+    }
+
+    .btn-reset,.btn-member,.btn-fade {
+        font-size: 19px;
+        font-weight: 500;
+        color: #9f9f9f;
+        display: block;
+        /*width: 210px;*/
+        margin: 30px auto 0;
+        text-decoration: none;
+
+    }
+    .btn-member {
+        margin-top: 15px;
+    }
+
+    .btn-reset .fa,.btn-member .fa {
+        margin-left: 6px;
+    }
+
+    .notification p {
+        font-size: 20px;
+        font-weight: 600;
+        color: #9f9f9f;
+    }
+
+    .notification span {
+        color: #ec581e;
+    }
+
+    .error {
+        display: block;
+        color: #ec581e;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 15px 0;
+    }
+
+    @media screen and (max-width: 768px) {
+        .sign-panels {
+            width: 90%;
+            padding: 40px;
+        }
+    }
+
+    @media screen and (max-width: 570px) {
+        .sign-panels {
+            padding: 40px 20px;
+        }
+
+        .btn-face, .btn-twitter {
+            width: 100%;
+        }
+        .btn-face {
+            margin-right: 0;
+            margin-bottom: 25px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .sign-panels input[type="checkbox"] + label {
+            width: 100%;
+        }
+
+        .btn-signin {
+            width: 80%;
+        }
+
+        .title span {
+            font-size: 36px;
+        }
+
+    }
+}

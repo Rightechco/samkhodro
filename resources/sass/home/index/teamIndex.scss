@@ -1,0 +1,98 @@
+.allTeamIndex{
+    margin: auto;
+    margin-top: 6rem;
+    .title{
+        text-align: center;
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: center;
+        h3{
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: $text1;
+            padding: 0 2rem;
+            margin-bottom: .5rem;
+            border-right: 5px solid $purple2;
+            border-left: 5px solid $purple2;
+        }
+    }
+    button.owl-prev{
+        position: absolute;
+        right: 1rem;
+        top: 0;
+        bottom: 0;
+        span{
+            font-size: 2.5rem;
+        }
+    }
+    button.owl-next{
+        position: absolute;
+        left: 1rem;
+        top: 0;
+        bottom: 0;
+        span{
+            font-size: 2.5rem;
+        }
+    }
+    .allTeamItem{
+        .pic{
+            position: relative;
+            img{
+                border-top-right-radius: 5rem;
+                border-bottom-left-radius: 5rem;
+                border-top-left-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+                position: relative;
+                z-index: 2;
+                box-shadow: 0 0 10px rgba(0,0,0,.2);
+            }
+            &:before{
+                position: absolute;
+                content: "";
+                bottom: 0;
+                left: 0;
+                width: 9rem;
+                height: 9rem;
+                background: $purple2;
+                z-index: 1;
+                border-radius: 50%;
+            }
+            &:after{
+                position: absolute;
+                content: "";
+                top: 0;
+                right: 0;
+                width: 9rem;
+                height: 9rem;
+                background: $purple1;
+                z-index: 1;
+                border-radius: 50%;
+            }
+        }
+        h4{
+            padding-right: 2px;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: $text1;
+            margin-top: 1rem;
+        }
+        h5{
+            font-size: .9rem;
+            font-weight: 500;
+            color: $purple2;
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allTeamIndex{
+        margin-top: 2rem;
+        .title{
+            h3{
+                font-size: 1.3rem;
+                padding: 0 1rem;
+                border-right: 2px solid $purple2;
+                border-left: 2px solid $purple2;
+            }
+        }
+    }
+}

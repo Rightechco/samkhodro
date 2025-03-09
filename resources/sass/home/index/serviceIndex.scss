@@ -1,0 +1,158 @@
+.allServiceIndex{
+    position: relative;
+    margin-top: 6rem;
+    .topService{
+        height: 400px;
+        display: block;
+        position: relative;
+        background: 50% no-repeat;
+        background-image: none;
+        background-size: auto;
+        background-size: cover;
+        border-radius: 5px;
+        z-index: 1;
+    }
+    .downCover{
+        position: absolute;
+        right: -40rem;
+        left: -40rem;
+        bottom: 0;
+        z-index: 100;
+    }
+    h3{
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: $text1;
+        margin-top: 1rem;
+    }
+    p{
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        color: $text1;
+        margin-top: .5rem;
+    }
+    .width{
+        margin: auto;
+        margin-top: 2rem;
+        .owl-carousel.owl-loaded{
+            display: grid !important;
+        }
+        button.owl-prev{
+            position: absolute;
+            right: 1rem;
+            top: 0;
+            bottom: 0;
+            span{
+                font-size: 2.5rem;
+            }
+        }
+        button.owl-next{
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            span{
+                font-size: 2.5rem;
+            }
+        }
+        .owl-stage-outer{
+            padding: 10px 0;
+        }
+        .serviceItem{
+            padding-bottom: 70%;
+            display: block;
+            background: 50% no-repeat;
+            background-image: none;
+            background-size: auto;
+            background-size: cover;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,.3);
+            .content{
+                position: absolute;
+                top: 50%;
+                left: 15px;
+                right: 15px;
+                text-align: center;
+                z-index: 2;
+                color: #fff;
+                -moz-transform: translate(0%, -50%);
+                -ms-transform: translate(0%, -50%);
+                -webkit-transform: translate(0%, -50%);
+                -o-transform: translate(0%, -50%);
+                transform: translate(0%, -50%);
+                h4{
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: white;
+                }
+                p{
+                    font-size: 1rem;
+                    font-weight: 500;
+                    color: white;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all .3s ease-in-out;
+                    padding-top: 15px;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                }
+            }
+            &:after{
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                background: #0e1116;
+                opacity: .5;
+                transition: all .3s ease-in-out;
+            }
+            &:hover{
+                .content{
+                    p{
+                        opacity: 1;
+                        visibility: visible;
+                        padding-top: 0;
+                    }
+                }
+                &:after{
+                    background: $purple2;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allServiceIndex{
+        margin-top: 2rem;
+        h3{
+            font-size: 1.5rem;
+        }
+        p{
+            font-size: .8rem;
+        }
+        .topService{
+            height: 200px;
+        }
+        .width{
+            .serviceItem{
+                .content{
+                    h4{
+                        font-size: 1rem;
+                    }
+                    p{
+                        font-size: .6rem;
+                    }
+                }
+            }
+        }
+    }
+}

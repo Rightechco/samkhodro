@@ -1,0 +1,22 @@
+.allIndexWidgets{
+    .indexData{
+        opacity: 0;
+        padding-top: 15rem;
+        transition: all 1s ease-in-out;
+        &:first-child{
+            padding-top: 0;
+            opacity: 1;
+        }
+    }
+    #done{
+        padding-top: 0;
+        opacity: 1;
+        .allProductIndex{
+            ul{
+                li{
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

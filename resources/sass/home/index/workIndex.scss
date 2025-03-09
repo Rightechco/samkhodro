@@ -1,0 +1,104 @@
+.allWorkIndex{
+    margin-top: 6rem;
+    padding: 4rem 0;
+    position: relative;
+    .width{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 4rem;
+        margin: auto;
+        .right{
+            h3{
+                font-size: 2rem;
+                font-weight: 500;
+                color: $text1;
+                margin-bottom: .5rem;
+            }
+            p{
+                font-size: 1rem;
+                font-weight: 500;
+                color: $text1;
+                opacity: .5;
+            }
+        }
+        .left{
+            ul{
+                li{
+                    margin-top: 2rem;
+                    .top{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 1rem;
+                        margin-bottom: .5rem;
+                        span{
+                            font-size: 1rem;
+                            font-weight: 300;
+                            color: $text1;
+                            opacity: .5;
+                        }
+                    }
+                    .bot{
+                        height: 10px;
+                        width: 100%;
+                        background: white;
+                        border-radius: 5rem;
+                        direction: ltr;
+                        .botItem{
+                            height: 100%;
+                            background: $purple2;
+                            border-radius: 5rem;
+                            position: relative;
+                            width: 0;
+                            transition: all 1s ease-in-out;
+                            div{
+                                width: 0;
+                                height: 100%;
+                                background: white;
+                                opacity: .5;
+                                box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+                                border-radius: 5rem;
+                                transition: all .3s ease-in-out;
+                            }
+                        }
+                    }
+                    &:first-child{
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:800px) {
+    .allWorkIndex{
+        margin-top: 2rem;
+        padding: 2rem 0;
+        .width{
+            display: block;
+            .right{
+                h3{
+                    font-size: 1.3rem;
+                }
+                p{
+                    font-size: .8rem;
+                }
+            }
+            .left{
+                margin-top: 2rem;
+                ul{
+                    li{
+                        .top{
+                            span{
+                                font-size: .7rem;
+                            }
+                        }
+                        .bot{
+                            height: 6px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
