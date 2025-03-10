@@ -21,6 +21,36 @@
     </div>
     <div class="allUserIndexListsItems">
         <div class="allUserIndexListsItem">
+            <a href="/profile">داشبورد</a>
+            @if($tab == 0)
+                <i>
+                    <svg class="icon">
+                        <use xlink:href="#left"></use>
+                    </svg>
+                </i>
+            @endif
+        </div>
+        <div class="allUserIndexListsItem">
+            <a href="/profile/order">سفارشات</a>
+            @if($tab == 1)
+                <i>
+                    <svg class="icon">
+                        <use xlink:href="#left"></use>
+                    </svg>
+                </i>
+            @endif
+        </div>
+        <div class="allUserIndexListsItem">
+            <a href="/profile/appointment">نوبت ها</a>
+            @if($tab == 3)
+                <i>
+                    <svg class="icon">
+                        <use xlink:href="#left"></use>
+                    </svg>
+                </i>
+            @endif
+        </div>
+        <div class="allUserIndexListsItem">
             <a href="/profile/like">علاقه مندی ها</a>
             @if($tab == 2)
                 <i>
@@ -31,18 +61,8 @@
             @endif
         </div>
         <div class="allUserIndexListsItem">
-            <a href="/profile/tickets">درخواست ها</a>
+            <a href="/profile/tickets">تیکت ها</a>
             @if($tab == 5)
-                <i>
-                    <svg class="icon">
-                        <use xlink:href="#left"></use>
-                    </svg>
-                </i>
-            @endif
-        </div>
-        <div class="allUserIndexListsItem">
-            <a href="/profile">داشبورد</a>
-            @if($tab == 0)
                 <i>
                     <svg class="icon">
                         <use xlink:href="#left"></use>

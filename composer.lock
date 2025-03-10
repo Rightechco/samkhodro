@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eabb64e2171c08d697faab5b9b0a1815",
+    "content-hash": "6ea790b7d6d3e8502f624d85c3de1df3",
     "packages": [
         {
             "name": "artesaos/seotools",
@@ -1413,22 +1413,22 @@
         },
         {
             "name": "hekmatinasser/verta",
-            "version": "v8.3",
+            "version": "v8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hekmatinasser/verta.git",
-                "reference": "55c342a6b37280cc4eceeb382a217471cb23bff3"
+                "reference": "5e63e0c218eedf8270b5500ea8b9a8ae54e1c2d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hekmatinasser/verta/zipball/55c342a6b37280cc4eceeb382a217471cb23bff3",
-                "reference": "55c342a6b37280cc4eceeb382a217471cb23bff3",
+                "url": "https://api.github.com/repos/hekmatinasser/verta/zipball/5e63e0c218eedf8270b5500ea8b9a8ae54e1c2d6",
+                "reference": "5e63e0c218eedf8270b5500ea8b9a8ae54e1c2d6",
                 "shasum": ""
             },
             "require": {
                 "hekmatinasser/jalali": "^8.2",
-                "illuminate/support": "^8.0|^9.0|^10.0",
-                "illuminate/validation": "^8.0|^9.0|^10.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/validation": "^8.0|^9.0|^10.0|^11.0",
                 "php": "^8.0"
             },
             "require-dev": {
@@ -1437,12 +1437,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Hekmatinasser\\Verta\\Laravel\\VertaServiceProvider"
-                    ],
                     "aliases": {
                         "Verta": "Hekmatinasser\\Verta\\Verta"
-                    }
+                    },
+                    "providers": [
+                        "Hekmatinasser\\Verta\\Laravel\\VertaServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -1474,7 +1474,7 @@
             ],
             "support": {
                 "issues": "https://github.com/hekmatinasser/verta/issues",
-                "source": "https://github.com/hekmatinasser/verta/tree/v8.3"
+                "source": "https://github.com/hekmatinasser/verta/tree/v8.4"
             },
             "funding": [
                 {
@@ -1482,7 +1482,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-17T14:31:41+00:00"
+            "time": "2024-03-12T05:35:21+00:00"
         },
         {
             "name": "laravel/framework",
@@ -9394,5 +9394,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

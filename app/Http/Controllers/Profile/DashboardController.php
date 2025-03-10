@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\Contract;
 use App\Models\Gallery;
 use App\Models\Like;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\Setting;
@@ -58,7 +60,10 @@ class DashboardController extends Controller
             $query->where('user_id', '=', $user->id)
                 ->orWhere('catch_id', '=', $user->id);
         })->get();
-        return view('profile.index', compact('likePost','tickets'));
+        $orders = Order::where(function ($query) use($user) {
+            $query->where('user_id', '=', $user->id);
+        })->get();
+        return view('profile.index', compact('likePost','tickets','orders'));
     }
     public function like(){
         $user= \auth()->user();
@@ -75,6 +80,31 @@ class DashboardController extends Controller
         $title = 'علاقه مندی ها';
         $tab = 2;
         return view('profile.like', compact('likePosts','title','tab'));
+    }
+
+    public function order(){
+        $user= \auth()->user();
+        $orders = Order::where(function ($query) use($user) {
+            $query->where('user_id', '=', $user->id);
+        })->orderBy('id','DESC')->get();
+
+        $products = Product::query()->select('id','title')->get();
+
+        $title = 'سفارشات';
+        $tab = 1;
+        return view('profile.order', compact('orders','title','tab','products'));
+    }
+
+    public function appointment()
+    {
+        $user= \auth()->user();
+        $appointments = Appointment::where(function ($query) use($user) {
+            $query->where('user_id', '=', $user->id);
+        })->orderBy('id','DESC')->get();
+
+        $title = 'نوبت ها';
+        $tab = 3;
+        return view('profile.appointment', compact('appointments','title','tab'));
     }
     public function personalInfo(){
         $user = User::where('id' , auth()->user()->id)->first();

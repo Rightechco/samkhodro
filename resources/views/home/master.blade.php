@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/jquery.toast.min.css"/>
     <script src="/js/jquery.toast.min.js"></script>
     <link rel="stylesheet" href="/css/home.css" type="text/css">
+    <link rel="stylesheet" href="/css/icons.min.css" type="text/css">
     @yield('myMeta')
 </head>
 <body>

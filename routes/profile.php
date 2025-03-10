@@ -4,6 +4,8 @@ use \App\Http\Controllers\Profile\DashboardController;
 use \App\Http\Controllers\Profile\TicketController;
 use \App\Http\Controllers\Profile\GalleryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Profile\OrderController;
+use App\Http\Controllers\Profile\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,10 @@ Route::get('/logout',  [DashboardController::class, 'logout']);
 Route::put('/change-user-info',  [DashboardController::class, 'ChangeUserInfo']);
 Route::get('/',  [DashboardController::class, 'profile']);
 Route::get('/like',  [DashboardController::class, 'like']);
+Route::get('/order',  [DashboardController::class, 'order']);
+Route::post('/newOrder',  [OrderController::class, 'storeOrder']);
+Route::get('/appointment',  [DashboardController::class, 'appointment']);
+Route::post('/newAppointment',  [AppointmentController::class, 'storeAppointment']);
 Route::get('/comment',  [DashboardController::class, 'comment']);
 Route::get('/personal-info',  [DashboardController::class, 'personalInfo']);
 Route::post('/change-all-user-info',  [DashboardController::class, 'ChangeAllUserInfo']);

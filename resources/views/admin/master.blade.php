@@ -11,6 +11,7 @@
     @yield('links')
     @yield('links2')
     <link rel="stylesheet" href="/css/admin.css" type="text/css">
+    <link rel="stylesheet" href="/css/icons.min.css" type="text/css">
 </head>
 <body>
     @include('icons')
