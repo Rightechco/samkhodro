@@ -368,6 +368,48 @@
                                 </tr>
                                 <tr>
                                     <td class="roleTd">
+                                        سفارش
+                                        <label>
+                                            <input id="s0d" type="checkbox" class="switch" name="order" value="سفارش">
+                                        </label>
+                                    </td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd">
+                                        <label>
+                                            <input id="s3d" type="checkbox" class="switch" name="order" value="ویرایش سفارش">
+                                        </label>
+                                    </td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd">
+                                        <label>
+                                            <input id="s4d" type="checkbox" class="switch" name="order" value="حذف سفارش">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="roleTd">
+                                        نوبت
+                                        <label>
+                                            <input id="s0d" type="checkbox" class="switch" name="appointment" value="نوبت">
+                                        </label>
+                                    </td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd">
+                                        <label>
+                                            <input id="s3d" type="checkbox" class="switch" name="appointment" value="ویرایش نوبت">
+                                        </label>
+                                    </td>
+                                    <td class="roleTd"></td>
+                                    <td class="roleTd">
+                                        <label>
+                                            <input id="s4d" type="checkbox" class="switch" name="appointment" value="حذف نوبت">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="roleTd">
                                         برگه ها
                                     </td>
                                     <td class="roleTd">

@@ -43,4 +43,9 @@ class Appointment extends Model
                 return 'رد شده';
         }
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

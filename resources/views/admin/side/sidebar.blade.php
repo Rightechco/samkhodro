@@ -229,6 +229,66 @@
                 </ul>
             </div>
         @endif
+        @if(auth()->user()->can('سفارش') || auth()->user()->level == 3)
+            <a href="/admin/order" class="allSideBarIconsText">
+                <div class="active" style="display:none;" id="showList26">
+                    <i style="background: {{\App\Models\Setting::where('key' , 'sideColor')->pluck('value')->first()}}">
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    <span class="sidemenu-label">سفارش</span>
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </div>
+                <h4 class="unActive" id="showList26">
+                    <i>
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    سفارش
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </h4>
+            </a>
+        @endif
+        @if(auth()->user()->can('نوبت') || auth()->user()->level == 3)
+            <a href="/admin/appointment" class="allSideBarIconsText">
+                <div class="active" style="display:none;" id="showList27">
+                    <i style="background: {{\App\Models\Setting::where('key' , 'sideColor')->pluck('value')->first()}}">
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    <span class="sidemenu-label">سفارش</span>
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </div>
+                <h4 class="unActive" id="showList27">
+                    <i>
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    نوبت
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </h4>
+            </a>
+        @endif
         @if(auth()->user()->can('یادداشت') || auth()->user()->level == 3)
             <a href="/admin/note" class="allSideBarIconsText">
                 <div class="active" style="display:none;" id="showList3">
@@ -971,6 +1031,24 @@
                     }
                 });
             }
+            if(tab == 26){
+                $('.allSideBarIconsText>#showList28').each(function() {
+                    if($( this ).attr('class') == 'active'){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            }
+            if(tab == 27){
+                $('.allSideBarIconsText>#showList27').each(function() {
+                    if($( this ).attr('class') == 'active'){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            }
             $('.allSideBarIconsText>#showList1').click(function (e){
                 $('.allSideBarIconsText>.unActive').each(function() {
                     $(this).show();
@@ -1339,6 +1417,36 @@
                     $(this).hide();
                 });
                 $('.allSideBarIconsText>#showList25').each(function() {
+                    if($( this ).attr('class') != e.currentTarget.className){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            })
+            $('.allSideBarIconsText>#showList26').click(function (e){
+                $('.allSideBarIconsText>.unActive').each(function() {
+                    $(this).show();
+                });
+                $('.allSideBarIconsText>.active').each(function() {
+                    $(this).hide();
+                });
+                $('.allSideBarIconsText>#showList26').each(function() {
+                    if($( this ).attr('class') != e.currentTarget.className){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            })
+            $('.allSideBarIconsText>#showList27').click(function (e){
+                $('.allSideBarIconsText>.unActive').each(function() {
+                    $(this).show();
+                });
+                $('.allSideBarIconsText>.active').each(function() {
+                    $(this).hide();
+                });
+                $('.allSideBarIconsText>#showList27').each(function() {
                     if($( this ).attr('class') != e.currentTarget.className){
                         $(this).show();
                     }else{

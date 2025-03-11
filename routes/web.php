@@ -23,6 +23,8 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\PatternController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +96,24 @@ Route::group(['prefix' => 'product'] , function () {
     Route::get('/{product}/edit', [ProductController::class, 'edit'])->middleware(['permission:ویرایش محصول']);
     Route::put('/{product}/edit', [ProductController::class, 'update'])->middleware(['permission:ویرایش محصول']);
     Route::delete('/{product}/delete', [ProductController::class, 'delete'])->middleware(['permission:حذف محصول']);
+});
+
+//////// order
+Route::group(['prefix' => 'order'] , function () {
+    Route::get('/', [OrderController::class, 'index'])->middleware(['permission:سفارش']);
+    Route::get('/{order}/edit', [OrderController::class, 'edit'])->middleware(['permission:ویرایش سفارش']);
+    Route::put('/{order}/edit', [OrderController::class, 'update'])->middleware(['permission:ویرایش سفارش']);
+    Route::delete('/{order}/delete', [OrderController::class, 'delete'])->middleware(['permission:حذف سفارش']);
+    Route::post('/close', [OrderController::class, 'close'])->middleware(['permission:حذف سفارش']);
+});
+
+//////// appointment
+Route::group(['prefix' => 'appointment'] , function () {
+    Route::get('/', [AppointmentController::class, 'index'])->middleware(['permission:نوبت']);
+    Route::get('/{appointment}/edit', [AppointmentController::class, 'edit'])->middleware(['permission:ویرایش نوبت']);
+    Route::put('/{appointment}/edit', [AppointmentController::class, 'update'])->middleware(['permission:ویرایش نوبت']);
+    Route::delete('/{appointment}/delete', [AppointmentController::class, 'delete'])->middleware(['permission:حذف نوبت']);
+    Route::post('/close', [AppointmentController::class, 'close'])->middleware(['permission:حذف نوبت']);
 });
 
 //////// ticket
