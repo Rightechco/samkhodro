@@ -108,6 +108,12 @@ Route::group(['prefix' => 'order'] , function () {
 });
 
 //////// appointment
+Route::group(['prefix' => 'form'] , function () {
+    Route::get('/', [DashboardController::class, 'form'])->middleware(['permission:پرسش نامه']);
+    Route::get('/seeRes/{form}', [DashboardController::class, 'seeRes'])->middleware(['permission:پرسش نامه']);
+});
+
+//////// appointment
 Route::group(['prefix' => 'appointment'] , function () {
     Route::get('/', [AppointmentController::class, 'index'])->middleware(['permission:نوبت']);
     Route::get('/{appointment}/edit', [AppointmentController::class, 'edit'])->middleware(['permission:ویرایش نوبت']);

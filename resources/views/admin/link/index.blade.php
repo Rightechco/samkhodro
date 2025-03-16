@@ -16,6 +16,7 @@
                         <tr>
                             <th>عنوان</th>
                             <th>پیوند</th>
+{{--                            <th>والد</th>--}}
                             <th>زمان ثبت</th>
                             <th>عملیات</th>
                         </tr>
@@ -23,6 +24,7 @@
                             <tr>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->slug}}</td>
+{{--                                <td>{{$item->parent->name ?? '-'}}</td>--}}
                                 <td>{{$item->created_at}}</td>
                                 <td>
                                     <div class="buttons">
@@ -71,7 +73,7 @@
                     <div class="filledItem">
                         <label>منو پدر</label>
                         <select name="parent">
-                            <option value="0">ندارد</option>
+                            <option value="">ندارد</option>
                             @foreach($allLink as $link)
                                 <option value="{{ $link->id }}">{{ $link->name }}</option>
                             @endforeach
@@ -145,11 +147,13 @@
                                 $(".createFilled input[name='_method']").remove();
                                 $(this).hide();
                                 $("input[name='name']").val('');
+                                $("input[name='parent']").val('');
                                 $("input[name='slug']").val('');
                             })
                         )
                         $("input[name='name']").val(data.name);
                         $("input[name='slug']").val(data.slug);
+                        $("input[name='parent']").val(data.parent.id);
                         $("select[name='type']").val(data.type);
                     },
                 });

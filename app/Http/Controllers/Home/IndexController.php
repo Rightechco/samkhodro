@@ -7,6 +7,7 @@ use App\Models\Ask;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Demand;
+use App\Models\Form;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\Setting;
@@ -66,6 +67,52 @@ class IndexController extends Controller
             $buttonPopUp = Setting::where('key' , 'buttonPopUp')->pluck('value')->first();
         }
         return view('home.index.index',compact('widget','popUp','imagePopUp','titlePopUp','popUpStatus','addressPopUp','descriptionPopUp','buttonPopUp'));
+    }
+
+    public function form1()
+    {
+        return view('home.form.form1');
+    }
+
+    public function form1post(Request $request)
+    {
+        $request->validate([
+            'form' => 'required',
+            'full_name' => 'required',
+            'phone' => 'required',
+        ]);
+        Form::query()->create([
+            'name' => $request->full_name,
+            'mobile' => $request->phone,
+            'formID' => $request->form,
+            'json' => json_encode($request->all(),JSON_UNESCAPED_UNICODE)
+        ]);
+        return redirect()->back()->with([
+            'message' => 'پرسش نامه شما ارسال شد'
+        ]);
+    }
+
+    public function form2()
+    {
+        return view('home.form.form2');
+    }
+
+    public function form2post(Request $request)
+    {
+        $request->validate([
+            'form' => 'required',
+            'full_name' => 'required',
+            'phone' => 'required',
+        ]);
+        Form::query()->create([
+            'name' => $request->full_name,
+            'mobile' => $request->phone,
+            'formID' => $request->form,
+            'json' => json_encode($request->all(),JSON_UNESCAPED_UNICODE)
+        ]);
+        return redirect()->back()->with([
+            'message' => 'پرسش نامه شما ارسال شد'
+        ]);
     }
 
     public function faq(){

@@ -30,7 +30,7 @@ class LinkController extends Controller
         ]);
     }
     public function edit(Request $request){
-        return Link::where('id' , $request->link)->first();
+        return Link::where('id' , $request->link)->with('parent')->first();
     }
     public function update(Request $request){
         $request->validate([

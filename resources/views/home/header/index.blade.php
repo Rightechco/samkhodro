@@ -225,6 +225,8 @@
                 <!--@foreach(\App\Models\Page::get() as $item)-->
                 <!--<a href="/page/{{$item->slug}}">{{$item->title}}</a>-->
                 <!--@endforeach-->
+                <a href="/form1">پرسشنامه اندازه گیري رضایت مشتریان از خدمات فروش</a>
+                <a href="/form2">پرسش نامه اندازه گیری رضایت مشتریان از خدمات پس از فروش</a>
             </div>
             <div class="left">
                 @if(auth()->user())
@@ -272,7 +274,7 @@
                             </li>
                         @endif
                     @endif
-                    @foreach(\App\Models\Link::where('type' , 0)->get() as $item)
+                    @foreach(\App\Models\Link::where('type' , 0)->whereNull('parent_id')->get() as $item)
                         <li>
                             <a href="{{$item->slug}}">{{$item->name}}</a>
                             @if($item->childs->count())

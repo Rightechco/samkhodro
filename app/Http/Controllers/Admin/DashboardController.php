@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Demand;
+use App\Models\Form;
 use App\Models\Like;
 use App\Models\Product;
 use App\Models\Ticket;
@@ -82,5 +83,16 @@ class DashboardController extends Controller
     }
     public function learn(){
         return view('admin.learn');
+    }
+
+    public function form()
+    {
+        $forms = Form::query()->latest()->paginate(50);
+        return view('admin.form',compact('forms'));
+    }
+
+    public function seeRes(Form $form)
+    {
+        return view('admin.seeForm',compact('form'));
     }
 }

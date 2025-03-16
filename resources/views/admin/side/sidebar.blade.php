@@ -229,6 +229,36 @@
                 </ul>
             </div>
         @endif
+        @if(auth()->user()->can('پرسش نامه') || auth()->user()->level == 3)
+            <a href="/admin/form" class="allSideBarIconsText">
+                <div class="active" style="display:none;" id="showList28">
+                    <i style="background: {{\App\Models\Setting::where('key' , 'sideColor')->pluck('value')->first()}}">
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    <span class="sidemenu-label">پرسش نامه</span>
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </div>
+                <h4 class="unActive" id="showList28">
+                    <i>
+                        <svg class="icon">
+                            <use xlink:href="#notebook"></use>
+                        </svg>
+                    </i>
+                    پرسش نامه
+                    <i class="arrow">
+                        <svg class="icon">
+                            <use xlink:href="#left"></use>
+                        </svg>
+                    </i>
+                </h4>
+            </a>
+        @endif
         @if(auth()->user()->can('سفارش') || auth()->user()->level == 3)
             <a href="/admin/order" class="allSideBarIconsText">
                 <div class="active" style="display:none;" id="showList26">
@@ -267,7 +297,7 @@
                             <use xlink:href="#notebook"></use>
                         </svg>
                     </i>
-                    <span class="sidemenu-label">سفارش</span>
+                    <span class="sidemenu-label">نوبت</span>
                     <i class="arrow">
                         <svg class="icon">
                             <use xlink:href="#left"></use>
@@ -1049,6 +1079,15 @@
                     }
                 });
             }
+            if(tab == 28){
+                $('.allSideBarIconsText>#showList28').each(function() {
+                    if($( this ).attr('class') == 'active'){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            }
             $('.allSideBarIconsText>#showList1').click(function (e){
                 $('.allSideBarIconsText>.unActive').each(function() {
                     $(this).show();
@@ -1447,6 +1486,21 @@
                     $(this).hide();
                 });
                 $('.allSideBarIconsText>#showList27').each(function() {
+                    if($( this ).attr('class') != e.currentTarget.className){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                });
+            })
+            $('.allSideBarIconsText>#showList28').click(function (e){
+                $('.allSideBarIconsText>.unActive').each(function() {
+                    $(this).show();
+                });
+                $('.allSideBarIconsText>.active').each(function() {
+                    $(this).hide();
+                });
+                $('.allSideBarIconsText>#showList28').each(function() {
                     if($( this ).attr('class') != e.currentTarget.className){
                         $(this).show();
                     }else{

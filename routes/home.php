@@ -28,6 +28,11 @@ Route::post('/search', [IndexController::class, 'search']);
 Route::get('/page/{PageSlug}', [IndexController::class , 'page']);
 Route::get('/faq', [IndexController::class , 'faq']);
 
+Route::get('/form1', [IndexController::class , 'form1']);
+Route::post('/form1', [IndexController::class , 'form1post']);
+Route::get('/form2', [IndexController::class , 'form2']);
+Route::post('/form2', [IndexController::class , 'form2post']);
+
 /////////////////////////////// archive
 Route::get('/blogs', [ArchiveController::class , 'blog']);
 Route::get('/products', [ArchiveController::class , 'product']);
