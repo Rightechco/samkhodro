@@ -34,7 +34,7 @@
             </h4>
         </a>
         <a href="/admin/learn" class="allSideBarIconsText">
-            <div class="active" style="display:none;" id="showList26">
+            <div class="active" style="display:none;" id="showList1">
                 <i style="background: {{\App\Models\Setting::where('key' , 'sideColor')->pluck('value')->first()}}">
                     <svg class="icon">
                         <use xlink:href="#learn"></use>
@@ -47,7 +47,7 @@
                     </svg>
                 </i>
             </div>
-            <h4 class="unActive" id="showList26">
+            <h4 class="unActive" id="showList1">
                 <i>
                     <svg class="icon">
                         <use xlink:href="#learn"></use>
@@ -1062,7 +1062,7 @@
                 });
             }
             if(tab == 26){
-                $('.allSideBarIconsText>#showList28').each(function() {
+                $('.allSideBarIconsText>#showList26').each(function() {
                     if($( this ).attr('class') == 'active'){
                         $(this).show();
                     }else{

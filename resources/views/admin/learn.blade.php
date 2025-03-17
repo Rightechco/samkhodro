@@ -1,7 +1,7 @@
 @extends('admin.master')
 
 @section('title' , 'آموزش پنل مدیریت')
-@section('tab' , 26)
+@section('tab' , 1)
 @section('content')
     <div class="allLearnDash">
         <label class="search">

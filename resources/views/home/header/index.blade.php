@@ -1,10 +1,14 @@
 <style>
-    nav {
+    nav, .allCatsTitle {
         position: relative;
     }
 
     nav ul li:hover .underMenu {
         opacity: 1;
+    }
+
+    .visible {
+        opacity: 1 !important;
     }
 
     .underMenu {
@@ -341,13 +345,27 @@
                     <a href="/login" name="ثبت نام / ورود" title="ثبت نام / ورود">ثبت نام / ورود</a>
                 </div>
             </li>
-            @foreach(\App\Models\Link::where('type' , 0)->get() as $item)
+            @foreach(\App\Models\Link::where('type' , 0)->whereNull('parent_id')->get() as $item)
                 <li>
                     <div class="allCatsTitle">
                         <a href="{{$item->slug}}" name="{{$item->name}}" title="{{$item->name}}">
                             {{$item->name}}
                         </a>
+                        @if($item->childs->count())
+                        <i class="arrow mobileMenuUnder">
+                            <svg class="icon">
+                                <use xlink:href="#left"></use>
+                            </svg>
+                        </i>
+                        @endif
                     </div>
+                    @if($item->childs->count())
+                        <ul class="underMenu" style="right: 35%">
+                            @foreach($item->childs as $child)
+                                <li><a href="{{ $child->slug }}">{{ $child->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </li>
             @endforeach
         </ul>
@@ -393,6 +411,15 @@
         })
     });
     $(document).ready(function(){
+        $('.mobileMenuUnder').click(function() {
+            const submenu = $(this).parent().siblings('ul');
+
+            if (submenu.hasClass('visible')) {
+                submenu.removeClass('visible'); // Hide by removing the class
+            } else {
+                submenu.addClass('visible'); // Show by adding the class
+            }
+        });
         $.each($(".allIndexWidgets .indexData"),function (){
             if(window.innerWidth >= 800){
                 if (st + gg>= $(this).offset().top && $(this).attr('id') != 'done') {
@@ -407,7 +434,7 @@
         $('.allHeaderHome .closeSearch,.allHeaderHome .bottom .left .sendHeader').click(function (){
             $('.allSearch').toggle();
         })
-        $('.allHeaderHome .categoryHeaderResponsive #btnShowMenu , .allCats li , .fixedTab .resAlign').on('click' ,function(){
+        $('.allHeaderHome .categoryHeaderResponsive #btnShowMenu , .fixedTab .resAlign').on('click' ,function(){
             $('.categoryHeaderResponsive').toggle();
         })
         $('.allHeaderHome .resAlign').on('click' ,function(){
