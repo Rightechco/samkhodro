@@ -8,7 +8,7 @@
             <img src="/img/back.jpg" alt="{{$page->titleSeo}}">
         </figure>
         <h1>{{$page->title}}</h1>
-        <div class="description formPage">
+        <div class="description formPage" style="padding: 15px">
             {!! $page->body !!}
         </div>
         @if($page->contact)
