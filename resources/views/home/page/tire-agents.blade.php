@@ -828,6 +828,44 @@
     align-items: center;
     gap: 14px;
     margin-bottom: 16px;
+    position: relative;
+    width: 100%;
+}
+
+.tw-card-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.tw-card-meta h4 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tw-card-meta .agency {
+    font-size: 13px;
+    color: #38bdf8;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tw-city-badge {
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+    align-self: flex-start;
 }
 
 .tw-card-avatar {
@@ -1665,31 +1703,31 @@
             <!-- گرید کارت‌های ۵ عاملیت -->
             <div class="tw-agents-grid" id="agentsGridContainer">
                 @foreach($representatives as $agent)
-                <div class="tw-agent-card" data-slug="{ $agent['province_slug'] }" data-search="{ $agent['name'] } { $agent['agency'] } { $agent['city'] } { $agent['province_name'] } { $agent['phone'] }">
+                <div class="tw-agent-card" data-slug="{{ $agent['province_slug'] }}" data-search="{{ $agent['name'] }} {{ $agent['agency'] }} {{ $agent['city'] }} {{ $agent['province_name'] }} {{ $agent['phone'] }}">
                     <div class="tw-card-top">
                         <div class="tw-card-avatar">
-                            { mb_substr($agent['name'], 0, 1, 'UTF-8') }
+                            {{ mb_substr($agent['name'], 0, 1, 'UTF-8') }}
                         </div>
                         <div class="tw-card-meta">
-                            <h4>{ $agent['name'] }</h4>
-                            <div class="agency">{ $agent['agency'] }</div>
+                            <h4>{{ $agent['name'] }}</h4>
+                            <div class="agency">{{ $agent['agency'] }}</div>
                         </div>
-                        <span class="tw-city-badge">{ $agent['city'] }</span>
+                        <span class="tw-city-badge">{{ $agent['city'] }}</span>
                     </div>
 
                     <div class="tw-card-addr">
-                        <strong style="color: #38bdf8;">نشانی:</strong> { $agent['address'] }
+                        <strong style="color: #38bdf8;">نشانی:</strong> {{ $agent['address'] }}
                     </div>
 
                     <div class="tw-card-actions">
-                        <a href="tel:{ $agent['phone'] }" class="tw-card-btn-call">
+                        <a href="tel:{{ $agent['phone'] }}" class="tw-card-btn-call">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                             </svg>
-                            <span>{ $agent['phone_formatted'] }</span>
+                            <span>{{ $agent['phone_formatted'] }}</span>
                         </a>
 
-                        <button type="button" class="tw-card-btn-view" onclick="focusOnProvince('{ $agent['province_slug'] }')">
+                        <button type="button" class="tw-card-btn-view" onclick="focusOnProvince('{{ $agent['province_slug'] }}')">
                             <span>نمایش روی نقشه</span>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <polyline points="9 18 15 12 9 6"></polyline>
