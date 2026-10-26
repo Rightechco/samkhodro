@@ -40,6 +40,20 @@ use App\Http\Controllers\Admin\AppointmentController;
 Route::get('/', [DashboardController::class, 'index']);
 Route::get('/learn', [DashboardController::class, 'learn']);
 
+/*
+|--------------------------------------------------------------------------
+| مسیر اختصاصی محصولات و خودروهای وارداتی (رندر مستقیم بلید)
+|--------------------------------------------------------------------------
+*/
+Route::get('/products', function () {
+    $products = \App\Models\Product::orderBy('id', 'desc')->get();
+    $name = 'محصولات و خودروهای وارداتی';
+    $body = 'شرکت تامین کانی سام (سام خودرو)؛ واردکننده رسمی خودروهای مدرن، هیبرید و بنزینی ژاپنی و روز بین‌المللی با پلاک ملی و منطقه آزاد، همراه با گارانتی و خدمات پس از فروش سراسری.';
+    $urls = url('/products');
+
+    return view('home.archive.product', compact('products', 'name', 'body', 'urls'));
+})->name('products.index');
+
 ////////////////////////////////// gallery
 Route::get('/gallery', [GalleryController::class , 'index'])->middleware(['permission:گالری']);
 Route::post('/upload-image', [GalleryController::class , 'upload']);
@@ -74,7 +88,6 @@ Route::group(['prefix' => 'customer'] , function () {
     Route::get('/{CustomerId}/event/{event}/edit', [EventController::class, 'edit'])->middleware(['permission:ویرایش فعالیت ها']);
     Route::put('/{CustomerId}/event/{event}/edit', [EventController::class, 'update'])->middleware(['permission:ویرایش فعالیت ها']);
     Route::delete('/{CustomerId}/event/{event}/delete', [EventController::class, 'deleteCustomer'])->middleware(['permission:حذف فعالیت ها']);
-
 });
 
 ///// blog

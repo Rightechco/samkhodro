@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [IndexController::class, 'index']);
+Route::get('/tire-warranty-agents', [IndexController::class, 'tireWarrantyAgents'])->name('tire-warranty-agents');
 Route::post('/send-sub', [IndexController::class, 'sendSub']);
 Route::post('/like', [LikeController::class, 'product']);
 Route::post('/send-contact', [IndexController::class, 'sendTicket']);

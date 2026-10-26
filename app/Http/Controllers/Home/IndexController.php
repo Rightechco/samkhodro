@@ -154,10 +154,100 @@ class IndexController extends Controller
     }
 
     public function page(Page $page){
+        if ($page->slug == 'tire-warranty-agents') {
+            return $this->tireWarrantyAgents();
+        }
         $title = Setting::where('key' , 'title')->pluck('value')->first();
         $logo = Setting::where('key' , 'logo')->pluck('value')->first() ?:'' ;
         $this->seoSingleSeo(   $page->titleSeo . " - $title " , $page->bodySeo , 'store' , 'page/'."$page->slug" , $logo , $page->keyword);
         return view('home.page.index' , compact('page'));
+    }
+
+    public function tireWarrantyAgents(){
+        $page = Page::where('slug', 'tire-warranty-agents')->first();
+        $title = Setting::where('key' , 'title')->pluck('value')->first();
+        $logo = Setting::where('key' , 'logo')->pluck('value')->first() ?: '';
+        $this->seoSingleSeo(
+            "نمایندگان رسمی گارانتی لاستیک - $title",
+            "لیست و نقشه تعاملی عاملیت‌ها و نمایندگان رسمی گارانتی و خدمات پس از فروش لاستیک گروه خودرویی تامین کانی سام در سراسر کشور",
+            'store',
+            'tire-warranty-agents',
+            $logo,
+            'گارانتی لاستیک, نمایندگان گارانتی لاستیک, عاملیت گارانتی لاستیک, تامین کانی سام'
+        );
+        $representatives = [
+            [
+                "id" => 1,
+                "name" => "زینال شهودی",
+                "agency" => "لاستیک شهودی",
+                "province_name" => "آذربایجان شرقی",
+                "province_slug" => "azerbaijan-east",
+                "city" => "تبریز",
+                "address" => "انتهای اتوبان کسایی به سمت پلیس راه تهران، لاستیک شهودی",
+                "phone" => "09144039025",
+                "phone_formatted" => "۰۹۱۴ ۴۰۳ ۹۰۲۵",
+                "map_query" => "تبریز اتوبان کسایی پلیس راه تهران",
+                "rating" => "۵.۰",
+                "badge" => "عاملیت درجه یک"
+            ],
+            [
+                "id" => 2,
+                "name" => "جواد عبادی",
+                "agency" => "لاستیک عبادی",
+                "province_name" => "زنجان",
+                "province_slug" => "zanjan",
+                "city" => "زنجان",
+                "address" => "عوارضی زنجان- قزوین پایانه بار صبا خیابان گمرک لاستیک عبادی",
+                "phone" => "09196740720",
+                "phone_formatted" => "۰۹۱۹ ۶۷۴ ۰۷۲۰",
+                "map_query" => "زنجان پایانه بار صبا خیابان گمرک",
+                "rating" => "۴.۹",
+                "badge" => "عاملیت رسمی پایانه"
+            ],
+            [
+                "id" => 3,
+                "name" => "محمود مامنی",
+                "agency" => "لاستیک مامنی",
+                "province_name" => "اردبیل",
+                "province_slug" => "ardabil",
+                "city" => "اردبیل",
+                "address" => "اردبیل، فلکه میدان بار به طرف علی سرباز، لاستیک مامنی",
+                "phone" => "09143514668",
+                "phone_formatted" => "۰۹۱۴ ۳۵۱ ۴۶۶۸",
+                "map_query" => "اردبیل میدان بار علی سرباز",
+                "rating" => "۵.۰",
+                "badge" => "عاملیت ممتاز شمال‌غرب"
+            ],
+            [
+                "id" => 4,
+                "name" => "علی سجادی",
+                "agency" => "عاملیت علی سجادی",
+                "province_name" => "فارس",
+                "province_slug" => "fars",
+                "city" => "شیراز",
+                "address" => "شیراز، فلکه فرودگاه قدیم به سمت چهارراه تحویلی، بلوار شهید حراف، نبش کوچه 10",
+                "phone" => "09177045321",
+                "phone_formatted" => "۰۹۱۷ ۷۰۴ ۵۳۲۱",
+                "map_query" => "شیراز بلوار شهید حراف نبش کوچه 10",
+                "rating" => "۵.۰",
+                "badge" => "عاملیت برتر جنوب کشور"
+            ],
+            [
+                "id" => 5,
+                "name" => "میر یزدی",
+                "agency" => "لاستیک میر یزدی",
+                "province_name" => "خراسان رضوی",
+                "province_slug" => "khorasan-razavi",
+                "city" => "مشهد",
+                "address" => "مشهد، خیابان گاراژدارها، حد فاصل کوشش 27 و 29، لاستیک میر یزدی",
+                "phone" => "09155147361",
+                "phone_formatted" => "۰۹۱۵ ۵۱۴ ۷۳۶۱",
+                "map_query" => "مشهد خیابان کوشش بین کوشش 27 و 29",
+                "rating" => "۴.۹",
+                "badge" => "عاملیت جامع شرق کشور"
+            ]
+        ];
+        return view('home.page.tire-agents', compact('page', 'representatives'));
     }
 
     public function search(Request $request){
