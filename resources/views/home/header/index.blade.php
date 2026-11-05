@@ -1385,133 +1385,171 @@
         }
     }
 
-    /* Megamenu for خدمات پس از فروش */
-    .underMenu.services-megamenu {
-        min-width: 720px !important;
-        width: 720px !important;
-        display: grid !important;
-        grid-template-columns: 1.35fr 1fr 1fr !important;
-        gap: 14px !important;
-        padding: 16px !important;
-        box-shadow: 0 24px 50px -10px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(226, 232, 240, 0.9) inset !important;
+    /* زیرمنوهای تمیز خدمات پس از فروش - دقیقاً منطبق بر استایل سایر ساب‌منوها بدون آیکن */
+    .underMenu li.nested-parent {
+        position: relative !important;
     }
-    .service-mega-col {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
+    .underMenu li.nested-parent > a {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
     }
-    .mega-col-head {
+    .nested-parent-arrow {
+        color: #94a3b8 !important;
+        transition: transform 0.2s ease, color 0.2s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
+    }
+    .underMenu li.nested-parent:hover > a .nested-parent-arrow {
+        color: #1d4ed8 !important;
+        transform: translateX(-3px) !important;
+    }
+    .underMenu li.nested-parent:hover > a {
+        background: #eff6ff !important;
+        color: #1d4ed8 !important;
+    }
+    .subUnderMenu {
+        position: absolute !important;
+        top: -6px !important;
+        right: calc(100% + 4px) !important;
+        left: auto !important;
+        direction: rtl !important;
+        text-align: right !important;
+        background: #ffffff !important;
+        min-width: 290px !important;
+        max-width: 380px !important;
+        border-radius: 14px !important;
+        padding: 8px !important;
+        box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(226, 232, 240, 0.9) inset !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: translateX(10px) !important;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        list-style: none !important;
+        z-index: 1060 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+        box-sizing: border-box !important;
+        pointer-events: none !important;
+    }
+    .subUnderMenu::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        right: -14px !important;
+        width: 18px !important;
+        background: transparent !important;
+    }
+    .underMenu li.nested-parent:hover > .subUnderMenu {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(0) !important;
+        pointer-events: auto !important;
+    }
+    .subUnderMenu li {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        direction: rtl !important;
+        text-align: right !important;
+        box-sizing: border-box !important;
+    }
+    .subUnderMenu li a {
+        display: flex !important;
+        align-items: center !important;
+        text-align: right !important;
+        direction: rtl !important;
+        gap: 10px !important;
+        padding: 9px 12px !important;
+        border-radius: 10px !important;
+        font-size: 0.86rem !important;
+        font-weight: 600 !important;
+        color: #334155 !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+        background: transparent !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        line-height: 1.5 !important;
+    }
+    .subUnderMenu li a:hover {
+        background: #eff6ff !important;
+        color: #1d4ed8 !important;
+        padding-right: 16px !important;
+    }
+    .subUnderMenu li a:hover .underMenu-dot {
+        opacity: 1 !important;
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.6) !important;
+        transform: scale(1.3) !important;
+    }
+
+    /* استایل دراور موبایل برای خدمات پس از فروش - کاملاً تمیز */
+    .drawer-sub-parent {
+        border-bottom: 1px dashed #e2e8f0;
+        margin-bottom: 4px;
+        padding-bottom: 4px;
+    }
+    .drawer-sub-parent:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    .drawer-sub-parent-head {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 9px 12px !important;
+        border-radius: 8px !important;
+        font-size: 0.88rem !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        cursor: pointer !important;
+        transition: background 0.2s;
+    }
+    .drawer-sub-parent-head:hover {
+        background: #edf2f7 !important;
+    }
+    .drawer-sub-parent-arrow {
+        color: #94a3b8;
+        transition: transform 0.25s ease;
         display: flex;
         align-items: center;
-        gap: 10px;
-        border-bottom: 1px solid #e2e8f0;
-        padding-bottom: 10px;
-        margin-bottom: 8px;
     }
-    .mega-col-icon {
-        font-size: 20px;
-        line-height: 1;
+    .drawer-sub-parent.open .drawer-sub-parent-arrow {
+        transform: rotate(-90deg);
+        color: #2563eb;
     }
-    .mega-col-title {
-        font-size: 13px;
-        font-weight: 800;
-        color: #0f172a;
+    .drawer-child-list {
+        display: none;
+        list-style: none !important;
+        margin: 4px 0 8px !important;
+        padding: 0 16px 0 0 !important;
+        border-right: 2px solid #cbd5e1 !important;
     }
-    .mega-col-sub {
-        font-size: 11px;
-        color: #64748b;
+    .drawer-sub-parent.open .drawer-child-list {
+        display: block !important;
     }
-    .mega-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
+    .drawer-child-list li {
+        margin: 3px 0 !important;
     }
-    .mega-list li a {
+    .drawer-child-list li a {
         display: flex !important;
         align-items: center !important;
         gap: 8px !important;
         padding: 7px 10px !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        color: #334155 !important;
-        border-radius: 8px !important;
-        transition: all 0.15s ease !important;
-        line-height: 1.4 !important;
+        border-radius: 6px !important;
+        color: #475569 !important;
+        font-size: 0.83rem !important;
+        font-weight: 500 !important;
         text-decoration: none !important;
     }
-    .mega-list li a:hover {
-        background: #e0f2fe !important;
-        color: #0284c7 !important;
-        transform: translateX(-3px) !important;
-    }
-    .mega-mob-col {
-        border-color: #bae6fd;
-        background: #f0f9ff;
-    }
-    .mega-mob-col .mega-col-title {
-        color: #0369a1;
-    }
-
-    /* Mobile Drawer Service Groups */
-    .drawer-service-groups {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 8px 14px 14px;
-    }
-    .drawer-group-box {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 10px;
-    }
-    .drawer-group-head {
-        font-size: 13px;
-        font-weight: 800;
-        color: #38bdf8;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-        padding-bottom: 6px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .drawer-pill-badge {
-        font-size: 10px;
-        background: rgba(56, 189, 248, 0.15);
-        color: #38bdf8;
-        padding: 2px 8px;
-        border-radius: 10px;
-        font-weight: 700;
-    }
-    .drawer-group-links {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-    .drawer-group-links li a {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        color: #cbd5e1;
-        padding: 6px 8px;
-        border-radius: 8px;
-        transition: all 0.2s;
-        text-decoration: none;
-    }
-    .drawer-group-links li a:hover {
-        background: rgba(255, 255, 255, 0.06);
-        color: #fff;
+    .drawer-child-list li a:hover {
+        color: #1d4ed8 !important;
+        background: #edf2f7 !important;
     }
 </style>
 
@@ -1727,58 +1765,64 @@
                                     $latestCircularId = $lastChild ? $lastChild->id : null;
                                 @endphp
                                 @if(str_contains($item['name'], 'خدمات'))
-                                <div class="underMenu services-megamenu">
+                                <ul class="underMenu">
                                     <!-- خدمات پس از فروش موبایل -->
-                                    <div class="service-mega-col mega-mob-col">
-                                        <div class="mega-col-head">
-                                            <div class="mega-col-icon">📱</div>
-                                            <div>
-                                                <div class="mega-col-title">خدمات پس از فروش موبایل</div>
-                                                <div class="mega-col-sub">سام موبایل (تامین کانی سام)</div>
+                                    <li class="nested-parent">
+                                        <a href="https://mob.taminkanisam.co.ir">
+                                            <div class="underMenu-item-content">
+                                                <span class="underMenu-dot"></span>
+                                                <span>خدمات پس از فروش موبایل</span>
                                             </div>
-                                        </div>
-                                        <ul class="mega-list">
-                                            <li><a href="https://mob.taminkanisam.co.ir"><span class="underMenu-dot"></span>ورود به سایت اصلی</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/service-portal"><span class="underMenu-dot"></span>سامانه مدیریت خدمات</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><span class="underMenu-dot"></span>منشور حقوق مشتریان</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><span class="underMenu-dot"></span>شرایط گارانتی</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/survey"><span class="underMenu-dot"></span>نظرسنجی</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/complaints"><span class="underMenu-dot"></span>شکایات</a></li>
-                                            <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><span class="underMenu-dot"></span>نمونه فاکتور هزینه خدمات</a></li>
+                                            <span class="nested-parent-arrow">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                            </span>
+                                        </a>
+                                        <ul class="subUnderMenu">
+                                            <li><a href="https://mob.taminkanisam.co.ir"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>ورود به سایت اصلی</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/service-portal"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>سامانه مدیریت خدمات</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>منشور حقوق مشتریان</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>شرایط گارانتی</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/survey"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>نظرسنجی</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/complaints"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>شکایات</span></div></a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>نمونه فاکتور هزینه خدمات غیرگارانتی و گارانتی مطابق با تعرفه اتحادیه</span></div></a></li>
                                         </ul>
-                                    </div>
+                                    </li>
 
                                     <!-- خدمات پس از فروش خودرو -->
-                                    <div class="service-mega-col mega-car-col">
-                                        <div class="mega-col-head">
-                                            <div class="mega-col-icon">🚗</div>
-                                            <div>
-                                                <div class="mega-col-title">خدمات پس از فروش خودرو</div>
-                                                <div class="mega-col-sub">سام خودرو</div>
+                                    <li class="nested-parent">
+                                        <a href="javascript:void(0)">
+                                            <div class="underMenu-item-content">
+                                                <span class="underMenu-dot"></span>
+                                                <span>خدمات پس از فروش خودرو</span>
                                             </div>
-                                        </div>
-                                        <ul class="mega-list">
-                                            <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>گارانتی</a></li>
-                                            <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>واحد فنی و مهندسی</a></li>
-                                            <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>مرکز آموزش</a></li>
+                                            <span class="nested-parent-arrow">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                            </span>
+                                        </a>
+                                        <ul class="subUnderMenu">
+                                            <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>گارانتی</span></div></a></li>
+                                            <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>واحد فنی و مهندسی</span></div></a></li>
+                                            <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>مرکز آموزش</span></div></a></li>
                                         </ul>
-                                    </div>
+                                    </li>
 
                                     <!-- خدمات پس از فروش لاستیک -->
-                                    <div class="service-mega-col mega-tire-col">
-                                        <div class="mega-col-head">
-                                            <div class="mega-col-icon">🛞</div>
-                                            <div>
-                                                <div class="mega-col-title">خدمات پس از فروش لاستیک</div>
-                                                <div class="mega-col-sub">گارانتی تایر سام</div>
+                                    <li class="nested-parent">
+                                        <a href="/tire-warranty-agents">
+                                            <div class="underMenu-item-content">
+                                                <span class="underMenu-dot"></span>
+                                                <span>خدمات پس از فروش لاستیک</span>
                                             </div>
-                                        </div>
-                                        <ul class="mega-list">
-                                            <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><span class="underMenu-dot"></span>کارت گارانتی لاستیک</a></li>
-                                            <li><a href="/tire-warranty-agents"><span class="underMenu-dot"></span>نمایندگان</a></li>
+                                            <span class="nested-parent-arrow">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                            </span>
+                                        </a>
+                                        <ul class="subUnderMenu">
+                                            <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>کارت گارانتی لاستیک</span></div></a></li>
+                                            <li><a href="/tire-warranty-agents"><div class="underMenu-item-content"><span class="underMenu-dot"></span><span>نمایندگان</span></div></a></li>
                                         </ul>
-                                    </div>
-                                </div>
+                                    </li>
+                                </ul>
                                 @else
                                 <ul class="underMenu">
                                     @foreach($item['childs'] as $child)
@@ -1980,47 +2024,64 @@
 
                     @if($hasChilds)
                         @if(str_contains($item['name'], 'خدمات'))
-                        <div class="drawer-service-groups">
-                            <!-- موبایل -->
-                            <div class="drawer-group-box">
-                                <div class="drawer-group-head">
-                                    <span>📱 خدمات پس از فروش موبایل</span>
-                                    <span class="drawer-pill-badge">سام موبایل</span>
+                        <ul class="drawer-submenu" style="display: none;">
+                            <!-- خدمات پس از فروش موبایل -->
+                            <li class="drawer-sub-parent">
+                                <div class="drawer-sub-parent-head" onclick="this.parentElement.classList.toggle('open')">
+                                    <div class="drawer-item-inner">
+                                        <span class="drawer-sub-dot"></span>
+                                        <span>خدمات پس از فروش موبایل</span>
+                                    </div>
+                                    <span class="drawer-sub-parent-arrow">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                    </span>
                                 </div>
-                                <ul class="drawer-group-links">
-                                    <li><a href="https://mob.taminkanisam.co.ir"><span class="drawer-sub-dot"></span><span>ورود به سایت اصلی</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/service-portal"><span class="drawer-sub-dot"></span><span>سامانه مدیریت خدمات</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><span class="drawer-sub-dot"></span><span>منشور حقوق مشتریان</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><span class="drawer-sub-dot"></span><span>شرایط گارانتی</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/survey"><span class="drawer-sub-dot"></span><span>نظرسنجی</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/complaints"><span class="drawer-sub-dot"></span><span>شکایات</span></a></li>
-                                    <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><span class="drawer-sub-dot"></span><span>نمونه فاکتور هزینه خدمات غیرگارانتی و گارانتی مطابق با تعرفه اتحادیه</span></a></li>
+                                <ul class="drawer-child-list">
+                                    <li><a href="https://mob.taminkanisam.co.ir"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>ورود به سایت اصلی</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/service-portal"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>سامانه مدیریت خدمات</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>منشور حقوق مشتریان</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>شرایط گارانتی</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/survey"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>نظرسنجی</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/complaints"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>شکایات</span></div></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>نمونه فاکتور هزینه خدمات غیرگارانتی و گارانتی مطابق با تعرفه اتحادیه</span></div></a></li>
                                 </ul>
-                            </div>
+                            </li>
 
-                            <!-- خودرو -->
-                            <div class="drawer-group-box">
-                                <div class="drawer-group-head">
-                                    <span>🚗 خدمات پس از فروش خودرو</span>
+                            <!-- خدمات پس از فروش خودرو -->
+                            <li class="drawer-sub-parent">
+                                <div class="drawer-sub-parent-head" onclick="this.parentElement.classList.toggle('open')">
+                                    <div class="drawer-item-inner">
+                                        <span class="drawer-sub-dot"></span>
+                                        <span>خدمات پس از فروش خودرو</span>
+                                    </div>
+                                    <span class="drawer-sub-parent-arrow">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                    </span>
                                 </div>
-                                <ul class="drawer-group-links">
-                                    <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>گارانتی</span></a></li>
-                                    <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>واحد فنی و مهندسی</span></a></li>
-                                    <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>مرکز آموزش</span></a></li>
+                                <ul class="drawer-child-list">
+                                    <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>گارانتی</span></div></a></li>
+                                    <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>واحد فنی و مهندسی</span></div></a></li>
+                                    <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>مرکز آموزش</span></div></a></li>
                                 </ul>
-                            </div>
+                            </li>
 
-                            <!-- لاستیک -->
-                            <div class="drawer-group-box">
-                                <div class="drawer-group-head">
-                                    <span>🛞 خدمات پس از فروش لاستیک</span>
+                            <!-- خدمات پس از فروش لاستیک -->
+                            <li class="drawer-sub-parent">
+                                <div class="drawer-sub-parent-head" onclick="this.parentElement.classList.toggle('open')">
+                                    <div class="drawer-item-inner">
+                                        <span class="drawer-sub-dot"></span>
+                                        <span>خدمات پس از فروش لاستیک</span>
+                                    </div>
+                                    <span class="drawer-sub-parent-arrow">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                                    </span>
                                 </div>
-                                <ul class="drawer-group-links">
-                                    <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>کارت گارانتی لاستیک</span></a></li>
-                                    <li><a href="/tire-warranty-agents"><span class="drawer-sub-dot"></span><span>نمایندگان</span></a></li>
+                                <ul class="drawer-child-list">
+                                    <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>کارت گارانتی لاستیک</span></div></a></li>
+                                    <li><a href="/tire-warranty-agents"><div class="drawer-item-inner"><span class="drawer-sub-dot"></span><span>نمایندگان</span></div></a></li>
                                 </ul>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                         @else
                         @php
                             $isAnnouncementDrawer = (str_contains($item['name'], 'اطلاعیه های فروش') || str_contains($item['name'], 'بخشنامه')) && !str_contains($item['name'], 'خدمات');
