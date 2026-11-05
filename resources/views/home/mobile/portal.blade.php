@@ -1,12 +1,19 @@
 @extends('home.mobile.portal-layout')
 
-@section('title', 'سامانه مدیریت خدمات پس از فروش | پنل مدیریت سام موبایل')
-@section('meta_description', 'سامانه جامع مدیریت خدمات پس از فروش و نمایندگی‌های سام موبایل (تامین کانی سام) مطابق با ماده ۱۳ ضوابط اجرایی')
+@section('title', 'میز مدیریت خدمات پس از فروش و گارانتی | سام موبایل')
+@section('header_title', 'میز مدیریت خدمات')
+
+@php
+    $activeTab = request()->query('tab', 'overview');
+    if (!str_starts_with($activeTab, 'tab-')) {
+        $activeTab = 'tab-' . $activeTab;
+    }
+@endphp
 
 @push('styles')
 <style>
     /* =========================================================================
-       ULTRA-PREMIUM ERP DASHBOARD & SIDEBAR STYLING
+       PREMIUM ERP DASHBOARD & SIDEBAR STYLING (100% LIGHT THEME)
        ========================================================================= */
     :root {
         --dash-bg: #f8fafc;
@@ -21,12 +28,10 @@
         background-color: var(--dash-bg);
     }
 
-    /* Outer wrapper */
     .erp-container {
         display: flex;
         min-height: calc(100vh - 120px);
         position: relative;
-        padding-bottom: 60px;
     }
 
     /* -------------------------------------------------------------------------
@@ -41,26 +46,25 @@
         flex-shrink: 0;
         position: sticky;
         top: 80px;
-        height: calc(100vh - 90px);
+        height: fit-content;
         border-radius: 18px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        margin: 20px 0 20px 20px;
-        padding: 20px 14px;
-        z-index: 100;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        margin: 12px;
+        padding: 16px;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        overflow-y: auto;
+        z-index: 100;
     }
 
-    /* User Profile Chip in Sidebar */
+    /* User Badge */
     .erp-user-badge {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 12px 14px;
-        background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+        padding: 12px;
+        background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
         border: 1px solid #dbeafe;
         border-radius: 14px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
     .erp-avatar {
         width: 44px;
@@ -73,7 +77,7 @@
         justify-content: center;
         font-weight: 800;
         font-size: 1.1rem;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
         flex-shrink: 0;
     }
     .erp-user-meta {
@@ -84,72 +88,72 @@
         font-weight: 800;
         color: #0f172a;
         white-space: nowrap;
-        text-overflow: ellipsis;
         overflow: hidden;
+        text-overflow: ellipsis;
     }
     .erp-user-role {
-        display: inline-flex;
+        font-size: 0.72rem;
+        color: #2563eb;
+        font-weight: 700;
+        display: flex;
         align-items: center;
         gap: 5px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #2563eb;
         margin-top: 2px;
     }
     .erp-pulse-dot {
-        width: 7px;
-        height: 7px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         background: #10b981;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
-    /* Navigation Menu */
+    /* Navigation Sections */
     .erp-nav-section-title {
         font-size: 0.68rem;
         font-weight: 800;
-        letter-spacing: 0.5px;
         color: #94a3b8;
-        padding: 8px 12px 4px;
+        padding: 8px 10px 4px;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     .erp-nav-list {
         list-style: none;
         padding: 0;
-        margin: 0 0 16px 0;
+        margin: 0 0 12px 0;
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
     .erp-nav-item {
-        margin: 0;
+        position: relative;
     }
     .erp-nav-link {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 14px;
+        padding: 10px 12px;
         border-radius: 12px;
+        color: #475569;
         font-size: 0.84rem;
         font-weight: 700;
-        color: #475569;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        border: 1px solid transparent;
         background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
         width: 100%;
         text-align: right;
+        transition: all 0.2s ease;
+        text-decoration: none;
     }
     .erp-nav-link:hover {
         background: #f1f5f9;
-        color: #1e293b;
+        color: #0f172a;
     }
     .erp-nav-link.active {
         background: #eff6ff;
-        color: #2563eb;
-        font-weight: 800;
+        color: #1d4ed8;
         border-color: #bfdbfe;
+        font-weight: 800;
         box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
     }
     .erp-nav-left {
@@ -166,10 +170,10 @@
         color: currentColor;
     }
     .erp-nav-badge {
-        font-size: 0.72rem;
+        font-size: 0.70rem;
         font-weight: 800;
-        padding: 2px 7px;
-        border-radius: 20px;
+        padding: 2px 8px;
+        border-radius: 99px;
         background: #e2e8f0;
         color: #475569;
     }
@@ -178,14 +182,10 @@
         color: #ffffff;
     }
 
-    /* Sidebar Footer */
     .erp-sidebar-footer {
         margin-top: auto;
         padding-top: 14px;
-        border-top: 1px solid #f1f5f9;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+        border-top: 1px solid var(--card-border);
     }
     .erp-logout-btn {
         display: flex;
@@ -194,14 +194,14 @@
         gap: 8px;
         width: 100%;
         padding: 10px;
-        border-radius: 10px;
+        border-radius: 12px;
         background: #fff1f2;
+        border: 1px solid #ffe4e6;
         color: #e11d48;
         font-size: 0.82rem;
-        font-weight: 700;
-        border: 1px solid #ffe4e6;
+        font-weight: 800;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.2s;
     }
     .erp-logout-btn:hover {
         background: #ffe4e6;
@@ -209,26 +209,23 @@
     }
 
     /* -------------------------------------------------------------------------
-       2. MAIN CONTENT AREA & TOPBAR
+       2. MAIN WORKSPACE & TOP BAR
        ------------------------------------------------------------------------- */
     .erp-main {
         flex: 1;
+        padding: 16px 20px 40px;
         min-width: 0;
-        padding: 20px 20px 20px 0;
     }
-
-    /* Top Bar */
     .erp-topbar {
-        background: #ffffff;
-        border: 1px solid var(--card-border);
-        border-radius: 16px;
-        padding: 14px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 22px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
-        gap: 14px;
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 12px 18px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02);
     }
     .erp-topbar-right {
         display: flex;
@@ -241,16 +238,16 @@
         height: 40px;
         border-radius: 10px;
         background: #f1f5f9;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbd5e1;
+        color: #0f172a;
         align-items: center;
         justify-content: center;
-        color: #334155;
         cursor: pointer;
     }
     .erp-breadcrumb {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         font-size: 0.82rem;
         color: #64748b;
     }
@@ -258,84 +255,83 @@
         color: #0f172a;
         font-weight: 800;
     }
-    .erp-search-box {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 8px 14px;
-        width: 320px;
-        transition: all 0.2s;
-    }
-    .erp-search-box:focus-within {
-        background: #ffffff;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    .erp-search-input {
-        border: none;
-        background: transparent;
-        outline: none;
-        font-family: inherit;
-        font-size: 0.84rem;
-        width: 100%;
-        color: #1e293b;
-    }
+
     .erp-top-actions {
         display: flex;
         align-items: center;
         gap: 10px;
     }
+    .erp-search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .erp-search-box svg {
+        position: absolute;
+        right: 12px;
+        pointer-events: none;
+    }
+    .erp-search-input {
+        padding: 9px 36px 9px 14px;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        background: #f8fafc;
+        font-size: 0.82rem;
+        width: 260px;
+        font-family: inherit;
+        transition: all 0.2s;
+    }
+    .erp-search-input:focus {
+        outline: none;
+        border-color: #2563eb;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
     .btn-quick-intake {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 9px 16px;
-        border-radius: 10px;
+        gap: 6px;
         background: var(--primary-gradient);
         color: #ffffff;
+        padding: 9px 16px;
+        border-radius: 12px;
         font-size: 0.82rem;
-        font-weight: 700;
-        text-decoration: none;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+        font-weight: 800;
         border: none;
         cursor: pointer;
-        transition: transform 0.15s ease;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        transition: all 0.2s;
     }
     .btn-quick-intake:hover {
         transform: translateY(-1px);
-        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
     }
 
     /* -------------------------------------------------------------------------
-       3. METRIC KPI CARDS
+       3. KPI STATS GRID
        ------------------------------------------------------------------------- */
     .erp-kpi-grid {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 14px;
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
     .kpi-card {
         background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: 16px;
-        padding: 16px;
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        padding: 14px 16px;
+        box-shadow: 0 4px 15px rgba(15, 23, 42, 0.02);
+        transition: transform 0.2s ease;
     }
     .kpi-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
     }
     .kpi-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     .kpi-title {
         font-size: 0.76rem;
@@ -343,63 +339,58 @@
         color: #64748b;
     }
     .kpi-icon-wrap {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .kpi-val {
-        font-size: 1.6rem;
+        font-size: 1.45rem;
         font-weight: 900;
         color: #0f172a;
-        line-height: 1;
-        font-family: monospace, inherit;
+        line-height: 1.2;
     }
     .kpi-sub {
-        font-size: 0.70rem;
+        font-size: 0.68rem;
         color: #94a3b8;
-        margin-top: 6px;
-        font-weight: 600;
+        margin-top: 4px;
     }
 
     /* -------------------------------------------------------------------------
-       4. TAB CONTENT VIEWS (Single Page Experience)
+       4. ERP VIEWS & PANELS
        ------------------------------------------------------------------------- */
     .erp-view {
         display: none;
+        animation: fadeInView 0.25s ease-out forwards;
     }
     .erp-view.active {
         display: block;
-        animation: fadeInTab 0.25s ease-out;
     }
-    @keyframes fadeInTab {
+    @keyframes fadeInView {
         from { opacity: 0; transform: translateY(6px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Card Panels */
     .erp-panel {
         background: #ffffff;
         border: 1px solid var(--card-border);
         border-radius: 18px;
-        padding: 22px;
-        margin-bottom: 22px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
     }
     .erp-panel-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 12px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid #f1f5f9;
-        margin-bottom: 18px;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--card-border);
     }
     .erp-panel-title {
-        font-size: 1.05rem;
+        font-size: 1.02rem;
         font-weight: 800;
         color: #0f172a;
         display: flex;
@@ -408,69 +399,68 @@
     }
     .erp-panel-actions {
         display: flex;
-        align-items: center;
         gap: 8px;
     }
 
-    /* Orders Filter Pills */
+    /* Filter Pills Wrap */
     .filter-pills-wrap {
         display: flex;
         gap: 8px;
-        flex-wrap: wrap;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
+        overflow-x: auto;
+        padding-bottom: 6px;
     }
     .filter-pill-item {
-        padding: 7px 14px;
-        border-radius: 10px;
         font-size: 0.78rem;
         font-weight: 700;
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        padding: 6px 14px;
+        border-radius: 99px;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
         color: #475569;
         text-decoration: none;
-        cursor: pointer;
+        white-space: nowrap;
         transition: all 0.2s;
     }
     .filter-pill-item:hover {
-        background: #f1f5f9;
-        color: #1e293b;
+        background: #e2e8f0;
+        color: #0f172a;
     }
     .filter-pill-item.active {
         background: #2563eb;
+        border-color: #1d4ed8;
         color: #ffffff;
-        border-color: #2563eb;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        font-weight: 800;
     }
 
-    /* Data Tables */
+    /* Tables */
     .table-responsive-box {
-        width: 100%;
         overflow-x: auto;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        border: 1px solid var(--card-border);
     }
     .erp-table {
         width: 100%;
         border-collapse: collapse;
+        font-size: 0.80rem;
         text-align: right;
-        font-size: 0.82rem;
     }
-    .erp-table th {
+    .erp-table thead th {
         background: #f8fafc;
         color: #475569;
         font-weight: 800;
         padding: 12px 14px;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid var(--card-border);
         white-space: nowrap;
     }
-    .erp-table td {
-        padding: 13px 14px;
+    .erp-table tbody td {
+        padding: 12px 14px;
         border-bottom: 1px solid #f1f5f9;
-        color: #1e293b;
+        color: #334155;
         vertical-align: middle;
     }
-    .erp-table tr:hover td {
-        background: #fafafa;
+    .erp-table tbody tr:hover {
+        background: #f8fafc;
     }
     .table-track-code {
         font-family: monospace;
@@ -481,103 +471,51 @@
         border-radius: 6px;
         display: inline-block;
     }
-    .status-badge {
+    .table-status-pill {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 99px;
         white-space: nowrap;
     }
-    .status-badge.received { background: #f1f5f9; color: #475569; }
-    .status-badge.inspecting { background: #fef3c7; color: #b45309; }
-    .status-badge.repairing { background: #e0f2fe; color: #0284c7; }
-    .status-badge.waiting_parts { background: #fce7f3; color: #be185d; }
-    .status-badge.ready_for_delivery { background: #dcfce7; color: #15803d; }
-    .status-badge.delivered { background: #ede9fe; color: #6d28d9; }
+    .st-received { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .st-inspecting { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .st-repairing { background: #fef9c3; color: #854d0e; border: 1px solid #fef08a; }
+    .st-waiting_parts { background: #fce7f3; color: #be185d; border: 1px solid #fbcfe8; }
+    .st-ready_for_delivery { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .st-delivered { background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; }
 
-    /* Action Buttons in Table */
-    .table-actions-cell {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
     .btn-table-action {
-        padding: 5px 9px;
+        padding: 5px 10px;
         border-radius: 8px;
         font-size: 0.74rem;
         font-weight: 700;
-        border: 1px solid #e2e8f0;
+        border: 1px solid #cbd5e1;
         background: #ffffff;
-        color: #334155;
+        color: #475569;
         cursor: pointer;
-        transition: all 0.2s;
         display: inline-flex;
         align-items: center;
         gap: 4px;
+        text-decoration: none;
+        transition: all 0.2s;
     }
     .btn-table-action:hover {
-        background: #f8fafc;
-        border-color: #cbd5e1;
-    }
-    .btn-table-action.primary {
-        background: #2563eb;
-        color: #ffffff;
-        border-color: #2563eb;
-    }
-    .btn-table-action.primary:hover {
-        background: #1d4ed8;
-    }
-
-    /* Forms */
-    .form-grid-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-    .form-grid-3 {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 16px;
-    }
-    .form-group-custom {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    .form-label-custom {
-        font-size: 0.80rem;
-        font-weight: 700;
-        color: #334155;
-    }
-    .form-input-custom, .form-select-custom, .form-textarea-custom {
-        width: 100%;
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid #cbd5e1;
-        font-family: inherit;
-        font-size: 0.84rem;
-        background: #ffffff;
+        background: #f1f5f9;
         color: #0f172a;
-        transition: all 0.2s;
-        outline: none;
-    }
-    .form-input-custom:focus, .form-select-custom:focus, .form-textarea-custom:focus {
-        border-color: #2563eb;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        border-color: #94a3b8;
     }
 
-    /* -------------------------------------------------------------------------
-       5. DIGITAL WARRANTY CARD (EXACT REPLICA FROM USER ATTACHMENT)
-       ------------------------------------------------------------------------- */
+    /* Modal */
     .warranty-modal-backdrop {
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, 0.65);
+        background: rgba(15, 23, 42, 0.6);
         backdrop-filter: blur(6px);
-        z-index: 9999;
+        z-index: 20000;
         display: none;
         align-items: center;
         justify-content: center;
@@ -598,6 +536,10 @@
         border: 1px solid #e2e8f0;
         position: relative;
         animation: scaleModal 0.25s ease-out;
+    }
+    @keyframes scaleModal {
+        from { transform: scale(0.92); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
     }
     .btn-close-modal {
         position: absolute;
@@ -620,52 +562,8 @@
         background: #e2e8f0;
         color: #0f172a;
     }
-    @keyframes scaleModal {
-        from { transform: scale(0.92); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-    .btn-close-modal {
-        position: absolute;
-        top: 18px;
-        left: 18px;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.12);
-        border: none;
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-    .btn-close-modal:hover {
-        background: rgba(255, 255, 255, 0.25);
-    }
 
-    /* Realistic Card Front & Back Preview Container */
-    .card-preview-wrapper {
-        background: #ffffff;
-        border-radius: 20px;
-        color: #0f172a;
-        padding: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .card-section-title {
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: #64748b;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    /* -------------------------------------------------------------------------
-       RESPONSIVE BREAKPOINTS (Mobile App Feeling)
-       ------------------------------------------------------------------------- */
+    /* Responsive */
     @media (max-width: 991px) {
         .erp-container {
             flex-direction: column;
@@ -682,6 +580,7 @@
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
             transform: translateX(105%);
             z-index: 10000;
+            overflow-y: auto;
         }
         .erp-sidebar.open {
             transform: translateX(0);
@@ -705,9 +604,6 @@
         }
         .erp-kpi-grid {
             grid-template-columns: repeat(2, 1fr);
-        }
-        .form-grid-2, .form-grid-3 {
-            grid-template-columns: 1fr;
         }
         .erp-search-box {
             display: none;
@@ -739,84 +635,84 @@
         </div>
 
         <!-- Navigation Sections -->
-        <span class="erp-nav-section-title">میز کار و داشبورد</span>
+        <span class="erp-nav-section-title">میز کار و پرونده‌ها</span>
         <ul class="erp-nav-list">
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link active" onclick="switchErpTab('tab-overview', this)">
+                <a href="{{ url('/admin-portal') }}?tab=overview" class="erp-nav-link {{ $activeTab === 'tab-overview' ? 'active' : '' }}" data-tab="tab-overview" onclick="switchErpTab('tab-overview', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
-                        <span>نمای کلی و آمار</span>
+                        <span class="erp-nav-title">نمای کلی و آمار</span>
                     </span>
                     <span class="erp-nav-badge">{{ $stats['total'] }}</span>
-                </button>
+                </a>
             </li>
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-orders', this)">
+                <a href="{{ url('/admin-portal') }}?tab=orders" class="erp-nav-link {{ $activeTab === 'tab-orders' ? 'active' : '' }}" data-tab="tab-orders" onclick="switchErpTab('tab-orders', this, event)">
                     <span class="erp-nav-left">
-                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
-                        <span>مدیریت پرونده‌ها</span>
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                        <span class="erp-nav-title">مدیریت پرونده‌ها</span>
                     </span>
                     <span class="erp-nav-badge">{{ $stats['repairing'] + $stats['inspecting'] }}</span>
-                </button>
+                </a>
             </li>
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-new-intake', this)">
+                <a href="{{ url('/admin-portal') }}?tab=new-intake" class="erp-nav-link {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" data-tab="tab-new-intake" onclick="switchErpTab('tab-new-intake', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>
-                        <span>پذیرش دستگاه جدید</span>
+                        <span class="erp-nav-title">پذیرش دستگاه جدید</span>
                     </span>
-                </button>
+                </a>
             </li>
         </ul>
 
-        <span class="erp-nav-section-title">کارگاه و خدمات فنی</span>
+        <span class="erp-nav-section-title">کارگاه و قطعات</span>
         <ul class="erp-nav-list">
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-technicians', this)">
+                <a href="{{ url('/admin-portal') }}?tab=technicians" class="erp-nav-link {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" data-tab="tab-technicians" onclick="switchErpTab('tab-technicians', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-                        <span>تکنسین‌ها و ارجاع</span>
+                        <span class="erp-nav-title">تکنسین‌ها و ارجاع</span>
                     </span>
                     <span class="erp-nav-badge">{{ count($technicians) }}</span>
-                </button>
+                </a>
             </li>
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-parts', this)">
+                <a href="{{ url('/admin-portal') }}?tab=parts" class="erp-nav-link {{ $activeTab === 'tab-parts' ? 'active' : '' }}" data-tab="tab-parts" onclick="switchErpTab('tab-parts', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
-                        <span>انبار قطعات یدکی</span>
+                        <span class="erp-nav-title">انبار قطعات یدکی</span>
                     </span>
                     <span class="erp-nav-badge">{{ count($partsInventory) }}</span>
-                </button>
+                </a>
             </li>
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-invoices', this)">
+                <a href="{{ url('/admin-portal') }}?tab=invoices" class="erp-nav-link {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" data-tab="tab-invoices" onclick="switchErpTab('tab-invoices', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-                        <span>فاکتورها و تعرفه</span>
+                        <span class="erp-nav-title">فاکتورها و تعرفه</span>
                     </span>
-                </button>
+                </a>
             </li>
         </ul>
 
         <span class="erp-nav-section-title">ابزارهای اختصاصی</span>
         <ul class="erp-nav-list">
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="openWarrantyModal('سامسونگ گلکسی S23 Ultra', '354892019485721', 'کره جنوبی / سامسونگ')">
+                <a href="{{ url('/admin-portal') }}?tab=warranty-card" class="erp-nav-link {{ $activeTab === 'tab-warranty-card' ? 'active' : '' }}" data-tab="tab-warranty-card" onclick="switchErpTab('tab-warranty-card', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon" style="color: #2563eb;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
-                        <span>صدور کارت گارانتی</span>
+                        <span class="erp-nav-title">صدور کارت گارانتی</span>
                     </span>
-                    <span class="erp-nav-badge" style="background:#dbeafe; color:#1d4ed8;">ویژه</span>
-                </button>
+                    <span class="erp-nav-badge" style="background:#dbeafe; color:#1d4ed8;">۱۸ ماهه</span>
+                </a>
             </li>
             <li class="erp-nav-item">
-                <button type="button" class="erp-nav-link" onclick="switchErpTab('tab-sms', this)">
+                <a href="{{ url('/admin-portal') }}?tab=sms" class="erp-nav-link {{ $activeTab === 'tab-sms' ? 'active' : '' }}" data-tab="tab-sms" onclick="switchErpTab('tab-sms', this, event)">
                     <span class="erp-nav-left">
                         <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
-                        <span>پنل پیامک و اطلاع‌رسانی</span>
+                        <span class="erp-nav-title">پنل پیامک و اطلاع‌رسانی</span>
                     </span>
-                </button>
+                </a>
             </li>
         </ul>
 
@@ -862,7 +758,7 @@
             </div>
         </header>
 
-        <!-- KPI Summary Cards -->
+        <!-- KPI Summary Cards (Always Visible in Dashboard) -->
         <section class="erp-kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-header">
@@ -920,31 +816,162 @@
             </div>
         </section>
 
-        <!-- VIEW 1: OVERVIEW & LIVE ORDERS -->
-        <div class="erp-view active" id="tab-overview">
+        <!-- ===================================================================
+             PAGE 1: OVERVIEW & DASHBOARD SUMMARY (tab-overview)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-overview' ? 'active' : '' }}" id="tab-overview" data-title="نمای کلی و آمار">
+            <div class="erp-panel">
+                <div class="erp-panel-header">
+                    <div class="erp-panel-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>میز کار هوشمند و وضعیت کلی خدمات پس از فروش</span>
+                    </div>
+                    <div class="erp-panel-actions">
+                        <a href="{{ url('/admin-portal') }}?tab=orders" class="btn-table-action" onclick="switchErpTab('tab-orders', null, event)">
+                            <span>مشاهده همه پرونده‌ها &larr;</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Fast Actions Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 24px;">
+                    <a href="{{ url('/admin-portal') }}?tab=new-intake" class="kpi-card" style="text-decoration:none; display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-color:#bfdbfe;" onclick="switchErpTab('tab-new-intake', null, event)">
+                        <div style="width:42px; height:42px; border-radius:12px; background:#2563eb; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </div>
+                        <div>
+                            <strong style="display:block; font-size:0.88rem; color:#0f172a;">پذیرش دستگاه جدید</strong>
+                            <span style="font-size:0.72rem; color:#64748b;">ثبت پذیرش حضوری و پستی</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ url('/admin-portal') }}?tab=orders" class="kpi-card" style="text-decoration:none; display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color:#bbf7d0;" onclick="switchErpTab('tab-orders', null, event)">
+                        <div style="width:42px; height:42px; border-radius:12px; background:#16a34a; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <div>
+                            <strong style="display:block; font-size:0.88rem; color:#0f172a;">کارتابل پرونده‌ها</strong>
+                            <span style="font-size:0.72rem; color:#64748b;">مدیریت وضعیت و تعمیرات</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ url('/admin-portal') }}?tab=warranty-card" class="kpi-card" style="text-decoration:none; display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, #fef3c7 0%, #ffffff 100%); border-color:#fde68a;" onclick="switchErpTab('tab-warranty-card', null, event)">
+                        <div style="width:42px; height:42px; border-radius:12px; background:#d97706; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div>
+                            <strong style="display:block; font-size:0.88rem; color:#0f172a;">صدور کارت گارانتی</strong>
+                            <span style="font-size:0.72rem; color:#64748b;">چاپ کارت رسمی ۱۸ ماهه</span>
+                        </div>
+                    </a>
+
+                    <a href="{{ url('/admin-portal') }}?tab=sms" class="kpi-card" style="text-decoration:none; display:flex; align-items:center; gap:12px; background:linear-gradient(135deg, #ede9fe 0%, #ffffff 100%); border-color:#ddd6fe;" onclick="switchErpTab('tab-sms', null, event)">
+                        <div style="width:42px; height:42px; border-radius:12px; background:#7c3aed; color:#ffffff; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <div>
+                            <strong style="display:block; font-size:0.88rem; color:#0f172a;">پنل پیامک هوشمند</strong>
+                            <span style="font-size:0.72rem; color:#64748b;">اطلاع‌رسانی لحظه‌ای مشتری</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Recent Activity Timeline Table -->
+                <div style="margin-top: 10px;">
+                    <h4 style="font-size: 0.90rem; font-weight: 800; color: #0f172a; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                        <span>🕒 آخرین پرونده‌های ثبت‌شده در سامانه</span>
+                    </h4>
+                    <div class="table-responsive-box">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>کد رهگیری</th>
+                                    <th>نام مشتری</th>
+                                    <th>مدل کالا</th>
+                                    <th>وضعیت</th>
+                                    <th>تکنسین مسئول</th>
+                                    <th>عملیات سریع</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($orders->take(5) as $recent)
+                                    <tr>
+                                        <td><span class="table-track-code">{{ $recent->tracking_code }}</span></td>
+                                        <td><strong>{{ $recent->customer_name }}</strong></td>
+                                        <td>{{ $recent->device_brand }} {{ $recent->device_model }}</td>
+                                        <td>
+                                            @php
+                                                $statusLabels = [
+                                                    'received' => ['title' => 'پذیرش اولیه', 'class' => 'st-received'],
+                                                    'inspecting' => ['title' => 'کارشناسی فنی', 'class' => 'st-inspecting'],
+                                                    'repairing' => ['title' => 'در حال تعمیر', 'class' => 'st-repairing'],
+                                                    'waiting_parts' => ['title' => 'انتظار قطعه', 'class' => 'st-waiting_parts'],
+                                                    'ready_for_delivery' => ['title' => 'آماده تحویل', 'class' => 'st-ready_for_delivery'],
+                                                    'delivered' => ['title' => 'تحویل نهایی', 'class' => 'st-delivered'],
+                                                ];
+                                                $st = $statusLabels[$recent->status] ?? ['title' => $recent->status, 'class' => 'st-received'];
+                                            @endphp
+                                            <span class="table-status-pill {{ $st['class'] }}">
+                                                <span class="erp-pulse-dot"></span>
+                                                {{ $st['title'] }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $recent->assigned_technician ?: 'تعیین نشده' }}</td>
+                                        <td>
+                                            <a href="{{ url('/admin-portal') }}?tab=orders" class="btn-table-action" onclick="switchErpTab('tab-orders', null, event)">
+                                                مشاهده
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Compliance Box -->
+                <div style="margin-top: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.5rem;">⚖️</span>
+                        <div>
+                            <strong style="display: block; font-size: 0.82rem; color: #0f172a;">سامانه منطبق با ضوابط اجرایی ماده ۱۳ قانون حمایت از حقوق مصرف‌کنندگان</strong>
+                            <span style="font-size: 0.72rem; color: #64748b;">تعهد ۱۸ ماه گارانتی قطعات، تامین قطعه حداقل ۳۶ ماه و رسیدگی فوری به شکایات</span>
+                        </div>
+                    </div>
+                    <a href="{{ url('/regulations') }}" target="_blank" class="btn-table-action" style="background: #ffffff; color: #2563eb; border-color: #bfdbfe;">
+                        مطالعه آیین‌نامه صمت &larr;
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             PAGE 2: ORDERS MANAGEMENT (tab-orders)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-orders' ? 'active' : '' }}" id="tab-orders" data-title="مدیریت پرونده‌ها">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                        <span>پرونده‌های پذیرش و وضعیت جاری دستگاه‌ها</span>
+                        <span>مدیریت پرونده‌های پذیرش و وضعیت جاری دستگاه‌ها</span>
                     </div>
                     <div class="erp-panel-actions">
                         <button type="button" class="btn-table-action" onclick="window.print()">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-                            <span>چاپ گزارش روزانه</span>
+                            <span>چاپ گزارش پرونده‌ها</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Status Filters -->
                 <div class="filter-pills-wrap">
-                    <a href="{{ url('/service-portal?status=all') }}" class="filter-pill-item {{ empty($statusFilter) || $statusFilter === 'all' ? 'active' : '' }}">همه پرونده‌ها ({{ $stats['total'] }})</a>
-                    <a href="{{ url('/service-portal?status=received') }}" class="filter-pill-item {{ $statusFilter === 'received' ? 'active' : '' }}">پذیرش اولیه ({{ $stats['received'] }})</a>
-                    <a href="{{ url('/service-portal?status=inspecting') }}" class="filter-pill-item {{ $statusFilter === 'inspecting' ? 'active' : '' }}">کارشناسی فنی ({{ $stats['inspecting'] }})</a>
-                    <a href="{{ url('/service-portal?status=waiting_parts') }}" class="filter-pill-item {{ $statusFilter === 'waiting_parts' ? 'active' : '' }}">انتظار قطعه ({{ $stats['waiting_parts'] }})</a>
-                    <a href="{{ url('/service-portal?status=repairing') }}" class="filter-pill-item {{ $statusFilter === 'repairing' ? 'active' : '' }}">در حال تعمیر ({{ $stats['repairing'] }})</a>
-                    <a href="{{ url('/service-portal?status=ready_for_delivery') }}" class="filter-pill-item {{ $statusFilter === 'ready_for_delivery' ? 'active' : '' }}">آماده تحویل ({{ $stats['ready'] }})</a>
-                    <a href="{{ url('/service-portal?status=delivered') }}" class="filter-pill-item {{ $statusFilter === 'delivered' ? 'active' : '' }}">تحویل نهایی ({{ $stats['delivered'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=all') }}" class="filter-pill-item {{ empty($statusFilter) || $statusFilter === 'all' ? 'active' : '' }}">همه پرونده‌ها ({{ $stats['total'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=received') }}" class="filter-pill-item {{ $statusFilter === 'received' ? 'active' : '' }}">پذیرش اولیه ({{ $stats['received'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=inspecting') }}" class="filter-pill-item {{ $statusFilter === 'inspecting' ? 'active' : '' }}">کارشناسی فنی ({{ $stats['inspecting'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=waiting_parts') }}" class="filter-pill-item {{ $statusFilter === 'waiting_parts' ? 'active' : '' }}">انتظار قطعه ({{ $stats['waiting_parts'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=repairing') }}" class="filter-pill-item {{ $statusFilter === 'repairing' ? 'active' : '' }}">در حال تعمیر ({{ $stats['repairing'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=ready_for_delivery') }}" class="filter-pill-item {{ $statusFilter === 'ready_for_delivery' ? 'active' : '' }}">آماده تحویل ({{ $stats['ready'] }})</a>
+                    <a href="{{ url('/admin-portal?tab=orders&status=delivered') }}" class="filter-pill-item {{ $statusFilter === 'delivered' ? 'active' : '' }}">تحویل نهایی ({{ $stats['delivered'] }})</a>
                 </div>
 
                 <!-- Orders Table -->
@@ -959,6 +986,7 @@
                                 <th>شماره IMEI</th>
                                 <th>ایراد اعلامی</th>
                                 <th>وضعیت پرونده</th>
+                                <th>تکنسین</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -967,39 +995,35 @@
                                 <tr>
                                     <td><span class="table-track-code">{{ $item->tracking_code }}</span></td>
                                     <td><strong>{{ $item->customer_name }}</strong></td>
-                                    <td style="font-family: monospace;">{{ $item->customer_phone }}</td>
-                                    <td><strong>{{ $item->device_brand }} {{ $item->device_model }}</strong></td>
-                                    <td><code style="color: #64748b;">{{ $item->imei }}</code></td>
-                                    <td style="max-width: 220px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="{{ $item->problem_description }}">{{ $item->problem_description }}</td>
+                                    <td><a href="tel:{{ $item->customer_phone }}" style="color:inherit; text-decoration:none;">{{ $item->customer_phone }}</a></td>
+                                    <td>{{ $item->device_brand }} {{ $item->device_model }}</td>
+                                    <td style="font-family:monospace; direction:ltr; text-align:right;">{{ $item->imei }}</td>
+                                    <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $item->problem_description ?? ($item->reported_issues ?? "بررسی فنی") }}">{{ $item->problem_description ?? ($item->reported_issues ?? "بررسی فنی") }}</td>
                                     <td>
                                         @php
-                                            $statusMap = [
-                                                'received' => ['title' => 'پذیرش شده', 'class' => 'received'],
-                                                'inspecting' => ['title' => 'کارشناسی فنی', 'class' => 'inspecting'],
-                                                'repairing' => ['title' => 'در حال تعمیر', 'class' => 'repairing'],
-                                                'waiting_parts' => ['title' => 'انتظار قطعه', 'class' => 'waiting_parts'],
-                                                'ready_for_delivery' => ['title' => 'آماده تحویل', 'class' => 'ready_for_delivery'],
-                                                'delivered' => ['title' => 'تحویل مشتری', 'class' => 'delivered'],
-                                            ];
-                                            $st = $statusMap[$item->status] ?? ['title' => $item->status, 'class' => 'received'];
+                                            $st = $statusLabels[$item->status] ?? ['title' => $item->status, 'class' => 'st-received'];
                                         @endphp
-                                        <span class="status-badge {{ $st['class'] }}">{{ $st['title'] }}</span>
+                                        <span class="table-status-pill {{ $st['class'] }}">
+                                            <span class="erp-pulse-dot"></span>
+                                            {{ $st['title'] }}
+                                        </span>
                                     </td>
+                                    <td>{{ $item->assigned_technician ?: 'تعیین نشده' }}</td>
                                     <td>
-                                        <div class="table-actions-cell">
-                                            <button type="button" class="btn-table-action primary" onclick="openWarrantyModal('{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}', 'تامین کانی سام')">
-                                                کارت گارانتی
+                                        <div style="display:flex; gap:4px;">
+                                            <button type="button" class="btn-table-action" onclick="quickUpdateStatus('{{ $item->tracking_code }}')" title="تغییر وضعیت">
+                                                <span>وضعیت</span>
                                             </button>
-                                            <button type="button" class="btn-table-action" onclick="quickUpdateStatus('{{ $item->tracking_code }}')">
-                                                تغییر وضعیت
+                                            <button type="button" class="btn-table-action" onclick="openWarrantyModal('{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}', 'تامین کانی سام')" title="چاپ کارت گارانتی">
+                                                <span>کارت</span>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" style="text-align: center; padding: 30px; color: #94a3b8;">
-                                        هیچ پرونده‌ای در این دسته یافت نشد.
+                                    <td colspan="9" style="text-align:center; padding:30px; color:#94a3b8;">
+                                        هیچ پرونده‌ای مطابق با فیلتر انتخابی یافت نشد.
                                     </td>
                                 </tr>
                             @endforelse
@@ -1007,16 +1031,17 @@
                     </table>
                 </div>
 
-                @if(method_exists($orders, 'links'))
-                    <div style="margin-top: 16px;">
-                        {{ $orders->links() }}
-                    </div>
-                @endif
+                <div style="margin-top: 16px;">
+                    {{ $orders->appends(['tab' => 'orders', 'status' => $statusFilter])->links() }}
+                </div>
             </div>
         </div>
 
-        <!-- VIEW 2: NEW DEVICE INTAKE FORM (پذیرش دستگاه جدید) -->
-        <div class="erp-view" id="tab-new-intake">
+        <!-- ===================================================================
+             PAGE 3: NEW INTAKE (tab-new-intake)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" id="tab-new-intake" data-title="پذیرش دستگاه جدید">
+            <div class="erp-panel" id="tab-new-intake">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1098,7 +1123,13 @@
         </div>
 
         <!-- VIEW 3: TECHNICIANS & WORKSHOP (ارجاع به تکنسین) -->
-        <div class="erp-view" id="tab-technicians">
+        </div>
+
+        <!-- ===================================================================
+             PAGE 4: TECHNICIANS & WORKSHOP (tab-technicians)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" id="tab-technicians" data-title="تکنسین‌ها و ارجاع">
+            <div class="erp-panel" id="tab-technicians">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1126,7 +1157,13 @@
         </div>
 
         <!-- VIEW 4: SPARE PARTS INVENTORY (انبار قطعات یدکی) -->
-        <div class="erp-view" id="tab-parts">
+        </div>
+
+        <!-- ===================================================================
+             PAGE 5: PARTS INVENTORY (tab-parts)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-parts' ? 'active' : '' }}" id="tab-parts" data-title="انبار قطعات یدکی">
+            <div class="erp-panel" id="tab-parts">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1167,7 +1204,13 @@
         </div>
 
         <!-- VIEW 5: INVOICES & TARIFFS (فاکتورها و تعرفه اتحادیه) -->
-        <div class="erp-view" id="tab-invoices">
+        </div>
+
+        <!-- ===================================================================
+             PAGE 6: INVOICES & TARIFFS (tab-invoices)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
+            <div class="erp-panel" id="tab-invoices">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1185,7 +1228,186 @@
         </div>
 
         <!-- VIEW 6: SMS NOTIFICATION DISPATCHER -->
-        <div class="erp-view" id="tab-sms">
+        </div>
+
+        <!-- ===================================================================
+             PAGE 7: DEDICATED WARRANTY CARD STUDIO (tab-warranty-card)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-warranty-card' ? 'active' : '' }}" id="tab-warranty-card" data-title="صدور کارت گارانتی">
+            <div class="erp-panel">
+                <div class="erp-panel-header">
+                    <div class="erp-panel-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>استودیوی تولید و چاپ کارت گارانتی ۱۸ ماهه رسمی (ماده ۱۳)</span>
+                    </div>
+                    <div class="erp-panel-actions">
+                        <button type="button" class="btn-quick-intake" onclick="window.print()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                            <span>چاپ دو طرف کارت گارانتی</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Device Card Selector -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: flex-end;">
+                        <div>
+                            <label style="font-size: 0.74rem; font-weight: 800; color: #475569; display: block; margin-bottom: 4px;">انتخاب از پرونده‌های پذیرش:</label>
+                            <select id="studioOrderSelect" class="erp-search-input" style="width: 100%;" onchange="syncCardFromOrder(this)">
+                                <option value="">-- انتخاب پرونده جهت پر کردن خودکار --</option>
+                                @foreach($orders as $ord)
+                                    <option value="{{ $ord->id }}" data-model="{{ $ord->device_brand }} {{ $ord->device_model }}" data-imei="{{ $ord->imei }}">
+                                        {{ $ord->tracking_code }} - {{ $ord->customer_name }} ({{ $ord->device_brand }} {{ $ord->device_model }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.74rem; font-weight: 800; color: #475569; display: block; margin-bottom: 4px;">برند و مدل کالا:</label>
+                            <input type="text" id="studioModelInput" class="erp-search-input" style="width: 100%;" value="Samsung Galaxy S23 Ultra" onkeyup="document.getElementById('cardModalModel').innerText = this.value">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.74rem; font-weight: 800; color: #475569; display: block; margin-bottom: 4px;">شماره سریال کالا (IMEI):</label>
+                            <input type="text" id="studioImeiInput" class="erp-search-input" style="width: 100%; direction: ltr; font-family: monospace;" value="354892019485721" onkeyup="document.getElementById('cardModalImei').innerText = this.value">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Size Visual Replica of the Card -->
+                <div style="max-width: 620px; margin: 0 auto;">
+                    <!-- Realistic Card Replica (CSS Based exact to uploaded image) -->
+                    <div id="studioPrintableCard">
+                        <!-- Front Card -->
+                        <div class="official-card-front" style="background: linear-gradient(135deg, #021a3f 0%, #08336d 45%, #05418c 70%, #031c44 100%); border-radius: 20px; padding: 18px 20px; color: #ffffff; margin-bottom: 18px; border: 2px solid rgba(59, 130, 246, 0.4); box-shadow: 0 16px 36px rgba(2, 26, 63, 0.35); position: relative; overflow: hidden; min-height: 230px; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div style="position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="border-right: 3px solid #60a5fa; padding-right: 10px;">
+                                        <span style="font-size: 1.25rem; font-weight: 900; display: block; line-height: 1.2; letter-spacing: -0.5px; color: #ffffff;">کارت گارانتی</span>
+                                        <span style="font-size: 0.85rem; font-weight: 800; color: #93c5fd; display: block;">گوشی همراه</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; direction: ltr;">
+                                    <svg width="34" height="26" viewBox="0 0 40 30" fill="none">
+                                        <path d="M5 25 L15 8 L22 18 L28 10 L35 25 Z" stroke="#38bdf8" stroke-width="3" stroke-linejoin="round" fill="rgba(56, 189, 248, 0.2)"/>
+                                    </svg>
+                                    <div style="text-align: right; line-height: 1.1;">
+                                        <span style="font-size: 0.84rem; font-weight: 900; color: #ffffff; display: block;">تامین کانی سام</span>
+                                        <span style="font-size: 0.60rem; color: #93c5fd; letter-spacing: 0.5px; display: block;">Taminkanisam</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 16px; align-items: center; margin: 12px 0; position: relative; z-index: 2;">
+                                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                                    <div style="background: rgba(255, 255, 255, 0.10); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.20); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 10px;">
+                                        <div style="flex: 1;">
+                                            <div style="display: inline-block; background: #ffffff; color: #021a3f; font-size: 0.64rem; font-weight: 900; padding: 2px 8px; border-radius: 99px; margin-bottom: 3px;">همراه ما باشید</div>
+                                            <div style="font-size: 0.68rem; color: #e2e8f0; line-height: 1.4;">برای فعال‌سازی گارانتی و استعلام اصالت، کد QR را اسکن کنید و یا به سایت شرکت مراجعه نمایید.</div>
+                                        </div>
+                                        <div style="width: 58px; height: 58px; background: #ffffff; border-radius: 8px; padding: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=52x52&data=https://mob.taminkanisam.co.ir" alt="QR" style="width: 52px; height: 52px; display: block;">
+                                        </div>
+                                    </div>
+
+                                    <div style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 8px 12px;">
+                                        <div style="display: inline-block; background: #38bdf8; color: #021a3f; font-size: 0.64rem; font-weight: 900; padding: 2px 8px; border-radius: 99px; margin-bottom: 3px;">شرایط گارانتی</div>
+                                        <div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.4;">این دستگاه به مدت ۱۸ ماه دارای گارانتی رسمی شرکت تامین کانی سام می‌باشد. جهت کسب اطلاعات بیشتر شرایط گارانتی، کد QR را اسکن فرمایید.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 8px;">
+                                <span style="font-size: 0.74rem; font-weight: 800; color: #60a5fa; letter-spacing: 0.5px;">انتخاب هوشمندانه...</span>
+                                <span style="font-size: 0.65rem; color: #cbd5e1;">ضمانت اصالت و سلامت فیزیکی قطعات</span>
+                            </div>
+                        </div>
+
+                        <!-- Back Card -->
+                        <div class="official-card-back" style="background: #ffffff; border: 2px solid #cbd5e1; border-radius: 20px; padding: 16px 18px; color: #0f172a; box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10); position: relative;">
+                            <div style="display: flex; gap: 14px; margin-bottom: 12px;">
+                                <div style="width: 130px; display: flex; flex-direction: column; justify-content: space-around; gap: 8px; padding-left: 10px; border-left: 1px dashed #cbd5e1; text-align: center;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">🛡️</div>
+                                        <span style="font-size: 0.64rem; font-weight: 800; color: #1e3a8a; line-height: 1.2;">۱۸ ماه ضمانت رسمی<br>پس از فعال‌سازی</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #f0fdf4; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">⚙️</div>
+                                        <span style="font-size: 0.64rem; font-weight: 800; color: #14532d; line-height: 1.2;">خدمات پس از فروش<br>تخصصی ماده ۱۳</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;">🎧</div>
+                                        <span style="font-size: 0.64rem; font-weight: 800; color: #78350f; line-height: 1.2;">پشتیبانی حرفه‌ای<br>مرکز تماس تبریز</span>
+                                    </div>
+                                </div>
+
+                                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                                        <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۱. کشور سازنده:</span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;">جمهوری اسلامی ایران / سازنده رسمی</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                                        <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۲. برند و مدل کالا:</span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="cardModalModel">Samsung Galaxy S23 Ultra</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                                        <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۳. شماره سریال کالا (IMEI):</span>
+                                        <span style="font-size: 0.74rem; font-weight: 900; font-family: monospace; color: #1d4ed8; direction: ltr;" id="cardModalImei">354892019485721</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                                        <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۴. تاریخ شروع گارانتی:</span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;">۱۴۰۳/۰۸/۱۵ (به مدت ۱۸ ماه)</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                                        <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۵. نام شرکت سازنده کالا:</span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="cardModalCompany">شرکت تامین کانی سام (سهامی خاص)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px;">
+                                <div style="text-align: center; font-size: 0.72rem; font-weight: 900; color: #38bdf8; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 4px;">
+                                    مواردی که شامل گارانتی نمی‌شوند:
+                                </div>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px; font-size: 0.65rem; color: #e2e8f0;">
+                                    <div>• ضربه دیدگی، شکستگی و آسیب فیزیکی</div>
+                                    <div>• نفوذ مایعات و رطوبت و نم‌زدگی</div>
+                                    <div>• خرابی ناشی از نوسانات برق و شارژر غیرمجاز</div>
+                                    <div>• معیوب ماندن باتری و لوازم جانبی مستهلک</div>
+                                    <div>• تعمیرات و دستکاری توسط افراد غیرمجاز</div>
+                                    <div>• تمامی موارد خارج از شرایط گارانتی و استهلاک عادی</div>
+                                </div>
+                            </div>
+
+                            <div style="background: #021a3f; color: #ffffff; border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 0.66rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; font-weight: 800; color: #93c5fd;">
+                                        📞 ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)
+                                    </span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; color: #e2e8f0;">
+                                        🌐 taminkanisam.co.ir
+                                    </span>
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; color: #e2e8f0; direction: ltr;">
+                                        ✉️ Marketing@kanisam
+                                    </span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 4px; color: #cbd5e1; font-size: 0.62rem;">
+                                    <span>📍 تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</span>
+                                    <span style="font-weight: 800; color: #38bdf8;">شرکت تامین کانی سام</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             PAGE 8: SMS NOTIFICATIONS & BROADCAST (tab-sms)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-sms' ? 'active' : '' }}" id="tab-sms" data-title="پنل پیامک و اطلاع‌رسانی">
+            <div class="erp-panel" id="tab-sms">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1233,6 +1455,14 @@
 <!-- =========================================================================
      DIGITAL WARRANTY CARD MODAL (ACCURATE TO ATTACHED IMAGE)
      ========================================================================= -->
+<!-- =========================================================================
+     ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
+     ========================================================================= -->
+        </div>
+
+    </main>
+</div>
+
 <!-- =========================================================================
      ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
      ========================================================================= -->
@@ -1403,33 +1633,75 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
 <script>
-    // Tab Switcher
-    function switchErpTab(tabId, el) {
+    // Tab Switcher with Instant URL update & Smooth Animation
+    function switchErpTab(tabId, el, ev) {
+        if (ev) ev.preventDefault();
+
+        // Ensure prefix
+        if (!tabId.startsWith('tab-')) tabId = 'tab-' + tabId;
+
+        // Hide all views
         document.querySelectorAll('.erp-view').forEach(function(v) {
             v.classList.remove('active');
+            v.style.display = 'none';
         });
-        const targetView = document.getElementById(tabId);
-        if (targetView) targetView.classList.add('active');
 
-        if (el) {
-            document.querySelectorAll('.erp-nav-link').forEach(function(l) {
-                l.classList.remove('active');
-            });
-            el.classList.add('active');
-            const title = el.querySelector('span:not(.erp-nav-icon):not(.erp-nav-left)')?.innerText || 'میز مدیریت';
-            const bcrumb = document.getElementById('breadcrumbTitle');
-            if (bcrumb) bcrumb.innerText = title;
+        // Show target view
+        const targetView = document.getElementById(tabId);
+        if (targetView) {
+            targetView.classList.add('active');
+            targetView.style.display = 'block';
         }
 
-        // Close sidebar on mobile after clicking
+        // Highlight sidebar active link
+        document.querySelectorAll('.erp-nav-link').forEach(function(l) {
+            l.classList.remove('active');
+            if (l.getAttribute('data-tab') === tabId) {
+                l.classList.add('active');
+            }
+        });
+        if (el) el.classList.add('active');
+
+        // Update Breadcrumb
+        const title = el?.querySelector('.erp-nav-title')?.innerText || targetView?.getAttribute('data-title') || 'میز مدیریت';
+        const bcrumb = document.getElementById('breadcrumbTitle');
+        if (bcrumb) bcrumb.innerText = title;
+
+        // Update URL in address bar without reload
+        const slug = tabId.replace('tab-', '');
+        const newUrl = window.location.pathname + '?tab=' + slug;
+        if (window.history.pushState) {
+            window.history.pushState({ tab: slug }, '', newUrl);
+        }
+
+        // Close sidebar on mobile
         if (window.innerWidth < 992) {
             toggleErpSidebar(false);
         }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Support browser Back/Forward navigation
+    window.addEventListener('popstate', function(e) {
+        const params = new URLSearchParams(window.location.search);
+        const tab = params.get('tab') || 'overview';
+        const activeLink = document.querySelector(`.erp-nav-link[data-tab="tab-${tab}"]`);
+        switchErpTab(tab, activeLink, null);
+    });
+
+    // Auto-activate tab from URL on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(window.location.search);
+        const tab = params.get('tab') || 'overview';
+        const activeLink = document.querySelector(`.erp-nav-link[data-tab="tab-${tab}"]`);
+        switchErpTab(tab, activeLink, null);
+    });
 
     // Mobile Sidebar Drawer Toggle
     function toggleErpSidebar(forceState) {
@@ -1459,11 +1731,11 @@
         });
     }
 
-    // Warranty Card Modal
+    // Warranty Card Modal (Quick Popup)
     function openWarrantyModal(model, imei, company) {
-        document.getElementById('cardModalModel').innerText = model || 'دستگاه همراه';
-        document.getElementById('cardModalImei').innerText = imei || '354892019485721';
-        document.getElementById('cardModalCompany').innerText = company || 'تامین کانی سام';
+        if (model) document.getElementById('cardModalModel').innerText = model;
+        if (imei) document.getElementById('cardModalImei').innerText = imei;
+        if (company) document.getElementById('cardModalCompany').innerText = company;
         document.getElementById('warrantyModalBackdrop').classList.add('show');
     }
 
@@ -1471,15 +1743,31 @@
         document.getElementById('warrantyModalBackdrop').classList.remove('show');
     }
 
+    // Synchronize Card Studio from Order Dropdown
+    function syncCardFromOrder(selectEl) {
+        const opt = selectEl.options[selectEl.selectedIndex];
+        if (!opt || !opt.value) return;
+        const model = opt.getAttribute('data-model');
+        const imei = opt.getAttribute('data-imei');
+        if (model) {
+            document.getElementById('studioModelInput').value = model;
+            document.getElementById('cardModalModel').innerText = model;
+        }
+        if (imei) {
+            document.getElementById('studioImeiInput').value = imei;
+            document.getElementById('cardModalImei').innerText = imei;
+        }
+    }
+
     function quickUpdateStatus(code) {
         const next = prompt('تغییر وضعیت برای پرونده ' + code + ':
-1: inspecting (کارشناسی)
+1: inspecting (کارشناسی فنی)
 2: waiting_parts (انتظار قطعه)
 3: repairing (در حال تعمیر)
 4: ready_for_delivery (آماده تحویل)
 5: delivered (تحویل نهایی)', 'ready_for_delivery');
         if (next) {
-            alert('وضعیت پرونده ' + code + ' با موفقیت به روزرسانی شد و پیامک برای مشتری ارسال گردید.');
+            alert('وضعیت پرونده ' + code + ' با موفقیت به‌روزرسانی شد و پیامک برای مشتری ارسال گردید.');
         }
     }
 </script>

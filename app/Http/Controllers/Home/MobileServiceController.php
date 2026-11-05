@@ -125,6 +125,20 @@ class MobileServiceController extends Controller
                 });
             }
 
+            // اضافه کردن ستون‌های احیانا جامانده به صورت خودکار و ایمن
+            if (Schema::hasTable('mobile_service_orders')) {
+                if (!Schema::hasColumn('mobile_service_orders', 'user_id')) {
+                    Schema::table('mobile_service_orders', function ($table) {
+                        $table->unsignedBigInteger('user_id')->nullable();
+                    });
+                }
+                if (!Schema::hasColumn('mobile_service_orders', 'reported_issues')) {
+                    Schema::table('mobile_service_orders', function ($table) {
+                        $table->text('reported_issues')->nullable();
+                    });
+                }
+            }
+
             // تضمین وجود و به‌روزرسانی کاربران ۴ نقش اصلی
             $this->seedDefaultRolesAndUsers();
         } catch (\Exception $e) {
@@ -593,17 +607,31 @@ class MobileServiceController extends Controller
     /**
      * پنل اختصاصی مشتریان و کاربران (User Portal)
      */
-    public function userPortal(Request $request)
+    public function userPortal(Request $request, $section = null)
     {
+        try {
+
+        if ($section) {
+            $request->merge(['tab' => $section]);
+        }
         $user = $this->getCurrentAuthUser();
         $userPhone = $user ? $user->number : (session('mob_user_phone') ?: '09121112233');
 
+        $cleanPhone = preg_replace('/[^0-9]/', '', $userPhone);
+        $shortPhone = ltrim($cleanPhone, '0');
+        $fullPhone = '0' . $shortPhone;
+
+        $hasUserId = Schema::hasColumn('mobile_service_orders', 'user_id');
+
         $myOrders = DB::table('mobile_service_orders')
-            ->where(function ($q) use ($user, $userPhone) {
-                if ($user) {
+            ->where(function ($q) use ($user, $hasUserId, $userPhone, $cleanPhone, $shortPhone, $fullPhone) {
+                if ($user && $hasUserId) {
                     $q->where('user_id', $user->id);
                 }
-                $q->orWhere('customer_phone', $userPhone);
+                $q->orWhere('customer_phone', $userPhone)
+                  ->orWhere('customer_phone', $cleanPhone)
+                  ->orWhere('customer_phone', $shortPhone)
+                  ->orWhere('customer_phone', $fullPhone);
             })
             ->orderBy('id', 'desc')
             ->get();
@@ -624,14 +652,22 @@ class MobileServiceController extends Controller
             'delivered' => $myOrders->where('status', 'delivered')->count(),
         ];
 
-        return view('home.mobile.user-portal', compact('user', 'myOrders', 'myTickets', 'stats', 'userPhone'));
+        $html = view('home.mobile.user-portal', compact('user', 'myOrders', 'myTickets', 'stats', 'userPhone'))->render(); return response($html);
+        } catch (\Throwable $e) {
+            return response('USER PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 200);
+        }
     }
 
     /**
      * پنل جامع مدیریت خدمات برای ادمین و کارشناسان (Admin ERP Portal)
      */
-    public function adminPortal(Request $request)
+    public function adminPortal(Request $request, $section = null)
     {
+        try {
+
+        if ($section) {
+            $request->merge(['tab' => $section]);
+        }
         $user = $this->getCurrentAuthUser();
 
         $statusFilter = $request->query('status');
@@ -670,6 +706,9 @@ class MobileServiceController extends Controller
         ];
 
         return view('home.mobile.portal', compact('orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user'));
+        } catch (\Throwable $e) {
+            return response('ADMIN PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 500);
+        }
     }
 
     /**

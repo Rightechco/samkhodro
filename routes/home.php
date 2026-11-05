@@ -28,7 +28,9 @@ $registerMobileRoutes = function () {
     // پنل‌های تخصصی سامانه خدمات
     Route::get('/service-portal', [MobileServiceController::class, 'servicePortal'])->name('mob.service-portal');
     Route::get('/user-portal', [MobileServiceController::class, 'userPortal'])->name('mob.user-portal');
+    Route::get('/user-portal/{section}', [MobileServiceController::class, 'userPortal'])->name('mob.user-portal.section');
     Route::get('/admin-portal', [MobileServiceController::class, 'adminPortal'])->name('mob.admin-portal');
+    Route::get('/admin-portal/{section}', [MobileServiceController::class, 'adminPortal'])->name('mob.admin-portal.section');
     Route::post('/user-portal/store-order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user.store-order');
     Route::post('/user-portal/order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user-order.store');
     Route::post('/user-portal/send-ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.user.send-ticket');
