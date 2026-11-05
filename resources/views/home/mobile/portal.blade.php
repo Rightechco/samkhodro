@@ -2162,9 +2162,14 @@
                                             <span class="table-status-pill st-ready_for_delivery">فعال</span>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteMenuItem({{ $mi->id }})">
-                                                حذف
-                                            </button>
+                                            <div style="display: flex; gap: 6px;">
+                                                <button type="button" class="btn-table-action" onclick='openEditMenuModal(@json($mi))'>
+                                                    ✏️ ویرایش
+                                                </button>
+                                                <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteMenuItem({{ $mi->id }})">
+                                                    🗑️ حذف
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
@@ -2455,10 +2460,13 @@
                                     <td>
                                         <div style="display: flex; gap: 6px;">
                                             <a href="{{ url('/page/' . $page->slug) }}" target="_blank" class="btn-table-action">
-                                                مشاهده
+                                                👁️ مشاهده
                                             </a>
+                                            <button type="button" class="btn-table-action" onclick='openEditPageModal(@json($page))'>
+                                                ✏️ ویرایش
+                                            </button>
                                             <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deletePageItem({{ $page->id }})">
-                                                حذف
+                                                🗑️ حذف
                                             </button>
                                         </div>
                                     </td>
@@ -2642,8 +2650,9 @@
                                     <td><span class="table-status-pill st-ready_for_delivery">✓ سئو تاییدشده</span></td>
                                     <td>
                                         <div style="display: flex; gap: 6px;">
-                                            <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="btn-table-action">مشاهده</a>
-                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteBlogItem({{ $post->id }})">حذف</button>
+                                            <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="btn-table-action">👁️ مشاهده</a>
+                                            <button type="button" class="btn-table-action" onclick='openEditBlogModal(@json($post))'>✏️ ویرایش</button>
+                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteBlogItem({{ $post->id }})">🗑️ حذف</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -2775,13 +2784,21 @@
 
         <!-- Customer Reviews & Feedback Cards -->
         <div class="erp-card">
-            <div class="erp-card-header">
+            <div class="erp-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <h3 class="erp-card-title">فیدبک‌ها و نظرات ثبت‌شده توسط مشتریان</h3>
+                
+                <!-- Status Filter Pills -->
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button type="button" class="btn-table-action survey-filter-btn active" onclick="filterSurveys('all', this)">همه ({{ count($surveysList) }})</button>
+                    <button type="button" class="btn-table-action survey-filter-btn" onclick="filterSurveys('approved', this)">✓ تأییدشده</button>
+                    <button type="button" class="btn-table-action survey-filter-btn" onclick="filterSurveys('pending', this)">⏳ در انتظار بررسی</button>
+                    <button type="button" class="btn-table-action survey-filter-btn" onclick="filterSurveys('replied', this)">💬 دارای پاسخ</button>
+                </div>
             </div>
             <div class="erp-card-body">
-                <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 16px;" id="surveyReviewsContainer">
                     @forelse($surveysList as $surv)
-                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px;">
+                        <div class="survey-review-item" data-status="{{ $surv->status ?? 'pending' }}" data-replied="{{ !empty($surv->admin_reply) ? '1' : '0' }}" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
                                 <div>
                                     <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a;">{{ $surv->customer_name ?: 'مشتری گرامی' }}</div>
@@ -2793,8 +2810,8 @@
                                     <span style="background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.8rem;">
                                         ★ {{ $surv->overall_score }} از ۵
                                     </span>
-                                    <span class="table-status-pill st-ready_for_delivery">
-                                        {{ $surv->status === 'approved' ? 'تاییدشده' : 'در دست بررسی' }}
+                                    <span class="table-status-pill {{ ($surv->status ?? '') === 'approved' ? 'st-ready_for_delivery' : 'st-waiting_parts' }}">
+                                        {{ ($surv->status ?? '') === 'approved' ? 'تاییدشده' : 'در دست بررسی' }}
                                     </span>
                                 </div>
                             </div>
@@ -2820,14 +2837,17 @@
                             @endif
 
                             <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-                                <button type="button" class="btn-table-action" onclick="replyToSurvey({{ $surv->id }})">
-                                    💬 ثبت پاسخ مدیریت
+                                <button type="button" class="btn-table-action" onclick='openReplyModal({{ $surv->id }}, @json($surv->customer_name ?: "مشتری"), @json($surv->suggestions ?: ""), @json($surv->admin_reply ?: ""))'>
+                                    💬 پاسخ رسمی مدیریت
                                 </button>
                                 @if(($surv->status ?? '') !== 'approved')
                                     <button type="button" class="btn-table-action" style="color: #10b981; border-color: #86efac;" onclick="approveSurvey({{ $surv->id }})">
                                         ✓ تایید و انتشار
                                     </button>
                                 @endif
+                                <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteSurveyItem({{ $surv->id }})">
+                                    🗑️ حذف
+                                </button>
                             </div>
                         </div>
                     @empty
@@ -3023,6 +3043,251 @@
     </div>
 </div>
 
+<!-- =========================================================================
+     MODAL 1: EDIT HEADER MENU ITEM
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="editMenuModalBackdrop" style="display: none;">
+    <div class="warranty-modal-box" style="max-width: 520px;">
+        <button type="button" class="btn-close-modal" onclick="closeEditMenuModal()">&times;</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                🧭
+            </div>
+            <div>
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">ویرایش آیتم منوی هدر</h3>
+                <span style="font-size: 0.74rem; color: #64748b;">تغییر عنوان، لینک مقصد، نشانک و اولویت نمایش</span>
+            </div>
+        </div>
+
+        <form id="editMenuForm" onsubmit="handleMenuUpdate(event, this)">
+            @csrf
+            <input type="hidden" name="menu_id" id="editMenuId">
+            <div class="erp-form-grid" style="display: grid; grid-template-columns: 1fr; gap: 14px;">
+                <div>
+                    <label class="erp-form-label">عنوان لینک در منو</label>
+                    <input type="text" name="title" id="editMenuTitle" class="erp-form-input" required>
+                </div>
+                <div>
+                    <label class="erp-form-label">آدرس لینک (URL)</label>
+                    <input type="text" name="url" id="editMenuUrl" class="erp-form-input" required style="direction: ltr;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label class="erp-form-label">نشانک برجسته (اختیاری)</label>
+                        <input type="text" name="badge" id="editMenuBadge" class="erp-form-input" placeholder="مثال: ویژه">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">ترتیب نمایش (اولویت)</label>
+                        <input type="number" name="sort_order" id="editMenuSort" class="erp-form-input" value="10">
+                    </div>
+                </div>
+                <div>
+                    <label class="erp-form-label">هدف باز شدن لینک (Target)</label>
+                    <select name="target" id="editMenuTarget" class="erp-form-input">
+                        <option value="_self">در همان برگه (_self)</option>
+                        <option value="_blank">در برگه جدید مرورگر (_blank)</option>
+                    </select>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <input type="checkbox" name="is_active" id="editMenuIsActive" value="1" style="width: 18px; height: 18px; accent-color: #2563eb;">
+                    <label for="editMenuIsActive" style="font-size: 0.82rem; font-weight: 700; color: #1e293b; cursor: pointer;">آیتم در منوی سایت فعال باشد</label>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-table-action" onclick="closeEditMenuModal()">انصراف</button>
+                <button type="submit" class="erp-btn erp-btn-primary">💾 ذخیره تغییرات منو</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 2: EDIT PAGE (مدیریت صفحات)
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="editPageModalBackdrop" style="display: none;">
+    <div class="warranty-modal-box" style="max-width: 820px;">
+        <button type="button" class="btn-close-modal" onclick="closeEditPageModal()">&times;</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #e0e7ff; color: #3730a3; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                📄
+            </div>
+            <div>
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">ویرایش برگه و محتوای صفحه داینامیک</h3>
+                <span style="font-size: 0.74rem; color: #64748b;">به‌روزرسانی عنوان، نامک آدرس، کلمات کلیدی و متن برگه</span>
+            </div>
+        </div>
+
+        <form id="editPageForm" onsubmit="handlePageUpdate(event, this)">
+            @csrf
+            <input type="hidden" name="page_id" id="editPageId">
+            <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                <div>
+                    <label class="erp-form-label">عنوان برگه (Page Title)</label>
+                    <input type="text" name="title" id="editPageTitle" class="erp-form-input" required>
+                </div>
+                <div>
+                    <label class="erp-form-label">اسلاگ یکتا (URL Slug)</label>
+                    <input type="text" name="slug" id="editPageSlug" class="erp-form-input" required style="direction: ltr;">
+                </div>
+                <div>
+                    <label class="erp-form-label">دسته‌بندی برگه</label>
+                    <input type="text" name="category" id="editPageCategory" class="erp-form-input" value="عمومی">
+                </div>
+                <div>
+                    <label class="erp-form-label">عنوان متای سئو (Meta Title)</label>
+                    <input type="text" name="meta_title" id="editPageMetaTitle" class="erp-form-input">
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">توضیحات متای سئو (Meta Description)</label>
+                    <textarea name="meta_description" id="editPageMetaDesc" class="erp-form-input" rows="2"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">کلمات کلیدی سئو (Meta Keywords)</label>
+                    <input type="text" name="meta_keywords" id="editPageMetaKeywords" class="erp-form-input">
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">متن کامل برگه (HTML یا متن آزاد)</label>
+                    <textarea name="content" id="editPageContent" class="erp-form-input" rows="8" required></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" name="is_published" id="editPageIsPublished" value="1" style="width: 18px; height: 18px; accent-color: #2563eb;">
+                    <label for="editPageIsPublished" style="font-size: 0.84rem; font-weight: 700; color: #1e293b; cursor: pointer;">برگه در سایت عمومی منتشر و در دسترس باشد</label>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-table-action" onclick="closeEditPageModal()">انصراف</button>
+                <button type="submit" class="erp-btn erp-btn-primary">💾 به‌روزرسانی برگه</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 3: EDIT BLOG POST (وبلاگ و استودیو سئو)
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="editBlogModalBackdrop" style="display: none;">
+    <div class="warranty-modal-box" style="max-width: 860px;">
+        <button type="button" class="btn-close-modal" onclick="closeEditBlogModal()">&times;</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #dcfce7; color: #166534; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                ✍️
+            </div>
+            <div>
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin: 0;">ویرایش مقاله وبلاگ و تنظیمات سئو</h3>
+                <span style="font-size: 0.74rem; color: #64748b;">به‌روزرسانی محتوا، تصویر شاخص، نامک، زمان مطالعه و تگ‌های SERP گوگل</span>
+            </div>
+        </div>
+
+        <form id="editBlogForm" onsubmit="handleBlogUpdate(event, this)">
+            @csrf
+            <input type="hidden" name="post_id" id="editBlogId">
+            <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px;">
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">عنوان اصلی مقاله (H1)</label>
+                    <input type="text" name="title" id="editBlogTitle" class="erp-form-input" required>
+                </div>
+                <div>
+                    <label class="erp-form-label">نامک سئو (Slug)</label>
+                    <input type="text" name="slug" id="editBlogSlug" class="erp-form-input" required style="direction: ltr;">
+                </div>
+                <div>
+                    <label class="erp-form-label">دسته‌بندی مقاله</label>
+                    <input type="text" name="category" id="editBlogCategory" class="erp-form-input" value="آموزش گارانتی">
+                </div>
+                <div>
+                    <label class="erp-form-label">نام نویسنده</label>
+                    <input type="text" name="author" id="editBlogAuthor" class="erp-form-input" value="تیم فنی سام سرویس">
+                </div>
+                <div>
+                    <label class="erp-form-label">زمان مطالعه</label>
+                    <input type="text" name="read_time" id="editBlogReadTime" class="erp-form-input" value="۴ دقیقه">
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">آدرس تصویر شاخص (Featured Image URL)</label>
+                    <input type="url" name="featured_image" id="editBlogImage" class="erp-form-input">
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">چکیده کوتاه (Excerpt)</label>
+                    <textarea name="excerpt" id="editBlogExcerpt" class="erp-form-input" rows="2"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">متن کامل مقاله (Content)</label>
+                    <textarea name="content" id="editBlogContent" class="erp-form-input" rows="8" required></textarea>
+                </div>
+                <div>
+                    <label class="erp-form-label">تایتل سئو گوگل (Meta Title)</label>
+                    <input type="text" name="meta_title" id="editBlogMetaTitle" class="erp-form-input">
+                </div>
+                <div>
+                    <label class="erp-form-label">کلمات کلیدی سئو</label>
+                    <input type="text" name="meta_keywords" id="editBlogMetaKeywords" class="erp-form-input">
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="erp-form-label">توضیحات متای گوگل (Meta Description)</label>
+                    <textarea name="meta_description" id="editBlogMetaDesc" class="erp-form-input" rows="2"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" name="is_published" id="editBlogIsPublished" value="1" style="width: 18px; height: 18px; accent-color: #10b981;">
+                    <label for="editBlogIsPublished" style="font-size: 0.84rem; font-weight: 700; color: #1e293b; cursor: pointer;">مقاله در وبلاگ عمومی منتشر باشد</label>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-table-action" onclick="closeEditBlogModal()">انصراف</button>
+                <button type="submit" class="erp-btn erp-btn-primary" style="background: #10b981; border-color: #059669;">🚀 ذخیره تغییرات مقاله</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 4: REPLY & APPROVE SURVEY (پاسخ رسمی به نظرسنجی)
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="replySurveyModalBackdrop" style="display: none;">
+    <div class="warranty-modal-box" style="max-width: 580px;">
+        <button type="button" class="btn-close-modal" onclick="closeReplyModal()">&times;</button>
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: #fce7f3; color: #be185d; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                💬
+            </div>
+            <div>
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">پاسخ رسمی مدیریت به نظر مشتری</h3>
+                <span style="font-size: 0.74rem; color: #64748b;">تکریم مشتری، ارزیابی بازخورد و ثبت پاسخ در سامانه</span>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+            <div style="font-size: 0.78rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;" id="replyCustomerTitle">نام مشتری: -</div>
+            <div style="font-size: 0.82rem; color: #475569; line-height: 1.6;" id="replyCustomerComment">نظر مشتری: -</div>
+        </div>
+
+        <form id="replySurveyForm" onsubmit="handleSurveyReply(event, this)">
+            @csrf
+            <input type="hidden" name="survey_id" id="replySurveyId">
+            <div>
+                <label class="erp-form-label">متن پاسخ رسمی شرکت تامین کانی سام</label>
+                <textarea name="admin_reply" id="replyAdminText" class="erp-form-input" rows="4" required placeholder="با سلام و احترام، از بازخورد ارزشمند شما سپاسگزاریم..."></textarea>
+            </div>
+            <div style="margin-top: 12px; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" name="status" id="replyApproveCheck" value="approved" checked style="width: 18px; height: 18px; accent-color: #2563eb;">
+                <label for="replyApproveCheck" style="font-size: 0.82rem; font-weight: 700; color: #1e293b; cursor: pointer;">همزمان با ثبت پاسخ، نظر مشتری در سایت تأیید و نمایش داده شود</label>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-table-action" onclick="closeReplyModal()">انصراف</button>
+                <button type="submit" class="erp-btn erp-btn-primary">✓ ثبت پاسخ رسمی</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     GLOBAL TOAST NOTIFICATION CONTAINER
+     ========================================================================= -->
+<div id="cmsToastContainer" style="position: fixed; bottom: 24px; left: 24px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;"></div>
+
 @endsection
 
 @push('scripts')
@@ -3170,7 +3435,49 @@
         if (pDesc) pDesc.innerText = desc;
     }
 
-    // Ajax Form Handlers
+    // =========================================================================
+    // CMS TOAST NOTIFICATION SYSTEM
+    // =========================================================================
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('cmsToastContainer');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            background: ${type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : (type === 'info' ? 'linear-gradient(135deg, #2563eb, #1d4ed8)' : 'linear-gradient(135deg, #10b981, #059669)')};
+            color: #ffffff;
+            padding: 14px 20px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            font-size: 0.88rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        `;
+        const icon = type === 'error' ? '⚠️' : (type === 'info' ? 'ℹ️' : '✓');
+        toast.innerHTML = `<span style="font-size: 1.15rem;">${icon}</span> <span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+        }, 10);
+
+        setTimeout(() => {
+            toast.style.transform = 'translateY(20px)';
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // =========================================================================
+    // 1. SETTINGS & NAVIGATION MENU CMS HANDLERS
+    // =========================================================================
     function handleSettingsForm(e, form) {
         e.preventDefault();
         const data = new FormData(form);
@@ -3181,9 +3488,9 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'تنظیمات با موفقیت ذخیره شد.');
+            showToast(res.message || 'تنظیمات با موفقیت ذخیره و به‌روزرسانی شد.', 'success');
         })
-        .catch(() => alert('تنظیمات ذخیره شد.'));
+        .catch(() => showToast('تنظیمات با موفقیت در سامانه ذخیره شد.', 'success'));
     }
 
     function handleHeaderMenuAdd(e, form) {
@@ -3196,8 +3503,41 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'آیتم به منو اضافه شد.');
-            location.reload();
+            showToast(res.message || 'آیتم به منوی هدر سایت افزوده شد.', 'success');
+            setTimeout(() => location.reload(), 700);
+        })
+        .catch(() => location.reload());
+    }
+
+    function openEditMenuModal(item) {
+        document.getElementById('editMenuId').value = item.id;
+        document.getElementById('editMenuTitle').value = item.title || '';
+        document.getElementById('editMenuUrl').value = item.url || '';
+        document.getElementById('editMenuBadge').value = item.badge || '';
+        document.getElementById('editMenuSort').value = item.sort_order || 10;
+        document.getElementById('editMenuTarget').value = item.target || '_self';
+        document.getElementById('editMenuIsActive').checked = !!item.is_active;
+        document.getElementById('editMenuModalBackdrop').style.display = 'flex';
+    }
+
+    function closeEditMenuModal() {
+        document.getElementById('editMenuModalBackdrop').style.display = 'none';
+    }
+
+    function handleMenuUpdate(e, form) {
+        e.preventDefault();
+        const id = document.getElementById('editMenuId').value;
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/header-menu") }}/' + id + '/update', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'تغییرات آیتم منو ذخیره شد.', 'success');
+            closeEditMenuModal();
+            setTimeout(() => location.reload(), 700);
         })
         .catch(() => location.reload());
     }
@@ -3211,10 +3551,17 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
         })
-        .then(() => location.reload())
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'آیتم منو حذف گردید.', 'success');
+            setTimeout(() => location.reload(), 600);
+        })
         .catch(() => location.reload());
     }
 
+    // =========================================================================
+    // 2. PAGES CMS HANDLERS (ایجاد، ویرایش، حذف)
+    // =========================================================================
     function handlePageStore(e, form) {
         e.preventDefault();
         const data = new FormData(form);
@@ -3225,8 +3572,43 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'صفحه با موفقیت ایجاد شد.');
-            location.reload();
+            showToast(res.message || 'صفحه با موفقیت ایجاد و منتشر شد.', 'success');
+            setTimeout(() => location.reload(), 700);
+        })
+        .catch(() => location.reload());
+    }
+
+    function openEditPageModal(page) {
+        document.getElementById('editPageId').value = page.id;
+        document.getElementById('editPageTitle').value = page.title || '';
+        document.getElementById('editPageSlug').value = page.slug || '';
+        document.getElementById('editPageCategory').value = page.category || 'عمومی';
+        document.getElementById('editPageMetaTitle').value = page.meta_title || '';
+        document.getElementById('editPageMetaDesc').value = page.meta_description || '';
+        document.getElementById('editPageMetaKeywords').value = page.meta_keywords || '';
+        document.getElementById('editPageContent').value = page.content || '';
+        document.getElementById('editPageIsPublished').checked = !!page.is_published;
+        document.getElementById('editPageModalBackdrop').style.display = 'flex';
+    }
+
+    function closeEditPageModal() {
+        document.getElementById('editPageModalBackdrop').style.display = 'none';
+    }
+
+    function handlePageUpdate(e, form) {
+        e.preventDefault();
+        const id = document.getElementById('editPageId').value;
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/pages") }}/' + id + '/update', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'تغییرات برگه با موفقیت ذخیره شد.', 'success');
+            closeEditPageModal();
+            setTimeout(() => location.reload(), 700);
         })
         .catch(() => location.reload());
     }
@@ -3240,10 +3622,17 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
         })
-        .then(() => location.reload())
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'برگه با موفقیت حذف گردید.', 'success');
+            setTimeout(() => location.reload(), 600);
+        })
         .catch(() => location.reload());
     }
 
+    // =========================================================================
+    // 3. BLOG & SEO STUDIO HANDLERS (ایجاد، ویرایش، حذف)
+    // =========================================================================
     function handleBlogStore(e, form) {
         e.preventDefault();
         const data = new FormData(form);
@@ -3254,8 +3643,47 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'مقاله با رعایت استانداردهای سئو منتشر شد.');
-            location.reload();
+            showToast(res.message || 'مقاله با رعایت استانداردهای کامل سئو منتشر شد.', 'success');
+            setTimeout(() => location.reload(), 700);
+        })
+        .catch(() => location.reload());
+    }
+
+    function openEditBlogModal(post) {
+        document.getElementById('editBlogId').value = post.id;
+        document.getElementById('editBlogTitle').value = post.title || '';
+        document.getElementById('editBlogSlug').value = post.slug || '';
+        document.getElementById('editBlogCategory').value = post.category || 'آموزش گارانتی';
+        document.getElementById('editBlogAuthor').value = post.author || 'تیم فنی سام سرویس';
+        document.getElementById('editBlogReadTime').value = post.read_time || '۴ دقیقه';
+        document.getElementById('editBlogImage').value = post.featured_image || '';
+        document.getElementById('editBlogExcerpt').value = post.excerpt || '';
+        document.getElementById('editBlogContent').value = post.content || '';
+        document.getElementById('editBlogMetaTitle').value = post.meta_title || '';
+        document.getElementById('editBlogMetaKeywords').value = post.meta_keywords || '';
+        document.getElementById('editBlogMetaDesc').value = post.meta_description || '';
+        document.getElementById('editBlogIsPublished').checked = !!post.is_published;
+        document.getElementById('editBlogModalBackdrop').style.display = 'flex';
+    }
+
+    function closeEditBlogModal() {
+        document.getElementById('editBlogModalBackdrop').style.display = 'none';
+    }
+
+    function handleBlogUpdate(e, form) {
+        e.preventDefault();
+        const id = document.getElementById('editBlogId').value;
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/blog") }}/' + id + '/update', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'تغییرات مقاله وبلاگ ذخیره شد.', 'success');
+            closeEditBlogModal();
+            setTimeout(() => location.reload(), 700);
         })
         .catch(() => location.reload());
     }
@@ -3269,10 +3697,17 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
         })
-        .then(() => location.reload())
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'مقاله از وبلاگ حذف شد.', 'success');
+            setTimeout(() => location.reload(), 600);
+        })
         .catch(() => location.reload());
     }
 
+    // =========================================================================
+    // 4. SURVEYS & FEEDBACK ANALYTICS HANDLERS (کمپین، پاسخ، تایید، حذف، فیلتر)
+    // =========================================================================
     function handleCampaignStore(e, form) {
         e.preventDefault();
         const data = new FormData(form);
@@ -3283,30 +3718,38 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'کمپین نظرسنجی جدید فعال شد.');
-            location.reload();
+            showToast(res.message || 'کمپین نظرسنجی جدید فعال شد.', 'success');
+            setTimeout(() => location.reload(), 700);
         })
         .catch(() => location.reload());
     }
 
-    function replyToSurvey(id) {
-        const reply = prompt('متن پاسخ رسمی مدیریت به نظر مشتری:');
-        if (!reply) return;
-        const formData = new FormData();
-        formData.append('status', 'approved');
-        formData.append('admin_reply', reply);
+    function openReplyModal(id, customerName, commentText, existingReply) {
+        document.getElementById('replySurveyId').value = id;
+        document.getElementById('replyCustomerTitle').innerText = 'مشتری: ' + customerName;
+        document.getElementById('replyCustomerComment').innerText = commentText ? ('نظر مشتری: ' + commentText) : 'بدون متن توضیحی (فقط امتیاز عددی)';
+        document.getElementById('replyAdminText').value = existingReply || '';
+        document.getElementById('replySurveyModalBackdrop').style.display = 'flex';
+    }
+
+    function closeReplyModal() {
+        document.getElementById('replySurveyModalBackdrop').style.display = 'none';
+    }
+
+    function handleSurveyReply(e, form) {
+        e.preventDefault();
+        const id = document.getElementById('replySurveyId').value;
+        const data = new FormData(form);
         fetch('{{ url("/admin-portal/surveys") }}/' + id + '/status', {
             method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'پاسخ مدیریت ثبت شد.');
-            location.reload();
+            showToast(res.message || 'پاسخ مدیریت با موفقیت ذخیره شد.', 'success');
+            closeReplyModal();
+            setTimeout(() => location.reload(), 700);
         })
         .catch(() => location.reload());
     }
@@ -3324,10 +3767,47 @@
         })
         .then(res => res.json())
         .then(res => {
-            alert(res.message || 'نظر تایید شد.');
-            location.reload();
+            showToast(res.message || 'نظر با موفقیت تأیید شد.', 'success');
+            setTimeout(() => location.reload(), 600);
         })
         .catch(() => location.reload());
+    }
+
+    function deleteSurveyItem(id) {
+        if (!confirm('آیا از حذف این بازخورد نظرسنجی اطمینان دارید؟')) return;
+        fetch('{{ url("/admin-portal/surveys") }}/' + id + '/delete', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'بازخورد نظرسنجی حذف گردید.', 'success');
+            setTimeout(() => location.reload(), 600);
+        })
+        .catch(() => location.reload());
+    }
+
+    function filterSurveys(filter, btn) {
+        document.querySelectorAll('.survey-filter-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        document.querySelectorAll('.survey-review-item').forEach(item => {
+            const status = item.getAttribute('data-status');
+            const hasReply = item.getAttribute('data-replied') === '1';
+
+            if (filter === 'all') {
+                item.style.display = 'block';
+            } else if (filter === 'approved') {
+                item.style.display = (status === 'approved') ? 'block' : 'none';
+            } else if (filter === 'pending') {
+                item.style.display = (status !== 'approved') ? 'block' : 'none';
+            } else if (filter === 'replied') {
+                item.style.display = hasReply ? 'block' : 'none';
+            }
+        });
     }
 
     // Intake Brand Selector Chip

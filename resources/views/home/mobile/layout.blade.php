@@ -1113,13 +1113,13 @@
                 <span>سامانه رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه سام موبایل (تامین کانی سام)</span>
             </div>
             <div class="top-info-links">
-                <a href="tel:04136689000" class="top-info-item">
+                <a href="tel:{{ preg_replace('/[^0-9]/', '', $siteSettings['phone'] ?? '04136689000') }}" class="top-info-item">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    <span>مرکز تماس: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
+                    <span>مرکز تماس: {{ $siteSettings['support_phone'] ?? '۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)' }}</span>
                 </a>
                 <span class="top-info-item" style="opacity: 0.8;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>شنبه تا چهارشنبه: ۸:۳۰ الی ۱۷:۰۰</span>
+                    <span>{{ $siteSettings['work_hours'] ?? 'شنبه تا چهارشنبه: ۸:۳۰ الی ۱۷:۰۰' }}</span>
                 </span>
             </div>
         </div>
@@ -1220,6 +1220,18 @@
                 <a href="{{ url('/contact') }}" class="nav-item-link {{ request()->is('*contact*') ? 'active' : '' }}">
                     <span>تماس با ما</span>
                 </a>
+
+                {{-- آیتم‌های داینامیک منوی هدر (مدیریت شده از پنل ادمین) --}}
+                @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
+                    @foreach($headerMenuItems as $navItem)
+                        <a href="{{ url($navItem->url) }}" class="nav-item-link" target="{{ $navItem->target ?? '_self' }}">
+                            <span>{{ $navItem->title }}</span>
+                            @if(!empty($navItem->badge))
+                                <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.68rem; padding: 1px 6px; border-radius: 8px; margin-right: 4px;">{{ $navItem->badge }}</span>
+                            @endif
+                        </a>
+                    @endforeach
+                @endif
             </nav>
 
             <!-- Actions -->
@@ -1412,6 +1424,23 @@
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
+            @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
+                @foreach($headerMenuItems as $navItem)
+                    <a href="{{ url($navItem->url) }}" class="drawer-nav-link" target="{{ $navItem->target ?? '_self' }}">
+                        <div class="drawer-link-inner">
+                            <span class="drawer-link-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            </span>
+                            <span>{{ $navItem->title }}</span>
+                            @if(!empty($navItem->badge))
+                                <span style="font-size: 0.68rem; background: #eff6ff; color: #2563eb; padding: 1px 6px; border-radius: 6px; margin-right: 6px;">{{ $navItem->badge }}</span>
+                            @endif
+                        </div>
+                        <span class="drawer-link-arrow">‹</span>
+                    </a>
+                @endforeach
+            @endif
+
             <!-- Footer shortcut -->
             <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light);">
                 <a href="https://taminkanisam.co.ir" class="drawer-nav-link" style="color: #2563eb; background: #eff6ff;">
@@ -1489,7 +1518,7 @@
                     </div>
                 </div>
                 <p class="footer-about-text">
-                    سام موبایل، مرکز تخصصی خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تلفن‌های همراه و تجهیزات هوشمند وارداتی شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان و مصوبات وزارت صنعت، معدن و تجارت.
+                    {{ $siteSettings['footer_about'] ?? 'سام موبایل، مرکز تخصصی خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تلفن‌های همراه و تجهیزات هوشمند وارداتی شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان و مصوبات وزارت صنعت، معدن و تجارت.' }}
                 </p>
                 <div style="display: flex; gap: 8px;">
                     <span style="font-size: 0.76rem; background: var(--bg-subtle); border: 1px solid var(--border-light); padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 600; color: var(--text-muted);">ضمانت اصالت قطعات</span>
@@ -1518,7 +1547,7 @@
                     <li><a href="{{ url('/shipping-guide') }}">نکات مهم ارسال پستی دستگاه</a></li>
                     <li><a href="{{ url('/complaints') }}">ثبت و پیگیری شکایات</a></li>
                     <li><a href="{{ url('/regulations') }}">ضوابط اجرایی وزارت صمت</a></li>
-                    <li><a href="https://hamta.ntsw.ir" target="_blank" rel="noopener">سامانه همتا (*7777#)</a></li>
+                    <li><a href="{{ $siteSettings['trust_hamta_url'] ?? 'https://hamta.ntsw.ir' }}" target="_blank" rel="noopener">سامانه همتا (*7777#)</a></li>
                     <li><a href="https://irangs.ir" target="_blank" rel="noopener">سامانه جامع گارانتی</a></li>
                 </ul>
             </div>
@@ -1531,27 +1560,61 @@
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
-                        <span>تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</span>
+                        <span>{{ $siteSettings['address'] ?? 'تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸' }}</span>
                     </li>
                     <li class="footer-contact-item">
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                         </span>
-                        <span>تلفن تماس: <strong>۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</strong></span>
+                        <span>تلفن تماس: <strong>{{ $siteSettings['support_phone'] ?? '۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)' }}</strong></span>
                     </li>
                     <li class="footer-contact-item">
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         </span>
-                        <span>ایمیل: info@taminkanisam.co.ir</span>
+                        <span>ایمیل: {{ $siteSettings['email'] ?? 'info@taminkanisam.co.ir' }}</span>
                     </li>
                     <li class="footer-contact-item">
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                         </span>
-                        <span>ساعات کاری: شنبه تا چهارشنبه ۸:۳۰ تا ۱۷:۰۰</span>
+                        <span>ساعات کاری: {{ $siteSettings['work_hours'] ?? 'شنبه تا چهارشنبه ۸:۳۰ تا ۱۷:۰۰' }}</span>
                     </li>
                 </ul>
+            </div>
+        </div>
+
+        <!-- Trust seals area -->
+        <div style="background: #f8fafc; border-top: 1px solid var(--border-light); padding: 18px 24px; text-align: center;">
+            <div style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+                <a href="{{ $siteSettings['trust_enamad_url'] ?? 'https://trustseal.enamad.ir/?id=taminkanisam' }}" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 8px 16px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <span style="font-size: 1.3rem;">🏛️</span>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;">اینماد ۵ ستاره</div>
+                        <div style="font-size: 0.68rem; color: #64748b;">تجارت الکترونیکی</div>
+                    </div>
+                </a>
+                <a href="{{ $siteSettings['trust_samandehi_url'] ?? 'https://logo.samandehi.ir/verify.aspx?id=taminkanisam' }}" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 8px 16px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <span style="font-size: 1.3rem;">🛡️</span>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;">نشان ساماندهی</div>
+                        <div style="font-size: 0.68rem; color: #64748b;">فرهنگ و ارشاد اسلامی</div>
+                    </div>
+                </a>
+                <div style="display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 8px 16px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <span style="font-size: 1.3rem;">📜</span>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;">پروانه کسب اتحادیه</div>
+                        <div style="font-size: 0.68rem; color: #64748b;">{{ $siteSettings['trust_union_license'] ?? 'صنف فناوران تبریز' }}</div>
+                    </div>
+                </div>
+                <a href="{{ $siteSettings['trust_hamta_url'] ?? 'https://hamta.ntsw.ir' }}" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 8px; background: #ffffff; padding: 8px 16px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <span style="font-size: 1.3rem;">📱</span>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; font-weight: 800; color: #0f172a;">سامانه همتا</div>
+                        <div style="font-size: 0.68rem; color: #64748b;">اصالت شناسه IMEI</div>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -1559,7 +1622,7 @@
         <div class="footer-bottom-bar">
             <div class="footer-bottom-inner">
                 <div>
-                    کلیه حقوق مادی و معنوی متعلق به <strong>سام موبایل (شرکت تامین کانی سام)</strong> می‌باشد.
+                    {{ $siteSettings['footer_copyright'] ?? 'کلیه حقوق مادی و معنوی متعلق به سام موبایل (شرکت تامین کانی سام) می‌باشد.' }}
                 </div>
                 <div style="display: flex; gap: 16px;">
                     <span>پشتیبانی فنی: شرکت تامین کانی سام</span>

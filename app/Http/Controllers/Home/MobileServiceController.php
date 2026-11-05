@@ -23,6 +23,24 @@ class MobileServiceController extends Controller
     public function __construct()
     {
         $this->ensureTablesExist();
+        $this->shareGlobalCmsData();
+    }
+
+    /**
+     * اشتراک‌گذاری سراسری تنظیمات سایت و منوهای پویا با تمامی قالب‌های Blade
+     */
+    private function shareGlobalCmsData()
+    {
+        try {
+            if (Schema::hasTable('mobile_site_settings')) {
+                $siteSettings = DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray();
+                \Illuminate\Support\Facades\View::share('siteSettings', $siteSettings);
+            }
+            if (Schema::hasTable('mobile_header_menu')) {
+                $headerMenuItems = DB::table('mobile_header_menu')->where('is_active', true)->orderBy('sort_order', 'asc')->get();
+                \Illuminate\Support\Facades\View::share('headerMenuItems', $headerMenuItems);
+            }
+        } catch (\Throwable $e) {}
     }
 
     /**
@@ -1853,6 +1871,36 @@ class MobileServiceController extends Controller
     }
 
     /**
+     * به‌روزرسانی آیتم منوی هدر
+     */
+    public function updateHeaderMenuItem(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:150',
+            'url' => 'required|string|max:255',
+        ]);
+
+        DB::table('mobile_header_menu')->where('id', $id)->update([
+            'title' => trim($request->title),
+            'url' => trim($request->url),
+            'target' => $request->target ?: '_self',
+            'badge' => $request->badge ? trim($request->badge) : null,
+            'sort_order' => $request->sort_order ?: 10,
+            'is_active' => $request->has('is_active') ? true : false,
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'آیتم منو با موفقیت ویرایش و به‌روزرسانی شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'آیتم منو به‌روزرسانی شد.');
+    }
+
+    /**
      * افزودن صفحه داینامیک جدید
      */
     public function storePage(Request $request)
@@ -2069,6 +2117,19 @@ class MobileServiceController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'وضعیت و پاسخ نظر با موفقیت ذخیره شد.',
+        ]);
+    }
+
+    /**
+     * حذف نظر یا فیدبک نظرسنجی
+     */
+    public function deleteSurvey($id)
+    {
+        DB::table('mobile_surveys')->where('id', $id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'نظر مشتری با موفقیت حذف گردید.',
         ]);
     }
 
