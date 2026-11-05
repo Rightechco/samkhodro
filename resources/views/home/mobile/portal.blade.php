@@ -827,68 +827,68 @@
             </div>
         </header>
 
-        <!-- KPI Summary Cards (Always Visible in Dashboard) -->
-        <section class="erp-kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-header">
-                    <span class="kpi-title">کل پرونده‌های خدمات</span>
-                    <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    </div>
-                </div>
-                <div class="kpi-val">{{ $stats['total'] }}</div>
-                <div class="kpi-sub">ثبت شده در سامانه جامع</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-header">
-                    <span class="kpi-title">در دست بررسی و تعمیر</span>
-                    <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                    </div>
-                </div>
-                <div class="kpi-val" style="color: #d97706;">{{ $stats['repairing'] + $stats['inspecting'] }}</div>
-                <div class="kpi-sub">در خط تعمیرات کارگاه</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-header">
-                    <span class="kpi-title">در انتظار تأمین قطعه</span>
-                    <div class="kpi-icon-wrap" style="background: #fce7f3; color: #be185d;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    </div>
-                </div>
-                <div class="kpi-val" style="color: #be185d;">{{ $stats['waiting_parts'] }}</div>
-                <div class="kpi-sub">سفارش‌گذاری شده در انبار</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-header">
-                    <span class="kpi-title">آماده تحویل به مشتری</span>
-                    <div class="kpi-icon-wrap" style="background: #dcfce7; color: #15803d;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    </div>
-                </div>
-                <div class="kpi-val" style="color: #15803d;">{{ $stats['ready'] }}</div>
-                <div class="kpi-sub">کنترل کیفی (QC) تأیید شد</div>
-            </div>
-
-            <div class="kpi-card">
-                <div class="kpi-header">
-                    <span class="kpi-title">تحویل نهایی شده</span>
-                    <div class="kpi-icon-wrap" style="background: #ede9fe; color: #7c3aed;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                </div>
-                <div class="kpi-val" style="color: #7c3aed;">{{ $stats['delivered'] }}</div>
-                <div class="kpi-sub">با رضایت‌سنجی ۱۰۰٪</div>
-            </div>
-        </section>
-
         <!-- ===================================================================
              PAGE 1: OVERVIEW & DASHBOARD SUMMARY (tab-overview)
              =================================================================== -->
         <div class="erp-view {{ $activeTab === 'tab-overview' ? 'active' : '' }}" id="tab-overview" data-title="نمای کلی و آمار">
+
+            <!-- KPI Summary Cards (Visible Only in Dashboard Overview) -->
+            <section class="erp-kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کل پرونده‌های خدمات</span>
+                        <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-val">{{ $stats['total'] }}</div>
+                    <div class="kpi-sub">ثبت شده در سامانه جامع</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">در دست بررسی و تعمیر</span>
+                        <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-val" style="color: #d97706;">{{ $stats['repairing'] + $stats['inspecting'] }}</div>
+                    <div class="kpi-sub">در خط تعمیرات کارگاه</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">در انتظار تأمین قطعه</span>
+                        <div class="kpi-icon-wrap" style="background: #fce7f3; color: #be185d;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-val" style="color: #be185d;">{{ $stats['waiting_parts'] }}</div>
+                    <div class="kpi-sub">سفارش‌گذاری شده در انبار</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">آماده تحویل به مشتری</span>
+                        <div class="kpi-icon-wrap" style="background: #dcfce7; color: #15803d;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-val" style="color: #15803d;">{{ $stats['ready'] }}</div>
+                    <div class="kpi-sub">کنترل کیفی (QC) تأیید شد</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">تحویل نهایی شده</span>
+                        <div class="kpi-icon-wrap" style="background: #ede9fe; color: #7c3aed;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-val" style="color: #7c3aed;">{{ $stats['delivered'] }}</div>
+                    <div class="kpi-sub">با رضایت‌سنجی ۱۰۰٪</div>
+                </div>
+            </section>
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1775,8 +1775,10 @@
 
     </div>
 
-<div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
-            <div class="erp-panel" id="tab-invoices">
+        <!-- ===================================================================
+             PAGE 6: INVOICES & TARIFFS (tab-invoices)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -1791,9 +1793,6 @@
                     تمامی مبالغ و اجرت تعمیرات بر اساس نرخ‌نامه مصوب اتحادیه صنف فناوران رایانه و مخابرات و سازمان حمایت از مصرف‌کنندگان محاسبه می‌گردد. برای کلیه تعمیرات غیرگارانتی، داغی قطعه تعویض شده به مشتری تحویل گردیده و قطعه نو دارای ۶ ماه ضمانت تعویض می‌باشد.
                 </p>
             </div>
-        </div>
-
-        <!-- VIEW 6: SMS NOTIFICATION DISPATCHER -->
         </div>
 
         <!-- ===================================================================
@@ -1973,7 +1972,6 @@
              PAGE 8: SMS NOTIFICATIONS & BROADCAST (tab-sms)
              =================================================================== -->
         <div class="erp-view {{ $activeTab === 'tab-sms' ? 'active' : '' }}" id="tab-sms" data-title="پنل پیامک و اطلاع‌رسانی">
-            <div class="erp-panel" id="tab-sms">
             <div class="erp-panel">
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
@@ -2862,17 +2860,6 @@
 </div>
 
 <!-- =========================================================================
-     DIGITAL WARRANTY CARD MODAL (ACCURATE TO ATTACHED IMAGE)
-     ========================================================================= -->
-<!-- =========================================================================
-     ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
-     ========================================================================= -->
-        </div>
-
-    </main>
-</div>
-
-<!-- =========================================================================
      ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
      ========================================================================= -->
 <div class="warranty-modal-backdrop" id="warrantyModalBackdrop">
@@ -3344,15 +3331,31 @@
     // Support browser Back/Forward navigation
     window.addEventListener('popstate', function(e) {
         const params = new URLSearchParams(window.location.search);
-        const tab = params.get('tab') || 'overview';
+        let tab = params.get('tab');
+        if (!tab) {
+            const parts = window.location.pathname.split('/').filter(Boolean);
+            if (parts.length >= 2 && parts[0] === 'admin-portal') {
+                tab = parts[1];
+            }
+        }
+        if (!tab) tab = 'overview';
         const activeLink = document.querySelector(`.erp-nav-link[data-tab="tab-${tab}"]`);
         switchErpTab(tab, activeLink, null);
     });
 
-    // Auto-activate tab from URL on page load
+    // Auto-activate tab from URL query param, path segment, or server-side activeTab on page load
     document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
-        const tab = params.get('tab') || 'overview';
+        let tab = params.get('tab');
+        if (!tab) {
+            const parts = window.location.pathname.split('/').filter(Boolean);
+            if (parts.length >= 2 && parts[0] === 'admin-portal') {
+                tab = parts[1];
+            }
+        }
+        if (!tab) {
+            tab = '{{ str_replace("tab-", "", $activeTab) }}' || 'overview';
+        }
         const activeLink = document.querySelector(`.erp-nav-link[data-tab="tab-${tab}"]`);
         switchErpTab(tab, activeLink, null);
     });
