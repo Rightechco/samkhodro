@@ -65,7 +65,21 @@
                 <p>در صورت مشاهده خطای «غیرقانونی بودن» به علت عدم به‌روزرسانی سامانه، مراتب را سریعاً به پشتیبانی اعلام فرمایید.</p>
             </div>
         </div>
-    </div>
+    </
+        <!-- Official Warranty Card Showcase -->
+        <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: 24px; padding: 32px; margin-bottom: 36px; box-shadow: var(--shadow-sm); text-align: center;">
+            <span class="section-tag-pill" style="margin-bottom: 12px;">نمونه رسمی شرکت</span>
+            <h3 style="font-size: 1.35rem; font-weight: 900; color: var(--text-main); margin-bottom: 10px;">کارت رسمی گارانتی ۱۸ ماهه تلفن همراه تامین کانی سام</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 650px; margin: 0 auto 24px;">تمامی محصولات وارداتی شرکت دارای کارت گارانتی هولوگرام‌دار با قابلیت استعلام آنلاین و اسکن QR کد می‌باشند.</p>
+            <div style="max-width: 520px; margin: 0 auto 16px;">
+                <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی گوشی همراه تامین کانی سام" style="width: 100%; border-radius: 18px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12); border: 2px solid #0f3ba0;">
+            </div>
+            <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.82rem; color: var(--text-muted);">
+                <span>📞 تلفن مرکز تماس: ۰۴۱۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
+                <span>📍 دفتر مرکزی: تبریز، پلاک ۷۸</span>
+            </div>
+        </div>
+div>
 
     <!-- Warranty Terms & Coverage Details (From PDF Page 1) -->
     <div style="margin-top: 36px;">

@@ -656,6 +656,36 @@
         </div>
     </div>
 </section>
+<!-- ========================================================
+     OFFICIAL WARRANTY CARD SHOWCASE
+     ======================================================== -->
+<section class="content-section" style="padding: 40px 20px 20px;">
+    <div class="section-container">
+        <div style="background: linear-gradient(135deg, #0b2b68, #081d45); border-radius: 28px; padding: 40px 36px; color: #ffffff; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 32px; box-shadow: 0 16px 40px rgba(11, 43, 104, 0.35);">
+            <div style="flex: 1; min-width: 300px;">
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; margin-bottom: 14px;">
+                    🛡️ ضمانت ۱۸ ماهه معتبر شرکتی
+                </div>
+                <h3 style="font-size: 1.65rem; font-weight: 900; line-height: 1.4; margin-bottom: 12px;">کارت رسمی گارانتی گوشی همراه تامین کانی سام</h3>
+                <p style="font-size: 0.92rem; opacity: 0.9; line-height: 1.8; margin-bottom: 20px;">
+                    هر دستگاه وارداتی دارای کارت گارانتی فیزیکی با کد اختصاصی و QR کد فعال‌سازی است. پس از ثبت دستگاه در پنل کاربری، کارت گارانتی دیجیتال با مشخصات کامل دستگاه، تاریخ ترخیص و شناسه IMEI صادر می‌گردد.
+                </p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="{{ route('mob.login') }}" class="btn-light-primary" style="background: #ffffff; color: #081d45 !important;">
+                        <span>ورود به پنل و صدور کارت</span>
+                    </a>
+                    <a href="{{ url('/warranty-terms') }}" class="btn-light-outline" style="background: transparent; color: #ffffff !important; border-color: rgba(255,255,255,0.3);">
+                        <span>شرایط و استعلام گارانتی</span>
+                    </a>
+                </div>
+            </div>
+            <div style="max-width: 380px; width: 100%; text-align: center;">
+                <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی رسمی گوشی همراه تامین کانی سام" style="width: 100%; border-radius: 18px; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4); border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!-- ========================================================
      6 GOLDEN WARRANTY PILLARS (EXACT PDF & MIDIA HAMRAH)

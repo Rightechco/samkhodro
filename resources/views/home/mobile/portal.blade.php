@@ -516,6 +516,7 @@
         </form>
     </div>
 </div>
+@include('home.mobile.warranty-card-modal')
 @endsection
 
 @push('styles')

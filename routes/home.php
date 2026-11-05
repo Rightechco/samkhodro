@@ -17,11 +17,28 @@ use Illuminate\Support\Facades\Route;
 */
 $registerMobileRoutes = function () {
     Route::get('/', [MobileServiceController::class, 'index'])->name('mob.index');
+    
+    // ورود، ثبت‌نام و تایید پیامکی (OTP)
+    Route::get('/login', [MobileServiceController::class, 'showLogin'])->name('mob.login');
+    Route::post('/login/send-otp', [MobileServiceController::class, 'sendOtp'])->name('mob.login.send-otp');
+    Route::post('/login/verify-otp', [MobileServiceController::class, 'verifyOtp'])->name('mob.login.verify-otp');
+    Route::post('/login/password', [MobileServiceController::class, 'loginPassword'])->name('mob.login.password');
+    Route::get('/logout', [MobileServiceController::class, 'logout'])->name('mob.logout');
+
+    // پنل‌های تخصصی سامانه خدمات
     Route::get('/service-portal', [MobileServiceController::class, 'servicePortal'])->name('mob.service-portal');
+    Route::get('/user-portal', [MobileServiceController::class, 'userPortal'])->name('mob.user-portal');
+    Route::get('/admin-portal', [MobileServiceController::class, 'adminPortal'])->name('mob.admin-portal');
+    Route::post('/user-portal/store-order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user.store-order');
+    Route::post('/user-portal/send-ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.user.send-ticket');
+
+    // عملیات کارشناسی و ماده ۱۳
     Route::post('/service-portal/store', [MobileServiceController::class, 'storeReception'])->name('mob.portal.store');
     Route::post('/service-portal/{id}/update-status', [MobileServiceController::class, 'updateOrderStatus'])->name('mob.portal.update-status');
     Route::post('/service-portal/{id}/order-part', [MobileServiceController::class, 'orderPart'])->name('mob.portal.order-part');
     Route::post('/service-portal/{id}/complete', [MobileServiceController::class, 'completeService'])->name('mob.portal.complete');
+    
+    // رهگیری و صفحات عمومی
     Route::get('/track', [MobileServiceController::class, 'trackOrder'])->name('mob.track');
     Route::get('/customer-rights', [MobileServiceController::class, 'customerRights'])->name('mob.customer-rights');
     Route::get('/warranty-terms', [MobileServiceController::class, 'warrantyTerms'])->name('mob.warranty-terms');

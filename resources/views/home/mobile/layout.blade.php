@@ -782,9 +782,9 @@
                 <span>سامانه رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه سام موبایل (تامین کانی سام)</span>
             </div>
             <div class="top-info-links">
-                <a href="tel:02165021085" class="top-info-item">
+                <a href="tel:04136689000" class="top-info-item">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                    <span>مرکز تماس: ۰۲۱-۶۵۰۲۱۰۸۵</span>
+                    <span>مرکز تماس: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
                 </a>
                 <span class="top-info-item" style="opacity: 0.8;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -816,7 +816,7 @@
                 <a href="{{ url('/#inquiry-section') }}" class="nav-item-link">
                     <span>استعلام گارانتی (IMEI)</span>
                 </a>
-                <a href="{{ url('/service-portal') }}" class="nav-item-link {{ request()->is('*service-portal*') ? 'active' : '' }}">
+                <a href="{{ url('/service-portal') }}" class="nav-item-link {{ request()->is('*service-portal*') || request()->is('*user-portal*') || request()->is('*admin-portal*') ? 'active' : '' }}">
                     <span>سامانه مدیریت خدمات (ماده ۱۳)</span>
                 </a>
                 <a href="{{ url('/warranty-terms') }}" class="nav-item-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
@@ -837,18 +837,30 @@
                 <a href="{{ url('/survey') }}" class="nav-item-link {{ request()->is('*survey*') ? 'active' : '' }}">
                     <span>نظرسنجی</span>
                 </a>
+                <a href="{{ url('/regulations') }}" class="nav-item-link {{ request()->is('*regulations*') ? 'active' : '' }}">
+                    <span>ضوابط صمت</span>
+                </a>
             </nav>
 
             <!-- Actions -->
             <div class="header-actions">
-                <a href="{{ url('/#inquiry-section') }}" class="btn-track-quick">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <span>پیگیری آنلاین</span>
-                </a>
+                @if(Auth::check() || session('mob_user_id'))
+                    <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="btn-track-quick" style="background: linear-gradient(135deg, #059669, #047857);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>{{ Auth::check() ? Auth::user()->name : (session('mob_user_name') ?: 'پنل کاربری') }}</span>
+                    </a>
+                @else
+                    <a href="{{ route('mob.login') }}" class="btn-track-quick" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        <span>ورود / ثبت‌نام پیامکی</span>
+                    </a>
+                @endif
+
                 <a href="https://taminkanisam.co.ir" class="btn-car-portal">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                     <span>سایت خودرو</span>
                 </a>
+
                 <button type="button" class="mobile-menu-toggle" id="openMobileDrawerBtn" aria-label="منو">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
@@ -994,13 +1006,13 @@
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </span>
-                        <span>تهران، میدان فردوسی، مرکز تجارت جهانی، ورودی اداری، طبقه ۵، واحد ۵۱۵</span>
+                        <span>تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</span>
                     </li>
                     <li class="footer-contact-item">
                         <span class="footer-contact-icon">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                         </span>
-                        <span>تلفن تماس: <strong>۰۲۱-۶۵۰۲۱۰۸۵</strong></span>
+                        <span>تلفن تماس: <strong>۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</strong></span>
                     </li>
                     <li class="footer-contact-item">
                         <span class="footer-contact-icon">
@@ -1058,7 +1070,7 @@
             </span>
             <span>شرایط گارانتی</span>
         </a>
-        <a href="tel:02165021085" class="native-tab-item">
+        <a href="tel:04136689000" class="native-tab-item">
             <span class="native-tab-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </span>

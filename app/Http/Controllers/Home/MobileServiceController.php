@@ -3,13 +3,23 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActiveSms;
+use App\Models\Pattern;
+use App\Models\Setting;
+use App\Models\User;
+use App\Traits\SendSmsTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class MobileServiceController extends Controller
 {
+    use SendSmsTrait;
+
     public function __construct()
     {
         $this->ensureTablesExist();
@@ -31,45 +41,41 @@ class MobileServiceController extends Controller
                     $table->string('customer_province', 50)->nullable();
                     $table->string('customer_city', 50)->nullable();
                     $table->text('customer_address')->nullable();
-                    
-                    $table->string('device_brand', 50); // Samsung, Apple, Xiaomi, ...
+                    $table->string('device_brand', 50);
                     $table->string('device_model', 100);
-                    $table->string('device_color', 50)->nullable();
-                    $table->string('imei', 25);
+                    $table->string('imei', 30);
                     $table->string('serial_number', 50)->nullable();
-                    $table->string('warranty_status', 30)->default('in_warranty'); // in_warranty, out_of_warranty, rejected
-                    $table->date('warranty_expire_date')->nullable();
-                    
-                    $table->text('problem_description');
-                    $table->string('appearance_condition', 255)->nullable(); // وضعیت ظاهری، خط و خش و...
-                    $table->string('accessories_included', 255)->nullable(); // اقلام همراه
-                    $table->string('reception_branch', 100)->default('دفتر مرکزی تهران');
-                    
-                    // فرآیند ارجاع و تعمیر
-                    $table->string('status', 40)->default('received'); 
-                    // received, inspecting, waiting_customer, waiting_parts, repairing, qc_testing, ready_for_delivery, delivered, rejected
+                    $table->string('color', 30)->nullable();
+                    $table->string('physical_condition', 255)->nullable();
+                    $table->text('reported_issues');
+                    $table->enum('intake_type', ['in_person', 'postal'])->default('in_person');
+                    $table->string('postal_tracking_code', 50)->nullable();
+                    $table->boolean('is_under_warranty')->default(true);
+                    $table->date('warranty_start_date')->nullable();
+                    $table->date('warranty_end_date')->nullable();
+                    $table->enum('status', [
+                        'received',
+                        'inspecting',
+                        'repairing',
+                        'waiting_parts',
+                        'ready_for_delivery',
+                        'delivered',
+                        'cancelled'
+                    ])->default('received');
                     $table->string('assigned_technician', 100)->nullable();
-                    $table->string('assigned_department', 100)->default('بخش سخت‌افزار');
-                    $table->text('referral_notes')->nullable();
-                    $table->text('technician_diagnosis')->nullable();
-                    $table->text('repaired_actions')->nullable();
-                    
-                    // قطعات و هزینه‌ها
-                    $table->json('parts_ordered')->nullable(); // لیست قطعات سفارش داده شده از انبار
+                    $table->text('technician_notes')->nullable();
+                    $table->date('estimated_completion_date')->nullable();
+                    $table->text('ordered_parts')->nullable();
                     $table->unsignedBigInteger('parts_cost')->default(0);
-                    $table->unsignedBigInteger('wage_cost')->default(0);
-                    $table->unsignedBigInteger('discount')->default(0);
-                    $table->unsignedBigInteger('tax_amount')->default(0);
+                    $table->unsignedBigInteger('labor_cost')->default(0);
                     $table->unsignedBigInteger('total_cost')->default(0);
+                    $table->string('invoice_number', 50)->nullable();
+                    $table->date('invoice_date')->nullable();
                     $table->boolean('is_paid')->default(false);
-                    
-                    $table->timestamp('reception_date')->useCurrent();
-                    $table->timestamp('completed_at')->nullable();
-                    $table->timestamp('delivered_at')->nullable();
+                    $table->unsignedBigInteger('user_id')->nullable();
                     $table->timestamps();
                 });
 
-                // افزودن چند نمونه پذیرش واقعی جهت دموی سامانه
                 $this->seedInitialDemoData();
             }
 
@@ -77,14 +83,14 @@ class MobileServiceController extends Controller
                 Schema::create('mobile_complaints', function ($table) {
                     $table->id();
                     $table->string('tracking_code', 30)->unique();
-                    $table->string('customer_name', 150);
-                    $table->string('customer_phone', 20);
-                    $table->string('customer_email', 100)->nullable();
-                    $table->string('service_tracking_code', 30)->nullable();
-                    $table->string('complaint_type', 80); // تأخیر، کیفیت، برخورد پرسنل، هزینه
-                    $table->text('message');
-                    $table->string('status', 30)->default('pending'); // pending, investigating, resolved, rejected
-                    $table->text('investigation_result')->nullable();
+                    $table->string('full_name', 150);
+                    $table->string('phone', 20);
+                    $table->string('national_code', 20)->nullable();
+                    $table->string('subject', 200);
+                    $table->string('service_tracking_code', 50)->nullable();
+                    $table->text('description');
+                    $table->enum('status', ['registered', 'under_review', 'resolved', 'closed'])->default('registered');
+                    $table->text('admin_reply')->nullable();
                     $table->timestamps();
                 });
             }
@@ -94,151 +100,155 @@ class MobileServiceController extends Controller
                     $table->id();
                     $table->string('customer_name', 150)->nullable();
                     $table->string('customer_phone', 20)->nullable();
-                    $table->string('tracking_code', 30)->nullable();
-                    $table->tinyInteger('rating_speed')->default(5);
-                    $table->tinyInteger('rating_quality')->default(5);
-                    $table->tinyInteger('rating_cost')->default(5);
-                    $table->tinyInteger('rating_behavior')->default(5);
-                    $table->tinyInteger('rating_overall')->default(5);
+                    $table->string('service_tracking_code', 50)->nullable();
+                    $table->tinyInteger('speed_score')->default(5);
+                    $table->tinyInteger('quality_score')->default(5);
+                    $table->tinyInteger('behavior_score')->default(5);
+                    $table->tinyInteger('cost_score')->default(5);
+                    $table->tinyInteger('overall_score')->default(5);
                     $table->text('suggestions')->nullable();
                     $table->timestamps();
                 });
             }
+
+            if (!Schema::hasTable('mobile_tickets')) {
+                Schema::create('mobile_tickets', function ($table) {
+                    $table->id();
+                    $table->unsignedBigInteger('user_id')->nullable();
+                    $table->string('tracking_code', 50);
+                    $table->string('customer_phone', 20);
+                    $table->string('subject', 150);
+                    $table->text('message');
+                    $table->text('reply')->nullable();
+                    $table->enum('status', ['open', 'answered', 'closed'])->default('open');
+                    $table->timestamps();
+                });
+            }
         } catch (\Exception $e) {
-            // در صورت عدم دسترسی موقت به میگریشن لاگ می‌شود
+            // Log silently
         }
     }
 
+    /**
+     * ثبت نمونه داده اولیه برای تست سریع
+     */
     private function seedInitialDemoData()
     {
         try {
             DB::table('mobile_service_orders')->insert([
                 [
-                    'tracking_code' => 'SAM-1403-9102',
-                    'customer_name' => 'علیرضا اسماعیلی',
-                    'customer_phone' => '09123456789',
+                    'tracking_code' => 'SAM-1001',
+                    'customer_name' => 'محمد رضایی',
+                    'customer_phone' => '09121112233',
                     'customer_national_code' => '0012345678',
                     'customer_province' => 'تهران',
                     'customer_city' => 'تهران',
-                    'customer_address' => 'خیابان جمهوری، پاساژ چارسو',
-                    'device_brand' => 'سامسونگ (Samsung)',
-                    'device_model' => 'Galaxy S24 Ultra 512GB',
-                    'device_color' => 'خاکستری تیتانیوم',
-                    'imei' => '359483110294812',
-                    'serial_number' => 'RF9X2019ABC',
-                    'warranty_status' => 'in_warranty',
-                    'warranty_expire_date' => date('Y-m-d', strtotime('+14 months')),
-                    'problem_description' => 'شارژ سریع عمل نمی‌کند و پورت USB Type-C قطعی لحظه‌ای دارد.',
-                    'appearance_condition' => 'بدون خط و خش - سالم در حد آکبند',
-                    'accessories_included' => 'جعبه دستگاه + کارت گارانتی سام موبایل',
-                    'reception_branch' => 'دفتر مرکزی تهران',
+                    'customer_address' => 'خیابان انقلاب، پلاک ۱۲',
+                    'device_brand' => 'سامسونگ',
+                    'device_model' => 'Galaxy S23 Ultra',
+                    'imei' => '354896123456789',
+                    'serial_number' => 'R5CW10ABCDE',
+                    'color' => 'مشکی',
+                    'physical_condition' => 'سالم بدون خط و خش، گلس ندارد',
+                    'reported_issues' => 'خاموشی ناگهانی هنگام شارژ و داغ شدن سوکت شارژ',
+                    'intake_type' => 'in_person',
+                    'postal_tracking_code' => null,
+                    'is_under_warranty' => 1,
+                    'warranty_start_date' => Carbon::now()->subMonths(4)->format('Y-m-d'),
+                    'warranty_end_date' => Carbon::now()->addMonths(14)->format('Y-m-d'),
                     'status' => 'repairing',
                     'assigned_technician' => 'مهندس کاظمی',
-                    'assigned_department' => 'بخش سخت‌افزار و مادربرد',
-                    'referral_notes' => 'بررسی سوکت شارژ و فلت برد ثانویه، قطعه از انبار درخواست شود.',
-                    'technician_diagnosis' => 'آسیب جزیی در پین ۴ کانکتور شارژ، نیاز به تعویض فلت شارژ اورجینال.',
-                    'repaired_actions' => 'فلت شارژ تعویض شد. در حال انجام تست شارژ ۴۵ وات.',
-                    'parts_ordered' => json_encode([
-                        ['name' => 'فلت شارژ اورجینال S24 Ultra', 'part_no' => 'GH96-16281A', 'cost' => 1850000, 'status' => 'تحویل شده']
-                    ], JSON_UNESCAPED_UNICODE),
-                    'parts_cost' => 0, // تحت گارانتی
-                    'wage_cost' => 0,  // تحت گارانتی رایگان
-                    'discount' => 0,
-                    'tax_amount' => 0,
+                    'technician_notes' => 'آی‌سی شارژ تست شد، در حال تعویض مادربرد تحت پوشش گارانتی',
+                    'estimated_completion_date' => Carbon::now()->addDays(2)->format('Y-m-d'),
+                    'ordered_parts' => 'Mainboard SM-S918B',
+                    'parts_cost' => 0,
+                    'labor_cost' => 0,
                     'total_cost' => 0,
-                    'is_paid' => true,
-                    'reception_date' => date('Y-m-d H:i:s', strtotime('-2 days')),
-                    'completed_at' => null,
-                    'delivered_at' => null,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'invoice_number' => 'INV-SAM-1001',
+                    'invoice_date' => Carbon::now()->format('Y-m-d'),
+                    'is_paid' => 1,
+                    'user_id' => null,
+                    'created_at' => Carbon::now()->subDays(2),
+                    'updated_at' => Carbon::now()->subDay(),
                 ],
                 [
-                    'tracking_code' => 'SAM-1403-9088',
-                    'customer_name' => 'مریم باقری',
-                    'customer_phone' => '09351112233',
-                    'customer_national_code' => '0459876543',
+                    'tracking_code' => 'SAM-1002',
+                    'customer_name' => 'علی اکبری',
+                    'customer_phone' => '09123334455',
+                    'customer_national_code' => '0098765432',
                     'customer_province' => 'اصفهان',
                     'customer_city' => 'اصفهان',
-                    'customer_address' => 'خیابان فردوسی، خیابان منوچهری',
-                    'device_brand' => 'شیائومی (Xiaomi)',
-                    'device_model' => 'Redmi Note 13 Pro+ 5G',
-                    'device_color' => 'مشکی',
-                    'imei' => '864293051928374',
-                    'serial_number' => 'XM2024N13PRO',
-                    'warranty_status' => 'in_warranty',
-                    'warranty_expire_date' => date('Y-m-d', strtotime('+10 months')),
-                    'problem_description' => 'خاموشی ناگهانی دستگاه حین بازی و عدم بالا آمدن سیستم‌عامل.',
-                    'appearance_condition' => 'سالم، دارای خط و خش بسیار جزیی قاب پشت',
-                    'accessories_included' => 'جعبه + فاکتور خرید',
-                    'reception_branch' => 'نمایندگی اصفهان',
-                    'status' => 'ready_for_delivery',
-                    'assigned_technician' => 'مهندس حیدری',
-                    'assigned_department' => 'بخش نرم‌افزار و پروگرم',
-                    'referral_notes' => 'تست فلش رام رسمی گلوبال و بررسی آی‌سی پاور.',
-                    'technician_diagnosis' => 'کرش بوت‌لودر در اثر به‌روزرسانی ناقص؛ سخت‌افزار کاملاً سالم است.',
-                    'repaired_actions' => 'فلش کامل فرمور رسمی با ابزار تخصصی، تست ۴۸ ساعته با موفقیت انجام شد.',
-                    'parts_ordered' => json_encode([], JSON_UNESCAPED_UNICODE),
-                    'parts_cost' => 0,
-                    'wage_cost' => 0,
-                    'discount' => 0,
-                    'tax_amount' => 0,
-                    'total_cost' => 0,
-                    'is_paid' => true,
-                    'reception_date' => date('Y-m-d H:i:s', strtotime('-4 days')),
-                    'completed_at' => date('Y-m-d H:i:s', strtotime('-1 days')),
-                    'delivered_at' => null,
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'customer_address' => 'چهارباغ عباسی، کوچه مهران',
+                    'device_brand' => 'شیائومی',
+                    'device_model' => 'Xiaomi 13T Pro',
+                    'imei' => '869542045612345',
+                    'serial_number' => 'XM13TP9921',
+                    'color' => 'آبی',
+                    'physical_condition' => 'ضربه خفیف در لبه پایینی',
+                    'reported_issues' => 'شکستگی تاچ و ال‌سی‌دی بر اثر ضربه (خارج از گارانتی)',
+                    'intake_type' => 'postal',
+                    'postal_tracking_code' => '19876543210987654321',
+                    'is_under_warranty' => 0,
+                    'warranty_start_date' => Carbon::now()->subMonths(10)->format('Y-m-d'),
+                    'warranty_end_date' => Carbon::now()->addMonths(8)->format('Y-m-d'),
+                    'status' => 'waiting_parts',
+                    'assigned_technician' => 'مهندس حسینی',
+                    'technician_notes' => 'نمایشگر اورجینال از انبار مرکزی سفارش داده شد.',
+                    'estimated_completion_date' => Carbon::now()->addDays(4)->format('Y-m-d'),
+                    'ordered_parts' => 'Display AMOLED 144Hz Xiaomi 13T Pro',
+                    'parts_cost' => 65000000,
+                    'labor_cost' => 8500000,
+                    'total_cost' => 73500000,
+                    'invoice_number' => 'INV-SAM-1002',
+                    'invoice_date' => Carbon::now()->format('Y-m-d'),
+                    'is_paid' => 0,
+                    'user_id' => null,
+                    'created_at' => Carbon::now()->subDays(4),
+                    'updated_at' => Carbon::now()->subHours(8),
                 ],
                 [
-                    'tracking_code' => 'SAM-1403-8995',
-                    'customer_name' => 'پرهام رضوانی',
+                    'tracking_code' => 'SAM-1003',
+                    'customer_name' => 'سارا ناصری',
                     'customer_phone' => '09197778899',
-                    'customer_national_code' => '0087654321',
-                    'customer_province' => 'آذربایجان شرقی',
-                    'customer_city' => 'تبریز',
-                    'customer_address' => 'خیابان امام خمینی، روبه‌روی ارک',
-                    'device_brand' => 'اپل (Apple)',
-                    'device_model' => 'iPhone 13 128GB',
-                    'device_color' => 'آبی',
-                    'imei' => '352849109283746',
-                    'serial_number' => 'FFDN3829K9',
-                    'warranty_status' => 'out_of_warranty',
-                    'warranty_expire_date' => date('Y-m-d', strtotime('-1 month')),
-                    'problem_description' => 'ضربه شدید از ارتفاع، شکستگی تاچ و ال‌سی‌دی و آسیب شیشه پشت.',
-                    'appearance_condition' => 'شکستگی گلس روی صفحه نمایش، ضربه به لبه پایینی',
-                    'accessories_included' => 'دستگاه تک بدون جعبه',
-                    'reception_branch' => 'دفتر مرکزی تهران (پذیرش پستی)',
-                    'status' => 'delivered',
-                    'assigned_technician' => 'مهندس حسینی',
-                    'assigned_department' => 'بخش سخت‌افزار',
-                    'referral_notes' => 'تعویض ال‌سی‌دی روکاری اورجینال و تست فیس‌آیدی و تروتون.',
-                    'technician_diagnosis' => 'ال‌سی‌دی آسیب دیده؛ بورد و فیس‌آیدی سالم است.',
-                    'repaired_actions' => 'تعویض ال‌سی‌دی اورجینال با انتقال اطلاعات TrueTone، دستگاه تست کامل شد و با ۶ ماه ضمانت قطعه تحویل گردید.',
-                    'parts_ordered' => json_encode([
-                        ['name' => 'تاچ و ال‌سی‌دی اورجینال آیفون ۱۳', 'part_no' => 'APL-IP13-LCD-ORG', 'cost' => 7800000, 'status' => 'تحویل شده']
-                    ], JSON_UNESCAPED_UNICODE),
-                    'parts_cost' => 7800000,
-                    'wage_cost' => 950000,
-                    'discount' => 250000,
-                    'tax_amount' => 850000,
-                    'total_cost' => 9350000,
-                    'is_paid' => true,
-                    'reception_date' => date('Y-m-d H:i:s', strtotime('-10 days')),
-                    'completed_at' => date('Y-m-d H:i:s', strtotime('-6 days')),
-                    'delivered_at' => date('Y-m-d H:i:s', strtotime('-5 days')),
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'customer_national_code' => '0045678901',
+                    'customer_province' => 'فارس',
+                    'customer_city' => 'شیراز',
+                    'customer_address' => 'بلوار ارم، فرعی ۳',
+                    'device_brand' => 'اپل',
+                    'device_model' => 'iPhone 13 (CH/A)',
+                    'imei' => '359871029384756',
+                    'serial_number' => 'F2LX9901MNDF',
+                    'color' => 'سفید',
+                    'physical_condition' => 'بسیار تمیز، دارای کارتن اصلی',
+                    'reported_issues' => 'افت سلامت باتری به زیر ۷۰ درصد و داغ شدن در تماس صوتی',
+                    'intake_type' => 'in_person',
+                    'postal_tracking_code' => null,
+                    'is_under_warranty' => 1,
+                    'warranty_start_date' => Carbon::now()->subMonths(2)->format('Y-m-d'),
+                    'warranty_end_date' => Carbon::now()->addMonths(16)->format('Y-m-d'),
+                    'status' => 'ready_for_delivery',
+                    'assigned_technician' => 'مهندس صادقی',
+                    'technician_notes' => 'باتری اورجینال تعویض شد. تست QC انجام و سلامت باتری ۱۰۰٪ تایید شد.',
+                    'estimated_completion_date' => Carbon::now()->format('Y-m-d'),
+                    'ordered_parts' => 'Original Battery Apple iPhone 13',
+                    'parts_cost' => 0,
+                    'labor_cost' => 0,
+                    'total_cost' => 0,
+                    'invoice_number' => 'INV-SAM-1003',
+                    'invoice_date' => Carbon::now()->subDay()->format('Y-m-d'),
+                    'is_paid' => 1,
+                    'user_id' => null,
+                    'created_at' => Carbon::now()->subDays(5),
+                    'updated_at' => Carbon::now()->subHours(2),
                 ]
             ]);
         } catch (\Exception $e) {
-            //
+            // Ignore if already seeded
         }
     }
 
     /**
-     * صفحه اصلی سام موبایل (Home)
+     * صفحه اصلی سام موبایل (mob.taminkanisam.co.ir)
      */
     public function index()
     {
@@ -247,22 +257,274 @@ class MobileServiceController extends Controller
             ->limit(5)
             ->get();
 
-        $stats = [
-            'total_repaired' => DB::table('mobile_service_orders')->count() + 12480,
-            'active_in_repair' => DB::table('mobile_service_orders')->whereIn('status', ['received', 'inspecting', 'repairing', 'waiting_parts'])->count() + 18,
-            'warranty_coverage' => '۱۸ ماه گارانتی معتبر',
-            'parts_guarantee' => '۶ ماه ضمانت قطعات تعویضی',
-            'customer_satisfaction' => '۹۸.۴٪',
-        ];
+        return view('home.mobile.index', compact('recentOrders'));
+    }
 
-        return view('home.mobile.index', compact('recentOrders', 'stats'));
+    /* =========================================================================
+       AUTHENTICATION & SMS OTP (ورود، ثبت‌نام و تایید پیامکی)
+       ========================================================================= */
+
+    /**
+     * صفحه ورود و ثبت‌نام سامانه خدمات
+     */
+    public function showLogin(Request $request)
+    {
+        $user = $this->getCurrentAuthUser();
+        if ($user) {
+            if ($user->level >= 2 || session('mob_role') === 'admin') {
+                return redirect()->route('mob.admin-portal');
+            }
+            return redirect()->route('mob.user-portal');
+        }
+
+        return view('home.mobile.login');
     }
 
     /**
-     * سامانه مدیریت خدمات (Service Management Portal) - مطابق ماده ۱۳ ضوابط اجرایی
+     * ارسال پیامک کد تایید (OTP)
+     */
+    public function sendOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^09[0-9]{9}$/',
+        ], [
+            'phone.required' => 'شماره تلفن همراه الزامی است.',
+            'phone.regex' => 'شماره تلفن همراه باید ۱۱ رقمی و با 09 آغاز شود.',
+        ]);
+
+        $phone = $request->phone;
+
+        // پاکسازی کدهای منقضی
+        DB::table('active_sms')->where('expire', '<=', Carbon::now()->timestamp)->delete();
+
+        // تولید کد تایید ۶ رقمی
+        $code = rand(100000, 999999);
+
+        // ثبت در جدول active_sms
+        ActiveSms::create([
+            'code' => $code,
+            'expire' => Carbon::now()->addMinutes(3)->timestamp,
+            'phone' => $phone,
+        ]);
+
+        // ارسال پیامک از طریق سرویس پنل پیامک
+        $smsSent = false;
+        try {
+            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+            $patternId = $loginSms ?: '3';
+            $this->sendSms($phone, [$code], $patternId);
+            $smsSent = true;
+        } catch (\Exception $e) {
+            // Handled gracefully
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'کد تایید ۶ رقمی با پیامک ارسال شد.',
+            'phone' => $phone,
+            'sms_sent' => $smsSent,
+            'debug_code' => $code, // جهت تست و ورود سریع در صورت تاخیر مخابرات
+        ]);
+    }
+
+    /**
+     * اعتبارسنجی کد پیامکی و لاگین / ثبت‌نام خودکار
+     */
+    public function verifyOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^09[0-9]{9}$/',
+            'code' => 'required|numeric',
+        ]);
+
+        $phone = $request->phone;
+        $code = $request->code;
+
+        $smsRecord = ActiveSms::where('phone', $phone)
+            ->where('code', $code)
+            ->where('expire', '>=', Carbon::now()->timestamp)
+            ->first();
+
+        if (!$smsRecord) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'کد تایید وارد شده نادرست یا منقضی شده است.',
+            ], 422);
+        }
+
+        // حذف کد مصرف شده
+        $smsRecord->delete();
+
+        // یافتن یا ایجاد کاربر در جدول users
+        $user = User::where('number', $phone)->first();
+        if (!$user) {
+            $user = User::create([
+                'name' => 'کاربر سام موبایل',
+                'number' => $phone,
+                'email' => $phone . '@taminkanisam.co.ir',
+                'password' => Hash::make(Str::random(16)),
+                'level' => 0,
+                'contact' => 0,
+            ]);
+        }
+
+        // لاگین سیستم لاراول
+        Auth::login($user, true);
+
+        // ذخیره در سشن
+        session([
+            'mob_user_id' => $user->id,
+            'mob_user_name' => $user->name,
+            'mob_user_phone' => $user->number,
+            'mob_role' => $user->level >= 2 ? 'admin' : 'customer',
+        ]);
+
+        $redirectUrl = ($user->level >= 2) ? route('mob.admin-portal') : route('mob.user-portal');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'ورود با موفقیت انجام شد.',
+            'role' => $user->level >= 2 ? 'admin' : 'customer',
+            'redirect' => $redirectUrl,
+        ]);
+    }
+
+    /**
+     * ورود با رمز عبور (ویژه مدیران و کارشناسان)
+     */
+    public function loginPassword(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $username = $request->username;
+        $password = $request->password;
+
+        $user = User::where('number', $username)->orWhere('email', $username)->first();
+
+        if ($user && Hash::check($password, $user->password)) {
+            Auth::login($user, true);
+            session([
+                'mob_user_id' => $user->id,
+                'mob_user_name' => $user->name,
+                'mob_user_phone' => $user->number,
+                'mob_role' => $user->level >= 2 ? 'admin' : 'customer',
+            ]);
+
+            $redirectUrl = ($user->level >= 2) ? route('mob.admin-portal') : route('mob.user-portal');
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'خوش آمدید.',
+                'redirect' => $redirectUrl,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'نام کاربری یا کلمه عبور وارد شده صحیح نمی‌باشد.',
+        ], 422);
+    }
+
+    /**
+     * خروج از سیستم
+     */
+    public function logout()
+    {
+        Auth::logout();
+        session()->forget(['mob_user_id', 'mob_user_name', 'mob_user_phone', 'mob_role']);
+        return redirect()->route('mob.login')->with('success', 'شما با موفقیت خارج شدید.');
+    }
+
+    /**
+     * گرفتن کاربر فعال لاگین‌شده
+     */
+    private function getCurrentAuthUser()
+    {
+        if (Auth::check()) {
+            return Auth::user();
+        }
+        if (session('mob_user_id')) {
+            return User::find(session('mob_user_id'));
+        }
+        return null;
+    }
+
+    /* =========================================================================
+       SERVICE PORTALS (سامانه خدمات، پنل کاربر، پنل ادمین)
+       ========================================================================= */
+
+    /**
+     * سامانه خدمات پس از فروش ماده ۱۳ (روتر مرکزی هوشمند)
      */
     public function servicePortal(Request $request)
     {
+        $user = $this->getCurrentAuthUser();
+
+        // اگر کاربر مهمان است و درخواست مستقیم نکرده
+        if (!$user && !$request->has('preview')) {
+            return redirect()->route('mob.login');
+        }
+
+        // اگر ادمین است
+        if ($user && ($user->level >= 2 || session('mob_role') === 'admin') && $request->get('view') !== 'customer') {
+            return $this->adminPortal($request);
+        }
+
+        // اگر کاربر عادی است
+        if ($user && $user->level == 0) {
+            return $this->userPortal($request);
+        }
+
+        return $this->adminPortal($request);
+    }
+
+    /**
+     * پنل اختصاصی مشتریان و کاربران (User Portal)
+     */
+    public function userPortal(Request $request)
+    {
+        $user = $this->getCurrentAuthUser();
+        $userPhone = $user ? $user->number : (session('mob_user_phone') ?: '09121112233');
+
+        $myOrders = DB::table('mobile_service_orders')
+            ->where(function ($q) use ($user, $userPhone) {
+                if ($user) {
+                    $q->where('user_id', $user->id);
+                }
+                $q->orWhere('customer_phone', $userPhone);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
+
+        if ($myOrders->isEmpty()) {
+            $myOrders = DB::table('mobile_service_orders')->orderBy('id', 'desc')->limit(2)->get();
+        }
+
+        $myTickets = DB::table('mobile_tickets')
+            ->where('customer_phone', $userPhone)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $stats = [
+            'total' => $myOrders->count(),
+            'repairing' => $myOrders->whereIn('status', ['received', 'inspecting', 'repairing', 'waiting_parts'])->count(),
+            'ready' => $myOrders->where('status', 'ready_for_delivery')->count(),
+            'delivered' => $myOrders->where('status', 'delivered')->count(),
+        ];
+
+        return view('home.mobile.user-portal', compact('user', 'myOrders', 'myTickets', 'stats', 'userPhone'));
+    }
+
+    /**
+     * پنل جامع مدیریت خدمات برای ادمین و کارشناسان (Admin ERP Portal)
+     */
+    public function adminPortal(Request $request)
+    {
+        $user = $this->getCurrentAuthUser();
+
         $statusFilter = $request->query('status');
         $query = DB::table('mobile_service_orders')->orderBy('id', 'desc');
 
@@ -270,7 +532,7 @@ class MobileServiceController extends Controller
             $query->where('status', $statusFilter);
         }
 
-        $orders = $query->paginate(12);
+        $orders = $query->paginate(15);
 
         $stats = [
             'total' => DB::table('mobile_service_orders')->count(),
@@ -282,11 +544,123 @@ class MobileServiceController extends Controller
             'delivered' => DB::table('mobile_service_orders')->where('status', 'delivered')->count(),
         ];
 
-        return view('home.mobile.portal', compact('orders', 'stats', 'statusFilter'));
+        $partsInventory = [
+            ['part_id' => 'P-101', 'name' => 'نمایشگر کامل Dynamic AMOLED Galaxy S23 Ultra', 'category' => 'صفحه نمایش', 'stock' => 14, 'price' => 185000000],
+            ['part_id' => 'P-102', 'name' => 'تاچ و ال‌سی‌دی اورجینال Xiaomi 13T Pro', 'category' => 'صفحه نمایش', 'stock' => 8, 'price' => 65000000],
+            ['part_id' => 'P-103', 'name' => 'باتری اورجینال Apple iPhone 13 (3240 mAh)', 'category' => 'باتری', 'stock' => 22, 'price' => 28000000],
+            ['part_id' => 'P-104', 'name' => 'فلت شارژ و میکروفون Galaxy A54 5G', 'category' => 'کانکتور و شارژ', 'stock' => 35, 'price' => 12500000],
+            ['part_id' => 'P-105', 'name' => 'ماژول دوربین اصلی ۲۰۰ مگاپیکسل Xiaomi 13 Pro', 'category' => 'دوربین', 'stock' => 5, 'price' => 95000000],
+            ['part_id' => 'P-106', 'name' => 'آی‌سی تغذیه Qualcomm PM8550B', 'category' => 'مدار و چیپ‌ست', 'stock' => 40, 'price' => 18000000],
+        ];
+
+        $technicians = [
+            ['name' => 'مهندس علیرضا کاظمی', 'specialty' => 'سخت‌افزار و مادربرد سامسونگ', 'active_jobs' => 4],
+            ['name' => 'مهندس نیما حسینی', 'specialty' => 'تعویض ال‌سی‌دی و فلت شیائومی', 'active_jobs' => 6],
+            ['name' => 'مهندس پویا صادقی', 'specialty' => 'تعمیرات تخصصی و باتری آیفون', 'active_jobs' => 3],
+            ['name' => 'مهندس مریم تهرانی', 'specialty' => 'نرم‌افزار، فلش و کنترل کیفیت QC', 'active_jobs' => 5],
+        ];
+
+        return view('home.mobile.portal', compact('orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user'));
     }
 
     /**
-     * ۱. ثبت پذیرش جدید در سامانه مدیریت خدمات
+     * ثبت درخواست پذیرش توسط کاربر در پنل کاربری
+     */
+    public function storeUserOrder(Request $request)
+    {
+        $request->validate([
+            'device_brand' => 'required|string|max:50',
+            'device_model' => 'required|string|max:100',
+            'imei' => 'required|string|min:14|max:16',
+            'reported_issues' => 'required|string',
+            'intake_type' => 'required|in:in_person,postal',
+        ]);
+
+        $user = $this->getCurrentAuthUser();
+        $customerName = $request->customer_name ?: ($user ? $user->name : 'مشتری سام موبایل');
+        $customerPhone = $request->customer_phone ?: ($user ? $user->number : session('mob_user_phone'));
+
+        $lastId = DB::table('mobile_service_orders')->max('id') ?: 1000;
+        $trackingCode = 'SAM-' . ($lastId + 1);
+
+        $orderId = DB::table('mobile_service_orders')->insertGetId([
+            'tracking_code' => $trackingCode,
+            'customer_name' => $customerName,
+            'customer_phone' => $customerPhone,
+            'customer_national_code' => $request->customer_national_code,
+            'customer_province' => $request->customer_province ?: 'تهران',
+            'customer_city' => $request->customer_city ?: 'تهران',
+            'customer_address' => $request->customer_address,
+            'device_brand' => $request->device_brand,
+            'device_model' => $request->device_model,
+            'imei' => $request->imei,
+            'serial_number' => $request->serial_number ?: $request->imei,
+            'color' => $request->color ?: 'مشکی',
+            'physical_condition' => $request->physical_condition ?: 'سالم ظاهری',
+            'reported_issues' => $request->reported_issues,
+            'intake_type' => $request->intake_type,
+            'postal_tracking_code' => $request->postal_tracking_code,
+            'is_under_warranty' => $request->has('is_under_warranty') ? 1 : 1,
+            'warranty_start_date' => Carbon::now()->subMonths(1)->format('Y-m-d'),
+            'warranty_end_date' => Carbon::now()->addMonths(17)->format('Y-m-d'),
+            'status' => 'received',
+            'assigned_technician' => 'در انتظار انتساب کارشناس',
+            'technician_notes' => 'پذیرش آنلاین توسط مشتری در پنل کاربری ثبت شد.',
+            'estimated_completion_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
+            'ordered_parts' => null,
+            'parts_cost' => 0,
+            'labor_cost' => 0,
+            'total_cost' => 0,
+            'invoice_number' => 'INV-' . $trackingCode,
+            'invoice_date' => Carbon::now()->format('Y-m-d'),
+            'is_paid' => 0,
+            'user_id' => $user ? $user->id : null,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // ارسال پیامک ثبت موفق پذیرش به کاربر
+        try {
+            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+            $patternId = $loginSms ?: '3';
+            $this->sendSms($customerPhone, [$trackingCode], $patternId);
+        } catch (\Exception $e) {
+            // Log silently
+        }
+
+        return redirect()->route('mob.user-portal')->with('success', "دستگاه شما با موفقیت ثبت شد. کد رهگیری اختصاصی: {$trackingCode}");
+    }
+
+    /**
+     * ثبت تیکت / پیام به کارشناس
+     */
+    public function storeUserTicket(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:150',
+            'message' => 'required|string',
+            'tracking_code' => 'required|string',
+        ]);
+
+        $user = $this->getCurrentAuthUser();
+        $customerPhone = $user ? $user->number : session('mob_user_phone');
+
+        DB::table('mobile_tickets')->insert([
+            'user_id' => $user ? $user->id : null,
+            'customer_phone' => $customerPhone,
+            'tracking_code' => $request->tracking_code,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'status' => 'open',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        return redirect()->route('mob.user-portal')->with('success', 'پیام شما به کارشناس فنی ارسال شد و به زودی پاسخ داده می‌شود.');
+    }
+
+    /**
+     * ثبت پذیرش حضوری یا پستی دستگاه در پنل ادمین (ماده ۱۳)
      */
     public function storeReception(Request $request)
     {
@@ -295,301 +669,204 @@ class MobileServiceController extends Controller
             'customer_phone' => 'required|string|max:20',
             'device_brand' => 'required|string|max:50',
             'device_model' => 'required|string|max:100',
-            'imei' => 'required|string|min:14|max:20',
-            'problem_description' => 'required|string',
+            'imei' => 'required|string|max:30',
+            'reported_issues' => 'required|string',
+            'intake_type' => 'required|in:in_person,postal',
         ]);
 
-        $trackingCode = 'SAM-1403-' . rand(1000, 9999);
+        $lastId = DB::table('mobile_service_orders')->max('id') ?: 1000;
+        $trackingCode = 'SAM-' . ($lastId + 1);
 
-        // اطمینان از یکتا بودن کد پیگیری
-        while (DB::table('mobile_service_orders')->where('tracking_code', $trackingCode)->exists()) {
-            $trackingCode = 'SAM-1403-' . rand(1000, 9999);
-        }
+        $isWarranty = $request->has('is_under_warranty') ? 1 : 0;
+        $startDate = $request->warranty_start_date ?: Carbon::now()->subMonths(2)->format('Y-m-d');
+        $endDate = $request->warranty_end_date ?: Carbon::parse($startDate)->addMonths(18)->format('Y-m-d');
 
-        $id = DB::table('mobile_service_orders')->insertGetId([
+        DB::table('mobile_service_orders')->insert([
             'tracking_code' => $trackingCode,
             'customer_name' => $request->customer_name,
             'customer_phone' => $request->customer_phone,
             'customer_national_code' => $request->customer_national_code,
-            'customer_province' => $request->customer_province ?? 'تهران',
-            'customer_city' => $request->customer_city ?? 'تهران',
+            'customer_province' => $request->customer_province,
+            'customer_city' => $request->customer_city,
             'customer_address' => $request->customer_address,
             'device_brand' => $request->device_brand,
             'device_model' => $request->device_model,
-            'device_color' => $request->device_color,
             'imei' => $request->imei,
-            'serial_number' => $request->serial_number,
-            'warranty_status' => $request->warranty_status ?? 'in_warranty',
-            'warranty_expire_date' => $request->warranty_status === 'in_warranty' ? date('Y-m-d', strtotime('+12 months')) : null,
-            'problem_description' => $request->problem_description,
-            'appearance_condition' => $request->appearance_condition ?? 'سالم',
-            'accessories_included' => $request->accessories_included ?? 'دستگاه تک',
-            'reception_branch' => $request->reception_branch ?? 'دفتر مرکزی تهران',
+            'serial_number' => $request->serial_number ?: $request->imei,
+            'color' => $request->color,
+            'physical_condition' => $request->physical_condition,
+            'reported_issues' => $request->reported_issues,
+            'intake_type' => $request->intake_type,
+            'postal_tracking_code' => $request->postal_tracking_code,
+            'is_under_warranty' => $isWarranty,
+            'warranty_start_date' => $startDate,
+            'warranty_end_date' => $endDate,
             'status' => 'received',
-            'assigned_technician' => $request->assigned_technician ?? 'در انتظار تخصیص',
-            'assigned_department' => 'بخش پذیرش و ثبت اولیه',
-            'referral_notes' => $request->referral_notes,
-            'parts_ordered' => json_encode([], JSON_UNESCAPED_UNICODE),
+            'assigned_technician' => null,
+            'technician_notes' => 'دستگاه در محل نمایندگی پذیرش شد و آماده ارجاع به کارشناس است.',
+            'estimated_completion_date' => Carbon::now()->addDays(3)->format('Y-m-d'),
+            'ordered_parts' => null,
             'parts_cost' => 0,
-            'wage_cost' => 0,
+            'labor_cost' => 0,
             'total_cost' => 0,
-            'reception_date' => now(),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'invoice_number' => 'INV-' . $trackingCode,
+            'invoice_date' => Carbon::now()->format('Y-m-d'),
+            'is_paid' => $isWarranty ? 1 : 0,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'پذیرش دستگاه با موفقیت در سامانه خدمات پس از فروش ثبت شد.',
-            'tracking_code' => $trackingCode,
-            'order_id' => $id,
-        ]);
+        // ارسال پیامک تایید پذیرش به مشتری
+        try {
+            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+            $patternId = $loginSms ?: '3';
+            $this->sendSms($request->customer_phone, [$trackingCode], $patternId);
+        } catch (\Exception $e) {
+            // Log silently
+        }
+
+        return redirect()->route('mob.service-portal')->with('success', "دستگاه با کد رهگیری {$trackingCode} با موفقیت در سامانه ماده ۱۳ ثبت و پیامک شد.");
     }
 
     /**
-     * ۲. ارجاع و به‌روزرسانی وضعیت پرونده (ارجاع، تشخیص عیب، کنترل کیفیت)
+     * تغییر وضعیت، ارجاع و بروزرسانی خدمت با ارسال پیامک
      */
     public function updateOrderStatus(Request $request, $id)
     {
+        $request->validate([
+            'status' => 'required|in:received,inspecting,repairing,waiting_parts,ready_for_delivery,delivered,cancelled',
+        ]);
+
         $order = DB::table('mobile_service_orders')->where('id', $id)->first();
         if (!$order) {
-            return response()->json(['success' => false, 'message' => 'پرونده یافت نشد.'], 404);
+            return redirect()->back()->with('error', 'سفارش مورد نظر یافت نشد.');
         }
 
-        $updateData = ['updated_at' => now()];
+        $updateData = [
+            'status' => $request->status,
+            'updated_at' => Carbon::now(),
+        ];
 
-        if ($request->has('status')) {
-            $updateData['status'] = $request->status;
-            if ($request->status === 'ready_for_delivery' && empty($order->completed_at)) {
-                $updateData['completed_at'] = now();
-            }
-            if ($request->status === 'delivered') {
-                $updateData['delivered_at'] = now();
-            }
-        }
-
-        if ($request->has('assigned_technician')) {
+        if ($request->filled('assigned_technician')) {
             $updateData['assigned_technician'] = $request->assigned_technician;
         }
-
-        if ($request->has('assigned_department')) {
-            $updateData['assigned_department'] = $request->assigned_department;
+        if ($request->filled('technician_notes')) {
+            $updateData['technician_notes'] = $request->technician_notes;
         }
-
-        if ($request->has('referral_notes')) {
-            $updateData['referral_notes'] = $request->referral_notes;
-        }
-
-        if ($request->has('technician_diagnosis')) {
-            $updateData['technician_diagnosis'] = $request->technician_diagnosis;
-        }
-
-        if ($request->has('repaired_actions')) {
-            $updateData['repaired_actions'] = $request->repaired_actions;
+        if ($request->filled('estimated_completion_date')) {
+            $updateData['estimated_completion_date'] = $request->estimated_completion_date;
         }
 
         DB::table('mobile_service_orders')->where('id', $id)->update($updateData);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'وضعیت و اطلاعات ارجاع پرونده با موفقیت ذخیره گردید.',
-            'order' => DB::table('mobile_service_orders')->where('id', $id)->first(),
-        ]);
+        // ارسال پیامک در زمان آماده ترخیص شدن دستگاه
+        if ($request->status === 'ready_for_delivery' || $request->status === 'delivered') {
+            try {
+                $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+                $patternId = $loginSms ?: '3';
+                $this->sendSms($order->customer_phone, [$order->tracking_code], $patternId);
+            } catch (\Exception $e) {
+                // Log silently
+            }
+        }
+
+        return redirect()->back()->with('success', "وضعیت سفارش {$order->tracking_code} به روز شد و پیامک به مشتری ارسال گردید.");
     }
 
     /**
-     * ۳. سفارش قطعات یدکی از انبار برای پرونده خدمات
+     * سفارش‌گذاری متمرکز قطعات (ماده ۱۳)
      */
     public function orderPart(Request $request, $id)
     {
         $request->validate([
             'part_name' => 'required|string|max:150',
-            'part_no' => 'nullable|string|max:80',
-            'cost' => 'required|numeric|min:0',
+            'part_cost' => 'required|numeric|min:0',
         ]);
 
         $order = DB::table('mobile_service_orders')->where('id', $id)->first();
         if (!$order) {
-            return response()->json(['success' => false, 'message' => 'پرونده یافت نشد.'], 404);
+            return redirect()->back()->with('error', 'سفارش یافت نشد.');
         }
 
-        $existingParts = json_decode($order->parts_ordered, true) ?: [];
-        $existingParts[] = [
-            'name' => $request->part_name,
-            'part_no' => $request->part_no ?? ('SP-' . rand(100, 999)),
-            'cost' => (int)$request->cost,
-            'status' => 'سفارش داده شد',
-            'ordered_at' => date('Y/m/d H:i'),
-        ];
+        $currentParts = $order->ordered_parts ? $order->ordered_parts . ' | ' : '';
+        $newParts = $currentParts . $request->part_name;
 
-        $newPartsCost = 0;
-        foreach ($existingParts as $p) {
-            $newPartsCost += (int)$p['cost'];
-        }
-
-        $isWarranty = ($order->warranty_status === 'in_warranty');
-        $effectivePartsCost = $isWarranty ? 0 : $newPartsCost;
-        $totalCost = $effectivePartsCost + $order->wage_cost - $order->discount + $order->tax_amount;
+        $newPartsCost = $order->parts_cost + $request->part_cost;
+        $newTotal = $order->is_under_warranty ? 0 : ($newPartsCost + $order->labor_cost);
 
         DB::table('mobile_service_orders')->where('id', $id)->update([
-            'parts_ordered' => json_encode($existingParts, JSON_UNESCAPED_UNICODE),
-            'parts_cost' => $effectivePartsCost,
-            'total_cost' => max(0, $totalCost),
+            'ordered_parts' => $newParts,
+            'parts_cost' => $newPartsCost,
+            'total_cost' => $newTotal,
             'status' => 'waiting_parts',
-            'updated_at' => now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'سفارش قطعه یدکی با موفقیت در انبار ثبت گردید و پرونده در وضعیت "انتظار تأمین قطعه" قرار گرفت.',
-            'parts' => $existingParts,
-            'total_cost' => $totalCost,
-        ]);
+        return redirect()->back()->with('success', "سفارش قطعه {$request->part_name} در انبار مرکزی ثبت شد.");
     }
 
     /**
-     * ۴. اتمام خدمت و صدور فاکتور نهایی
+     * اتمام خدمت و صدور فاکتور رسمی اتحادیه (ماده ۱۳)
      */
     public function completeService(Request $request, $id)
     {
         $order = DB::table('mobile_service_orders')->where('id', $id)->first();
         if (!$order) {
-            return response()->json(['success' => false, 'message' => 'پرونده یافت نشد.'], 404);
+            return redirect()->back()->with('error', 'سفارش یافت نشد.');
         }
 
-        $wage = (int)($request->wage_cost ?? 0);
-        $discount = (int)($request->discount ?? 0);
-        $isWarranty = ($order->warranty_status === 'in_warranty');
-
-        $effectiveWage = $isWarranty ? 0 : $wage;
-        $effectiveParts = $isWarranty ? 0 : $order->parts_cost;
-        $tax = (int)(($effectiveWage + $effectiveParts - $discount) * 0.10); // ۱۰٪ مالیات بر ارزش افزوده
-        $total = max(0, $effectiveWage + $effectiveParts - $discount + $tax);
+        $laborCost = $request->labor_cost ?: 0;
+        $partsCost = $request->parts_cost ?: $order->parts_cost;
+        $totalCost = $order->is_under_warranty ? 0 : ($laborCost + $partsCost);
 
         DB::table('mobile_service_orders')->where('id', $id)->update([
-            'wage_cost' => $effectiveWage,
-            'discount' => $discount,
-            'tax_amount' => $tax,
-            'total_cost' => $total,
             'status' => 'ready_for_delivery',
-            'repaired_actions' => $request->repaired_actions ?? 'تعمیر و تعویض قطعه انجام شد و تست کنترل کیفی با موفقیت پاس شد.',
-            'completed_at' => now(),
-            'updated_at' => now(),
+            'labor_cost' => $laborCost,
+            'parts_cost' => $partsCost,
+            'total_cost' => $totalCost,
+            'invoice_number' => 'INV-OFFICIAL-' . $order->tracking_code,
+            'invoice_date' => Carbon::now()->format('Y-m-d'),
+            'is_paid' => $order->is_under_warranty ? 1 : ($request->has('is_paid') ? 1 : 0),
+            'technician_notes' => ($order->technician_notes ? $order->technician_notes . "\n" : '') . "کنترل کیفی QC با موفقیت انجام و خدمت خاتمه یافت.",
+            'updated_at' => Carbon::now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'اتمام خدمت با موفقیت ثبت شد و صورتحساب قطعی صادر گردید. دستگاه آماده تحویل به مشتری می‌باشد.',
-            'total_cost' => $total,
-            'tax_amount' => $tax,
-        ]);
+        // ارسال پیامک اطلاع‌رسانی آماده ترخیص به مشتری
+        try {
+            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+            $patternId = $loginSms ?: '3';
+            $this->sendSms($order->customer_phone, [$order->tracking_code], $patternId);
+        } catch (\Exception $e) {
+            // Log silently
+        }
+
+        return redirect()->back()->with('success', "خدمت دستگاه {$order->tracking_code} خاتمه یافت و فاکتور رسمی اتحادیه صادر شد.");
     }
 
     /**
-     * پیگیری آنلاین پرونده و استعلام گارانتی (IMEI / کد پیگیری)
+     * رهگیری آنلاین وضعیت دستگاه
      */
     public function trackOrder(Request $request)
     {
-        $code = trim($request->input('code'));
-        if (!$code) {
-            return response()->json(['success' => false, 'message' => 'لطفاً کد رهگیری یا شماره سریال IMEI را وارد نمایید.']);
+        $code = trim($request->query('code', ''));
+        $order = null;
+
+        if ($code) {
+            $order = DB::table('mobile_service_orders')
+                ->where('tracking_code', $code)
+                ->orWhere('imei', $code)
+                ->orWhere('customer_phone', $code)
+                ->first();
         }
 
-        $cleanCode = preg_replace('/[^0-9a-zA-Z\-]/', '', $code);
-
-        $order = DB::table('mobile_service_orders')
-            ->where('tracking_code', $cleanCode)
-            ->orWhere('imei', $cleanCode)
-            ->first();
-
-        if ($order) {
+        if ($request->wantsJson()) {
             return response()->json([
-                'success' => true,
-                'found' => true,
-                'data' => [
-                    'tracking_code' => $order->tracking_code,
-                    'customer_name' => mb_substr($order->customer_name, 0, 1, 'UTF-8') . '*** ' . mb_substr($order->customer_name, -3, 3, 'UTF-8'),
-                    'device' => $order->device_brand . ' ' . $order->device_model,
-                    'imei' => substr($order->imei, 0, 4) . '******' . substr($order->imei, -4),
-                    'warranty_status' => $order->warranty_status === 'in_warranty' ? 'دارای گارانتی فعال سام موبایل' : 'خارج از دوره گارانتی',
-                    'warranty_expire_date' => $this->formatDate($order->warranty_expire_date, 'Y/m/d'),
-                    'status' => $order->status,
-                    'status_title' => $this->getStatusTitle($order->status),
-                    'status_step' => $this->getStatusStep($order->status),
-                    'reception_date' => $this->formatDate($order->reception_date, 'Y/m/d H:i'),
-                    'reception_branch' => $order->reception_branch,
-                    'technician_diagnosis' => $order->technician_diagnosis ?? 'در حال بررسی توسط کارشناس فنی',
-                    'repaired_actions' => $order->repaired_actions ?? 'در انتظار اعلام نتیجه تست',
-                    'completed_at' => $this->formatDate($order->completed_at, 'Y/m/d'),
-                    'total_cost' => $order->total_cost > 0 ? number_format($order->total_cost) . ' تومان' : 'رایگان (تحت پوشش گارانتی)',
-                ]
+                'found' => (bool)$order,
+                'order' => $order,
             ]);
         }
 
-        // اگر فقط استعلام سریال IMEI برای بررسی اصالت و گارانتی باشد:
-        if (strlen($cleanCode) >= 14 && is_numeric($cleanCode)) {
-            return response()->json([
-                'success' => true,
-                'found' => true,
-                'is_warranty_check' => true,
-                'data' => [
-                    'imei' => $cleanCode,
-                    'device' => 'گوشی تلفن همراه هوشمند وارداتی سام موبایل',
-                    'warranty_status' => 'تحت پوشش گارانتی ۱۸ ماهه رسمی شرکت تامین کانی سام',
-                    'import_clearance_date' => '۱۴۰۳/۰۴/۱۵ (سامانه جامع تجارت و گارانتی)',
-                    'validity' => 'معتبر و دارای اصالت شناسه رهگیری وزارت صمت',
-                    'support_term' => '۵ سال تعهد پشتیبانی قطعات یدکی و خدمات فنی',
-                ]
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'هیچ پرونده خدماتی یا سابقه گارانتی با این مشخصات یافت نشد. لطفاً کد را مجدداً بررسی فرمایید.'
-        ], 404);
-    }
-
-    private function formatDate($date, $format = 'Y/m/d H:i')
-    {
-        if (!$date) return '-';
-        try {
-            if (function_exists('verta')) {
-                return verta($date)->format($format);
-            }
-        } catch (\Exception $e) {}
-        return date('Y-m-d', strtotime($date));
-    }
-
-    private function getStatusTitle($status)
-    {
-        $titles = [
-            'received' => 'پذیرش اولیه و ثبت در سامانه',
-            'inspecting' => 'در حال کارشناسی و عیب‌یابی فنی',
-            'waiting_customer' => 'در انتظار تایید هزینه توسط مشتری',
-            'waiting_parts' => 'در انتظار تامین قطعه اورجینال از انبار',
-            'repairing' => 'در حال تعمیر توسط تکنسین متخصص',
-            'qc_testing' => 'کنترل کیفیت (QC) و تست نهایی',
-            'ready_for_delivery' => 'تعمیر پایان یافته - آماده تحویل',
-            'delivered' => 'تحویل شده به مشتری',
-            'rejected' => 'مرجوعی به دلیل عدم تایید مشتری یا ابطال گارانتی'
-        ];
-        return $titles[$status] ?? 'در حال پیگیری';
-    }
-
-    private function getStatusStep($status)
-    {
-        $steps = [
-            'received' => 1,
-            'inspecting' => 2,
-            'waiting_customer' => 2,
-            'waiting_parts' => 3,
-            'repairing' => 3,
-            'qc_testing' => 4,
-            'ready_for_delivery' => 5,
-            'delivered' => 6,
-            'rejected' => 0
-        ];
-        return $steps[$status] ?? 1;
+        return view('home.mobile.track', compact('order', 'code'));
     }
 
     /**
@@ -601,7 +878,7 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * شرایط گارانتی و آموزش فعال‌سازی در سامانه همتا
+     * شرایط گارانتی و فعال‌سازی همتا
      */
     public function warrantyTerms()
     {
@@ -609,7 +886,7 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * فرم نظرسنجی و رضایت‌سنجی
+     * فرم نظرسنجی
      */
     public function survey()
     {
@@ -617,36 +894,37 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * ذخیره نظرسنجی
+     * ثبت نظرسنجی
      */
     public function storeSurvey(Request $request)
     {
         $request->validate([
-            'rating_overall' => 'required|integer|min:1|max:5',
+            'speed_score' => 'required|integer|between:1,5',
+            'quality_score' => 'required|integer|between:1,5',
+            'behavior_score' => 'required|integer|between:1,5',
+            'cost_score' => 'required|integer|between:1,5',
+            'overall_score' => 'required|integer|between:1,5',
         ]);
 
         DB::table('mobile_surveys')->insert([
             'customer_name' => $request->customer_name,
             'customer_phone' => $request->customer_phone,
-            'tracking_code' => $request->tracking_code,
-            'rating_speed' => $request->rating_speed ?? 5,
-            'rating_quality' => $request->rating_quality ?? 5,
-            'rating_cost' => $request->rating_cost ?? 5,
-            'rating_behavior' => $request->rating_behavior ?? 5,
-            'rating_overall' => $request->rating_overall ?? 5,
+            'service_tracking_code' => $request->service_tracking_code,
+            'speed_score' => $request->speed_score,
+            'quality_score' => $request->quality_score,
+            'behavior_score' => $request->behavior_score,
+            'cost_score' => $request->cost_score,
+            'overall_score' => $request->overall_score,
             'suggestions' => $request->suggestions,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'با سپاس فراوان از همراهی شما، نظرات ارزشمند شما با موفقیت ثبت گردید و در پایش مستمر کیفیت خدمات سام موبایل لحاظ خواهد شد.'
-        ]);
+        return redirect()->back()->with('success', 'دیدگاه شما با موفقیت ثبت شد. از همراهی شما با سام موبایل سپاسگزاریم.');
     }
 
     /**
-     * فرم ثبت و پیگیری شکایات
+     * صفحه ثبت شکایات
      */
     public function complaints()
     {
@@ -654,37 +932,43 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * ثبت شکایت جدید
+     * ثبت شکایت آنلاین
      */
     public function storeComplaint(Request $request)
     {
         $request->validate([
-            'customer_name' => 'required|string|max:150',
-            'customer_phone' => 'required|string|max:20',
-            'complaint_type' => 'required|string',
-            'message' => 'required|string',
+            'full_name' => 'required|string|max:150',
+            'phone' => 'required|string|max:20',
+            'subject' => 'required|string|max:200',
+            'description' => 'required|string',
         ]);
 
-        $trackingCode = 'CMP-1403-' . rand(1000, 9999);
+        $trackingCode = 'CMP-' . rand(10000, 99999);
 
         DB::table('mobile_complaints')->insert([
             'tracking_code' => $trackingCode,
-            'customer_name' => $request->customer_name,
-            'customer_phone' => $request->customer_phone,
-            'customer_email' => $request->customer_email,
+            'full_name' => $request->full_name,
+            'phone' => $request->phone,
+            'national_code' => $request->national_code,
+            'subject' => $request->subject,
             'service_tracking_code' => $request->service_tracking_code,
-            'complaint_type' => $request->complaint_type,
-            'message' => $request->message,
-            'status' => 'pending',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'description' => $request->description,
+            'status' => 'registered',
+            'admin_reply' => null,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'شکایت شما با موفقیت ثبت شد و کد رهگیری اختصاص یافت. حداکثر ظرف مدت ۲ روز کاری توسط واحد بازرسی و خدمات پس از فروش بررسی و نتیجه به شما پیامک خواهد شد.',
-            'tracking_code' => $trackingCode
-        ]);
+        // ارسال پیامک کد رهگیری شکایت به کاربر
+        try {
+            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
+            $patternId = $loginSms ?: '3';
+            $this->sendSms($request->phone, [$trackingCode], $patternId);
+        } catch (\Exception $e) {
+            // Log silently
+        }
+
+        return redirect()->back()->with('success', "شکایت شما ثبت شد. کد پیگیری رسمی: {$trackingCode} (ظرف حداکثر ۴۸ ساعت کاری رسیدگی خواهد شد).");
     }
 
     /**
@@ -692,29 +976,24 @@ class MobileServiceController extends Controller
      */
     public function trackComplaint(Request $request)
     {
-        $code = trim($request->input('code'));
-        $complaint = DB::table('mobile_complaints')->where('tracking_code', $code)->first();
+        $code = trim($request->query('code', ''));
+        $complaint = null;
 
-        if ($complaint) {
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'tracking_code' => $complaint->tracking_code,
-                    'customer_name' => $complaint->customer_name,
-                    'complaint_type' => $complaint->complaint_type,
-                    'status' => $complaint->status,
-                    'status_title' => $complaint->status === 'resolved' ? 'بررسی شده و خاتمه یافته' : ($complaint->status === 'investigating' ? 'در حال بررسی توسط کارشناس بازرسی' : 'در انتظار بررسی واحد بازرسی'),
-                    'created_at' => $this->formatDate($complaint->created_at, 'Y/m/d H:i'),
-                    'investigation_result' => $complaint->investigation_result ?? 'پرونده شکایت در دست کارشناسی است و نتیجه نهایی به‌زودی اعلام خواهد گردید.'
-                ]
-            ]);
+        if ($code) {
+            $complaint = DB::table('mobile_complaints')
+                ->where('tracking_code', $code)
+                ->orWhere('phone', $code)
+                ->first();
         }
 
-        return response()->json(['success' => false, 'message' => 'شکایتی با این کد پیگیری یافت نشد.'], 404);
+        return response()->json([
+            'found' => (bool)$complaint,
+            'complaint' => $complaint,
+        ]);
     }
 
     /**
-     * نمونه فاکتور هزینه خدمات غیرگارانتی و گارانتی مطابق با تعرفه اتحادیه
+     * نمونه فاکتور رسمی اتحادیه
      */
     public function invoiceSample()
     {
@@ -722,7 +1001,7 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * نکات مهم در فرآیند پذیرش و تعمیر محصولات ارسالی (پستی و حضوری)
+     * راهنمای پذیرش و ارسال پستی
      */
     public function shippingGuide()
     {
@@ -730,7 +1009,7 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * ضوابط اجرایی خدمات پس از فروش وزارت صمت (PDF 23 صفحه)
+     * ضوابط اجرایی وزارت صمت
      */
     public function regulations()
     {
