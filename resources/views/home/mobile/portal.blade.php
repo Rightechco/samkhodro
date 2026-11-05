@@ -499,35 +499,42 @@
         display: flex;
         min-height: calc(100vh - 120px);
         position: relative;
-        width: 100%;
-        max-width: 100%;
-        gap: 20px;
-        box-sizing: border-box;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 16px;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
     }
     .erp-sidebar {
-        width: var(--sidebar-w);
+        width: 270px !important;
+        min-width: 270px !important;
+        max-width: 270px !important;
         background: #ffffff;
         border: 1px solid var(--card-border);
         display: flex;
         flex-direction: column;
         flex-shrink: 0;
         position: sticky;
-        top: 85px;
+        top: 80px;
         height: fit-content;
         max-height: calc(100vh - 100px);
         overflow-y: auto;
         border-radius: 18px;
         box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
-        margin: 0;
+        margin: 0 !important;
         padding: 16px;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 100;
+        box-sizing: border-box !important;
     }
     .erp-main {
-        flex: 1;
-        padding: 0 4px 40px;
-        min-width: 0;
-        width: calc(100% - var(--sidebar-w) - 20px);
+        flex: 1 1 0% !important;
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: 100% !important;
+        padding: 0 4px 40px !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
     }
 
     /* -------------------------------------------------------------------------
@@ -931,9 +938,13 @@
 
     /* Tables */
     .table-responsive-box {
-        overflow-x: auto;
+        overflow-x: auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
         border-radius: 14px;
         border: 1px solid var(--card-border);
+        -webkit-overflow-scrolling: touch !important;
     }
     .erp-table {
         width: 100%;
@@ -5830,12 +5841,7 @@
     }
 
     function quickUpdateStatus(code) {
-        const next = prompt('تغییر وضعیت برای پرونده ' + code + ':
-1: inspecting (کارشناسی فنی)
-2: waiting_parts (انتظار قطعه)
-3: repairing (در حال تعمیر)
-4: ready_for_delivery (آماده تحویل)
-5: delivered (تحویل نهایی)', 'ready_for_delivery');
+        const next = prompt('تغییر وضعیت برای پرونده ' + code + ':\n1: inspecting (کارشناسی فنی)\n2: waiting_parts (انتظار قطعه)\n3: repairing (در حال تعمیر)\n4: ready_for_delivery (آماده تحویل)\n5: delivered (تحویل نهایی)', 'ready_for_delivery');
         if (next) {
             alert('وضعیت پرونده ' + code + ' با موفقیت به‌روزرسانی شد و پیامک برای مشتری ارسال گردید.');
         }
@@ -5844,6 +5850,33 @@
     // =========================================================================
     // ADVANCED CRM ENTERPRISE JAVASCRIPT CONTROLLERS
     // =========================================================================
+
+    
+    // Function aliases to guarantee all button calls work reliably
+    window.openSlipModal = function(code, name, phone, device, imei, issues, warranty) {
+        if (typeof openPosSlipModal === 'function') {
+            openPosSlipModal(code, name, phone, device, imei, issues, warranty);
+        }
+    };
+    window.openLabelModal = function(code, name, phone, device, imei) {
+        if (typeof openThermalLabelModal === 'function') {
+            openThermalLabelModal(code, name, phone, device, imei);
+        }
+    };
+    window.printIntakeSlip = function() {
+        if (typeof printPosSlipDirect === 'function') {
+            printPosSlipDirect();
+        } else {
+            window.print();
+        }
+    };
+    window.printThermalLabel = function() {
+        if (typeof printThermalLabelDirect === 'function') {
+            printThermalLabelDirect();
+        } else {
+            window.print();
+        }
+    };
 
     // 1. QC Inspection Modal & Engine
     function openQcModal(code, customer, device) {

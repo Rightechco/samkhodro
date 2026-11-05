@@ -46,7 +46,14 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box !important;
         }
 
         a {
@@ -66,17 +73,24 @@
             -webkit-backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--portal-border);
             box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
-            height: 70px;
+            width: 100% !important;
+            max-width: 100vw !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+            height: 64px;
         }
         .portal-topbar-inner {
-            max-width: 1720px; width: 100%;
+            max-width: 100% !important;
+            width: 100% !important;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 16px;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 12px;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
 
         .portal-topbar-right {
@@ -426,15 +440,17 @@
             margin-top: auto;
         }
         .portal-footer-inner {
-            max-width: 1720px; width: 100%;
+            max-width: 100% !important;
+            width: 100% !important;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
             gap: 16px;
-            font-size: 0.78rem;
+            flex-wrap: wrap !important;
+            font-size: 0.80rem;
             color: var(--portal-text-muted);
+            box-sizing: border-box !important;
         }
         .portal-footer-info {
             display: flex;
@@ -463,9 +479,18 @@
            --------------------------------------------------------------------- */
         @media (max-width: 991px) {
             .portal-topbar-inner {
-                padding: 0 16px;
-                height: 60px;
-            }
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 auto;
+            padding: 0 16px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
             .portal-drawer-toggle {
                 display: flex;
             }
@@ -825,10 +850,23 @@
             color: #ffffff;
         }
         .part-card-body {
-            padding: 18px;
+            font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--portal-bg);
+            color: var(--portal-text-body);
+            direction: rtl;
+            text-align: right;
+            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box !important;
         }
         .part-card-category {
             font-size: 0.72rem;
