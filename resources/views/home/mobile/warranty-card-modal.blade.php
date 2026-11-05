@@ -1,4 +1,26 @@
 <!-- WARRANTY CARD MODAL & PRINT TEMPLATE -->
+<style>
+@media (max-width: 640px) {
+    .card-header-top-flex {
+        flex-direction: column !important;
+        gap: 14px !important;
+    }
+    .card-header-icons {
+        width: 100% !important;
+        justify-content: space-around !important;
+    }
+    .card-fields-box {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .card-exclusions-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .physical-card-preview {
+        padding: 14px !important;
+    }
+}
+</style>
 <div class="modal-overlay" id="warrantyCardModal">
     <div class="modal-dialog" style="max-width: 720px; width: 95%; background: #f8fafc; padding: 24px;">
         <div class="modal-header" style="border-bottom: 1px solid var(--border-light); padding-bottom: 12px; margin-bottom: 18px;">
@@ -24,8 +46,8 @@
             <!-- Back of Card (With Filled Information) -->
             <div class="physical-card-preview" id="printableCardBack" style="background: #ffffff; border: 2px solid #0f3ba0; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(15, 59, 160, 0.15); margin-bottom: 18px; position: relative; overflow: hidden;">
                 <!-- Card Header with 3 Icons -->
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 16px;">
-                    <div style="display: flex; gap: 20px; align-items: center;">
+                <div class="card-header-top-flex" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 14px; margin-bottom: 16px;">
+                    <div class="card-header-icons" style="display: flex; gap: 20px; align-items: center;">
                         <div style="text-align: center;">
                             <div style="width: 38px; height: 38px; border-radius: 50%; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
@@ -47,7 +69,7 @@
                     </div>
 
                     <!-- 5 Filled Fields -->
-                    <div style="flex: 1; max-width: 420px; display: flex; flex-direction: column; gap: 8px;">
+                    <div class="card-fields-box" style="flex: 1; max-width: 420px; display: flex; flex-direction: column; gap: 8px;">
                         <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 4px 10px;">
                             <span style="font-size: 0.78rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
                                 <span style="background: #0f3ba0; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem;">۱</span>
@@ -96,7 +118,7 @@
                 </div>
 
                 <!-- Exclusion Points (2 Columns) -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; font-size: 0.76rem; color: #1e293b; padding: 0 10px 14px;">
+                <div class="card-exclusions-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; font-size: 0.76rem; color: #1e293b; padding: 0 10px 14px;">
                     <div>• ضربه دیدگی و شکستگی</div>
                     <div>• خرابی ناشی از نوسانات برق</div>
                     <div>• نفوذ مایعات و رطوبت</div>

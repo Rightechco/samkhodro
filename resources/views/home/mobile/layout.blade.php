@@ -378,83 +378,123 @@
         }
 
         /* ========================================================
-           MOBILE DRAWER (FOR SMARTPHONES)
+           MOBILE DRAWER (FOR SMARTPHONES) - BULLETPROOF RTL
            ======================================================== */
         .mobile-drawer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 1050;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            background: rgba(15, 23, 42, 0.6) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+            z-index: 1050 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transition: opacity 0.3s ease, visibility 0.3s ease !important;
         }
         .mobile-drawer-overlay.active {
-            opacity: 1;
-            visibility: visible;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
         }
         .mobile-drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 310px;
-            max-width: 85vw;
-            background: #ffffff;
-            z-index: 1060;
-            transform: translateX(100%);
-            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-            box-shadow: -10px 0 30px rgba(15, 23, 42, 0.15);
+            position: fixed !important;
+            top: 0 !important;
+            right: -360px !important;
+            left: auto !important;
+            bottom: 0 !important;
+            width: 320px !important;
+            max-width: 86vw !important;
+            background: #ffffff !important;
+            z-index: 1060 !important;
+            transform: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            box-shadow: -10px 0 35px rgba(15, 23, 42, 0.18) !important;
+            direction: rtl !important;
+            text-align: right !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            transition: right 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.32s !important;
         }
         .mobile-drawer.active {
-            transform: translateX(0);
+            right: 0 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            opacity: 1 !important;
         }
         .drawer-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border-light);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 16px 20px !important;
+            border-bottom: 1px solid var(--border-light) !important;
+            direction: rtl !important;
+            text-align: right !important;
+            background: #f8fafc !important;
         }
         .drawer-close {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: var(--radius-sm) !important;
+            background: #ffffff !important;
+            border: 1px solid var(--border-light) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            color: var(--text-muted) !important;
+            cursor: pointer !important;
         }
         .drawer-nav-list {
-            list-style: none;
-            padding: 16px;
-            overflow-y: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            list-style: none !important;
+            padding: 14px 16px !important;
+            overflow-y: auto !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            direction: rtl !important;
+            text-align: right !important;
         }
         .drawer-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border-radius: var(--radius-md);
-            color: var(--text-body);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 10px !important;
+            padding: 11px 14px !important;
+            border-radius: var(--radius-md) !important;
+            color: var(--text-body) !important;
+            font-weight: 600 !important;
+            font-size: 0.92rem !important;
+            transition: all 0.2s ease !important;
+            direction: rtl !important;
+            text-align: right !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .drawer-nav-dot {
+            width: 6px !important;
+            height: 6px !important;
+            min-width: 6px !important;
+            border-radius: 50% !important;
+            background: var(--primary) !important;
+            opacity: 0.45 !important;
+            transition: all 0.2s ease !important;
+            flex-shrink: 0 !important;
+        }
+        .drawer-nav-link:hover .drawer-nav-dot,
+        .drawer-nav-link.active .drawer-nav-dot {
+            opacity: 1 !important;
+            transform: scale(1.3) !important;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.6) !important;
         }
         .drawer-nav-link:hover, .drawer-nav-link.active {
-            background: var(--primary-light);
-            color: var(--primary);
+            background: var(--primary-light) !important;
+            color: var(--primary) !important;
         }
 
         /* ========================================================
@@ -883,19 +923,35 @@
             </button>
         </div>
         <ul class="drawer-nav-list">
-            <li><a href="{{ url('/') }}" class="drawer-nav-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}">صفحه اصلی</a></li>
-            <li><a href="{{ url('/#inquiry-section') }}" class="drawer-nav-link">استعلام گارانتی و اصالت (IMEI)</a></li>
-            <li><a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') ? 'active' : '' }}">سامانه مدیریت خدمات (ماده ۱۳)</a></li>
-            <li><a href="{{ url('/warranty-terms') }}" class="drawer-nav-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}">شرایط گارانتی ۱۸ ماهه</a></li>
-            <li><a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}">منشور حقوق مشتریان</a></li>
-            <li><a href="{{ url('/shipping-guide') }}" class="drawer-nav-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}">راهنمای پذیرش و ارسال پستی</a></li>
-            <li><a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}">نمونه فاکتور رسمی اتحادیه</a></li>
-            <li><a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}">ثبت و پیگیری شکایات</a></li>
-            <li><a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}">نظرسنجی کیفیت خدمت</a></li>
-            <li><a href="{{ url('/regulations') }}" class="drawer-nav-link {{ request()->is('*regulations*') ? 'active' : '' }}">ضوابط اجرایی وزارت صمت</a></li>
+            @if(Auth::check() || session('mob_user_id'))
+                <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px;">
+                    <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="drawer-nav-link" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; font-weight: 700;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>{{ Auth::check() ? Auth::user()->name : (session('mob_user_name') ?: 'پنل کاربری من') }}</span>
+                    </a>
+                </li>
+            @else
+                <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px;">
+                    <a href="{{ route('mob.login') }}" class="drawer-nav-link" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; font-weight: 700;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        <span>ورود یا ثبت‌نام با پیامک</span>
+                    </a>
+                </li>
+            @endif
+            <li><a href="{{ url('/') }}" class="drawer-nav-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>صفحه اصلی</span></a></li>
+            <li><a href="{{ url('/#inquiry-section') }}" class="drawer-nav-link"><span class="drawer-nav-dot"></span><span>استعلام گارانتی و اصالت (IMEI)</span></a></li>
+            <li><a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>سامانه مدیریت خدمات (ماده ۱۳)</span></a></li>
+            <li><a href="{{ url('/warranty-terms') }}" class="drawer-nav-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>شرایط گارانتی ۱۸ ماهه</span></a></li>
+            <li><a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>منشور حقوق مشتریان</span></a></li>
+            <li><a href="{{ url('/shipping-guide') }}" class="drawer-nav-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>راهنمای پذیرش و ارسال پستی</span></a></li>
+            <li><a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>نمونه فاکتور رسمی اتحادیه</span></a></li>
+            <li><a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>ثبت و پیگیری شکایات</span></a></li>
+            <li><a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>نظرسنجی کیفیت خدمت</span></a></li>
+            <li><a href="{{ url('/regulations') }}" class="drawer-nav-link {{ request()->is('*regulations*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>ضوابط اجرایی وزارت صمت</span></a></li>
             <li style="margin-top: 10px; border-top: 1px solid var(--border-light); padding-top: 10px;">
                 <a href="https://taminkanisam.co.ir" class="drawer-nav-link" style="color: var(--primary);">
-                    <span>بازگشت به سایت خودرو</span>
+                    <span class="drawer-nav-dot"></span>
+                    <span>بازگشت به سایت اصلی تامین کانی سام</span>
                 </a>
             </li>
         </ul>
@@ -1080,26 +1136,32 @@
 
     <!-- Drawer Script -->
     <script>
-        const openDrawerBtn = document.getElementById('openMobileDrawerBtn');
-        const closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
-        const mobileDrawer = document.getElementById('mobileDrawer');
-        const mobileOverlay = document.getElementById('mobileDrawerOverlay');
+        document.addEventListener('DOMContentLoaded', function() {
+            var openDrawerBtn = document.getElementById('openMobileDrawerBtn');
+            var closeDrawerBtn = document.getElementById('closeMobileDrawerBtn');
+            var mobileDrawer = document.getElementById('mobileDrawer');
+            var mobileOverlay = document.getElementById('mobileDrawerOverlay');
 
-        function openDrawer() {
-            mobileDrawer.classList.add('active');
-            mobileOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+            // Explicitly force closed on initial page load
+            if (mobileDrawer) mobileDrawer.classList.remove('active');
+            if (mobileOverlay) mobileOverlay.classList.remove('active');
 
-        function closeDrawer() {
-            mobileDrawer.classList.remove('active');
-            mobileOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+            function openDrawer() {
+                if (mobileDrawer) mobileDrawer.classList.add('active');
+                if (mobileOverlay) mobileOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
 
-        if (openDrawerBtn) openDrawerBtn.addEventListener('click', openDrawer);
-        if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
-        if (mobileOverlay) mobileOverlay.addEventListener('click', closeDrawer);
+            function closeDrawer() {
+                if (mobileDrawer) mobileDrawer.classList.remove('active');
+                if (mobileOverlay) mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (openDrawerBtn) openDrawerBtn.addEventListener('click', openDrawer);
+            if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+            if (mobileOverlay) mobileOverlay.addEventListener('click', closeDrawer);
+        });
     </script>
     @stack('scripts')
 </body>

@@ -793,7 +793,8 @@
     .categoryHeaderResponsive {
         position: fixed !important;
         top: 0 !important;
-        right: 0 !important;
+        right: -360px !important;
+        left: auto !important;
         bottom: 0 !important;
         width: 320px !important;
         max-width: 88vw !important;
@@ -801,19 +802,26 @@
         background: var(--hdr-drawer-bg) !important;
         box-shadow: -15px 0 45px rgba(15, 23, 42, 0.12), inset -1px 0 0 #e2e8f0 !important;
         z-index: 99999 !important;
-        transform: translateX(100%) !important;
-        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
         direction: rtl !important;
+        text-align: right !important;
         overflow-y: auto !important;
         -webkit-overflow-scrolling: touch !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
         padding: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        opacity: 0 !important;
+        transform: none !important;
+        transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s !important;
     }
 
     .categoryHeaderResponsive.is-open {
-        transform: translateX(0) !important;
+        right: 0 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        opacity: 1 !important;
     }
 
     .drawer-top-bar {
@@ -1030,22 +1038,26 @@
         display: none;
         list-style: none !important;
         margin: 0 !important;
-        padding: 6px 14px 12px 14px !important;
+        padding: 6px 12px 12px 12px !important;
         border-top: 1px dashed #e2e8f0 !important;
         background: #f8fafc !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
 
     .drawer-submenu li {
-        margin: 5px 0 !important;
+        margin: 4px 0 !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
 
     .drawer-submenu li a {
         display: flex !important;
         align-items: center !important;
-        justify-content: space-between !important;
+        justify-content: flex-start !important;
         direction: rtl !important;
         text-align: right !important;
-        gap: 10px !important;
+        gap: 8px !important;
         padding: 9px 12px !important;
         border-radius: 8px !important;
         color: #475569 !important;
@@ -1053,22 +1065,37 @@
         font-weight: 600 !important;
         text-decoration: none !important;
         transition: all 0.2s ease !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .drawer-submenu li a:hover,
     .drawer-submenu li a:active {
         color: #1d4ed8 !important;
         background: #eff6ff !important;
-        transform: translateX(-4px) !important;
+        transform: translateX(-3px) !important;
     }
 
+    /* Remove redundant pseudo ::before to avoid duplicate dots and alignment splitting */
     .drawer-submenu li a::before {
-        content: '' !important;
-        width: 5px !important;
-        height: 5px !important;
-        border-radius: 50% !important;
-        background: #2563eb !important;
-        opacity: 0.6 !important;
+        content: none !important;
+        display: none !important;
+    }
+
+    .drawer-submenu li a .drawer-item-inner {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        direction: rtl !important;
+        text-align: right !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .drawer-submenu li a .circular-live-badge {
+        margin-right: auto !important;
+        margin-left: 0 !important;
     }
 
     .drawer-footer {
@@ -1487,69 +1514,113 @@
         transform: scale(1.3) !important;
     }
 
-    /* استایل دراور موبایل برای خدمات پس از فروش - کاملاً تمیز */
+    /* استایل دراور موبایل برای خدمات پس از فروش - کاملاً تمیز، راست‌چین و جاستیفای */
     .drawer-sub-parent {
-        border-bottom: 1px dashed #e2e8f0;
-        margin-bottom: 4px;
-        padding-bottom: 4px;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        background: #ffffff !important;
+        margin: 6px 0 !important;
+        overflow: hidden !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
     .drawer-sub-parent:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+        margin-bottom: 0 !important;
     }
     .drawer-sub-parent-head {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 9px 12px !important;
-        border-radius: 8px !important;
+        padding: 10px 14px !important;
         font-size: 0.88rem !important;
         font-weight: 700 !important;
-        color: #1e293b !important;
+        color: #0f172a !important;
         cursor: pointer !important;
-        transition: background 0.2s;
+        background: #f8fafc !important;
+        direction: rtl !important;
+        text-align: right !important;
+        transition: background 0.2s ease, color 0.2s ease !important;
+        border-bottom: 1px solid transparent !important;
     }
-    .drawer-sub-parent-head:hover {
-        background: #edf2f7 !important;
+    .drawer-sub-parent-head:hover,
+    .drawer-sub-parent.open .drawer-sub-parent-head {
+        background: #eff6ff !important;
+        color: #1d4ed8 !important;
+        border-bottom-color: #e2e8f0 !important;
     }
     .drawer-sub-parent-arrow {
-        color: #94a3b8;
-        transition: transform 0.25s ease;
-        display: flex;
-        align-items: center;
+        color: #64748b !important;
+        transition: transform 0.25s ease, color 0.25s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-shrink: 0 !important;
     }
     .drawer-sub-parent.open .drawer-sub-parent-arrow {
-        transform: rotate(-90deg);
-        color: #2563eb;
+        transform: rotate(-90deg) !important;
+        color: #2563eb !important;
     }
     .drawer-child-list {
         display: none;
         list-style: none !important;
-        margin: 4px 0 8px !important;
-        padding: 0 16px 0 0 !important;
-        border-right: 2px solid #cbd5e1 !important;
+        margin: 0 !important;
+        padding: 6px 8px 10px 8px !important;
+        background: #ffffff !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
     .drawer-sub-parent.open .drawer-child-list {
         display: block !important;
     }
     .drawer-child-list li {
         margin: 3px 0 !important;
+        direction: rtl !important;
+        text-align: right !important;
     }
     .drawer-child-list li a {
         display: flex !important;
-        align-items: center !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
         gap: 8px !important;
-        padding: 7px 10px !important;
-        border-radius: 6px !important;
+        padding: 8px 10px !important;
+        border-radius: 7px !important;
         color: #475569 !important;
-        font-size: 0.83rem !important;
+        font-size: 0.84rem !important;
         font-weight: 500 !important;
         text-decoration: none !important;
+        direction: rtl !important;
+        text-align: right !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        line-height: 1.55 !important;
+        transition: all 0.2s ease !important;
+    }
+    .drawer-child-list li a::before {
+        content: none !important;
+        display: none !important;
     }
     .drawer-child-list li a:hover {
         color: #1d4ed8 !important;
-        background: #edf2f7 !important;
+        background: #eff6ff !important;
+    }
+    .drawer-child-list li a .drawer-item-inner {
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+        direction: rtl !important;
+        text-align: right !important;
+        width: 100% !important;
+    }
+    .drawer-child-list li a .drawer-item-inner .drawer-sub-dot {
+        margin-top: 7px !important;
+        flex-shrink: 0 !important;
+    }
+    .drawer-child-list li a .drawer-item-inner span:last-child {
+        direction: rtl !important;
+        text-align: right !important;
+        line-height: 1.55 !important;
+        word-break: break-word !important;
+        flex: 1 !important;
     }
 </style>
 
