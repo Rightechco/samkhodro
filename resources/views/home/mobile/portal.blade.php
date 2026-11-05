@@ -1380,6 +1380,271 @@
         color: #065f46;
     }
 
+
+    /* =========================================================================
+       ADMIN ULTRA-PREMIUM MOBILE STICKY BOTTOM NAVIGATION BAR & NATIVE STYLES
+       ========================================================================= */
+    .admin-mobile-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: calc(66px + env(safe-area-inset-bottom, 0px));
+        padding: 0 8px env(safe-area-inset-bottom, 0px) 8px;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border-top: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 -6px 28px rgba(15, 23, 42, 0.09);
+        z-index: 10050;
+        align-items: center;
+        justify-content: space-around;
+        direction: rtl;
+    }
+
+    .admin-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 700;
+        height: 58px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        border-radius: 12px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .admin-nav-item:active {
+        transform: scale(0.92);
+    }
+    .admin-nav-item.active {
+        color: #2563eb !important;
+        font-weight: 900 !important;
+    }
+    .admin-nav-item.active .admin-nav-icon {
+        transform: translateY(-2px);
+        color: #2563eb !important;
+    }
+    .admin-nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        width: 18px;
+        height: 3px;
+        border-radius: 99px;
+        background: #2563eb;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.45);
+    }
+
+    .admin-nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .admin-badge-count {
+        position: absolute;
+        top: -4px;
+        right: -8px;
+        background: #ef4444;
+        color: #ffffff;
+        font-size: 0.65rem;
+        font-weight: 900;
+        padding: 1px 6px;
+        border-radius: 99px;
+        line-height: 1.2;
+        border: 1.5px solid #ffffff;
+    }
+
+    /* Center Elevated Hero Action Button */
+    .admin-nav-center {
+        position: relative;
+        top: -18px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .admin-center-btn {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+        box-shadow: 0 10px 25px -4px rgba(37, 99, 235, 0.45), 0 0 0 5px rgba(255, 255, 255, 0.95) !important;
+        border: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    .admin-center-btn:hover {
+        transform: translateY(-3px) scale(1.05) !important;
+        box-shadow: 0 14px 30px -4px rgba(37, 99, 235, 0.55), 0 0 0 6px #ffffff !important;
+    }
+    .admin-center-btn:active {
+        transform: translateY(0) scale(0.95) !important;
+    }
+    .admin-center-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1px;
+    }
+    .admin-center-label {
+        position: absolute;
+        bottom: -18px;
+        font-size: 0.68rem;
+        font-weight: 800;
+        color: #2563eb;
+        white-space: nowrap;
+    }
+
+    /* =========================================================================
+       COMPREHENSIVE NATIVE RESPONSIVE SUITE FOR SCREENS <= 991px
+       ========================================================================= */
+    @media (max-width: 991px) {
+        .admin-mobile-nav {
+            display: flex !important;
+        }
+        body {
+            overflow-x: hidden !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+        }
+        .erp-container {
+            flex-direction: column !important;
+            overflow-x: hidden !important;
+            width: 100vw !important;
+            max-width: 100vw !important;
+        }
+        .erp-main {
+            padding: 10px 12px 110px 12px !important;
+            width: 100% !important;
+            max-width: 100vw !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
+        }
+        .erp-topbar {
+            padding: 10px 14px !important;
+            border-radius: 14px !important;
+            margin-bottom: 16px !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+        .erp-top-actions {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        .erp-search-box {
+            display: none !important;
+        }
+        .erp-kpi-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+        }
+        .erp-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+        }
+        .erp-grid-2, .erp-grid-3, .form-grid-2, .erp-form-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+        }
+        /* 2-column Intake Layout (Form + Live Receipt) */
+        #tab-new-intake > div[style*="grid-template-columns"] {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
+        }
+        .intake-receipt-live {
+            position: static !important;
+            margin-top: 20px !important;
+        }
+        /* Cards and tables */
+        .erp-card-body, .erp-panel {
+            padding: 14px !important;
+        }
+        .erp-card-header, .erp-panel-header {
+            padding: 12px 14px !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 10px !important;
+        }
+        .erp-panel-actions {
+            width: 100% !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+        }
+        /* Spare Parts Grid */
+        .parts-grid-cards {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+        }
+        /* Modals */
+        .warranty-modal-backdrop {
+            padding: 10px !important;
+        }
+        .warranty-modal-box {
+            max-width: 95vw !important;
+            width: 95vw !important;
+            padding: 16px !important;
+            border-radius: 18px !important;
+            margin: auto !important;
+        }
+        .filter-pills-wrap {
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            padding-bottom: 6px !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        .cms-subtabs-nav {
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            padding-bottom: 6px !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        /* Table actions */
+        .btn-table-action {
+            padding: 6px 9px !important;
+            font-size: 0.72rem !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .erp-kpi-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 8px !important;
+        }
+        .kpi-card {
+            padding: 12px !important;
+        }
+        .kpi-val {
+            font-size: 1.4rem !important;
+        }
+        .erp-page-title {
+            font-size: 1.15rem !important;
+        }
+        .admin-center-btn {
+            width: 54px !important;
+            height: 54px !important;
+        }
+    }
+
 </style>
 @endpush
 
@@ -4576,6 +4841,55 @@
      HIDDEN PRINT CONTAINER FOR NATIVE BROWSER PRINTING
      ========================================================================= -->
 <div id="printContainer" style="display: none;"></div>
+
+
+<!-- =========================================================================
+     ADMIN ULTRA-PREMIUM MOBILE STICKY BOTTOM NAVIGATION BAR
+     ========================================================================= -->
+<nav class="admin-mobile-nav" id="adminMobileNav">
+    <!-- 1. Dashboard -->
+    <button type="button" class="admin-nav-item {{ $activeTab === 'tab-overview' ? 'active' : '' }}" onclick="switchErpTab('tab-overview', this, event)" data-tab="tab-overview">
+        <div class="admin-nav-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <span>داشبورد</span>
+    </button>
+
+    <!-- 2. Orders -->
+    <button type="button" class="admin-nav-item {{ $activeTab === 'tab-orders' ? 'active' : '' }}" onclick="switchErpTab('tab-orders', this, event)" data-tab="tab-orders">
+        <div class="admin-nav-icon" style="position: relative;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span class="admin-badge-count">{{ $stats['total'] ?? 3 }}</span>
+        </div>
+        <span>پرونده‌ها</span>
+    </button>
+
+    <!-- 3. CENTER HERO ACTION: Quick Intake (پذیرش سریع) -->
+    <div class="admin-nav-center">
+        <button type="button" class="admin-center-btn" onclick="switchErpTab('tab-new-intake', this, event)" data-tab="tab-new-intake" title="پذیرش دستگاه جدید">
+            <div class="admin-center-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </div>
+            <span class="admin-center-label">پذیرش</span>
+        </button>
+    </div>
+
+    <!-- 4. Spare Parts -->
+    <button type="button" class="admin-nav-item {{ $activeTab === 'tab-parts' ? 'active' : '' }}" onclick="switchErpTab('tab-parts', this, event)" data-tab="tab-parts">
+        <div class="admin-nav-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <span>انبار قطعات</span>
+    </button>
+
+    <!-- 5. Drawer Menu / More -->
+    <button type="button" class="admin-nav-item" onclick="toggleErpSidebar(true)">
+        <div class="admin-nav-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </div>
+        <span>منوی کامل</span>
+    </button>
+</nav>
 
 @endsection
 
