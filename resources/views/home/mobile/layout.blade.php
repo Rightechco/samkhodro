@@ -112,6 +112,9 @@
 
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden !important;
+            width: 100% !important;
+            max-width: 100vw !important;
         }
 
         body {
@@ -120,15 +123,19 @@
             line-height: 1.75;
             direction: rtl;
             text-align: right;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
+            width: 100% !important;
+            max-width: 100vw !important;
             font-size: 15px;
-            /* Extra bottom padding on mobile so content is never covered by native sticky footer */
+            position: relative;
             padding-bottom: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         @media (max-width: 991px) {
             body {
-                padding-bottom: 74px;
+                /* Safe bottom space for native app floating tab bar */
+                padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)) !important;
             }
         }
 
@@ -164,6 +171,11 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
+        }
+        @media (max-width: 991px) {
+            .top-announcement-bar {
+                display: none !important; /* Eliminate mobile blowout and provide native app look */
+            }
         }
         .top-badge-live {
             display: inline-flex;
@@ -366,19 +378,98 @@
             }
         }
         @media (max-width: 991px) {
+            .site-header {
+                box-shadow: 0 2px 16px rgba(15, 23, 42, 0.05) !important;
+                background: rgba(255, 255, 255, 0.94) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+            }
+            .header-inner {
+                height: 58px !important;
+                padding: 0 14px !important;
+                gap: 10px !important;
+            }
+            .brand-logo-area {
+                gap: 8px !important;
+            }
+            .brand-icon-box {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 10px !important;
+            }
+            .brand-icon-box svg {
+                width: 20px !important;
+                height: 20px !important;
+            }
+            .brand-titles {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 6px !important;
+            }
+            .brand-name {
+                font-size: 1.05rem !important;
+            }
+            .brand-sub {
+                display: none !important;
+            }
+            .brand-app-badge {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 3px !important;
+                font-size: 0.68rem !important;
+                font-weight: 800 !important;
+                color: #059669 !important;
+                background: #ecfdf5 !important;
+                border: 1px solid #a7f3d0 !important;
+                padding: 1px 7px !important;
+                border-radius: 99px !important;
+            }
             .nav-single-line {
-                display: none;
+                display: none !important;
             }
             .btn-track-quick {
-                display: none;
+                display: none !important;
+            }
+            .header-actions {
+                gap: 8px !important;
+            }
+            .mobile-quick-auth-btn {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 5px !important;
+                padding: 6px 12px !important;
+                border-radius: var(--radius-pill) !important;
+                font-size: 0.78rem !important;
+                font-weight: 700 !important;
+                background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+                color: #1d4ed8 !important;
+                border: 1px solid #bfdbfe !important;
+                text-decoration: none !important;
             }
             .mobile-menu-toggle {
-                display: flex;
+                display: flex !important;
+                width: 38px !important;
+                height: 38px !important;
+                border-radius: 10px !important;
+                background: #f1f5f9 !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+            .mobile-menu-toggle:active {
+                transform: scale(0.92);
+            }
+        }
+        @media (min-width: 992px) {
+            .brand-app-badge {
+                display: none !important;
+            }
+            .mobile-quick-auth-btn {
+                display: none !important;
             }
         }
 
         /* ========================================================
-           MOBILE DRAWER (FOR SMARTPHONES) - BULLETPROOF RTL
+           MOBILE DRAWER (FOR SMARTPHONES) - ULTRA-PREMIUM NATIVE SHEET
            ======================================================== */
         .mobile-drawer-overlay {
             position: fixed !important;
@@ -386,9 +477,9 @@
             left: 0 !important;
             right: 0 !important;
             bottom: 0 !important;
-            background: rgba(15, 23, 42, 0.6) !important;
-            backdrop-filter: blur(4px) !important;
-            -webkit-backdrop-filter: blur(4px) !important;
+            background: rgba(15, 23, 42, 0.65) !important;
+            backdrop-filter: blur(6px) !important;
+            -webkit-backdrop-filter: blur(6px) !important;
             z-index: 1050 !important;
             opacity: 0 !important;
             visibility: hidden !important;
@@ -413,13 +504,16 @@
             transform: none !important;
             display: flex !important;
             flex-direction: column !important;
-            box-shadow: -10px 0 35px rgba(15, 23, 42, 0.18) !important;
+            box-shadow: -15px 0 45px rgba(15, 23, 42, 0.2) !important;
             direction: rtl !important;
             text-align: right !important;
             visibility: hidden !important;
             pointer-events: none !important;
             opacity: 0 !important;
-            transition: right 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.32s !important;
+            transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.35s !important;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            overflow: hidden;
         }
         .mobile-drawer.active {
             right: 0 !important;
@@ -431,7 +525,7 @@
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
-            padding: 16px 20px !important;
+            padding: 16px 18px !important;
             border-bottom: 1px solid var(--border-light) !important;
             direction: rtl !important;
             text-align: right !important;
@@ -440,7 +534,7 @@
         .drawer-close {
             width: 36px !important;
             height: 36px !important;
-            border-radius: var(--radius-sm) !important;
+            border-radius: 50% !important;
             background: #ffffff !important;
             border: 1px solid var(--border-light) !important;
             display: flex !important;
@@ -448,11 +542,17 @@
             justify-content: center !important;
             color: var(--text-muted) !important;
             cursor: pointer !important;
+            transition: all 0.2s;
         }
-        .drawer-nav-list {
+        .drawer-close:active {
+            transform: scale(0.9);
+            background: #f1f5f9;
+        }
+        .drawer-body-scroll {
             list-style: none !important;
-            padding: 14px 16px !important;
+            padding: 14px 14px 24px 14px !important;
             overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
             flex: 1 !important;
             display: flex !important;
             flex-direction: column !important;
@@ -460,43 +560,84 @@
             direction: rtl !important;
             text-align: right !important;
         }
+        .drawer-section-heading {
+            font-size: 0.74rem !important;
+            font-weight: 800 !important;
+            color: #94a3b8 !important;
+            text-transform: uppercase !important;
+            padding: 10px 8px 4px 8px !important;
+            letter-spacing: 0.5px !important;
+        }
+        .drawer-nav-item {
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
+        }
         .drawer-nav-link {
             display: flex !important;
             align-items: center !important;
-            justify-content: flex-start !important;
-            gap: 10px !important;
-            padding: 11px 14px !important;
-            border-radius: var(--radius-md) !important;
-            color: var(--text-body) !important;
+            justify-content: space-between !important;
+            padding: 10px 12px !important;
+            border-radius: 12px !important;
+            color: #334155 !important;
             font-weight: 600 !important;
-            font-size: 0.92rem !important;
-            transition: all 0.2s ease !important;
+            font-size: 0.9rem !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
             direction: rtl !important;
             text-align: right !important;
             width: 100% !important;
             box-sizing: border-box !important;
+            text-decoration: none !important;
         }
-        .drawer-nav-dot {
-            width: 6px !important;
-            height: 6px !important;
-            min-width: 6px !important;
-            border-radius: 50% !important;
-            background: var(--primary) !important;
-            opacity: 0.45 !important;
-            transition: all 0.2s ease !important;
+        .drawer-link-inner {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+        }
+        .drawer-link-icon {
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 9px !important;
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
             flex-shrink: 0 !important;
+            transition: all 0.2s ease !important;
         }
-        .drawer-nav-link:hover .drawer-nav-dot,
-        .drawer-nav-link.active .drawer-nav-dot {
-            opacity: 1 !important;
-            transform: scale(1.3) !important;
-            box-shadow: 0 0 8px rgba(37, 99, 235, 0.6) !important;
+        .drawer-link-arrow {
+            color: #cbd5e1 !important;
+            display: flex !important;
+            align-items: center !important;
         }
         .drawer-nav-link:hover, .drawer-nav-link.active {
-            background: var(--primary-light) !important;
-            color: var(--primary) !important;
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
         }
-
+        .drawer-nav-link:hover .drawer-link-icon, .drawer-nav-link.active .drawer-link-icon {
+            background: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        }
+        .drawer-nav-link:hover .drawer-link-arrow, .drawer-nav-link.active .drawer-link-arrow {
+            color: #2563eb !important;
+            transform: translateX(-3px) !important;
+        }
+        .drawer-nav-link:active {
+            transform: scale(0.98);
+        }
+        .drawer-user-card {
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%) !important;
+            border: 1px solid #bfdbfe !important;
+            border-radius: 14px !important;
+            padding: 12px 14px !important;
+            margin-bottom: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            text-decoration: none !important;
+        }
         /* ========================================================
            GLOBAL LIGHT THEME COMMON COMPONENTS
            ======================================================== */
@@ -749,7 +890,7 @@
         }
 
         /* ========================================================
-           STICKY NATIVE BOTTOM BAR (APP-LIKE FOR MOBILE)
+           ULTRA-PREMIUM NATIVE APP BOTTOM BAR (iOS / ANDROID FEEL)
            ======================================================== */
         .native-bottom-bar {
             display: none;
@@ -757,56 +898,107 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 64px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-light);
-            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            height: calc(64px + env(safe-area-inset-bottom, 0px));
+            padding: 0 8px env(safe-area-inset-bottom, 0px) 8px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-top: 1px solid rgba(226, 232, 240, 0.85);
+            box-shadow: 0 -4px 25px rgba(15, 23, 42, 0.07);
             z-index: 1040;
-            padding: 0 8px;
             align-items: center;
             justify-content: space-around;
+            direction: rtl;
         }
+
         .native-tab-item {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            color: var(--text-muted);
+            gap: 3px;
+            color: #64748b;
             font-size: 0.72rem;
             font-weight: 600;
-            height: 100%;
-            transition: all 0.2s ease;
+            height: 56px;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            border-radius: 12px;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        .native-tab-item:active {
+            transform: scale(0.92);
+        }
+
         .native-tab-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s ease;
+            width: 26px;
+            height: 26px;
+            transition: transform 0.2s ease, color 0.2s ease;
         }
-        .native-tab-item.active, .native-tab-item:hover {
-            color: var(--primary);
+
+        .native-tab-item.active {
+            color: #2563eb !important;
+            font-weight: 800 !important;
         }
+
         .native-tab-item.active .native-tab-icon {
             transform: translateY(-2px);
+            color: #2563eb !important;
         }
-        .native-tab-item.active::after {
+
+        .native-tab-item.active::before {
             content: '';
             position: absolute;
-            top: 0;
-            width: 24px;
+            top: 4px;
+            width: 16px;
             height: 3px;
-            background: var(--primary);
-            border-radius: var(--radius-pill);
+            border-radius: 99px;
+            background: #2563eb;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Center Elevated Hero Action Button (App Experience) */
+        .native-tab-center {
+            position: relative;
+            top: -12px;
+            flex: 1;
+        }
+
+        .native-center-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.42), 0 0 0 4px #ffffff;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .native-tab-center:active .native-center-btn {
+            transform: scale(0.92);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5), 0 0 0 4px #ffffff;
+        }
+
+        .native-center-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin-top: 3px;
+            white-space: nowrap;
         }
 
         @media (max-width: 991px) {
             .native-bottom-bar {
-                display: flex;
+                display: flex !important;
             }
         }
     </style>
@@ -844,6 +1036,7 @@
                 </div>
                 <div class="brand-titles">
                     <span class="brand-name">سام موبایل</span>
+                    <span class="brand-app-badge">✓ گارانتی رسمی</span>
                     <span class="brand-sub">خدمات پس از فروش تامین کانی سام</span>
                 </div>
             </a>
@@ -889,10 +1082,18 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <span>{{ Auth::check() ? Auth::user()->name : (session('mob_user_name') ?: 'پنل کاربری') }}</span>
                     </a>
+                    <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="mobile-quick-auth-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>پنل</span>
+                    </a>
                 @else
                     <a href="{{ route('mob.login') }}" class="btn-track-quick" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                         <span>ورود / ثبت‌نام پیامکی</span>
+                    </a>
+                    <a href="{{ route('mob.login') }}" class="mobile-quick-auth-btn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        <span>ورود</span>
                     </a>
                 @endif
 
@@ -911,52 +1112,173 @@
     <!-- Mobile Drawer -->
     <div class="mobile-drawer-overlay" id="mobileDrawerOverlay"></div>
     <div class="mobile-drawer" id="mobileDrawer">
+        <!-- Drawer Header -->
         <div class="drawer-header">
             <div class="brand-logo-area">
                 <div class="brand-icon-box" style="width: 36px; height: 36px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 </div>
-                <span class="brand-name" style="font-size: 1.1rem;">سام موبایل</span>
+                <div style="display: flex; flex-direction: column;">
+                    <span class="brand-name" style="font-size: 1.05rem;">سام موبایل</span>
+                    <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">گارانتی ۱۸ ماهه رسمی</span>
+                </div>
             </div>
-            <button class="drawer-close" id="closeMobileDrawerBtn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <button class="drawer-close" id="closeMobileDrawerBtn" aria-label="بستن منو">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
         </div>
-        <ul class="drawer-nav-list">
-            @if(Auth::check() || session('mob_user_id'))
-                <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px;">
-                    <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="drawer-nav-link" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; font-weight: 700;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        <span>{{ Auth::check() ? Auth::user()->name : (session('mob_user_name') ?: 'پنل کاربری من') }}</span>
-                    </a>
-                </li>
-            @else
-                <li style="margin-bottom: 8px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px;">
-                    <a href="{{ route('mob.login') }}" class="drawer-nav-link" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1d4ed8; font-weight: 700;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-                        <span>ورود یا ثبت‌نام با پیامک</span>
-                    </a>
-                </li>
-            @endif
-            <li><a href="{{ url('/') }}" class="drawer-nav-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>صفحه اصلی</span></a></li>
-            <li><a href="{{ url('/#inquiry-section') }}" class="drawer-nav-link"><span class="drawer-nav-dot"></span><span>استعلام گارانتی و اصالت (IMEI)</span></a></li>
-            <li><a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>سامانه مدیریت خدمات (ماده ۱۳)</span></a></li>
-            <li><a href="{{ url('/warranty-terms') }}" class="drawer-nav-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>شرایط گارانتی ۱۸ ماهه</span></a></li>
-            <li><a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>منشور حقوق مشتریان</span></a></li>
-            <li><a href="{{ url('/shipping-guide') }}" class="drawer-nav-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>راهنمای پذیرش و ارسال پستی</span></a></li>
-            <li><a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>نمونه فاکتور رسمی اتحادیه</span></a></li>
-            <li><a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>ثبت و پیگیری شکایات</span></a></li>
-            <li><a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>نظرسنجی کیفیت خدمت</span></a></li>
-            <li><a href="{{ url('/regulations') }}" class="drawer-nav-link {{ request()->is('*regulations*') ? 'active' : '' }}"><span class="drawer-nav-dot"></span><span>ضوابط اجرایی وزارت صمت</span></a></li>
-            <li style="margin-top: 10px; border-top: 1px solid var(--border-light); padding-top: 10px;">
-                <a href="https://taminkanisam.co.ir" class="drawer-nav-link" style="color: var(--primary);">
-                    <span class="drawer-nav-dot"></span>
-                    <span>بازگشت به سایت اصلی تامین کانی سام</span>
-                </a>
-            </li>
-        </ul>
-    </div>
 
+        <!-- Drawer Body -->
+        <div class="drawer-body-scroll">
+            <!-- User Status Card -->
+            @if(Auth::check() || session('mob_user_id'))
+                <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="drawer-user-card">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a;">{{ Auth::check() ? Auth::user()->name : (session('mob_user_name') ?: 'کاربر گرامی') }}</div>
+                            <div style="font-size: 0.74rem; color: #059669; font-weight: 700;">● حساب کاربری فعال</div>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #2563eb;">ورود به پنل ›</span>
+                </a>
+            @else
+                <a href="{{ route('mob.login') }}" class="drawer-user-card">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a;">ورود یا ثبت‌نام پیامکی</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">فعال‌سازی گارانتی و پیگیری تعمیر</div>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.78rem; font-weight: 700; color: #2563eb;">ورود ›</span>
+                </a>
+            @endif
+
+            <!-- Section 1: Services -->
+            <div class="drawer-section-heading">سامانه‌ها و خدمات</div>
+            <a href="{{ url('/') }}" class="drawer-nav-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </span>
+                    <span>صفحه اصلی</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/#inquiry-section') }}" class="drawer-nav-link">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </span>
+                    <span>استعلام اصالت و گارانتی (IMEI)</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon" style="background: #eff6ff; color: #2563eb;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </span>
+                    <span>سامانه مدیریت خدمات (ماده ۱۳)</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <!-- Section 2: Warranty & Regulations -->
+            <div class="drawer-section-heading">قوانین و شفافیت</div>
+            <a href="{{ url('/warranty-terms') }}" class="drawer-nav-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </span>
+                    <span>شرایط گارانتی ۱۸ ماهه</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                    </span>
+                    <span>منشور حقوق مشتریان</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/shipping-guide') }}" class="drawer-nav-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    </span>
+                    <span>راهنمای پذیرش و ارسال پستی</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </span>
+                    <span>نمونه فاکتور رسمی اتحادیه</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <!-- Section 3: Feedback & Support -->
+            <div class="drawer-section-heading">پشتیبانی و نظارت</div>
+            <a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </span>
+                    <span>ثبت و پیگیری شکایات</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </span>
+                    <span>نظرسنجی کیفیت خدمت</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/regulations') }}" class="drawer-nav-link {{ request()->is('*regulations*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </span>
+                    <span>ضوابط اجرایی وزارت صمت</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <!-- Footer shortcut -->
+            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light);">
+                <a href="https://taminkanisam.co.ir" class="drawer-nav-link" style="color: #2563eb; background: #eff6ff;">
+                    <div class="drawer-link-inner">
+                        <span class="drawer-link-icon" style="background: #2563eb; color: #ffffff;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                        </span>
+                        <span style="font-weight: 700;">سایت اصلی تامین کانی سام</span>
+                    </div>
+                    <span class="drawer-link-arrow" style="color: #2563eb;">‹</span>
+                </a>
+            </div>
+        </div>
+    </div>
     <!-- Main Content -->
     <main class="main-wrapper">
         @yield('content')
@@ -1100,40 +1422,57 @@
         </div>
     </footer>
 
-    <!-- Native Sticky Bottom Bar for Mobile Phones (App Experience) -->
-    <nav class="native-bottom-bar" aria-label="ناوبری سریع موبایل">
+    <!-- Ultra-Premium Native Sticky App Bottom Bar -->
+    <nav class="native-bottom-bar" aria-label="ناوبری اصلی">
+        <!-- 1. Home -->
         <a href="{{ url('/') }}" class="native-tab-item {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}">
             <span class="native-tab-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </span>
             <span>صفحه اصلی</span>
         </a>
+
+        <!-- 2. IMEI Inquiry -->
         <a href="{{ url('/#inquiry-section') }}" class="native-tab-item">
             <span class="native-tab-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </span>
-            <span>استعلام IMEI</span>
+            <span>استعلام اصالت</span>
         </a>
-        <a href="{{ url('/service-portal') }}" class="native-tab-item {{ request()->is('*service-portal*') ? 'active' : '' }}">
-            <span class="native-tab-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-            </span>
-            <span>سامانه خدمات</span>
+
+        <!-- 3. CENTER HERO: Service Management -->
+        <a href="{{ url('/service-portal') }}" class="native-tab-item native-tab-center {{ request()->is('*service-portal*') ? 'active' : '' }}" title="سامانه ثبت و پیگیری خدمت">
+            <div class="native-center-btn">
+                <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <span class="native-center-label">سامانه خدمات</span>
         </a>
+
+        <!-- 4. Warranty Terms -->
         <a href="{{ url('/warranty-terms') }}" class="native-tab-item {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
             <span class="native-tab-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </span>
             <span>شرایط گارانتی</span>
         </a>
-        <a href="tel:04136689000" class="native-tab-item">
-            <span class="native-tab-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </span>
-            <span>تماس فوری</span>
-        </a>
-    </nav>
 
+        <!-- 5. User Account / Login -->
+        @if(Auth::check() || session('mob_user_id'))
+            <a href="{{ (Auth::check() && Auth::user()->level >= 2) || session('mob_role') === 'admin' ? route('mob.admin-portal') : route('mob.user-portal') }}" class="native-tab-item {{ request()->is('*portal*') ? 'active' : '' }}">
+                <span class="native-tab-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <span>حساب من</span>
+            </a>
+        @else
+            <a href="{{ route('mob.login') }}" class="native-tab-item {{ request()->is('*login*') ? 'active' : '' }}">
+                <span class="native-tab-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                </span>
+                <span>ورود / پنل</span>
+            </a>
+        @endif
+    </nav>
     <!-- Drawer Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {

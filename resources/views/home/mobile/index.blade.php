@@ -490,8 +490,39 @@
         line-height: 1.7;
     }
 
+    /* Warranty Showcase Card */
+    .warranty-showcase-card {
+        background: linear-gradient(135deg, #0b2b68, #081d45);
+        border-radius: 28px;
+        padding: 40px 36px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+        box-shadow: 0 16px 40px rgba(11, 43, 104, 0.35);
+    }
+    .warranty-showcase-content {
+        flex: 1;
+        min-width: 0;
+    }
+    .warranty-showcase-img {
+        max-width: 380px;
+        width: 100%;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    /* Callout Trio Grid */
+    .callout-trio-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
     @media (max-width: 991px) {
-        .hero-main-title { font-size: 1.85rem; }
+        .hero-section { padding: 36px 16px 30px !important; }
+        .hero-main-title { font-size: 1.7rem !important; }
         .inquiry-form-group { flex-direction: column; }
         .warranty-features-grid { grid-template-columns: 1fr; }
         .workflow-steps-grid { grid-template-columns: 1fr 1fr; }
@@ -499,10 +530,41 @@
         .hamta-box-grid { grid-template-columns: 1fr 1fr; }
         .rights-void-grid { grid-template-columns: 1fr; }
         .result-grid-info { grid-template-columns: 1fr; }
+        .callout-trio-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+        .warranty-showcase-card {
+            flex-direction: column !important;
+            padding: 24px 18px !important;
+            gap: 20px !important;
+            border-radius: 20px !important;
+        }
+        .warranty-showcase-img {
+            max-width: 100% !important;
+        }
     }
     @media (max-width: 640px) {
+        .hero-section { padding: 26px 12px 22px !important; }
+        .hero-main-title { font-size: 1.45rem !important; }
+        .hero-lead-text { font-size: 0.9rem !important; line-height: 1.75 !important; margin-bottom: 20px !important; }
+        .inquiry-tab-btn { padding: 12px 8px !important; font-size: 0.84rem !important; gap: 6px !important; }
+        .inquiry-tab-pane { padding: 18px 14px !important; }
         .workflow-steps-grid { grid-template-columns: 1fr; }
         .hamta-box-grid { grid-template-columns: 1fr; }
+        .section-header-block { margin-bottom: 22px !important; }
+        .section-title-main { font-size: 1.35rem !important; }
+        .content-section { padding: 36px 14px !important; }
+
+        /* Smooth non-breaking stepper on mobile */
+        .stepper-timeline {
+            overflow-x: auto !important;
+            padding-bottom: 10px !important;
+            justify-content: flex-start !important;
+            gap: 12px !important;
+            scrollbar-width: none !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        .stepper-timeline::-webkit-scrollbar { display: none !important; }
+        .stepper-timeline::before { display: none !important; }
+        .stepper-step { min-width: 74px !important; flex-shrink: 0 !important; }
     }
 </style>
 @endpush
@@ -659,14 +721,14 @@
 <!-- ========================================================
      OFFICIAL WARRANTY CARD SHOWCASE
      ======================================================== -->
-<section class="content-section" style="padding: 40px 20px 20px;">
+<section class="content-section" style="padding: 30px 16px 16px;">
     <div class="section-container">
-        <div style="background: linear-gradient(135deg, #0b2b68, #081d45); border-radius: 28px; padding: 40px 36px; color: #ffffff; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 32px; box-shadow: 0 16px 40px rgba(11, 43, 104, 0.35);">
-            <div style="flex: 1; min-width: 300px;">
+        <div class="warranty-showcase-card">
+            <div class="warranty-showcase-content">
                 <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; margin-bottom: 14px;">
                     🛡️ ضمانت ۱۸ ماهه معتبر شرکتی
                 </div>
-                <h3 style="font-size: 1.65rem; font-weight: 900; line-height: 1.4; margin-bottom: 12px;">کارت رسمی گارانتی گوشی همراه تامین کانی سام</h3>
+                <h3 style="font-size: 1.5rem; font-weight: 900; line-height: 1.4; margin-bottom: 12px;">کارت رسمی گارانتی گوشی همراه تامین کانی سام</h3>
                 <p style="font-size: 0.92rem; opacity: 0.9; line-height: 1.8; margin-bottom: 20px;">
                     هر دستگاه وارداتی دارای کارت گارانتی فیزیکی با کد اختصاصی و QR کد فعال‌سازی است. پس از ثبت دستگاه در پنل کاربری، کارت گارانتی دیجیتال با مشخصات کامل دستگاه، تاریخ ترخیص و شناسه IMEI صادر می‌گردد.
                 </p>
@@ -679,7 +741,7 @@
                     </a>
                 </div>
             </div>
-            <div style="max-width: 380px; width: 100%; text-align: center;">
+            <div class="warranty-showcase-img">
                 <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی رسمی گوشی همراه تامین کانی سام" style="width: 100%; border-radius: 18px; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4); border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
             </div>
         </div>
@@ -965,7 +1027,7 @@
      ======================================================== -->
 <section class="content-section">
     <div class="section-container">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div class="callout-trio-grid">
             <!-- Complaints -->
             <div class="light-card" style="padding: 28px; text-align: center;">
                 <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--accent-rose-light); color: var(--accent-rose); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
