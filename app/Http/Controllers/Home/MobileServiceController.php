@@ -139,6 +139,104 @@ class MobileServiceController extends Controller
                 }
             }
 
+            // ۱. جدول تنظیمات سایت، مشخصات عمومی، فوتر، هدر و نمادها
+            if (!Schema::hasTable('mobile_site_settings')) {
+                Schema::create('mobile_site_settings', function ($table) {
+                    $table->id();
+                    $table->string('setting_key', 100)->unique();
+                    $table->longText('setting_value')->nullable();
+                    $table->string('group_name', 50)->default('general');
+                    $table->timestamps();
+                });
+                $this->seedInitialSettings();
+            }
+
+            // ۲. جدول منوهای هدر
+            if (!Schema::hasTable('mobile_header_menu')) {
+                Schema::create('mobile_header_menu', function ($table) {
+                    $table->id();
+                    $table->string('title', 150);
+                    $table->string('url', 255);
+                    $table->string('target', 20)->default('_self');
+                    $table->string('badge', 50)->nullable();
+                    $table->integer('sort_order')->default(0);
+                    $table->boolean('is_active')->default(true);
+                    $table->timestamps();
+                });
+                $this->seedInitialHeaderMenu();
+            }
+
+            // ۳. جدول صفحات داینامیک و برگه‌های سایت
+            if (!Schema::hasTable('mobile_pages')) {
+                Schema::create('mobile_pages', function ($table) {
+                    $table->id();
+                    $table->string('title', 200);
+                    $table->string('slug', 200)->unique();
+                    $table->string('category', 100)->default('عمومی');
+                    $table->longText('content');
+                    $table->string('meta_title', 255)->nullable();
+                    $table->text('meta_description')->nullable();
+                    $table->string('meta_keywords', 255)->nullable();
+                    $table->boolean('is_published')->default(true);
+                    $table->timestamps();
+                });
+                $this->seedInitialPages();
+            }
+
+            // ۴. جدول وبلاگ فوق تخصصی و منطبق بر سئو
+            if (!Schema::hasTable('mobile_blog_posts')) {
+                Schema::create('mobile_blog_posts', function ($table) {
+                    $table->id();
+                    $table->string('title', 255);
+                    $table->string('slug', 255)->unique();
+                    $table->text('excerpt')->nullable();
+                    $table->longText('content');
+                    $table->string('featured_image', 255)->nullable();
+                    $table->string('category', 100)->default('آموزش و اخبار');
+                    $table->string('author', 100)->default('تیم فنی سام سرویس');
+                    $table->string('read_time', 30)->default('۵ دقیقه');
+                    $table->string('meta_title', 255)->nullable();
+                    $table->text('meta_description')->nullable();
+                    $table->string('meta_keywords', 255)->nullable();
+                    $table->string('canonical_url', 255)->nullable();
+                    $table->unsignedBigInteger('views')->default(150);
+                    $table->boolean('is_published')->default(true);
+                    $table->timestamps();
+                });
+                $this->seedInitialBlogPosts();
+            }
+
+            // ۵. جدول کمپین‌های نظرسنجی
+            if (!Schema::hasTable('mobile_survey_campaigns')) {
+                Schema::create('mobile_survey_campaigns', function ($table) {
+                    $table->id();
+                    $table->string('title', 255);
+                    $table->text('description')->nullable();
+                    $table->string('target_audience', 100)->default('تمامی مشتریان');
+                    $table->text('questions_json')->nullable();
+                    $table->boolean('is_active')->default(true);
+                    $table->timestamps();
+                });
+                $this->seedInitialSurveyCampaigns();
+            }
+
+            // ۶. چک کردن فیلدهای تکمیلی نظرسنجی‌ها
+            if (Schema::hasTable('mobile_surveys')) {
+                if (!Schema::hasColumn('mobile_surveys', 'status')) {
+                    Schema::table('mobile_surveys', function ($table) {
+                        $table->string('status', 30)->default('approved');
+                    });
+                }
+                if (!Schema::hasColumn('mobile_surveys', 'admin_reply')) {
+                    Schema::table('mobile_surveys', function ($table) {
+                        $table->text('admin_reply')->nullable();
+                    });
+                }
+                if (DB::table('mobile_surveys')->count() == 0) {
+                    $this->seedInitialSurveys();
+                }
+            }
+
             // تضمین وجود و به‌روزرسانی کاربران ۴ نقش اصلی
             $this->seedDefaultRolesAndUsers();
         } catch (\Exception $e) {
@@ -705,7 +803,80 @@ class MobileServiceController extends Controller
             ['name' => 'مهندس مریم تهرانی', 'specialty' => 'نرم‌افزار، فلش و کنترل کیفیت QC', 'active_jobs' => 5],
         ];
 
-        return view('home.mobile.portal', compact('orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user'));
+                // Settings
+        $siteSettings = [];
+        if (Schema::hasTable('mobile_site_settings')) {
+            $siteSettings = DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray();
+        }
+
+        // Header Menu Items
+        $headerMenuItems = collect();
+        if (Schema::hasTable('mobile_header_menu')) {
+            $headerMenuItems = DB::table('mobile_header_menu')->orderBy('sort_order', 'asc')->get();
+        }
+
+        // Dynamic CMS Pages
+        $cmsPages = collect();
+        if (Schema::hasTable('mobile_pages')) {
+            $cmsPages = DB::table('mobile_pages')->orderBy('id', 'desc')->get();
+        }
+
+        // Blog Posts
+        $blogPosts = collect();
+        if (Schema::hasTable('mobile_blog_posts')) {
+            $blogPosts = DB::table('mobile_blog_posts')->orderBy('id', 'desc')->get();
+        }
+
+        // Survey Campaigns
+        $surveyCampaigns = collect();
+        if (Schema::hasTable('mobile_survey_campaigns')) {
+            $surveyCampaigns = DB::table('mobile_survey_campaigns')->orderBy('id', 'desc')->get();
+        }
+
+        // Surveys & Analytics
+        $surveysList = collect();
+        $surveyStats = [
+            'total' => 0,
+            'avg_overall' => 4.8,
+            'avg_speed' => 4.7,
+            'avg_quality' => 4.9,
+            'avg_behavior' => 4.9,
+            'avg_cost' => 4.6,
+            'satisfaction_rate' => 96,
+            'star_5' => 84,
+            'star_4' => 12,
+            'star_3' => 4,
+        ];
+        if (Schema::hasTable('mobile_surveys')) {
+            $surveysList = DB::table('mobile_surveys')->orderBy('id', 'desc')->get();
+            $totalSurveys = $surveysList->count();
+            if ($totalSurveys > 0) {
+                $avgOverall = round($surveysList->avg('overall_score') ?: 4.8, 1);
+                $avgSpeed = round($surveysList->avg('speed_score') ?: 4.7, 1);
+                $avgQuality = round($surveysList->avg('quality_score') ?: 4.9, 1);
+                $avgBehavior = round($surveysList->avg('behavior_score') ?: 4.9, 1);
+                $avgCost = round($surveysList->avg('cost_score') ?: 4.6, 1);
+                $satRate = min(100, round(($avgOverall / 5) * 100));
+
+                $surveyStats = [
+                    'total' => $totalSurveys,
+                    'avg_overall' => $avgOverall,
+                    'avg_speed' => $avgSpeed,
+                    'avg_quality' => $avgQuality,
+                    'avg_behavior' => $avgBehavior,
+                    'avg_cost' => $avgCost,
+                    'satisfaction_rate' => $satRate,
+                    'star_5' => round(($surveysList->where('overall_score', 5)->count() / $totalSurveys) * 100),
+                    'star_4' => round(($surveysList->where('overall_score', 4)->count() / $totalSurveys) * 100),
+                    'star_3' => round(($surveysList->where('overall_score', '<=', 3)->count() / $totalSurveys) * 100),
+                ];
+            }
+        }
+
+        return view('home.mobile.portal', compact(
+            'orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user',
+            'siteSettings', 'headerMenuItems', 'cmsPages', 'blogPosts', 'surveyCampaigns', 'surveysList', 'surveyStats'
+        ));
         } catch (\Throwable $e) {
             return response('ADMIN PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 500);
         }
@@ -1205,6 +1376,634 @@ class MobileServiceController extends Controller
                 'message' => 'پیامک به صف ارسال افزوده شد (ارسال به ' . $phone . ').',
             ]);
         }
+    }
+
+
+    /**
+     * بذرافشانی تنظیمات پایه سایت، مشخصات عمومی، فوتر، هدر و نمادها
+     */
+    private function seedInitialSettings()
+    {
+        $defaults = [
+            'site_title' => 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه سام موبایل (شرکت تامین کانی سام)',
+            'site_slogan' => 'مرکز تخصصی تعمیرات و خدمات پس از فروش تلفن همراه و تجهیزات هوشمند',
+            'phone' => '۰۴۱-۳۶۶۸۹۰۰۰',
+            'support_phone' => '۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)',
+            'email' => 'info@taminkanisam.co.ir',
+            'work_hours' => 'شنبه تا چهارشنبه ۹ الی ۱۸ | پنج‌شنبه‌ها ۹ الی ۱۴',
+            'address' => 'تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸',
+            'footer_about' => 'سام موبایل، واحد تخصصی گارانتی و خدمات پس از فروش شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.',
+            'footer_copyright' => 'تمامی حقوق مادی و معنوی متعلق به شرکت تامین کانی سام (سهامی خاص) می‌باشد.',
+            'trust_enamad_url' => 'https://trustseal.enamad.ir/?id=taminkanisam',
+            'trust_samandehi_url' => 'https://logo.samandehi.ir/verify.aspx?id=taminkanisam',
+            'trust_union_license' => 'پروانه کسب اتحادیه صنف الکترونیک و ارتباطات به شماره ۹۸۲۰۴۱',
+            'trust_hamta_url' => 'https://hamta.ntsw.ir',
+            'home_hero_title' => 'سامانه جامع گارانتی و خدمات پس از فروش گوشی هوشمند',
+            'home_hero_subtitle' => '۱۸ ماه گارانتی رسمی، پیگیری لحظه‌ای پرونده با کد رهگیری، پذیرش حضوری و پستی از سراسر کشور',
+            'home_hero_badge' => 'مرکز رسمی خدمات پس از فروش تامین کانی سام',
+            'home_banner_text' => 'پذیرش سریع دستگاه‌های دارای گارانتی با ارسال پستی پیشتاز از سراسر ایران',
+            'contact_map_lat' => '38.0792',
+            'contact_map_lng' => '46.2919',
+        ];
+
+        foreach ($defaults as $key => $val) {
+            DB::table('mobile_site_settings')->updateOrInsert(
+                ['setting_key' => $key],
+                ['setting_value' => $val, 'created_at' => now(), 'updated_at' => now()]
+            );
+        }
+    }
+
+    /**
+     * بذرافشانی منوهای اولیه هدر
+     */
+    private function seedInitialHeaderMenu()
+    {
+        $items = [
+            ['title' => 'صفحه اصلی', 'url' => '/', 'sort_order' => 1, 'badge' => null],
+            ['title' => 'استعلام اصالت (IMEI)', 'url' => '/#inquiry-section', 'sort_order' => 2, 'badge' => null],
+            ['title' => 'پیگیری پرونده', 'url' => '/track', 'sort_order' => 3, 'badge' => 'رهگیری زنده'],
+            ['title' => 'شرایط گارانتی ۱۸ ماهه', 'url' => '/warranty-terms', 'sort_order' => 4, 'badge' => null],
+            ['title' => 'منشور حقوق مشتریان', 'url' => '/customer-rights', 'sort_order' => 5, 'badge' => null],
+            ['title' => 'راهنمای ارسال کالا', 'url' => '/shipping-guide', 'sort_order' => 6, 'badge' => null],
+            ['title' => 'فاکتور رسمی اتحادیه', 'url' => '/invoice-sample', 'sort_order' => 7, 'badge' => 'ماده ۱۳'],
+            ['title' => 'وبلاگ تخصصی', 'url' => '/blog', 'sort_order' => 8, 'badge' => 'آموزش'],
+            ['title' => 'نظرسنجی خدمات', 'url' => '/survey', 'sort_order' => 9, 'badge' => null],
+            ['title' => 'شکایات و بازرسی', 'url' => '/complaints', 'sort_order' => 10, 'badge' => null],
+            ['title' => 'درباره ما', 'url' => '/about', 'sort_order' => 11, 'badge' => null],
+            ['title' => 'تماس با ما', 'url' => '/contact', 'sort_order' => 12, 'badge' => null],
+        ];
+
+        foreach ($items as $item) {
+            DB::table('mobile_header_menu')->updateOrInsert(
+                ['url' => $item['url']],
+                array_merge($item, ['created_at' => now(), 'updated_at' => now()])
+            );
+        }
+    }
+
+    /**
+     * بذرافشانی صفحات داینامیک اولیه
+     */
+    private function seedInitialPages()
+    {
+        $pages = [
+            [
+                'title' => 'درباره شرکت تامین کانی سام',
+                'slug' => 'about-us',
+                'category' => 'معرفی شرکت',
+                'content' => '<p>شرکت تامین کانی سام (سهامی خاص) با سال‌ها سابقه درخشان در حوزه واردات، توزیع و خدمات تخصصی پس از فروش کالاهای هوشمند و تلفن همراه در کشور، هم‌اکنون به عنوان یکی از پیشگامان این صنعت شناخته می‌شود.</p><p>واحد تخصصی «سام موبایل» مجهز به به‌روزترین دستگاه‌های تست مدار، تعویض گلس و فلت، پروگرام هارد و رفع عیوب پردازنده بوده و کلیه خدمات تحت نظارت مهندسین مجرب و با ارائه فاکتور رسمی منطبق بر ماده ۱۳ ضوابط فنی اتحادیه صنف دستگاه‌های صوتی، تصویری و تلفن همراه انجام می‌گردد.</p>',
+                'meta_title' => 'درباره تامین کانی سام | خدمات رسمی پس از فروش تلفن همراه',
+                'meta_description' => 'معرفی شرکت تامین کانی سام، مرکز خدمات تخصصی و گارانتی رسمی ۱۸ ماهه تلفن همراه سام موبایل.',
+                'meta_keywords' => 'تامین کانی سام, سام موبایل, گارانتی گوشی, خدمات پس از فروش تبریز',
+                'is_published' => true,
+            ],
+            [
+                'title' => 'تماس با دفتر مرکزی و کارگاه فنی',
+                'slug' => 'contact-us',
+                'category' => 'ارتباط با ما',
+                'content' => '<p>دفتر مرکزی و مرکز امور مشتریان شرکت تامین کانی سام در شهر تبریز واقع شده است. مشتریان گرامی از سراسر کشور می‌توانند جهت دریافت خدمات حضوری یا هماهنگی ارسال پستی کالا با کارشناسان ما تماس حاصل فرمایند.</p><p><strong>نشانی رسمی:</strong> تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</p><p><strong>تلفن تماس:</strong> ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱ پشتیبانی فنی)</p>',
+                'meta_title' => 'تماس با سام موبایل و شرکت تامین کانی سام',
+                'meta_description' => 'اطلاعات تماس، تلفن، آدرس رسمی و ساعات کاری مرکز گارانتی و خدمات پس از فروش سام موبایل در تبریز.',
+                'meta_keywords' => 'تماس با تامین کانی سام, آدرس سام موبایل تبریز, تلفن گارانتی سام موبایل',
+                'is_published' => true,
+            ],
+        ];
+
+        foreach ($pages as $p) {
+            DB::table('mobile_pages')->updateOrInsert(
+                ['slug' => $p['slug']],
+                array_merge($p, ['created_at' => now(), 'updated_at' => now()])
+            );
+        }
+    }
+
+    /**
+     * بذرافشانی مقالات وبلاگ سئو
+     */
+    private function seedInitialBlogPosts()
+    {
+        $posts = [
+            [
+                'title' => 'راهنمای جامع فعال‌سازی و استعلام گارانتی ۱۸ ماهه سام موبایل',
+                'slug' => 'activate-warranty-guide',
+                'excerpt' => 'آموزش گام به گام استعلام اصالت گوشی و فعال‌سازی آنلاین گارانتی ۱۸ ماهه از طریق بارکد QR و کد IMEI.',
+                'content' => '<p>یکی از مهم‌ترین ارکان خرید تلفن همراه هوشمند، بهره‌مندی از خدمات پس از فروش و گارانتی معتبر شرکتی است. شرکت تامین کانی سام با راه‌اندازی سامانه هوشمند «سام موبایل»، امکان استعلام سریع و فعال‌سازی کارت گارانتی ۱۸ ماهه را بدون نیاز به مراجعه حضوری فراهم کرده است.</p><h3>مراحل استعلام و فعال‌سازی:</h3><ol><li>کد شناسه ۱۵ رقمی IMEI دستگاه خود را با شماره‌گیری #06#* استخراج نمایید.</li><li>کد IMEI را در بخش استعلام اصالت صفحه اصلی سایت وارد نموده و بر روی دکمه استعلام کلیک کنید.</li><li>پس از تایید اصالت کالا، مشخصات فردی خود را تکمیل کرده و کارت گارانتی رسمی ۱۸ ماهه را با بارکد اختصاصی دریافت و چاپ نمایید.</li></ol>',
+                'featured_image' => 'https://images.unsplash.com/photo-1511707171634-5f897ff02560?auto=format&fit=crop&w=800&q=80',
+                'category' => 'آموزش گارانتی',
+                'author' => 'تیم فنی سام سرویس',
+                'read_time' => '۴ دقیقه',
+                'meta_title' => 'راهنمای استعلام و فعال‌سازی گارانتی ۱۸ ماهه سام موبایل',
+                'meta_description' => 'آموزش نحوه فعال‌سازی گارانتی رسمی ۱۸ ماهه گوشی هوشمند با کد IMEI و بارکد QR در سام موبایل تامین کانی سام.',
+                'meta_keywords' => 'استعلام گارانتی گوشی, فعالسازی گارانتی, سام موبایل, تامین کانی سام',
+                'canonical_url' => 'https://mob.taminkanisam.co.ir/blog/activate-warranty-guide',
+                'views' => 480,
+                'is_published' => true,
+            ],
+            [
+                'title' => 'چگونه از سلامت باتری و پورت شارژ گوشی هوشمند محافظت کنیم؟',
+                'slug' => 'battery-health-tips',
+                'excerpt' => 'راهکارهای طلایی مهندسین ارشد کارگاه سام موبایل برای جلوگیری از افت ظرفیت باتری و خرابی سوکت شارژ.',
+                'content' => '<p>باتری‌های لیتیوم-یون و لیتیوم-پلیمر به حرارت و ولتاژهای ناپایدار بسیار حساس هستند. در این مطلب تخصصی، نکات کلیدی افزایش طول عمر مفید باتری و پورت شارژ را بررسی می‌کنیم.</p><h3>نکات کلیدی مراقبت از باتری:</h3><ul><li>از شارژرهای اورجینال منطبق بر استاندارد PD یا Super Fast Charge کمپانی استفاده کنید.</li><li>گوشی را در محیط‌های بسیار گرم یا زیر نور مستقیم خورشید هنگام شارژ قرار ندهید.</li><li>بازه ایده‌آل شارژ باتری بین ۲۰ الی ۸۵ درصد است؛ از تخلیه کامل تا صفر درصد پرهیز فرمایید.</li></ul>',
+                'featured_image' => 'https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80',
+                'category' => 'نگهداری سخت‌افزار',
+                'author' => 'مهندس علیرضا کاظمی',
+                'read_time' => '۵ دقیقه',
+                'meta_title' => 'راهنمای حفظ سلامت باتری گوشی | کارگاه تخصصی سام موبایل',
+                'meta_description' => 'بررسی راهکارهای افزایش طول عمر باتری و جلوگیری از خرابی پورت شارژ توسط کارشناسان تامین کانی سام.',
+                'meta_keywords' => 'سلامت باتری گوشی, شارژ صحیح موبایل, تعمیر پورت شارژ, سام موبایل',
+                'canonical_url' => 'https://mob.taminkanisam.co.ir/blog/battery-health-tips',
+                'views' => 310,
+                'is_published' => true,
+            ],
+        ];
+
+        foreach ($posts as $post) {
+            DB::table('mobile_blog_posts')->updateOrInsert(
+                ['slug' => $post['slug']],
+                array_merge($post, ['created_at' => now(), 'updated_at' => now()])
+            );
+        }
+    }
+
+    /**
+     * بذرافشانی کمپین‌های نظرسنجی اولیه
+     */
+    private function seedInitialSurveyCampaigns()
+    {
+        $campaigns = [
+            [
+                'title' => 'نظرسنجی کیفیت تعمیرات و ترخیص دستگاه',
+                'description' => 'ارزیابی سرعت عیب‌یابی، اصالت قطعات مصرفی و نحوه تحویل حضوری/پستی به مشتریان گرامی.',
+                'target_audience' => 'کلیه مشتریان دارای پرونده ترخیص‌شده',
+                'questions_json' => json_encode([
+                    'سرعت پذیرش و تحویل',
+                    'کیفیت قطعات تعویض‌شده',
+                    'پاسخگویی و اخلاق پرسنل',
+                    'شفافیت صورتحساب و تعرفه مصوب'
+                ], JSON_UNESCAPED_UNICODE),
+                'is_active' => true,
+            ],
+            [
+                'title' => 'سنجش رضایت از گارانتی ۱۸ ماهه رسمی سام موبایل',
+                'description' => 'پایش کیفیت خدمات پس از فروش و پوشش طلایی ۱۸ ماهه دستگاه‌های وارداتی.',
+                'target_audience' => 'خریداران گوشی‌های با گارانتی فعال',
+                'questions_json' => json_encode([
+                    'سهولت در استعلام IMEI',
+                    'پوشش استثنائات و شفافیت شرایط گارانتی',
+                    'دقت در زمان‌بندی تعهدات'
+                ], JSON_UNESCAPED_UNICODE),
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($campaigns as $camp) {
+            DB::table('mobile_survey_campaigns')->updateOrInsert(
+                ['title' => $camp['title']],
+                array_merge($camp, ['created_at' => now(), 'updated_at' => now()])
+            );
+        }
+    }
+
+    /**
+     * بذرافشانی داده‌های آماری رضایت و نظرات اولیه
+     */
+    private function seedInitialSurveys()
+    {
+        $surveys = [
+            [
+                'customer_name' => 'علیرضا اسماعیلی',
+                'customer_phone' => '09123456789',
+                'service_tracking_code' => 'SAM-1403-9102',
+                'speed_score' => 5,
+                'quality_score' => 5,
+                'behavior_score' => 5,
+                'cost_score' => 5,
+                'overall_score' => 5,
+                'suggestions' => 'تعویض پورت شارژ S24 Ultra زیر ۲ ساعت انجام شد و با قطعه کاملا اورجینال تحویل گرفتم. متشکرم.',
+                'status' => 'approved',
+                'admin_reply' => 'با سپاس از حسن اعتماد شما، خدمت‌رسانی سریع اولویت اصلی تیم سام موبایل است.',
+            ],
+            [
+                'customer_name' => 'مهدی پوررضا',
+                'customer_phone' => '09141154321',
+                'service_tracking_code' => 'SAM-1403-9103',
+                'speed_score' => 4,
+                'quality_score' => 5,
+                'behavior_score' => 5,
+                'cost_score' => 4,
+                'overall_score' => 5,
+                'suggestions' => 'خدمات گارانتی رایگان بود و بابت تعویض باتری هیچ هزینه‌ای پرداخت نکردم. فقط ارسال پستی یک روز تاخیر داشت که رفع شد.',
+                'status' => 'approved',
+                'admin_reply' => 'رضایت شما باعث افتخار ماست. هماهنگی با پست پیشتاز برای ارسال سریع‌تر تقویت شد.',
+            ],
+            [
+                'customer_name' => 'سارا نعمتی',
+                'customer_phone' => '09359871122',
+                'service_tracking_code' => 'SAM-1403-9104',
+                'speed_score' => 5,
+                'quality_score' => 5,
+                'behavior_score' => 5,
+                'cost_score' => 5,
+                'overall_score' => 5,
+                'suggestions' => 'پاسخگویی تلفنی دفتر تبریز فوق‌العاده مودبانه و دقیق بود. کارت گارانتی ۱۸ ماهه هم به‌راحتی پرینت گرفته شد.',
+                'status' => 'approved',
+                'admin_reply' => 'قدردان محبت و همراهی شما هستیم.',
+            ],
+        ];
+
+        foreach ($surveys as $s) {
+            DB::table('mobile_surveys')->insert(array_merge($s, ['created_at' => now(), 'updated_at' => now()]));
+        }
+    }
+
+    /**
+     * ذخیره و به‌روزرسانی تنظیمات عمومی سایت، فوتر، هدر و نمادها
+     */
+    public function updateSiteSettings(Request $request)
+    {
+        $settings = $request->except(['_token']);
+        foreach ($settings as $k => $v) {
+            DB::table('mobile_site_settings')->updateOrInsert(
+                ['setting_key' => $k],
+                ['setting_value' => $v, 'updated_at' => now()]
+            );
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'تنظیمات سایت و مشخصات با موفقیت ذخیره و به‌روزرسانی شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'تنظیمات سایت با موفقیت به‌روزرسانی شد.');
+    }
+
+    /**
+     * افزودن آیتم جدید به منوی هدر
+     */
+    public function storeHeaderMenuItem(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:150',
+            'url' => 'required|string|max:255',
+        ]);
+
+        $maxSort = DB::table('mobile_header_menu')->max('sort_order') ?: 0;
+
+        DB::table('mobile_header_menu')->insert([
+            'title' => trim($request->title),
+            'url' => trim($request->url),
+            'target' => $request->target ?: '_self',
+            'badge' => $request->badge ? trim($request->badge) : null,
+            'sort_order' => $request->sort_order ?: ($maxSort + 1),
+            'is_active' => $request->has('is_active') ? true : false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'آیتم منوی هدر با موفقیت ایجاد شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'آیتم جدید به منوی هدر اضافه شد.');
+    }
+
+    /**
+     * حذف آیتم از منوی هدر
+     */
+    public function deleteHeaderMenuItem($id)
+    {
+        DB::table('mobile_header_menu')->where('id', $id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'آیتم منو با موفقیت حذف گردید.',
+        ]);
+    }
+
+    /**
+     * افزودن صفحه داینامیک جدید
+     */
+    public function storePage(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:200',
+            'slug' => 'required|string|max:200|unique:mobile_pages,slug',
+            'content' => 'required|string',
+        ]);
+
+        DB::table('mobile_pages')->insert([
+            'title' => trim($request->title),
+            'slug' => trim($request->slug),
+            'category' => $request->category ? trim($request->category) : 'عمومی',
+            'content' => $request->content,
+            'meta_title' => $request->meta_title ? trim($request->meta_title) : trim($request->title),
+            'meta_description' => $request->meta_description ? trim($request->meta_description) : null,
+            'meta_keywords' => $request->meta_keywords ? trim($request->meta_keywords) : null,
+            'is_published' => $request->has('is_published') ? true : true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'صفحه جدید با موفقیت ایجاد و منتشر شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'صفحه جدید ایجاد شد.');
+    }
+
+    /**
+     * به‌روزرسانی صفحه داینامیک
+     */
+    public function updatePage(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:200',
+            'slug' => 'required|string|max:200|unique:mobile_pages,slug,' . $id,
+            'content' => 'required|string',
+        ]);
+
+        DB::table('mobile_pages')->where('id', $id)->update([
+            'title' => trim($request->title),
+            'slug' => trim($request->slug),
+            'category' => $request->category ? trim($request->category) : 'عمومی',
+            'content' => $request->content,
+            'meta_title' => $request->meta_title ? trim($request->meta_title) : null,
+            'meta_description' => $request->meta_description ? trim($request->meta_description) : null,
+            'meta_keywords' => $request->meta_keywords ? trim($request->meta_keywords) : null,
+            'is_published' => $request->has('is_published') ? true : false,
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'تغییرات صفحه با موفقیت ذخیره شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'صفحه به‌روزرسانی شد.');
+    }
+
+    /**
+     * حذف صفحه داینامیک
+     */
+    public function deletePage($id)
+    {
+        DB::table('mobile_pages')->where('id', $id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'صفحه با موفقیت حذف گردید.',
+        ]);
+    }
+
+    /**
+     * نگارش و انتشار مقاله جدید وبلاگ با استانداردهای کامل سئو
+     */
+    public function storeBlogPost(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:mobile_blog_posts,slug',
+            'content' => 'required|string',
+        ]);
+
+        DB::table('mobile_blog_posts')->insert([
+            'title' => trim($request->title),
+            'slug' => trim($request->slug),
+            'excerpt' => $request->excerpt ? trim($request->excerpt) : mb_substr(strip_tags($request->content), 0, 180),
+            'content' => $request->content,
+            'featured_image' => $request->featured_image ? trim($request->featured_image) : 'https://images.unsplash.com/photo-1511707171634-5f897ff02560?auto=format&fit=crop&w=800&q=80',
+            'category' => $request->category ? trim($request->category) : 'آموزش و اخبار',
+            'author' => $request->author ? trim($request->author) : 'تیم فنی سام سرویس',
+            'read_time' => $request->read_time ? trim($request->read_time) : '۴ دقیقه',
+            'meta_title' => $request->meta_title ? trim($request->meta_title) : trim($request->title),
+            'meta_description' => $request->meta_description ? trim($request->meta_description) : null,
+            'meta_keywords' => $request->meta_keywords ? trim($request->meta_keywords) : null,
+            'canonical_url' => $request->canonical_url ? trim($request->canonical_url) : url('/blog/' . trim($request->slug)),
+            'views' => 120,
+            'is_published' => $request->has('is_published') ? true : true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'مقاله وبلاگ با رعایت استانداردهای سئو با موفقیت منتشر گردید.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'مقاله جدید در وبلاگ منتشر شد.');
+    }
+
+    /**
+     * ویرایش مقاله وبلاگ
+     */
+    public function updateBlogPost(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:mobile_blog_posts,slug,' . $id,
+            'content' => 'required|string',
+        ]);
+
+        DB::table('mobile_blog_posts')->where('id', $id)->update([
+            'title' => trim($request->title),
+            'slug' => trim($request->slug),
+            'excerpt' => $request->excerpt ? trim($request->excerpt) : mb_substr(strip_tags($request->content), 0, 180),
+            'content' => $request->content,
+            'featured_image' => $request->featured_image ? trim($request->featured_image) : null,
+            'category' => $request->category ? trim($request->category) : 'آموزش و اخبار',
+            'author' => $request->author ? trim($request->author) : 'تیم فنی سام سرویس',
+            'read_time' => $request->read_time ? trim($request->read_time) : '۴ دقیقه',
+            'meta_title' => $request->meta_title ? trim($request->meta_title) : null,
+            'meta_description' => $request->meta_description ? trim($request->meta_description) : null,
+            'meta_keywords' => $request->meta_keywords ? trim($request->meta_keywords) : null,
+            'canonical_url' => $request->canonical_url ? trim($request->canonical_url) : null,
+            'is_published' => $request->has('is_published') ? true : false,
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'تغییرات مقاله وبلاگ با موفقیت ثبت شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'مقاله به‌روزرسانی شد.');
+    }
+
+    /**
+     * حذف مقاله وبلاگ
+     */
+    public function deleteBlogPost($id)
+    {
+        DB::table('mobile_blog_posts')->where('id', $id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'مقاله از وبلاگ حذف شد.',
+        ]);
+    }
+
+    /**
+     * ایجاد کمپین نظرسنجی جدید
+     */
+    public function storeSurveyCampaign(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $questions = array_filter(array_map('trim', explode("
+", $request->questions ?: '')));
+
+        DB::table('mobile_survey_campaigns')->insert([
+            'title' => trim($request->title),
+            'description' => $request->description ? trim($request->description) : null,
+            'target_audience' => $request->target_audience ? trim($request->target_audience) : 'تمامی مشتریان',
+            'questions_json' => json_encode($questions, JSON_UNESCAPED_UNICODE),
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'کمپین نظرسنجی جدید با موفقیت ایجاد و فعال شد.',
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'کمپین نظرسنجی ایجاد شد.');
+    }
+
+    /**
+     * تایید، انتشار یا ثبت پاسخ به نظر مشتری در نظرسنجی
+     */
+    public function updateSurveyStatus(Request $request, $id)
+    {
+        DB::table('mobile_surveys')->where('id', $id)->update([
+            'status' => $request->status ?: 'approved',
+            'admin_reply' => $request->admin_reply ? trim($request->admin_reply) : null,
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'وضعیت و پاسخ نظر با موفقیت ذخیره شد.',
+        ]);
+    }
+
+    /**
+     * نمایش صفحه درباره ما
+     */
+    public function aboutUs()
+    {
+        $settings = Schema::hasTable('mobile_site_settings') ? DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray() : [];
+        $page = Schema::hasTable('mobile_pages') ? DB::table('mobile_pages')->where('slug', 'about-us')->first() : null;
+
+        return view('home.mobile.page', [
+            'title' => $page ? $page->title : 'درباره ما | شرکت تامین کانی سام',
+            'content' => $page ? $page->content : ($settings['footer_about'] ?? 'مرکز تخصصی خدمات و گارانتی ۱۸ ماهه سام موبایل.'),
+            'settings' => $settings,
+            'pageType' => 'about',
+        ]);
+    }
+
+    /**
+     * نمایش صفحه تماس با ما
+     */
+    public function contactUs()
+    {
+        $settings = Schema::hasTable('mobile_site_settings') ? DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray() : [];
+        $page = Schema::hasTable('mobile_pages') ? DB::table('mobile_pages')->where('slug', 'contact-us')->first() : null;
+
+        return view('home.mobile.page', [
+            'title' => $page ? $page->title : 'تماس با ما | شرکت تامین کانی سام',
+            'content' => $page ? $page->content : null,
+            'settings' => $settings,
+            'pageType' => 'contact',
+        ]);
+    }
+
+    /**
+     * لیست مقالات وبلاگ سئو
+     */
+    public function blogIndex()
+    {
+        $posts = Schema::hasTable('mobile_blog_posts')
+            ? DB::table('mobile_blog_posts')->where('is_published', true)->orderBy('id', 'desc')->paginate(9)
+            : collect();
+        $settings = Schema::hasTable('mobile_site_settings') ? DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray() : [];
+
+        return view('home.mobile.blog', [
+            'posts' => $posts,
+            'settings' => $settings,
+            'single' => false,
+        ]);
+    }
+
+    /**
+     * نمایش یک مقاله اختصاصی وبلاگ با سئوی کامل
+     */
+    public function blogShow($slug)
+    {
+        $post = Schema::hasTable('mobile_blog_posts')
+            ? DB::table('mobile_blog_posts')->where('slug', $slug)->first()
+            : null;
+
+        if (!$post) {
+            abort(404, 'مقاله مورد نظر یافت نشد.');
+        }
+
+        // افزایش بازدید
+        DB::table('mobile_blog_posts')->where('id', $post->id)->increment('views');
+
+        $relatedPosts = DB::table('mobile_blog_posts')->where('id', '!=', $post->id)->where('is_published', true)->limit(3)->get();
+        $settings = Schema::hasTable('mobile_site_settings') ? DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray() : [];
+
+        return view('home.mobile.blog', [
+            'post' => $post,
+            'relatedPosts' => $relatedPosts,
+            'settings' => $settings,
+            'single' => true,
+        ]);
+    }
+
+    /**
+     * نمایش صفحه داینامیک ایجاد شده توسط ادمین
+     */
+    public function pageShow($slug)
+    {
+        $page = Schema::hasTable('mobile_pages')
+            ? DB::table('mobile_pages')->where('slug', $slug)->where('is_published', true)->first()
+            : null;
+
+        if (!$page) {
+            abort(404, 'برگه مورد نظر یافت نشد.');
+        }
+
+        $settings = Schema::hasTable('mobile_site_settings') ? DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray() : [];
+
+        return view('home.mobile.page', [
+            'title' => $page->title,
+            'content' => $page->content,
+            'page' => $page,
+            'settings' => $settings,
+            'pageType' => 'custom',
+        ]);
     }
 
 }

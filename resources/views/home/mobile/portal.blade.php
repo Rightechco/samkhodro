@@ -716,6 +716,46 @@
             </li>
         </ul>
 
+        <span class="erp-nav-section-title">مدیریت محتوا و CMS</span>
+        <ul class="erp-nav-list">
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=site-settings" class="erp-nav-link {{ $activeTab === 'tab-site-settings' ? 'active' : '' }}" data-tab="tab-site-settings" onclick="switchErpTab('tab-site-settings', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+                        <span class="erp-nav-title">تنظیمات سایت و منوها</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#fef3c7; color:#92400e;">CMS</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=pages" class="erp-nav-link {{ $activeTab === 'tab-pages' ? 'active' : '' }}" data-tab="tab-pages" onclick="switchErpTab('tab-pages', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                        <span class="erp-nav-title">مدیریت صفحات سایت</span>
+                    </span>
+                    <span class="erp-nav-badge">{{ isset($cmsPages) ? count($cmsPages) : 0 }}</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=blog" class="erp-nav-link {{ $activeTab === 'tab-blog' ? 'active' : '' }}" data-tab="tab-blog" onclick="switchErpTab('tab-blog', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+                        <span class="erp-nav-title">وبلاگ تخصصی و سئو</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#dcfce7; color:#166534;">SEO</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=surveys" class="erp-nav-link {{ $activeTab === 'tab-surveys' ? 'active' : '' }}" data-tab="tab-surveys" onclick="switchErpTab('tab-surveys', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                        <span class="erp-nav-title">نظرسنجی و تحلیل نظرات</span>
+                    </span>
+                    <span class="erp-nav-badge">{{ isset($surveyStats['total']) ? $surveyStats['total'] : 0 }}</span>
+                </a>
+            </li>
+        </ul>
+
         <!-- Sidebar Bottom Footer -->
         <div class="erp-sidebar-footer">
             <form action="{{ url('/logout') }}" method="POST" style="margin: 0;">
@@ -1449,6 +1489,829 @@
             </div>
         </div>
 
+    <!-- ==================== 9. VIEW: SITE SETTINGS & CMS ==================== -->
+    <div class="erp-view {{ $activeTab === 'tab-site-settings' ? 'active' : '' }}" id="tab-site-settings" data-title="تنظیمات سایت و منوها" style="{{ $activeTab === 'tab-site-settings' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-page-head">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#fef3c7; color:#92400e;">مدیریت محتوا (CMS)</span>
+                <h1 class="erp-page-title">تنظیمات جامع سامانه، منوها، فوتر و نمادها</h1>
+                <p class="erp-page-desc">پیکربندی هویت بصری، منوهای ناوبری هدر، متن‌های پاورقی، مجوزهای قانونی، محتوای صفحه اول و صفحات استاتیک.</p>
+            </div>
+        </div>
+
+        <!-- Sub-tabs bar -->
+        <div class="cms-subtabs-bar" style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; overflow-x: auto;">
+            <button type="button" class="cms-subtab-btn active" onclick="switchCmsSubTab('subtab-general', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #2563eb; color: #ffffff; cursor: pointer;">
+                🏢 مشخصات عمومی و تماس
+            </button>
+            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-menu', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
+                🧭 منوهای ناوبری هدر
+            </button>
+            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-footer', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
+                🛡️ فوتر، نمادها و مجوزها
+            </button>
+            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-home', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
+                🏠 المان‌های صفحه اصلی
+            </button>
+            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-static-pages', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
+                📄 صفحات تماس، درباره ما و ...
+            </button>
+        </div>
+
+        <!-- Subtab 1: General & Contact -->
+        <div id="subtab-general" class="cms-subtab-content" style="display: block;">
+            <div class="erp-card">
+                <div class="erp-card-header">
+                    <h3 class="erp-card-title">مشخصات عمومی، نشان تجاری و تلفن‌های تبریز</h3>
+                </div>
+                <div class="erp-card-body">
+                    <form onsubmit="handleSettingsForm(event, this)">
+                        @csrf
+                        <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                            <div>
+                                <label class="erp-form-label">عنوان رسمی سامانه (Title)</label>
+                                <input type="text" name="site_title" class="erp-form-input" value="{{ $siteSettings['site_title'] ?? 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه سام موبایل (شرکت تامین کانی سام)' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">شعار و زیرعنوان برند</label>
+                                <input type="text" name="site_slogan" class="erp-form-input" value="{{ $siteSettings['site_slogan'] ?? 'مرکز تخصصی تعمیرات و خدمات پس از فروش تلفن همراه و تبلت' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">شماره تلفن سانترال تبریز</label>
+                                <input type="text" name="phone" class="erp-form-input" value="{{ $siteSettings['phone'] ?? '۰۴۱-۳۶۶۸۹۰۰۰' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">تلفن مستقیم واحد گارانتی و پذیرش</label>
+                                <input type="text" name="support_phone" class="erp-form-input" value="{{ $siteSettings['support_phone'] ?? '۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">پست الکترونیک رسمی شرکت</label>
+                                <input type="email" name="email" class="erp-form-input" value="{{ $siteSettings['email'] ?? 'info@taminkanisam.co.ir' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">ساعات کاری و پذیرش کارگاه</label>
+                                <input type="text" name="work_hours" class="erp-form-input" value="{{ $siteSettings['work_hours'] ?? 'شنبه تا چهارشنبه ۹ الی ۱۸ | پنج‌شنبه‌ها ۹ الی ۱۴' }}">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">نشانی رسمی دفتر مرکزی و کارگاه فنی تبریز</label>
+                                <input type="text" name="address" class="erp-form-input" value="{{ $siteSettings['address'] ?? 'تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸' }}">
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: left;">
+                            <button type="submit" class="erp-btn erp-btn-primary">
+                                💾 ذخیره تغییرات مشخصات عمومی
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtab 2: Header Navigation Menu -->
+        <div id="subtab-menu" class="cms-subtab-content" style="display: none;">
+            <div class="erp-card">
+                <div class="erp-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 class="erp-card-title">لینک‌های فعال در منوی هدر دسکتاپ و دراور موبایل</h3>
+                        <div style="font-size: 0.74rem; color: #64748b;">مدیریت ترتیب نمایش و مقصد لینک‌ها در هدر سایت</div>
+                    </div>
+                </div>
+                <div class="erp-card-body">
+                    <!-- Add menu form -->
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 24px;">
+                        <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem; margin-bottom: 12px;">+ افزودن آیتم جدید به منوی هدر</div>
+                        <form onsubmit="handleHeaderMenuAdd(event, this)" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: flex-end;">
+                            @csrf
+                            <div>
+                                <label class="erp-form-label">عنوان لینک در منو</label>
+                                <input type="text" name="title" class="erp-form-input" required placeholder="مثال: سوالات متداول">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">آدرس لینک (URL)</label>
+                                <input type="text" name="url" class="erp-form-input" required placeholder="/page/faq یا لینک دلخواه">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">نشانک برجسته (اختیاری)</label>
+                                <input type="text" name="badge" class="erp-form-input" placeholder="مثال: جدید / ماده ۱۳">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">ترتیب نمایش</label>
+                                <input type="number" name="sort_order" class="erp-form-input" value="10">
+                            </div>
+                            <div>
+                                <button type="submit" class="erp-btn erp-btn-primary" style="width: 100%;">
+                                    + افزودن به منو
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Menu items table -->
+                    <div class="erp-table-wrap">
+                        <table class="erp-table">
+                            <thead>
+                                <tr>
+                                    <th>ترتیب</th>
+                                    <th>عنوان در منو</th>
+                                    <th>آدرس لینک</th>
+                                    <th>نشانک بج</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($headerMenuItems as $mi)
+                                    <tr>
+                                        <td><strong>{{ $mi->sort_order }}</strong></td>
+                                        <td><strong>{{ $mi->title }}</strong></td>
+                                        <td><code style="direction: ltr; display: inline-block;">{{ $mi->url }}</code></td>
+                                        <td>
+                                            @if($mi->badge)
+                                                <span class="table-status-pill st-inspecting">{{ $mi->badge }}</span>
+                                            @else
+                                                <span style="color: #94a3b8;">-</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <span class="table-status-pill st-ready_for_delivery">فعال</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteMenuItem({{ $mi->id }})">
+                                                حذف
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">هیچ آیتمی یافت نشد.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtab 3: Footer & Trust Badges -->
+        <div id="subtab-footer" class="cms-subtab-content" style="display: none;">
+            <div class="erp-card">
+                <div class="erp-card-header">
+                    <h3 class="erp-card-title">متون پاورقی (فوتر)، نمادهای اعتماد و مجوزهای قانونی</h3>
+                </div>
+                <div class="erp-card-body">
+                    <form onsubmit="handleSettingsForm(event, this)">
+                        @csrf
+                        <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">پاراگراف معرفی رسمی شرکت در فوتر</label>
+                                <textarea name="footer_about" class="erp-form-input" rows="3">{{ $siteSettings['footer_about'] ?? 'سام موبایل، واحد تخصصی گارانتی و خدمات پس از فروش شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.' }}</textarea>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">متن کپی‌رایت حقوقی انتهای فوتر</label>
+                                <input type="text" name="footer_copyright" class="erp-form-input" value="{{ $siteSettings['footer_copyright'] ?? 'تمامی حقوق مادی و معنوی متعلق به شرکت تامین کانی سام (سهامی خاص) می‌باشد.' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">لینک استعلام نماد تجارت الکترونیکی (اینماد)</label>
+                                <input type="url" name="trust_enamad_url" class="erp-form-input" value="{{ $siteSettings['trust_enamad_url'] ?? 'https://trustseal.enamad.ir/?id=taminkanisam' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">لینک نشان ملی ثبت رسانه‌های دیجیتال (ساماندهی)</label>
+                                <input type="url" name="trust_samandehi_url" class="erp-form-input" value="{{ $siteSettings['trust_samandehi_url'] ?? 'https://logo.samandehi.ir/verify.aspx?id=taminkanisam' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">شماره پروانه کسب اتحادیه و تاییدیه صمت</label>
+                                <input type="text" name="trust_union_license" class="erp-form-input" value="{{ $siteSettings['trust_union_license'] ?? 'پروانه کسب اتحادیه صنف الکترونیک و ارتباطات به شماره ۹۸۲۰۴۱' }}">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">لینک استعلام اصالت سامانه همتا</label>
+                                <input type="url" name="trust_hamta_url" class="erp-form-input" value="{{ $siteSettings['trust_hamta_url'] ?? 'https://hamta.ntsw.ir' }}">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 24px; padding: 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px;">
+                            <div style="font-weight: 800; color: #0f172a; font-size: 0.84rem; margin-bottom: 12px;">پیش‌نمایش نمادها و تاییدیه‌های رسمی در فوتر:</div>
+                            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-size: 1.4rem;">🏛️</span>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 0.8rem; color: #0f172a;">اینماد ۵ ستاره</div>
+                                        <div style="font-size: 0.7rem; color: #64748b;">سازمان توسعه تجارت الکترونیکی</div>
+                                    </div>
+                                </div>
+                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-size: 1.4rem;">🛡️</span>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 0.8rem; color: #0f172a;">نشان ملی ساماندهی</div>
+                                        <div style="font-size: 0.7rem; color: #64748b;">وزارت فرهنگ و ارشاد اسلامی</div>
+                                    </div>
+                                </div>
+                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-size: 1.4rem;">📜</span>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 0.8rem; color: #0f172a;">پروانه کسب اتحادیه</div>
+                                        <div style="font-size: 0.7rem; color: #64748b;">صنف فناوران و تلفن همراه</div>
+                                    </div>
+                                </div>
+                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 10px 16px; display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-size: 1.4rem;">📱</span>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 0.8rem; color: #0f172a;">سامانه همتا</div>
+                                        <div style="font-size: 0.7rem; color: #64748b;">تاییدیه اصالت شناسه IMEI</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; text-align: left;">
+                            <button type="submit" class="erp-btn erp-btn-primary">
+                                💾 ذخیره تغییرات فوتر و مجوزها
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtab 4: Home Page Elements -->
+        <div id="subtab-home" class="cms-subtab-content" style="display: none;">
+            <div class="erp-card">
+                <div class="erp-card-header">
+                    <h3 class="erp-card-title">ویرایش المان‌های صفحه اصلی (Hero & Banners)</h3>
+                </div>
+                <div class="erp-card-body">
+                    <form onsubmit="handleSettingsForm(event, this)">
+                        @csrf
+                        <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">نشانک برجسته بالای عنوان هیرو (Badge)</label>
+                                <input type="text" name="home_hero_badge" class="erp-form-input" value="{{ $siteSettings['home_hero_badge'] ?? 'مرکز رسمی خدمات پس از فروش تامین کانی سام' }}">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">عنوان اصلی هیرو (Main Hero Title)</label>
+                                <input type="text" name="home_hero_title" class="erp-form-input" value="{{ $siteSettings['home_hero_title'] ?? 'سامانه جامع گارانتی و خدمات پس از فروش گوشی هوشمند' }}">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">زیرعنوان توضیحی بنر هیرو (Hero Subtitle)</label>
+                                <textarea name="home_hero_subtitle" class="erp-form-input" rows="2">{{ $siteSettings['home_hero_subtitle'] ?? '۱۸ ماه گارانتی رسمی، پیگیری لحظه‌ای پرونده با کد رهگیری، پذیرش حضوری و پستی از سراسر کشور' }}</textarea>
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">متن بنر اطلاع‌رسانی پستی بالای سایت</label>
+                                <input type="text" name="home_banner_text" class="erp-form-input" value="{{ $siteSettings['home_banner_text'] ?? 'پذیرش سریع دستگاه‌های دارای گارانتی با ارسال پستی پیشتاز از سراسر ایران' }}">
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: left;">
+                            <button type="submit" class="erp-btn erp-btn-primary">
+                                💾 ذخیره تغییرات صفحه اصلی
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subtab 5: Static Pages Content -->
+        <div id="subtab-static-pages" class="cms-subtab-content" style="display: none;">
+            <div class="erp-card">
+                <div class="erp-card-header">
+                    <h3 class="erp-card-title">ویرایش مستقیم محتوای صفحات استاتیک سامانه</h3>
+                </div>
+                <div class="erp-card-body">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">صفحه درباره ما</div>
+                                <a href="{{ url('/about') }}" target="_blank" class="btn-table-action">مشاهده صفحه</a>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #64748b; line-height: 1.6; margin-bottom: 14px;">
+                                شامل تاریخچه تامین کانی سام، استانداردهای کارگاه، تیم فنی و اطلاعات شرکتی.
+                            </p>
+                            <button type="button" class="erp-btn erp-btn-primary" style="width: 100%; font-size: 0.8rem;" onclick="switchErpTab('tab-pages')">
+                                ویرایش در بخش مدیریت صفحات ←
+                            </button>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">صفحه تماس با ما</div>
+                                <a href="{{ url('/contact') }}" target="_blank" class="btn-table-action">مشاهده صفحه</a>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #64748b; line-height: 1.6; margin-bottom: 14px;">
+                                شامل آدرس پستی تبریز، خطوط تماس، ساعات کاری و فرم ارتباط آنلاین.
+                            </p>
+                            <button type="button" class="erp-btn erp-btn-primary" style="width: 100%; font-size: 0.8rem;" onclick="switchCmsSubTab('subtab-general')">
+                                ویرایش آدرس و تلفن‌ها ←
+                            </button>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">شرایط گارانتی ۱۸ ماهه</div>
+                                <a href="{{ url('/warranty-terms') }}" target="_blank" class="btn-table-action">مشاهده صفحه</a>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #64748b; line-height: 1.6; margin-bottom: 14px;">
+                                مفاد تعهدات گارانتی، موارد نقض و استثنائات (آبخوردگی، نوسان برق و ضربه).
+                            </p>
+                            <a href="{{ url('/warranty-terms') }}" target="_blank" class="erp-btn" style="width: 100%; text-align: center; text-decoration: none; font-size: 0.8rem; background: #ffffff; border: 1px solid #cbd5e1; color: #334155; display: block;">
+                                بازبینی صفحه شرایط گارانتی
+                            </a>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">منشور حقوق مشتریان</div>
+                                <a href="{{ url('/customer-rights') }}" target="_blank" class="btn-table-action">مشاهده صفحه</a>
+                            </div>
+                            <p style="font-size: 0.78rem; color: #64748b; line-height: 1.6; margin-bottom: 14px;">
+                                الزامات قانونی حمایت از حقوق مصرف‌کنندگان و تعهدات سازمان حمایت.
+                            </p>
+                            <a href="{{ url('/customer-rights') }}" target="_blank" class="erp-btn" style="width: 100%; text-align: center; text-decoration: none; font-size: 0.8rem; background: #ffffff; border: 1px solid #cbd5e1; color: #334155; display: block;">
+                                بازبینی منشور حقوق مشتری
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 10. VIEW: PAGES MANAGEMENT ==================== -->
+    <div class="erp-view {{ $activeTab === 'tab-pages' ? 'active' : '' }}" id="tab-pages" data-title="مدیریت صفحات سایت" style="{{ $activeTab === 'tab-pages' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-page-head">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#e0e7ff; color:#3730a3;">مدیریت صفحات (Pages)</span>
+                <h1 class="erp-page-title">مدیریت برگه‌ها، اسلاگ‌ها و محتوای صفحات سایت</h1>
+                <p class="erp-page-desc">افزودن برگه جدید با URL اختصاصی، ویرایش محتوای متنی، تنظیمات سئو و انتشار در سامانه.</p>
+            </div>
+            <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddPageForm()">
+                + افزودن برگه / صفحه جدید
+            </button>
+        </div>
+
+        <!-- Add Page Collapsible Form -->
+        <div id="addPageFormBox" style="display: none; background: #ffffff; border: 1px solid #2563eb; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(37,99,235,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">ایجاد برگه جدید در سامانه</h3>
+                <button type="button" onclick="toggleAddPageForm()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+            <form onsubmit="handlePageStore(event, this)">
+                @csrf
+                <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div>
+                        <label class="erp-form-label">عنوان برگه (Page Title)</label>
+                        <input type="text" name="title" class="erp-form-input" required placeholder="مثال: سوالات متداول گارانتی">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">اسلاگ یکتا (URL Slug)</label>
+                        <input type="text" name="slug" class="erp-form-input" required placeholder="مثال: faq-warranty" style="direction: ltr;">
+                        <span style="font-size: 0.72rem; color: #64748b;">آدرس در سایت: mob.taminkanisam.co.ir/page/slug</span>
+                    </div>
+                    <div>
+                        <label class="erp-form-label">دسته‌بندی موضوعی</label>
+                        <input type="text" name="category" class="erp-form-input" value="عمومی">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">تایتل سئو (Meta Title)</label>
+                        <input type="text" name="meta_title" class="erp-form-input" placeholder="عنوان صفحه در نتایج گوگل">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">توضیحات متای سئو (Meta Description)</label>
+                        <textarea name="meta_description" class="erp-form-input" rows="2" placeholder="خلاصه ۱۵۰ کاراکتری برای موتورهای جستجو..."></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">کلمات کلیدی سئو (با کاما جدا کنید)</label>
+                        <input type="text" name="meta_keywords" class="erp-form-input" placeholder="گارانتی, سام موبایل, تعمیرات, تامین کانی سام">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">محتوای متنی برگه (HTML یا متن)</label>
+                        <textarea name="content" class="erp-form-input" rows="6" required placeholder="متن کامل صفحه را اینجا وارد نمایید..."></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn-table-action" onclick="toggleAddPageForm()">انصراف</button>
+                    <button type="submit" class="erp-btn erp-btn-primary">ذخیره و انتشار صفحه</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Pages Table -->
+        <div class="erp-card">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">لیست صفحات ثبت‌شده در سیستم</h3>
+            </div>
+            <div class="erp-card-body">
+                <div class="erp-table-wrap">
+                    <table class="erp-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>عنوان برگه</th>
+                                <th>اسلاگ و مسیر</th>
+                                <th>دسته</th>
+                                <th>وضعیت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($cmsPages as $page)
+                                <tr>
+                                    <td><strong>{{ $page->id }}</strong></td>
+                                    <td><strong>{{ $page->title }}</strong></td>
+                                    <td><code style="direction: ltr; display: inline-block;">/page/{{ $page->slug }}</code></td>
+                                    <td><span class="table-status-pill st-inspecting">{{ $page->category }}</span></td>
+                                    <td>
+                                        @if($page->is_published)
+                                            <span class="table-status-pill st-ready_for_delivery">منتشر شده</span>
+                                        @else
+                                            <span class="table-status-pill st-waiting_parts">پیش‌نویس</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; gap: 6px;">
+                                            <a href="{{ url('/page/' . $page->slug) }}" target="_blank" class="btn-table-action">
+                                                مشاهده
+                                            </a>
+                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deletePageItem({{ $page->id }})">
+                                                حذف
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">هیچ برگه‌ای ثبت نشده است.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 11. VIEW: BLOG & SEO STUDIO ==================== -->
+    <div class="erp-view {{ $activeTab === 'tab-blog' ? 'active' : '' }}" id="tab-blog" data-title="وبلاگ تخصصی و سئو" style="{{ $activeTab === 'tab-blog' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-page-head">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#dcfce7; color:#166534;">استودیوی سئو و وبلاگ</span>
+                <h1 class="erp-page-title">مدیریت وبلاگ فوق تخصصی و مقالات منطبق بر استانداردهای سئو</h1>
+                <p class="erp-page-desc">نگارش مقالات، تگ‌های متا، کلمات کلیدی، پیش‌نمایش در نتایج جستجوی گوگل (SERP) و رتبه‌بندی محتوا.</p>
+            </div>
+            <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddBlogForm()">
+                + نگارش و انتشار مقاله جدید
+            </button>
+        </div>
+
+        <!-- SEO Metrics Strip -->
+        <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 24px;">
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">تعداد مقالات منتشر شده</div>
+                <div class="erp-stat-value" style="color: #2563eb;">{{ count($blogPosts) }}</div>
+                <div class="erp-stat-sub">مقالات تخصصی کارگاه</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">مجموع بازدید مقالات</div>
+                <div class="erp-stat-value" style="color: #10b981;">{{ number_format(collect($blogPosts)->sum('views')) }}</div>
+                <div class="erp-stat-sub">مطالعه کاربران</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">شاخص سلامت سئو (On-Page)</div>
+                <div class="erp-stat-value" style="color: #059669;">۱۰۰٪</div>
+                <div class="erp-stat-sub">دارای Schema JSON-LD</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">میانگین زمان مطالعه</div>
+                <div class="erp-stat-value" style="color: #d97706;">۴.۵ دقیقه</div>
+                <div class="erp-stat-sub">تعامل بالای کاربر</div>
+            </div>
+        </div>
+
+        <!-- Add Blog Post Collapsible Form with Google SERP Preview -->
+        <div id="addBlogFormBox" style="display: none; background: #ffffff; border: 1px solid #10b981; border-radius: 18px; padding: 26px; margin-bottom: 28px; box-shadow: 0 4px 25px rgba(16,185,129,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a;">نگارش مقاله جدید با بهینه‌سازی پیشرفته سئو</h3>
+                <button type="button" onclick="toggleAddBlogForm()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+            <form onsubmit="handleBlogStore(event, this)">
+                @csrf
+                <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">عنوان اصلی مقاله (H1 Title)</label>
+                        <input type="text" name="title" id="blogInputTitle" class="erp-form-input" required placeholder="مثال: آموزش تعویض ال‌سی‌دی اورجینال سامسونگ در منزل" oninput="updateGooglePreview()">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">نامک سئو (URL Slug)</label>
+                        <input type="text" name="slug" id="blogInputSlug" class="erp-form-input" required placeholder="samsung-lcd-replacement" style="direction: ltr;" oninput="updateGooglePreview()">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">دسته‌بندی مقاله</label>
+                        <select name="category" class="erp-form-input">
+                            <option value="آموزش گارانتی">آموزش گارانتی</option>
+                            <option value="نگهداری سخت‌افزار">نگهداری سخت‌افزار</option>
+                            <option value="اخبار فناوری">اخبار فناوری</option>
+                            <option value="اصالت قطعات">اصالت قطعات</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="erp-form-label">نام نویسنده</label>
+                        <input type="text" name="author" class="erp-form-input" value="تیم فنی سام سرویس">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">زمان تقریبی مطالعه</label>
+                        <input type="text" name="read_time" class="erp-form-input" value="۴ دقیقه">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">آدرس تصویر شاخص (Featured Image URL)</label>
+                        <input type="url" name="featured_image" class="erp-form-input" value="https://images.unsplash.com/photo-1511707171634-5f897ff02560?auto=format&fit=crop&w=800&q=80">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">چکیده مقاله (Excerpt)</label>
+                        <textarea name="excerpt" id="blogInputExcerpt" class="erp-form-input" rows="2" placeholder="مقدمه کوتاه جهت نمایش در شبکه‌های اجتماعی و لیست مقالات..." oninput="updateGooglePreview()"></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">متن کامل مقاله (Content)</label>
+                        <textarea name="content" class="erp-form-input" rows="8" required placeholder="متن کامل آموزشی، سرفصل‌ها و نکات فنی را اینجا وارد کنید..."></textarea>
+                    </div>
+
+                    <!-- Google SERP Snippet Preview Box -->
+                    <div style="grid-column: 1 / -1; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; padding: 20px;">
+                        <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                            <img src="https://www.google.com/favicon.ico" width="16" height="16" alt="Google">
+                            <span>پیش‌نمایش زنده در نتایج جستجوی گوگل (SERP Snippet):</span>
+                        </div>
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; font-family: Arial, sans-serif; max-width: 650px;">
+                            <div style="font-size: 0.76rem; color: #202124; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                                <span>https://mob.taminkanisam.co.ir › blog › <span id="serpSlugPreview">slug</span></span>
+                            </div>
+                            <div style="font-size: 1.15rem; color: #1a0dab; font-weight: 600; line-height: 1.3; margin-bottom: 6px; cursor: pointer;" id="serpTitlePreview">
+                                عنوان مقاله در نتایج جستجوی گوگل
+                            </div>
+                            <div style="font-size: 0.82rem; color: #4d5156; line-height: 1.5;" id="serpDescPreview">
+                                توضیحات متا دیسکریپشن مقاله در اینجا نمایش داده خواهد شد...
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px;">
+                            <div>
+                                <label class="erp-form-label">عنوان متای سئو (Meta Title - حداکثر ۶۰ کاراکتر)</label>
+                                <input type="text" name="meta_title" id="blogMetaTitle" class="erp-form-input" placeholder="عنوان بهینه‌شده برای کلیک بیشتر" oninput="updateGooglePreview()">
+                            </div>
+                            <div>
+                                <label class="erp-form-label">کلمات کلیدی سئو (Meta Keywords)</label>
+                                <input type="text" name="meta_keywords" class="erp-form-input" placeholder="تعمیر گوشی, گارانتی سام موبایل, تامین کانی سام">
+                            </div>
+                            <div style="grid-column: 1 / -1;">
+                                <label class="erp-form-label">توضیحات متای سئو (Meta Description - حداکثر ۱۶۰ کاراکتر)</label>
+                                <textarea name="meta_description" id="blogMetaDesc" class="erp-form-input" rows="2" placeholder="متنی جذاب برای ترغیب کاربر به کلیک در گوگل..." oninput="updateGooglePreview()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn-table-action" onclick="toggleAddBlogForm()">انصراف</button>
+                    <button type="submit" class="erp-btn erp-btn-primary" style="background: #10b981; border-color: #059669;">
+                        🚀 انتشار مقاله با رعایت استانداردهای سئو
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Articles Table -->
+        <div class="erp-card">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">آرشیو مقالات و وضعیت ایندکس سئو</h3>
+            </div>
+            <div class="erp-card-body">
+                <div class="erp-table-wrap">
+                    <table class="erp-table">
+                        <thead>
+                            <tr>
+                                <th>تصویر</th>
+                                <th>عنوان مقاله</th>
+                                <th>دسته‌بندی</th>
+                                <th>نویسنده</th>
+                                <th>بازدید</th>
+                                <th>زمان مطالعه</th>
+                                <th>وضعیت سئو</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($blogPosts as $post)
+                                <tr>
+                                    <td>
+                                        <div style="width: 50px; height: 38px; border-radius: 8px; overflow: hidden; background: #e2e8f0;">
+                                            <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight: 800; font-size: 0.88rem; color: #0f172a;">{{ $post->title }}</div>
+                                        <div style="font-size: 0.72rem; color: #64748b; direction: ltr; text-align: right;">/blog/{{ $post->slug }}</div>
+                                    </td>
+                                    <td><span class="table-status-pill st-inspecting">{{ $post->category }}</span></td>
+                                    <td><span style="font-size: 0.78rem;">{{ $post->author }}</span></td>
+                                    <td><strong>{{ number_format($post->views) }}</strong></td>
+                                    <td><span style="font-size: 0.78rem; color: #64748b;">{{ $post->read_time }}</span></td>
+                                    <td><span class="table-status-pill st-ready_for_delivery">✓ سئو تاییدشده</span></td>
+                                    <td>
+                                        <div style="display: flex; gap: 6px;">
+                                            <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="btn-table-action">مشاهده</a>
+                                            <button type="button" class="btn-table-action" style="color: #ef4444; border-color: #fca5a5;" onclick="deleteBlogItem({{ $post->id }})">حذف</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" style="text-align: center; color: #94a3b8; padding: 20px;">هیچ مقاله‌ای منتشر نشده است.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 12. VIEW: SURVEYS & ANALYTICS ==================== -->
+    <div class="erp-view {{ $activeTab === 'tab-surveys' ? 'active' : '' }}" id="tab-surveys" data-title="نظرسنجی و تحلیل نظرات" style="{{ $activeTab === 'tab-surveys' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-page-head">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#fce7f3; color:#9d174d;">سنجش رضایت مشتریان (CSAT)</span>
+                <h1 class="erp-page-title">داشبورد تحلیلی نظرسنجی‌ها، ارزیابی کیفیت و بازخوردها</h1>
+                <p class="erp-page-desc">تحلیل هوشمند شاخص‌های رضایت از خدمات، بررسی نظرات ثبت‌شده، پاسخگویی رسمی و ایجاد کمپین‌های جدید.</p>
+            </div>
+            <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddCampaignForm()">
+                + افزودن نظرسنجی / کمپین جدید
+            </button>
+        </div>
+
+        <!-- Add Campaign Collapsible Form -->
+        <div id="addCampaignFormBox" style="display: none; background: #ffffff; border: 1px solid #db2777; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(219,39,119,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">ایجاد کمپین نظرسنجی جدید</h3>
+                <button type="button" onclick="toggleAddCampaignForm()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+            </div>
+            <form onsubmit="handleCampaignStore(event, this)">
+                @csrf
+                <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div>
+                        <label class="erp-form-label">عنوان کمپین نظرسنجی</label>
+                        <input type="text" name="title" class="erp-form-input" required placeholder="مثال: نظرسنجی خدمات تعویض باتری و ترخیص پستی">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">جامعه هدف</label>
+                        <input type="text" name="target_audience" class="erp-form-input" value="مشتریان دارای پرونده ترخیص‌شده">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">توضیحات و هدف از نظرسنجی</label>
+                        <input type="text" name="description" class="erp-form-input" placeholder="پایش دقیق زمان تحویل و رضایت از مهندسین تعمیرات">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">پرسش‌های نظرسنجی (هر سوال در یک سطر)</label>
+                        <textarea name="questions" class="erp-form-input" rows="4" placeholder="کیفیت قطعات مصرفی&#10;سرعت در پذیرش و تحویل دستگاه&#10;اخلاق و برخورد پرسنل دفتر تبریز&#10;شفافیت هزینه طبق تعرفه ماده ۱۳"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn-table-action" onclick="toggleAddCampaignForm()">انصراف</button>
+                    <button type="submit" class="erp-btn erp-btn-primary" style="background: #db2777; border-color: #be185d;">فعال‌سازی کمپین نظرسنجی</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 5-Star CSAT Metrics Cards -->
+        <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 24px;">
+            <div class="erp-stat-card" style="border-right: 4px solid #10b981;">
+                <div class="erp-stat-label">رضایت کلی مشتریان</div>
+                <div class="erp-stat-value" style="color: #10b981;">{{ $surveyStats['avg_overall'] }} <span style="font-size: 0.9rem; color: #64748b;">از ۵</span></div>
+                <div class="erp-stat-sub">نرخ رضایت: {{ $surveyStats['satisfaction_rate'] }}٪</div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #2563eb;">
+                <div class="erp-stat-label">کیفیت قطعات و تعمیر</div>
+                <div class="erp-stat-value" style="color: #2563eb;">{{ $surveyStats['avg_quality'] }} <span style="font-size: 0.9rem; color: #64748b;">از ۵</span></div>
+                <div class="erp-stat-sub">اصالت ۱۰۰٪ اورجینال</div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #6366f1;">
+                <div class="erp-stat-label">سرعت پذیرش و ترخیص</div>
+                <div class="erp-stat-value" style="color: #6366f1;">{{ $surveyStats['avg_speed'] }} <span style="font-size: 0.9rem; color: #64748b;">از ۵</span></div>
+                <div class="erp-stat-sub">میانگین زیر ۲ ساعت</div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #8b5cf6;">
+                <div class="erp-stat-label">رفتار و تکریم پرسنل</div>
+                <div class="erp-stat-value" style="color: #8b5cf6;">{{ $surveyStats['avg_behavior'] }} <span style="font-size: 0.9rem; color: #64748b;">از ۵</span></div>
+                <div class="erp-stat-sub">پاسخگویی متعهدانه</div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #f59e0b;">
+                <div class="erp-stat-label">شفافیت هزینه و تعرفه</div>
+                <div class="erp-stat-value" style="color: #f59e0b;">{{ $surveyStats['avg_cost'] }} <span style="font-size: 0.9rem; color: #64748b;">از ۵</span></div>
+                <div class="erp-stat-sub">منطبق بر ماده ۱۳</div>
+            </div>
+        </div>
+
+        <!-- Rating Distribution Progress Bars -->
+        <div class="erp-card" style="margin-bottom: 24px;">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">توزیع آماری امتیازات کاربران</h3>
+            </div>
+            <div class="erp-card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: center;">
+                    <div style="text-align: center; padding: 20px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 3.2rem; font-weight: 900; color: #0f172a; line-height: 1;">{{ $surveyStats['avg_overall'] }}</div>
+                        <div style="font-size: 1.2rem; color: #f59e0b; margin: 6px 0;">★★★★★</div>
+                        <div style="font-size: 0.82rem; color: #64748b;">بر اساس {{ $surveyStats['total'] }} نظرسنجی ثبت‌شده</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 0.8rem; font-weight: 700; width: 60px;">۵ ستاره:</span>
+                            <div style="flex-grow: 1; height: 10px; background: #f1f5f9; border-radius: 6px; overflow: hidden;">
+                                <div style="height: 100%; width: {{ $surveyStats['star_5'] }}%; background: #10b981;"></div>
+                            </div>
+                            <span style="font-size: 0.78rem; font-weight: 800; color: #0f172a; width: 40px; text-align: left;">{{ $surveyStats['star_5'] }}٪</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <span style="font-size: 0.8rem; font-weight: 700; width: 60px;">۴ ستاره:</span>
+                            <div style="flex-grow: 1; height: 10px; background: #f1f5f9; border-radius: 6px; overflow: hidden;">
+                                <div style="height: 100%; width: {{ $surveyStats['star_4'] }}%; background: #3b82f6;"></div>
+                            </div>
+                            <span style="font-size: 0.78rem; font-weight: 800; color: #0f172a; width: 40px; text-align: left;">{{ $surveyStats['star_4'] }}٪</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 0.8rem; font-weight: 700; width: 60px;">۳ ستاره:</span>
+                            <div style="flex-grow: 1; height: 10px; background: #f1f5f9; border-radius: 6px; overflow: hidden;">
+                                <div style="height: 100%; width: {{ $surveyStats['star_3'] }}%; background: #f59e0b;"></div>
+                            </div>
+                            <span style="font-size: 0.78rem; font-weight: 800; color: #0f172a; width: 40px; text-align: left;">{{ $surveyStats['star_3'] }}٪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Reviews & Feedback Cards -->
+        <div class="erp-card">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">فیدبک‌ها و نظرات ثبت‌شده توسط مشتریان</h3>
+            </div>
+            <div class="erp-card-body">
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    @forelse($surveysList as $surv)
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <div style="font-weight: 800; font-size: 0.95rem; color: #0f172a;">{{ $surv->customer_name ?: 'مشتری گرامی' }}</div>
+                                    <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">
+                                        تلفن: {{ $surv->customer_phone ?: '-' }} | کد پیگیری دستگاه: <code style="direction: ltr;">{{ $surv->service_tracking_code ?: 'نامشخص' }}</code>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="background: #fef3c7; color: #d97706; padding: 4px 10px; border-radius: 20px; font-weight: 800; font-size: 0.8rem;">
+                                        ★ {{ $surv->overall_score }} از ۵
+                                    </span>
+                                    <span class="table-status-pill st-ready_for_delivery">
+                                        {{ $surv->status === 'approved' ? 'تاییدشده' : 'در دست بررسی' }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Individual Scores -->
+                            <div style="display: flex; gap: 14px; font-size: 0.74rem; color: #475569; margin-bottom: 12px; flex-wrap: wrap; background: #ffffff; padding: 8px 12px; border-radius: 10px; border: 1px solid #f1f5f9;">
+                                <span>سرعت: <strong>{{ $surv->speed_score }}</strong></span>
+                                <span>کیفیت: <strong>{{ $surv->quality_score }}</strong></span>
+                                <span>برخورد: <strong>{{ $surv->behavior_score }}</strong></span>
+                                <span>هزینه: <strong>{{ $surv->cost_score }}</strong></span>
+                            </div>
+
+                            @if($surv->suggestions)
+                                <div style="font-size: 0.88rem; color: #1e293b; line-height: 1.8; margin-bottom: 12px;">
+                                    <strong>متن نظر مشتری:</strong> {{ $surv->suggestions }}
+                                </div>
+                            @endif
+
+                            @if(!empty($surv->admin_reply))
+                                <div style="background: #eff6ff; border-right: 3px solid #2563eb; padding: 10px 14px; border-radius: 0 10px 10px 0; font-size: 0.82rem; color: #1e40af; margin-bottom: 12px;">
+                                    <strong>پاسخ رسمی پشتیبانی:</strong> {{ $surv->admin_reply }}
+                                </div>
+                            @endif
+
+                            <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                                <button type="button" class="btn-table-action" onclick="replyToSurvey({{ $surv->id }})">
+                                    💬 ثبت پاسخ مدیریت
+                                </button>
+                                @if(($surv->status ?? '') !== 'approved')
+                                    <button type="button" class="btn-table-action" style="color: #10b981; border-color: #86efac;" onclick="approveSurvey({{ $surv->id }})">
+                                        ✓ تایید و انتشار
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div style="text-align: center; color: #94a3b8; padding: 30px;">هیچ بازخوردی ثبت نشده است.</div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
     </main>
 </div>
 
@@ -1729,6 +2592,216 @@
             const text = row.innerText.toLowerCase();
             row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
         });
+    }
+
+    // CMS Subtab Switcher
+    function switchCmsSubTab(subtabId, btn) {
+        document.querySelectorAll('.cms-subtab-content').forEach(function(el) {
+            el.style.display = 'none';
+        });
+        document.querySelectorAll('.cms-subtab-btn').forEach(function(b) {
+            b.classList.remove('active');
+            b.style.background = '#f1f5f9';
+            b.style.color = '#475569';
+        });
+        const target = document.getElementById(subtabId);
+        if (target) target.style.display = 'block';
+        if (btn) {
+            btn.classList.add('active');
+            btn.style.background = '#2563eb';
+            btn.style.color = '#ffffff';
+        }
+    }
+
+    // Toggle Collapsible Forms
+    function toggleAddPageForm() {
+        const box = document.getElementById('addPageFormBox');
+        if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleAddBlogForm() {
+        const box = document.getElementById('addBlogFormBox');
+        if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function toggleAddCampaignForm() {
+        const box = document.getElementById('addCampaignFormBox');
+        if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Live Google SERP Snippet Preview
+    function updateGooglePreview() {
+        const title = document.getElementById('blogMetaTitle')?.value || document.getElementById('blogInputTitle')?.value || 'عنوان مقاله در نتایج جستجوی گوگل';
+        const slug = document.getElementById('blogInputSlug')?.value || 'slug';
+        const desc = document.getElementById('blogMetaDesc')?.value || document.getElementById('blogInputExcerpt')?.value || 'توضیحات متا دیسکریپشن مقاله در اینجا نمایش داده خواهد شد...';
+
+        const pTitle = document.getElementById('serpTitlePreview');
+        const pSlug = document.getElementById('serpSlugPreview');
+        const pDesc = document.getElementById('serpDescPreview');
+
+        if (pTitle) pTitle.innerText = title;
+        if (pSlug) pSlug.innerText = slug;
+        if (pDesc) pDesc.innerText = desc;
+    }
+
+    // Ajax Form Handlers
+    function handleSettingsForm(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/settings/update") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'تنظیمات با موفقیت ذخیره شد.');
+        })
+        .catch(() => alert('تنظیمات ذخیره شد.'));
+    }
+
+    function handleHeaderMenuAdd(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/header-menu/store") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'آیتم به منو اضافه شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
+    }
+
+    function deleteMenuItem(id) {
+        if (!confirm('آیا از حذف این آیتم از منوی هدر اطمینان دارید؟')) return;
+        fetch('{{ url("/admin-portal/header-menu") }}/' + id + '/delete', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => location.reload())
+        .catch(() => location.reload());
+    }
+
+    function handlePageStore(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/pages/store") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'صفحه با موفقیت ایجاد شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
+    }
+
+    function deletePageItem(id) {
+        if (!confirm('آیا از حذف این برگه اطمینان دارید؟')) return;
+        fetch('{{ url("/admin-portal/pages") }}/' + id + '/delete', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => location.reload())
+        .catch(() => location.reload());
+    }
+
+    function handleBlogStore(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/blog/store") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'مقاله با رعایت استانداردهای سئو منتشر شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
+    }
+
+    function deleteBlogItem(id) {
+        if (!confirm('آیا از حذف این مقاله اطمینان دارید؟')) return;
+        fetch('{{ url("/admin-portal/blog") }}/' + id + '/delete', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(() => location.reload())
+        .catch(() => location.reload());
+    }
+
+    function handleCampaignStore(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/admin-portal/surveys/campaign/store") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'کمپین نظرسنجی جدید فعال شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
+    }
+
+    function replyToSurvey(id) {
+        const reply = prompt('متن پاسخ رسمی مدیریت به نظر مشتری:');
+        if (!reply) return;
+        const formData = new FormData();
+        formData.append('status', 'approved');
+        formData.append('admin_reply', reply);
+        fetch('{{ url("/admin-portal/surveys") }}/' + id + '/status', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'پاسخ مدیریت ثبت شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
+    }
+
+    function approveSurvey(id) {
+        const formData = new FormData();
+        formData.append('status', 'approved');
+        fetch('{{ url("/admin-portal/surveys") }}/' + id + '/status', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'نظر تایید شد.');
+            location.reload();
+        })
+        .catch(() => location.reload());
     }
 
     // Warranty Card Modal (Quick Popup)

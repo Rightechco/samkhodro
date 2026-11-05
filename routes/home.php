@@ -56,6 +56,26 @@ $registerMobileRoutes = function () {
     Route::get('/invoice-sample', [MobileServiceController::class, 'invoiceSample'])->name('mob.invoice-sample');
     Route::get('/shipping-guide', [MobileServiceController::class, 'shippingGuide'])->name('mob.shipping-guide');
     Route::get('/regulations', [MobileServiceController::class, 'regulations'])->name('mob.regulations');
+
+    // صفحات داینامیک CMS، وبلاگ و سئو
+    Route::get('/about', [MobileServiceController::class, 'aboutUs'])->name('mob.about');
+    Route::get('/contact', [MobileServiceController::class, 'contactUs'])->name('mob.contact');
+    Route::get('/blog', [MobileServiceController::class, 'blogIndex'])->name('mob.blog');
+    Route::get('/blog/{slug}', [MobileServiceController::class, 'blogShow'])->name('mob.blog.show');
+    Route::get('/page/{slug}', [MobileServiceController::class, 'pageShow'])->name('mob.page.show');
+
+    // عملیات مدیریت ادمین (تنظیمات، منوها، صفحات، وبلاگ و نظرسنجی)
+    Route::post('/admin-portal/settings/update', [MobileServiceController::class, 'updateSiteSettings'])->name('mob.admin.settings.update');
+    Route::post('/admin-portal/header-menu/store', [MobileServiceController::class, 'storeHeaderMenuItem'])->name('mob.admin.header-menu.store');
+    Route::post('/admin-portal/header-menu/{id}/delete', [MobileServiceController::class, 'deleteHeaderMenuItem'])->name('mob.admin.header-menu.delete');
+    Route::post('/admin-portal/pages/store', [MobileServiceController::class, 'storePage'])->name('mob.admin.pages.store');
+    Route::post('/admin-portal/pages/{id}/update', [MobileServiceController::class, 'updatePage'])->name('mob.admin.pages.update');
+    Route::post('/admin-portal/pages/{id}/delete', [MobileServiceController::class, 'deletePage'])->name('mob.admin.pages.delete');
+    Route::post('/admin-portal/blog/store', [MobileServiceController::class, 'storeBlogPost'])->name('mob.admin.blog.store');
+    Route::post('/admin-portal/blog/{id}/update', [MobileServiceController::class, 'updateBlogPost'])->name('mob.admin.blog.update');
+    Route::post('/admin-portal/blog/{id}/delete', [MobileServiceController::class, 'deleteBlogPost'])->name('mob.admin.blog.delete');
+    Route::post('/admin-portal/surveys/campaign/store', [MobileServiceController::class, 'storeSurveyCampaign'])->name('mob.admin.survey-campaign.store');
+    Route::post('/admin-portal/surveys/{id}/status', [MobileServiceController::class, 'updateSurveyStatus'])->name('mob.admin.survey.status');
 };
 
 // شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های سام موبایل در ریشه لود می‌شوند

@@ -1210,6 +1210,16 @@
                         </a>
                     </div>
                 </div>
+
+                <a href="{{ url('/blog') }}" class="nav-item-link {{ request()->is('*blog*') ? 'active' : '' }}">
+                    <span>وبلاگ</span>
+                </a>
+                <a href="{{ url('/about') }}" class="nav-item-link {{ request()->is('*about*') ? 'active' : '' }}">
+                    <span>درباره ما</span>
+                </a>
+                <a href="{{ url('/contact') }}" class="nav-item-link {{ request()->is('*contact*') ? 'active' : '' }}">
+                    <span>تماس با ما</span>
+                </a>
             </nav>
 
             <!-- Actions -->
