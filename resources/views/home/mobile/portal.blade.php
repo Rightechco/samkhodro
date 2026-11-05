@@ -638,6 +638,167 @@
             display: none;
         }
     }
+
+    /* =========================================================================
+       ULTRA-PREMIUM CMS STYLING & INTERACTIVE ENHANCEMENTS
+       ========================================================================= */
+    .cms-subtabs-nav {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+        padding: 6px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.03);
+        overflow-x: auto;
+    }
+    .cms-subtab-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 0.84rem;
+        border: none;
+        background: transparent;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        white-space: nowrap;
+    }
+    .cms-subtab-pill:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+    .cms-subtab-pill.active {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Live Header Simulation */
+    .header-sim-wrapper {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.03);
+    }
+    .header-sim-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 99px;
+        margin-bottom: 12px;
+    }
+    .header-sim-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        border: 1px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 12px 16px;
+        background: #f8fafc;
+    }
+    .header-sim-link {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #1e293b;
+        padding: 5px 12px;
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* SEO Quality Meter */
+    .seo-meter-card {
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        border: 1px solid #86efac;
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(16, 185, 129, 0.06);
+    }
+    .seo-meter-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .seo-score-circle {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #10b981;
+    }
+    .seo-checklist {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+    }
+    .seo-check-item {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.2s ease;
+    }
+    .seo-check-item.valid {
+        color: #059669;
+    }
+
+    /* Template Cards */
+    .template-card-btn {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        text-align: right;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .template-card-btn:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+        transform: translateY(-2px);
+    }
+
+    /* Quick Reply Pill */
+    .quick-reply-pill {
+        display: inline-block;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #2563eb;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 99px;
+        padding: 5px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-left: 6px;
+        margin-bottom: 6px;
+    }
+    .quick-reply-pill:hover {
+        background: #2563eb;
+        color: #ffffff;
+    }
 </style>
 @endpush
 
@@ -2023,22 +2184,23 @@
             </div>
         </div>
 
-        <!-- Sub-tabs bar -->
-        <div class="cms-subtabs-bar" style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; overflow-x: auto;">
-            <button type="button" class="cms-subtab-btn active" onclick="switchCmsSubTab('subtab-general', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #2563eb; color: #ffffff; cursor: pointer;">
-                🏢 مشخصات عمومی و تماس
+        <!-- Ultra-Premium Sub-tabs bar -->
+        <div class="cms-subtabs-nav">
+            <button type="button" class="cms-subtab-pill active" onclick="switchCmsSubTab('subtab-general', this)">
+                <span>🏢</span> <span>مشخصات عمومی و تماس</span>
             </button>
-            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-menu', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
-                🧭 منوهای ناوبری هدر
+            <button type="button" class="cms-subtab-pill" onclick="switchCmsSubTab('subtab-menu', this)">
+                <span>🧭</span> <span>منوهای ناوبری هدر</span>
+                <span style="font-size: 0.7rem; background: #e0e7ff; color: #3730a3; padding: 1px 7px; border-radius: 99px;">{{ isset($headerMenuItems) ? count($headerMenuItems) : 0 }}</span>
             </button>
-            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-footer', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
-                🛡️ فوتر، نمادها و مجوزها
+            <button type="button" class="cms-subtab-pill" onclick="switchCmsSubTab('subtab-footer', this)">
+                <span>🛡️</span> <span>فوتر، نمادها و مجوزها</span>
             </button>
-            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-home', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
-                🏠 المان‌های صفحه اصلی
+            <button type="button" class="cms-subtab-pill" onclick="switchCmsSubTab('subtab-home', this)">
+                <span>🏠</span> <span>المان‌های صفحه اصلی</span>
             </button>
-            <button type="button" class="cms-subtab-btn" onclick="switchCmsSubTab('subtab-static-pages', this)" style="padding: 10px 18px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: none; background: #f1f5f9; color: #475569; cursor: pointer;">
-                📄 صفحات تماس، درباره ما و ...
+            <button type="button" class="cms-subtab-pill" onclick="switchCmsSubTab('subtab-static-pages', this)">
+                <span>📄</span> <span>صفحات تماس، درباره ما و ...</span>
             </button>
         </div>
 
@@ -2101,7 +2263,26 @@
                     </div>
                 </div>
                 <div class="erp-card-body">
-                    <!-- Add menu form -->
+                                <!-- Live Header Simulation Card -->
+            <div class="header-sim-wrapper">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span class="header-sim-badge">✨ پیش‌نمایش زنده چیدمان هدر سایت</span>
+                    <span style="font-size: 0.72rem; color: #64748b;">همگام‌سازی لحظه‌ای با سرور</span>
+                </div>
+                <div class="header-sim-bar">
+                    <span style="font-size: 0.8rem; font-weight: 800; color: #2563eb; padding: 4px 10px; background: #dbeafe; border-radius: 8px;">سام موبایل 📱</span>
+                    @foreach($headerMenuItems ?? [] as $mItem)
+                        <span class="header-sim-link">
+                            {{ $mItem->title }}
+                            @if(!empty($mItem->badge))
+                                <span style="font-size: 0.65rem; background: #fee2e2; color: #dc2626; padding: 1px 6px; border-radius: 99px;">{{ $mItem->badge }}</span>
+                            @endif
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Add menu form -->
                     <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; margin-bottom: 24px;">
                         <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem; margin-bottom: 12px;">+ افزودن آیتم جدید به منوی هدر</div>
                         <form onsubmit="handleHeaderMenuAdd(event, this)" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: flex-end;">
@@ -2377,7 +2558,47 @@
             </button>
         </div>
 
-        <!-- Add Page Collapsible Form -->
+            <!-- Quick Page Templates -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 18px; margin-bottom: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.02);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <span style="font-size: 0.86rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                <span>⚡</span> <span>قالب‌های آماده جهت ساخت سریع برگه (با ۱ کلیک درج می‌شود):</span>
+            </span>
+            <span style="font-size: 0.72rem; color: #64748b;">دارای متن آماده و تنظیمات اصولی سئو</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px;">
+            <button type="button" class="template-card-btn" onclick="applyPageTemplate('standard')">
+                <span style="font-size: 1.4rem;">📄</span>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.82rem; color: #1e293b;">برگه شرکتی استاندارد</div>
+                    <div style="font-size: 0.7rem; color: #64748b;">توضیحات خدمات، شعب و سرفصل‌ها</div>
+                </div>
+            </button>
+            <button type="button" class="template-card-btn" onclick="applyPageTemplate('faq')">
+                <span style="font-size: 1.4rem;">❓</span>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.82rem; color: #1e293b;">سوالات متداول گارانتی</div>
+                    <div style="font-size: 0.7rem; color: #64748b;">پاسخ به سوالات پرتکرار و پذیرش</div>
+                </div>
+            </button>
+            <button type="button" class="template-card-btn" onclick="applyPageTemplate('terms')">
+                <span style="font-size: 1.4rem;">⚖️</span>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.82rem; color: #1e293b;">شرایط و مقررات ماده ۱۳</div>
+                    <div style="font-size: 0.7rem; color: #64748b;">حقوق مصرف‌کننده و تعهدات قانونی</div>
+                </div>
+            </button>
+            <button type="button" class="template-card-btn" onclick="applyPageTemplate('branches')">
+                <span style="font-size: 1.4rem;">📞</span>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.82rem; color: #1e293b;">دفاتر پذیرش و تماس</div>
+                    <div style="font-size: 0.7rem; color: #64748b;">آدرس مرکزی تبریز و تلفن‌ها</div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Page Collapsible Form -->
         <div id="addPageFormBox" style="display: none; background: #ffffff; border: 1px solid #2563eb; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(37,99,235,0.08);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">ایجاد برگه جدید در سامانه</h3>
@@ -2388,32 +2609,32 @@
                 <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                     <div>
                         <label class="erp-form-label">عنوان برگه (Page Title)</label>
-                        <input type="text" name="title" class="erp-form-input" required placeholder="مثال: سوالات متداول گارانتی">
+                        <input type="text" name="title" id="pageInputTitle" class="erp-form-input" required placeholder="مثال: سوالات متداول گارانتی">
                     </div>
                     <div>
                         <label class="erp-form-label">اسلاگ یکتا (URL Slug)</label>
-                        <input type="text" name="slug" class="erp-form-input" required placeholder="مثال: faq-warranty" style="direction: ltr;">
+                        <input type="text" name="slug" id="pageInputSlug" class="erp-form-input" required placeholder="مثال: faq-warranty" style="direction: ltr;">
                         <span style="font-size: 0.72rem; color: #64748b;">آدرس در سایت: mob.taminkanisam.co.ir/page/slug</span>
                     </div>
                     <div>
                         <label class="erp-form-label">دسته‌بندی موضوعی</label>
-                        <input type="text" name="category" class="erp-form-input" value="عمومی">
+                        <input type="text" name="category" id="pageInputCategory" class="erp-form-input" value="عمومی">
                     </div>
                     <div>
                         <label class="erp-form-label">تایتل سئو (Meta Title)</label>
-                        <input type="text" name="meta_title" class="erp-form-input" placeholder="عنوان صفحه در نتایج گوگل">
+                        <input type="text" name="meta_title" id="pageInputMetaTitle" class="erp-form-input" placeholder="عنوان صفحه در نتایج گوگل">
                     </div>
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">توضیحات متای سئو (Meta Description)</label>
-                        <textarea name="meta_description" class="erp-form-input" rows="2" placeholder="خلاصه ۱۵۰ کاراکتری برای موتورهای جستجو..."></textarea>
+                        <textarea name="meta_description" id="pageInputMetaDesc" class="erp-form-input" rows="2" placeholder="خلاصه ۱۵۰ کاراکتری برای موتورهای جستجو..."></textarea>
                     </div>
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">کلمات کلیدی سئو (با کاما جدا کنید)</label>
-                        <input type="text" name="meta_keywords" class="erp-form-input" placeholder="گارانتی, سام موبایل, تعمیرات, تامین کانی سام">
+                        <input type="text" name="meta_keywords" id="pageInputMetaKeywords" class="erp-form-input" placeholder="گارانتی, سام موبایل, تعمیرات, تامین کانی سام">
                     </div>
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">محتوای متنی برگه (HTML یا متن)</label>
-                        <textarea name="content" class="erp-form-input" rows="6" required placeholder="متن کامل صفحه را اینجا وارد نمایید..."></textarea>
+                        <textarea name="content" id="pageInputContent" class="erp-form-input" rows="6" required placeholder="متن کامل صفحه را اینجا وارد نمایید..."></textarea>
                     </div>
                 </div>
                 <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
@@ -2571,7 +2792,7 @@
                             <img src="https://www.google.com/favicon.ico" width="16" height="16" alt="Google">
                             <span>پیش‌نمایش زنده در نتایج جستجوی گوگل (SERP Snippet):</span>
                         </div>
-                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; font-family: Arial, sans-serif; max-width: 650px;">
+                        <div id="serpSnippetCard" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; transition: all 0.3s ease; font-family: Arial, sans-serif; max-width: 650px;">
                             <div style="font-size: 0.76rem; color: #202124; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
                                 <span>https://mob.taminkanisam.co.ir › blog › <span id="serpSlugPreview">slug</span></span>
                             </div>
@@ -3253,6 +3474,14 @@
         <form id="replySurveyForm" onsubmit="handleSurveyReply(event, this)">
             @csrf
             <input type="hidden" name="survey_id" id="replySurveyId">
+            <div style="margin-bottom: 12px;">
+                <label class="erp-form-label">الگوهای آماده پاسخ شرکتی (با ۱ کلیک درج می‌شود):</label>
+                <div style="display: flex; flex-wrap: wrap;">
+                    <span class="quick-reply-pill" onclick="insertQuickReply('با سلام و احترام، از بازخورد ارزشمند و ابراز رضایت شما از خدمات سام موبایل صمیمانه سپاسگزاریم. پایداری خدمات و رضایت ۱۰۰٪ شما افتخار شرکت تامین کانی سام است.')">💎 تشکر و قدردانی</span>
+                    <span class="quick-reply-pill" onclick="insertQuickReply('با سلام، از بازخورد فنی شما متشکریم. مورد اظهارشده جهت ارتقای استانداردهای واحد فنی و بازرسی کارگاه مرکزی تبریز ثبت و پیگیری گردید.')">🔧 پیگیری فنی</span>
+                    <span class="quick-reply-pill" onclick="insertQuickReply('با سلام و پوزش بابت هرگونه معطلی، همکاران واحد ارتباط با مشتریان (CRM) جهت هماهنگی و جلب رضایت کامل شما با شماره ثبت‌شده تماس خواهند گرفت.')">📞 پیگیری واحد CRM</span>
+                </div>
+            </div>
             <div>
                 <label class="erp-form-label">متن پاسخ رسمی شرکت تامین کانی سام</label>
                 <textarea name="admin_reply" id="replyAdminText" class="erp-form-input" rows="4" required placeholder="با سلام و احترام، از بازخورد ارزشمند شما سپاسگزاریم..."></textarea>
@@ -3441,6 +3670,160 @@
     // =========================================================================
     // CMS TOAST NOTIFICATION SYSTEM
     // =========================================================================
+    
+    // =========================================================================
+    // ULTRA-PREMIUM CMS ASSISTANTS & AUTOMATION
+    // =========================================================================
+    function insertQuickReply(text) {
+        const textarea = document.getElementById('replyAdminText');
+        if (textarea) {
+            textarea.value = text;
+            textarea.focus();
+            showToast('الگوی پاسخ با موفقیت درج شد.', 'info');
+        }
+    }
+
+    function applyPageTemplate(type) {
+        const box = document.getElementById('addPageFormBox');
+        if (box && box.style.display === 'none') {
+            toggleAddPageForm();
+        }
+        
+        if (type === 'standard') {
+            document.getElementById('pageInputTitle').value = 'درباره خدمات تخصصی سام موبایل';
+            document.getElementById('pageInputSlug').value = 'about-sam-services';
+            document.getElementById('pageInputCategory').value = 'شرکتی';
+            document.getElementById('pageInputMetaTitle').value = 'درباره خدمات تخصصی و کارگاه مرکزی سام موبایل تبریز';
+            document.getElementById('pageInputMetaDesc').value = 'معرفی تجهیزات فوق پیشرفته، مهندسین مجرب و استانداردهای گارانتی ۱۸ ماهه شرکت تامین کانی سام در تبریز و سراسر کشور.';
+            document.getElementById('pageInputMetaKeywords').value = 'درباره ما, سام موبایل, گارانتی گوشی تبریز, تامین کانی سام';
+            document.getElementById('pageInputContent').value = '<h3>مرکز تخصصی خدمات پس از فروش سام موبایل</h3>\n<p>شرکت تامین کانی سام با بهره‌گیری از پیشرفته‌ترین تجهیزات تست و عیب‌یابی سخت‌افزاری و قطعات ۱۰۰٪ اورجینال، خدمات گارانتی و تعمیرات تخصصی تلفن‌های همراه را با ضمانت رسمی ۱۸ ماهه ارائه می‌نماید.</p>\n<h4>مزایای خدمات ما:</h4>\n<ul>\n<li>تخصیص آنی کد رهگیری و استعلام برخط وضعیت</li>\n<li>پایش مداوم کیفیت و کنترل کیفی دو مرحله‌ای (QC)</li>\n<li>تحویل در سریع‌ترین زمان ممکن طبق ماده ۱۳ آیین‌نامه حمایت از مصرف‌کنندگان</li>\n</ul>';
+        } else if (type === 'faq') {
+            document.getElementById('pageInputTitle').value = 'پرسش‌های متداول و راهنمای پذیرش گارانتی';
+            document.getElementById('pageInputSlug').value = 'faq-warranty';
+            document.getElementById('pageInputCategory').value = 'راهنما';
+            document.getElementById('pageInputMetaTitle').value = 'سوالات متداول گارانتی ۱۸ ماهه و فرایند تعمیر گوشی - سام موبایل';
+            document.getElementById('pageInputMetaDesc').value = 'پاسخ به کلیه پرسش‌های متداول در خصوص شرایط ابطال گارانتی، هزینه قطعات، مدت زمان ترخیص و نحوه پیگیری آنلاین پرونده.';
+            document.getElementById('pageInputMetaKeywords').value = 'سوالات متداول, گارانتی گوشی, پیگیری تعمیرات, هزینه تعمیر موبایل';
+            document.getElementById('pageInputContent').value = '<h3>پرسش‌های پرتکرار مشتریان گرامی</h3>\n<h4>۱. شرایط پذیرش تحت گارانتی ۱۸ ماهه چیست؟</h4>\n<p>دستگاه نباید دچار آب‌خوردگی، شکستگی فیزیکی ناشی از ضربه یا تعمیر توسط تعمیرکاران غیرمجاز شده باشد. شماره سریال IMEI باید با کارت گارانتی مطابقت داشته باشد.</p>\n<h4>۲. چگونه وضعیت تعمیر گوشی خود را پیگیری کنم؟</h4>\n<p>با مراجعه به صفحه پیگیری خدمات در سایت و درج شماره پیگیری یا IMEI، آخرین وضعیت مرحله تعمیر، نام تکنسین و فاکتور را مشاهده فرمایید.</p>';
+        } else if (type === 'terms') {
+            document.getElementById('pageInputTitle').value = 'منشور حقوق مشتریان و تعهدات ماده ۱۳';
+            document.getElementById('pageInputSlug').value = 'consumer-rights-terms';
+            document.getElementById('pageInputCategory').value = 'حقوقی';
+            document.getElementById('pageInputMetaTitle').value = 'منشور حقوق مشتریان و تعهدات قانونی ماده ۱۳ - شرکت تامین کانی سام';
+            document.getElementById('pageInputMetaDesc').value = 'متن کامل تعهدات قانونی ماده ۱۳ قانون حمایت از مصرف‌کنندگان، شرایط تعویض دستگاه، جبران خسارت و شفافیت کامل تعرفه خدمات.';
+            document.getElementById('pageInputMetaKeywords').value = 'ماده ۱۳, منشور حقوق مشتری, تعهدات گارانتی, شرکت تامین کانی سام';
+            document.getElementById('pageInputContent').value = '<h3>منشور تعهدات قانونی و حقوق مصرف‌کنندگان</h3>\n<p>شرکت تامین کانی سام متعهد به اجرای دقیق مفاد ماده ۱۳ آیین‌نامه اجرایی قانون حمایت از حقوق مصرف‌کنندگان خودرو و تجهیزات دیجیتال است:</p>\n<ol>\n<li>اعلام شفاف برآورد هزینه قبل از آغاز فرایند تعمیر.</li>\n<li>ارائه قطعات یدکی استاندارد با ضمانت ۶ ماهه تعویض.</li>\n<li>تخصیص دستگاه امانی در صورت طولانی شدن زمان تامین قطعه بیش از ۷ روز کاری.</li>\n</ol>';
+        } else if (type === 'branches') {
+            document.getElementById('pageInputTitle').value = 'دفاتر پذیرش و اطلاعات ارتباطی';
+            document.getElementById('pageInputSlug').value = 'service-branches-contact';
+            document.getElementById('pageInputCategory').value = 'تماس';
+            document.getElementById('pageInputMetaTitle').value = 'دفتر مرکزی پذیرش و نمایندگی‌های استانی سام موبایل';
+            document.getElementById('pageInputMetaDesc').value = 'آدرس کارگاه مرکزی پذیرش تبریز، تلفن‌های مستقیم واحد CRM و راهنمای ارسال پستی کالا از شهرستان‌ها.';
+            document.getElementById('pageInputMetaKeywords').value = 'آدرس گارانتی تبریز, تلفن سام موبایل, دفتر پذیرش تعمیرات گوشی';
+            document.getElementById('pageInputContent').value = '<h3>اطلاعات دفتر مرکزی و کارگاه پذیرش</h3>\n<p><strong>آدرس:</strong> تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</p>\n<p><strong>تلفن مستقیم:</strong> ۰۴۱-۳۶۶۸۹۰۰۰</p>\n<p><strong>ساعات پاسخگویی:</strong> شنبه تا چهارشنبه ۹:۰۰ الی ۱۸:۰۰ | پنجشنبه‌ها ۹:۰۰ الی ۱۴:۰۰</p>\n<p>مشتریان محترم سایر استان‌ها می‌توانند دستگاه خود را از طریق پست پیشتاز به آدرس فوق و کد پستی مرکز ارسال نمایند.</p>';
+        }
+        
+        showToast('قالب برگه با موفقیت بارگذاری شد. می‌توانید موارد دلخواه را ویرایش کنید.', 'success');
+    }
+
+    function calculateSeoScore() {
+        const title = document.getElementById('blogInputTitle')?.value.trim() || '';
+        const slug = document.getElementById('blogInputSlug')?.value.trim() || '';
+        const excerpt = document.getElementById('blogInputExcerpt')?.value.trim() || '';
+        const content = document.getElementById('blogInputContent')?.value.trim() || '';
+        const metaDesc = document.getElementById('blogMetaDesc')?.value.trim() || '';
+        
+        let score = 0;
+        
+        // Check title (20 pts)
+        const chkTitle = document.getElementById('chkTitle');
+        if (title.length >= 10) {
+            score += 20;
+            chkTitle?.classList.add('valid');
+        } else {
+            chkTitle?.classList.remove('valid');
+        }
+        
+        // Check slug (20 pts)
+        const chkSlug = document.getElementById('chkSlug');
+        if (slug.length >= 3 && /^[a-z0-9-]+$/i.test(slug)) {
+            score += 20;
+            chkSlug?.classList.add('valid');
+        } else {
+            chkSlug?.classList.remove('valid');
+        }
+        
+        // Check excerpt (20 pts)
+        const chkExcerpt = document.getElementById('chkExcerpt');
+        if (excerpt.length >= 25) {
+            score += 20;
+            chkExcerpt?.classList.add('valid');
+        } else {
+            chkExcerpt?.classList.remove('valid');
+        }
+        
+        // Check content (20 pts)
+        const chkContent = document.getElementById('chkContent');
+        if (content.length >= 100) {
+            score += 20;
+            chkContent?.classList.add('valid');
+        } else {
+            chkContent?.classList.remove('valid');
+        }
+        
+        // Check meta (20 pts)
+        const chkMeta = document.getElementById('chkMeta');
+        if (metaDesc.length >= 40) {
+            score += 20;
+            chkMeta?.classList.add('valid');
+        } else {
+            chkMeta?.classList.remove('valid');
+        }
+        
+        // Update Score Circle and Bar
+        const scoreText = document.getElementById('seoScoreText');
+        const progBar = document.getElementById('seoProgressBar');
+        if (scoreText) scoreText.innerText = score + '/۱۰۰';
+        if (progBar) {
+            progBar.style.width = score + '%';
+            if (score >= 80) {
+                progBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+                if (scoreText) scoreText.style.color = '#10b981';
+            } else if (score >= 50) {
+                progBar.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+                if (scoreText) scoreText.style.color = '#f59e0b';
+            } else {
+                progBar.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+                if (scoreText) scoreText.style.color = '#ef4444';
+            }
+        }
+    }
+
+    function setSerpDevice(mode) {
+        const card = document.getElementById('serpSnippetCard');
+        const btnD = document.getElementById('serpBtnDesktop');
+        const btnM = document.getElementById('serpBtnMobile');
+        if (mode === 'mobile') {
+            if (card) {
+                card.style.maxWidth = '360px';
+                card.style.margin = '0 auto';
+                card.style.border = '2px solid #3b82f6';
+                card.style.boxShadow = '0 10px 25px rgba(59, 130, 246, 0.15)';
+            }
+            if (btnM) { btnM.style.background = '#2563eb'; btnM.style.color = '#fff'; btnM.style.borderColor = '#2563eb'; }
+            if (btnD) { btnD.style.background = '#fff'; btnD.style.color = '#475569'; btnD.style.borderColor = '#cbd5e1'; }
+        } else {
+            if (card) {
+                card.style.maxWidth = '100%';
+                card.style.margin = '0';
+                card.style.border = '1px solid #e2e8f0';
+                card.style.boxShadow = 'none';
+            }
+            if (btnD) { btnD.style.background = '#2563eb'; btnD.style.color = '#fff'; btnD.style.borderColor = '#2563eb'; }
+            if (btnM) { btnM.style.background = '#fff'; btnM.style.color = '#475569'; btnM.style.borderColor = '#cbd5e1'; }
+        }
+    }
+
     function showToast(message, type = 'success') {
         const container = document.getElementById('cmsToastContainer');
         if (!container) return;
