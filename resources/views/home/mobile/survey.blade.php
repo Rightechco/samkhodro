@@ -128,7 +128,7 @@
             <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(16,185,129,0.15); border: 2px solid #10b981; color: #10b981; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h3 style="color: #fff; font-size: 20px; font-weight: 800; margin-bottom: 8px;">با سپاس فراوان از همراهی شما</h3>
+            <h3 style="color: var(--text-main); font-size: 20px; font-weight: 800; margin-bottom: 8px;">با سپاس فراوان از همراهی شما</h3>
             <p style="color: var(--text-muted); font-size: 14px; max-width: 500px; margin: 0 auto 20px;">
                 نظرات و امتیازات شما با موفقیت در سامانه ارزیابی کیفیت سام موبایل ثبت گردید و در پایش عملکرد تکنسین‌ها و شعب لحاظ خواهد شد.
             </p>
@@ -145,7 +145,7 @@
         padding: 40px 20px 20px;
         margin-bottom: 20px;
     }
-    .page-header-card h1 { font-size: 26px; font-weight: 900; color: #fff; margin: 12px 0 8px; }
+    .page-header-card h1 { font-size: 26px; font-weight: 900; color: var(--text-main); margin: 12px 0 8px; }
     .page-header-card p { font-size: 14.5px; color: var(--text-muted); max-width: 680px; margin: 0 auto; }
 
     .survey-card {
@@ -185,14 +185,14 @@
     .form-group label {
         font-size: 13.5px;
         font-weight: 600;
-        color: #e2e8f0;
+        color: var(--text-body);
     }
     .form-group input, .form-group textarea {
-        background: rgba(6, 9, 19, 0.8);
+        background: #ffffff;
         border: 1px solid var(--border-light);
         border-radius: 12px;
         padding: 11px 14px;
-        color: #fff;
+        color: var(--text-main);
         font-size: 14px;
         outline: none;
         transition: all 0.2s;
@@ -217,7 +217,7 @@
         justify-content: space-between;
         gap: 20px;
     }
-    .rating-info h4 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .rating-info h4 { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
     .rating-info p { font-size: 12.5px; color: var(--text-dim); }
 
     .star-rating {

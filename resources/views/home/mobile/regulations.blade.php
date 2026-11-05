@@ -72,7 +72,7 @@
 @push('styles')
 <style>
     .page-header-card { text-align: center; padding: 40px 20px 20px; margin-bottom: 20px; }
-    .page-header-card h1 { font-size: 26px; font-weight: 900; color: #fff; margin: 12px 0 8px; }
+    .page-header-card h1 { font-size: 26px; font-weight: 900; color: var(--text-main); margin: 12px 0 8px; }
     .page-header-card p { font-size: 14.5px; color: var(--text-muted); max-width: 720px; margin: 0 auto; }
 
     .regulations-card { max-width: 960px; margin: 0 auto 40px; padding: 40px; }

@@ -130,7 +130,7 @@
 
     <!-- Postal Address Card -->
     <div class="glass-card address-box" style="margin-top: 30px;">
-        <h3 style="font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 10px;">آدرس و اطلاعات پستی دفتر مرکزی جهت ارسال مرسولات:</h3>
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin-bottom: 10px;">آدرس و اطلاعات پستی دفتر مرکزی جهت ارسال مرسولات:</h3>
         <p style="font-size: 14.5px; color: var(--text-main); line-height: 1.8;">
             <strong>گیرنده:</strong> تهران، میدان فردوسی، مرکز تجارت جهانی، ورودی اداری، طبقه ۵، واحد ۵۱۵ - واحد خدمات پس از فروش سام موبایل (تامین کانی سام)<br>
             <strong>کد پستی ۱۰ رقمی:</strong> ۱۱۴۵۹۸۲۱۳۱ | <strong>تلفن:</strong> ۰۲۱-۶۵۰۲۱۰۸۵
@@ -142,7 +142,7 @@
 @push('styles')
 <style>
     .page-header-card { text-align: center; padding: 40px 20px 20px; margin-bottom: 20px; }
-    .page-header-card h1 { font-size: 26px; font-weight: 900; color: #fff; margin: 12px 0 8px; }
+    .page-header-card h1 { font-size: 26px; font-weight: 900; color: var(--text-main); margin: 12px 0 8px; }
     .page-header-card p { font-size: 14.5px; color: var(--text-muted); max-width: 680px; margin: 0 auto; }
 
     .call-first-box {
@@ -182,7 +182,7 @@
         justify-content: center;
         flex-shrink: 0;
     }
-    .guide-point-item h4 { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .guide-point-item h4 { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
     .guide-point-item p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; margin: 0; }
 
     .address-box {

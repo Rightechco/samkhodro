@@ -211,7 +211,7 @@
     .page-header-card h1 {
         font-size: 26px;
         font-weight: 900;
-        color: #fff;
+        color: var(--text-main);
         margin: 12px 0 8px;
     }
     .page-header-card p {

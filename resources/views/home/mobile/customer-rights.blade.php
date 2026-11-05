@@ -123,7 +123,7 @@
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
             </div>
             <div style="flex: 1; min-width: 260px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px;">تخصیص گوشی امانی موقت به مشتریان</h3>
+                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">تخصیص گوشی امانی موقت به مشتریان</h3>
                 <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">
                     چنانچه زمان انتظار پذیرش حضوری در دفاتر خدمات بیش از ۳ ساعت به طول بینجامد یا زمان تأمین قطعه بیش از ۶ روز کاری شود، با درخواست مشتری، سام موبایل یک دستگاه تلفن همراه به صورت امانی در اختیار ایشان قرار می‌دهد.
                 </p>
@@ -146,7 +146,7 @@
     .page-header-card h1 {
         font-size: 28px;
         font-weight: 900;
-        color: #fff;
+        color: var(--text-main);
         margin: 12px 0 10px;
     }
     .page-header-card p {
@@ -213,7 +213,7 @@
     .charter-content h3 {
         font-size: 16px;
         font-weight: 800;
-        color: #fff;
+        color: var(--text-main);
         margin-bottom: 6px;
     }
     .charter-content p {

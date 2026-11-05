@@ -521,12 +521,12 @@
 @push('styles')
 <style>
     .portal-header-card {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(6, 9, 19, 0.95));
-        border: 1px solid var(--border-glow);
+        background: #ffffff;
+        border: 1px solid var(--border-light);
         border-radius: 24px;
         padding: 32px;
         margin-bottom: 26px;
-        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: var(--shadow-sm);
     }
     .portal-badge {
         display: inline-flex;
@@ -544,7 +544,7 @@
     .portal-title-area h1 {
         font-size: 26px;
         font-weight: 900;
-        color: #fff;
+        color: var(--text-main);
         margin-bottom: 8px;
     }
     .portal-title-area p {
@@ -557,10 +557,10 @@
         gap: 12px;
         margin-top: 24px;
         padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid var(--border-light);
     }
     .portal-stat-pill {
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--bg-subtle);
         border: 1px solid var(--border-light);
         border-radius: 14px;
         padding: 12px;
@@ -569,7 +569,7 @@
     .portal-stat-pill .num {
         font-size: 22px;
         font-weight: 900;
-        color: #fff;
+        color: var(--text-main);
         display: block;
         line-height: 1.2;
     }
@@ -588,7 +588,7 @@
         padding-bottom: 6px;
     }
     .portal-tab-btn {
-        background: rgba(15, 23, 42, 0.8);
+        background: #ffffff;
         border: 1px solid var(--border-light);
         color: var(--text-muted);
         padding: 12px 20px;
@@ -603,13 +603,13 @@
         transition: all 0.2s;
     }
     .portal-tab-btn:hover {
-        color: #fff;
-        background: rgba(30, 41, 59, 0.8);
+        color: var(--text-main);
+        background: var(--bg-subtle);
     }
     .portal-tab-btn.active {
         background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(2, 132, 199, 0.35));
         border-color: rgba(56, 189, 248, 0.5);
-        color: #fff;
+        color: var(--text-main);
         box-shadow: 0 4px 18px rgba(56, 189, 248, 0.2);
     }
 
@@ -632,7 +632,7 @@
     .filter-pill {
         padding: 7px 14px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.04);
+        background: var(--bg-subtle);
         border: 1px solid var(--border-light);
         color: var(--text-muted);
         font-size: 12.5px;
@@ -642,7 +642,7 @@
     .filter-pill.active, .filter-pill:hover {
         background: rgba(56, 189, 248, 0.15);
         border-color: rgba(56, 189, 248, 0.35);
-        color: #fff;
+        color: var(--text-main);
     }
 
     /* Table */
@@ -661,7 +661,7 @@
         white-space: nowrap;
     }
     .portal-table th {
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--bg-subtle);
         padding: 14px 16px;
         color: var(--text-muted);
         font-weight: 700;
@@ -673,7 +673,7 @@
         vertical-align: middle;
     }
     .portal-table tr:hover {
-        background: rgba(255, 255, 255, 0.02);
+        background: #f8fafc;
     }
     .order-code {
         color: #38bdf8;
@@ -686,7 +686,7 @@
         padding: 3px 8px;
         border-radius: 6px;
         font-size: 12px;
-        color: #e2e8f0;
+        color: var(--text-body);
     }
     .warranty-badge {
         font-size: 11px;
@@ -721,7 +721,7 @@
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--border-light);
-        color: #fff;
+        color: var(--text-main);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -768,7 +768,7 @@
     .panel-card-header h2 {
         font-size: 20px;
         font-weight: 800;
-        color: #fff;
+        color: var(--text-main);
     }
     .panel-card-header p {
         font-size: 13.5px;
@@ -810,14 +810,14 @@
     .form-group label {
         font-size: 13.5px;
         font-weight: 600;
-        color: #e2e8f0;
+        color: var(--text-body);
     }
     .form-group input, .form-group select, .form-group textarea {
-        background: rgba(6, 9, 19, 0.8);
+        background: #ffffff;
         border: 1px solid var(--border-light);
         border-radius: 12px;
         padding: 11px 14px;
-        color: #fff;
+        color: var(--text-main);
         font-size: 14px;
         outline: none;
         transition: all 0.2s;
@@ -832,7 +832,7 @@
         border-radius: 14px;
         padding: 18px;
         margin-bottom: 24px;
-        color: #e2e8f0;
+        color: var(--text-body);
         font-size: 14px;
     }
 
@@ -844,7 +844,7 @@
         margin-top: 24px;
     }
     .wf-step {
-        background: rgba(255, 255, 255, 0.02);
+        background: #f8fafc;
         border: 1px solid var(--border-light);
         border-radius: 14px;
         padding: 16px;
@@ -863,7 +863,7 @@
         justify-content: center;
         margin: 0 auto 10px;
     }
-    .wf-title { font-weight: 700; color: #fff; font-size: 13.5px; margin-bottom: 4px; }
+    .wf-title { font-weight: 700; color: var(--text-main); font-size: 13.5px; margin-bottom: 4px; }
     .wf-desc { font-size: 11.5px; color: var(--text-dim); }
 
     /* Parts catalog */
@@ -873,12 +873,12 @@
         gap: 18px;
     }
     .part-item-box {
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--bg-subtle);
         border: 1px solid var(--border-light);
         border-radius: 16px;
         padding: 20px;
     }
-    .part-name { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px; }
+    .part-name { font-weight: 800; font-size: 15px; color: var(--text-main); margin-bottom: 6px; }
     .part-no { font-family: monospace; font-size: 12px; color: var(--text-dim); margin-bottom: 8px; }
     .part-price { font-size: 16px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
     .part-stock { font-size: 12px; font-weight: 600; }
@@ -900,8 +900,8 @@
         display: flex;
     }
     .modal-dialog {
-        background: #090e1d;
-        border: 1px solid var(--border-glow);
+        background: #ffffff;
+        border: 1px solid var(--border-light);
         border-radius: 22px;
         width: 100%;
         max-width: 550px;
@@ -918,9 +918,9 @@
         border-bottom: 1px solid var(--border-light);
         padding-bottom: 14px;
     }
-    .modal-header h3 { font-size: 17px; font-weight: 800; color: #fff; }
+    .modal-header h3 { font-size: 17px; font-weight: 800; color: var(--text-main); }
     .modal-close-btn { background: none; border: none; font-size: 24px; color: var(--text-muted); cursor: pointer; }
-    .modal-close-btn:hover { color: #fff; }
+    .modal-close-btn:hover { color: var(--text-main); }
     .modal-footer {
         display: flex;
         justify-content: flex-end;

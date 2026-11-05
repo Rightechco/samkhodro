@@ -16,7 +16,7 @@
             <span class="ping-dot"></span>
             <span>مهم‌ترین اقدام پس از خرید</span>
         </div>
-        <h2 style="font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 8px;">
+        <h2 style="font-size: 22px; font-weight: 900; color: var(--text-main); margin-bottom: 8px;">
             راهنمای ۱۰ مرحله‌ای فعال‌سازی دستگاه در سامانه همتا با کد دستوری <span style="color:#fde047; direction:ltr; display:inline-block;">*7777#</span>
         </h2>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">
@@ -196,7 +196,7 @@
     .page-header-card h1 {
         font-size: 28px;
         font-weight: 900;
-        color: #fff;
+        color: var(--text-main);
         margin: 12px 0 10px;
     }
     .page-header-card p {
@@ -243,7 +243,7 @@
         height: 32px;
         border-radius: 10px;
         background: linear-gradient(135deg, #0284c7, #38bdf8);
-        color: #fff;
+        color: var(--text-main);
         font-weight: 800;
         font-size: 15px;
         display: flex;
@@ -254,7 +254,7 @@
     .hamta-step-item p {
         font-size: 13.5px;
         line-height: 1.7;
-        color: #e2e8f0;
+        color: var(--text-body);
     }
 
     .terms-grid {
@@ -279,7 +279,7 @@
         justify-content: center;
         flex-shrink: 0;
     }
-    .term-item h4 { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .term-item h4 { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
     .term-item p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
 
     .void-rules-list {
@@ -307,7 +307,7 @@
         justify-content: center;
         flex-shrink: 0;
     }
-    .void-rule-card h4 { font-size: 15.5px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .void-rule-card h4 { font-size: 15.5px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
     .void-rule-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
 
     @media (max-width: 800px) {

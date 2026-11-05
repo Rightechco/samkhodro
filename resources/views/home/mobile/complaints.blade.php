@@ -74,7 +74,7 @@
 
             <div id="complaintSuccessBox" style="display: none; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 16px; padding: 24px; text-align: center; margin-top: 20px;">
                 <h4 style="color: #10b981; font-size: 18px; font-weight: 800; margin-bottom: 8px;">شکایت شما با موفقیت ثبت شد</h4>
-                <p style="color: #e2e8f0; font-size: 14px; margin-bottom: 12px;">کد رهگیری اختصاصی شکایت شما:</p>
+                <p style="color: var(--text-body); font-size: 14px; margin-bottom: 12px;">کد رهگیری اختصاصی شکایت شما:</p>
                 <div id="issuedCmpCode" style="font-size: 24px; font-weight: 900; color: #38bdf8; font-family: monospace; letter-spacing: 1px; margin-bottom: 16px;"></div>
                 <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">
                     پرونده شما مستقیماً به واحد بازرسی و خدمات پس از فروش شرکت ارجاع گردید و حداکثر ظرف ۴۸ ساعت کاری بررسی و نتیجه از طریق تماس یا پیامک به اطلاع شما خواهد رسید.
@@ -105,7 +105,7 @@
 @push('styles')
 <style>
     .page-header-card { text-align: center; padding: 40px 20px 20px; margin-bottom: 20px; }
-    .page-header-card h1 { font-size: 26px; font-weight: 900; color: #fff; margin: 12px 0 8px; }
+    .page-header-card h1 { font-size: 26px; font-weight: 900; color: var(--text-main); margin: 12px 0 8px; }
     .page-header-card p { font-size: 14.5px; color: var(--text-muted); max-width: 680px; margin: 0 auto; }
 
     .complaints-card { max-width: 840px; margin: 0 auto 40px; padding: 36px; }
@@ -126,7 +126,7 @@
     }
     .cmp-tab-btn.active {
         background: rgba(56, 189, 248, 0.15);
-        color: #fff;
+        color: var(--text-main);
         border: 1px solid rgba(56, 189, 248, 0.35);
     }
     .cmp-panel { display: none; }
@@ -134,13 +134,13 @@
 
     .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
-    .form-group label { font-size: 13.5px; font-weight: 600; color: #e2e8f0; }
+    .form-group label { font-size: 13.5px; font-weight: 600; color: var(--text-body); }
     .form-group input, .form-group select, .form-group textarea {
-        background: rgba(6, 9, 19, 0.8);
+        background: #ffffff;
         border: 1px solid var(--border-light);
         border-radius: 12px;
         padding: 11px 14px;
-        color: #fff;
+        color: var(--text-main);
         font-size: 14px;
         outline: none;
         transition: all 0.2s;
