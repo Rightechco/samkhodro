@@ -966,34 +966,60 @@
         /* Center Elevated Hero Action Button (App Experience) */
         .native-tab-center {
             position: relative;
-            top: -12px;
+            top: -15px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .native-center-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            width: 58px !important;
+            height: 58px !important;
+            min-width: 58px !important;
+            min-height: 58px !important;
+            max-width: 58px !important;
+            max-height: 58px !important;
+            border-radius: 50% !important;
+            aspect-ratio: 1 / 1 !important;
+            flex-shrink: 0 !important;
+            background: linear-gradient(145deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%) !important;
             color: #ffffff !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.42), 0 0 0 4px #ffffff;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 10px 25px -4px rgba(29, 78, 216, 0.52), 0 0 0 4px #ffffff, 0 0 0 6px rgba(37, 99, 235, 0.15) !important;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .native-tab-center:active .native-center-btn {
+        .native-center-btn::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 10px;
+            right: 10px;
+            height: 44%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 50px 50px 0 0;
+            pointer-events: none;
+        }
+
+        .native-tab-center:active .native-center-btn,
+        .native-center-btn:active {
             transform: scale(0.92);
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5), 0 0 0 4px #ffffff;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.4), 0 0 0 4px #ffffff !important;
         }
 
         .native-center-label {
-            font-size: 0.68rem;
+            font-size: 0.69rem;
             font-weight: 800;
             color: #1e3a8a;
-            margin-top: 3px;
+            margin-top: 4px;
             white-space: nowrap;
+            line-height: 1.2;
         }
 
         @media (max-width: 991px) {

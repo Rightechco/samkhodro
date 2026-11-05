@@ -399,10 +399,18 @@ class MobileServiceController extends Controller
             'password' => 'required',
         ]);
 
-        $username = $request->username;
+        $username = trim($request->username);
         $password = $request->password;
 
-        $user = User::where('number', $username)->orWhere('email', $username)->first();
+        $cleanNumber = preg_replace('/[^0-9]/', '', $username);
+        $numWithoutZero = ltrim($cleanNumber, '0');
+        $numWithZero = '0' . $numWithoutZero;
+
+        $user = User::where('email', $username)
+            ->orWhere('number', $username)
+            ->orWhere('number', $numWithoutZero)
+            ->orWhere('number', $numWithZero)
+            ->first();
 
         if ($user && Hash::check($password, $user->password)) {
             Auth::login($user, true);

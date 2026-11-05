@@ -1,829 +1,914 @@
 @extends('home.mobile.layout')
 
-@section('title', 'پنل اختصاصی مشتریان سام موبایل | سامانه خدمات')
-@section('meta_description', 'پنل کاربری مشتریان سام موبایل جهت ثبت دستگاه جدید، پیگیری وضعیت تعمیر، مشاهده تایم‌لاین زنده و فاکتور رسمی اتحادیه.')
+@section('title', 'پنل اختصاصی مشتریان سام موبایل | سامانه خدمات و گارانتی')
+@section('meta_description', 'میز کار و پنل کاربری مشتریان سام موبایل جهت پیگیری آنلاین وضعیت تعمیر دستگاه، مشاهده کارت گارانتی دیجیتال و ثبت درخواست‌های جدید')
 
 @push('styles')
 <style>
-    .user-portal-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 36px 20px 60px;
+    /* =========================================================================
+       CUSTOMER PORTAL WITH MODERN SIDEBAR & APP EXPERIENCE
+       ========================================================================= */
+    :root {
+        --user-bg: #f8fafc;
+        --sidebar-w: 270px;
+        --card-border: #e2e8f0;
+        --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     }
 
-    /* User Profile Bar */
-    .user-profile-header {
+    body {
+        background-color: var(--user-bg);
+    }
+
+    .user-container {
+        display: flex;
+        min-height: calc(100vh - 120px);
+        position: relative;
+        padding-bottom: 60px;
+    }
+
+    /* -------------------------------------------------------------------------
+       1. CUSTOMER SIDEBAR
+       ------------------------------------------------------------------------- */
+    .user-sidebar {
+        width: var(--sidebar-w);
         background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-lg);
-        padding: 28px 32px;
-        margin-bottom: 28px;
-        box-shadow: var(--shadow-sm);
+        border-left: 1px solid var(--card-border);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        position: sticky;
+        top: 80px;
+        height: calc(100vh - 90px);
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        margin: 20px 0 20px 20px;
+        padding: 20px 14px;
+        z-index: 100;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
+    }
+
+    /* Profile Badge */
+    .customer-profile-card {
+        padding: 14px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+        border: 1px solid #bbf7d0;
+        border-radius: 14px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
+        gap: 12px;
     }
-    .user-info-area {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-    .user-avatar-circle {
-        width: 58px;
-        height: 58px;
-        border-radius: 50%;
-        background: var(--primary-light);
-        color: var(--primary);
-        font-size: 1.5rem;
-        font-weight: 900;
+    .customer-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid var(--border-primary);
-    }
-    .user-name-title {
-        font-size: 1.3rem;
         font-weight: 800;
-        color: var(--text-main);
+        font-size: 1.1rem;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        flex-shrink: 0;
+    }
+    .customer-name {
+        font-size: 0.88rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+    .customer-phone {
+        font-size: 0.74rem;
+        color: #059669;
+        font-weight: 700;
+        font-family: monospace;
         display: flex;
         align-items: center;
-        gap: 8px;
-    }
-    .verified-sms-badge {
-        display: inline-flex;
-        align-items: center;
         gap: 4px;
-        background: var(--accent-emerald-light);
-        color: var(--accent-emerald);
-        font-size: 0.76rem;
+        margin-top: 2px;
+    }
+
+    /* Navigation */
+    .user-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .user-nav-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 11px 14px;
+        border-radius: 12px;
+        font-size: 0.84rem;
         font-weight: 700;
-        padding: 3px 10px;
-        border-radius: var(--radius-pill);
+        color: #475569;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: 1px solid transparent;
+        background: transparent;
+        width: 100%;
+        text-align: right;
     }
-    .user-phone-sub {
-        font-size: 0.86rem;
-        color: var(--text-muted);
-        font-family: monospace;
-        margin-top: 4px;
+    .user-nav-btn:hover {
+        background: #f1f5f9;
+        color: #0f172a;
     }
-    .user-header-actions {
+    .user-nav-btn.active {
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 800;
+        border-color: #bfdbfe;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+    }
+    .user-nav-left {
         display: flex;
         align-items: center;
         gap: 10px;
     }
-    .btn-user-action {
-        display: inline-flex;
+    .user-nav-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
         align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        border-radius: var(--radius-md);
-        font-size: 0.84rem;
-        font-weight: 700;
-        transition: all 0.2s;
+        justify-content: center;
+    }
+    .user-nav-badge {
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 20px;
+        background: #e2e8f0;
+        color: #475569;
+    }
+    .user-nav-btn.active .user-nav-badge {
+        background: #2563eb;
+        color: #ffffff;
+    }
+
+    .user-sidebar-bottom {
+        margin-top: auto;
+        padding-top: 14px;
+        border-top: 1px solid #f1f5f9;
     }
     .btn-user-logout {
-        background: var(--bg-subtle);
-        color: var(--accent-rose);
-        border: 1px solid var(--border-light);
-    }
-    .btn-user-logout:hover {
-        background: var(--accent-rose-light);
-        border-color: var(--accent-rose);
-    }
-    .btn-switch-admin {
-        background: var(--primary-light);
-        color: var(--primary);
-        border: 1px solid var(--border-primary);
-    }
-
-    /* Quick Stats Grid */
-    .user-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 18px;
-        margin-bottom: 28px;
-    }
-    .user-stat-card {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        box-shadow: var(--shadow-sm);
-    }
-    .user-stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: var(--radius-md);
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-shrink: 0;
-    }
-    .user-stat-val {
-        font-size: 1.55rem;
-        font-weight: 900;
-        color: var(--text-main);
-        line-height: 1.2;
-    }
-    .user-stat-lbl {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        font-weight: 600;
-    }
-
-    /* Tabs Bar */
-    .user-nav-tabs {
-        display: flex;
         gap: 8px;
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 6px;
-        margin-bottom: 24px;
-        box-shadow: var(--shadow-sm);
-        overflow-x: auto;
-    }
-    .user-tab-btn {
-        flex: 1;
-        padding: 12px 18px;
+        width: 100%;
+        padding: 10px;
         border-radius: 10px;
-        font-size: 0.92rem;
+        background: #fff1f2;
+        color: #e11d48;
+        font-size: 0.82rem;
         font-weight: 700;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        white-space: nowrap;
-        background: transparent;
-        border: none;
+        border: 1px solid #ffe4e6;
         cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .user-tab-btn:hover {
-        color: var(--primary);
-        background: var(--bg-subtle);
-    }
-    .user-tab-btn.active {
-        background: var(--primary);
-        color: #ffffff;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-    }
-
-    .user-tab-panel {
-        display: none;
-    }
-    .user-tab-panel.active {
-        display: block;
-    }
-
-    /* Device Card List */
-    .device-order-card {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-lg);
-        padding: 26px;
-        margin-bottom: 20px;
-        box-shadow: var(--shadow-sm);
         transition: all 0.2s;
     }
-    .device-order-card:hover {
-        border-color: var(--border-primary);
-        box-shadow: var(--shadow-md);
+    .btn-user-logout:hover {
+        background: #ffe4e6;
     }
-    .device-card-header {
+
+    /* -------------------------------------------------------------------------
+       2. MAIN WORKSPACE
+       ------------------------------------------------------------------------- */
+    .user-main {
+        flex: 1;
+        min-width: 0;
+        padding: 20px 20px 20px 0;
+    }
+
+    /* Top Bar */
+    .user-topbar {
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+        gap: 14px;
+    }
+    .user-toggle-sidebar {
+        display: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        align-items: center;
+        justify-content: center;
+        color: #334155;
+        cursor: pointer;
+    }
+    .user-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.82rem;
+        color: #64748b;
+    }
+    .user-breadcrumb strong {
+        color: #0f172a;
+        font-weight: 800;
+    }
+
+    /* KPI Summary Cards */
+    .user-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+    .u-kpi-card {
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    }
+    .u-kpi-val {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #0f172a;
+        font-family: monospace;
+    }
+    .u-kpi-lbl {
+        font-size: 0.74rem;
+        color: #64748b;
+        font-weight: 700;
+        margin-top: 4px;
+    }
+
+    /* Tab Panels */
+    .user-view {
+        display: none;
+    }
+    .user-view.active {
+        display: block;
+        animation: fadeInTab 0.25s ease-out;
+    }
+
+    .user-panel {
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        border-radius: 18px;
+        padding: 22px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+    }
+    .user-panel-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 12px;
-        border-bottom: 1px solid var(--border-light);
         padding-bottom: 16px;
+        border-bottom: 1px solid #f1f5f9;
         margin-bottom: 18px;
     }
-    .device-name-title {
-        font-size: 1.15rem;
+    .user-panel-title {
+        font-size: 1.05rem;
         font-weight: 800;
-        color: var(--text-main);
-    }
-    .order-code-badge {
-        font-family: monospace;
-        font-weight: 800;
-        background: var(--primary-light);
-        color: var(--primary);
-        padding: 4px 12px;
-        border-radius: var(--radius-sm);
-        font-size: 0.88rem;
-    }
-    .status-pill {
-        display: inline-flex;
+        color: #0f172a;
+        display: flex;
         align-items: center;
-        gap: 6px;
-        padding: 4px 12px;
-        border-radius: var(--radius-pill);
-        font-size: 0.78rem;
-        font-weight: 700;
+        gap: 8px;
     }
 
     /* 5-Stage Stepper */
-    .user-stepper-row {
+    .timeline-stepper {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        margin: 24px 0 18px;
+        align-items: center;
         position: relative;
+        margin: 26px 10px 22px;
     }
-    .user-stepper-row::before {
+    .timeline-stepper::before {
         content: '';
         position: absolute;
-        top: 18px;
-        left: 36px;
-        right: 36px;
+        top: 20px;
+        left: 30px;
+        right: 30px;
         height: 3px;
-        background: var(--border-light);
+        background: #e2e8f0;
         z-index: 1;
     }
-    .user-stepper-node {
-        position: relative;
-        z-index: 2;
+    .step-node {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        flex: 1;
+        position: relative;
+        z-index: 2;
+        gap: 8px;
         text-align: center;
+        flex: 1;
     }
-    .user-stepper-circle {
-        width: 36px;
-        height: 36px;
+    .step-circle {
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         background: #ffffff;
-        border: 2px solid var(--border-light);
+        border: 2px solid #cbd5e1;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 800;
-        font-size: 0.82rem;
-        color: var(--text-muted);
-    }
-    .user-stepper-node.done .user-stepper-circle {
-        background: var(--accent-emerald);
-        border-color: var(--accent-emerald);
-        color: #ffffff;
-    }
-    .user-stepper-node.active .user-stepper-circle {
-        background: var(--primary);
-        border-color: var(--primary);
-        color: #ffffff;
-        box-shadow: 0 0 0 4px var(--primary-light);
-    }
-    .user-stepper-title {
-        font-size: 0.76rem;
-        font-weight: 700;
-        color: var(--text-main);
-    }
-
-    .device-info-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 14px;
-        background: var(--bg-subtle);
-        border-radius: var(--radius-md);
-        padding: 16px;
-        margin-top: 16px;
-    }
-    .device-info-cell-lbl {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        margin-bottom: 2px;
-    }
-    .device-info-cell-val {
-        font-size: 0.88rem;
-        font-weight: 700;
-        color: var(--text-main);
-    }
-
-    /* Form Card */
-    .form-box-card {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-lg);
-        padding: 32px;
-        box-shadow: var(--shadow-sm);
-    }
-    .form-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-        margin-bottom: 16px;
-    }
-    .form-row-3 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        margin-bottom: 16px;
-    }
-    .custom-label {
-        display: block;
+        color: #94a3b8;
         font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--text-body);
-        margin-bottom: 6px;
-    }
-    .custom-input, .custom-select, .custom-textarea {
-        width: 100%;
-        height: 46px;
-        padding: 0 14px;
-        background: #ffffff;
-        border: 1.5px solid var(--border-light);
-        border-radius: var(--radius-md);
-        font-size: 0.92rem;
-        color: var(--text-main);
-        outline: none;
+        font-weight: 800;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         transition: all 0.2s;
     }
-    .custom-textarea {
-        height: 100px;
-        padding: 12px 14px;
-        resize: vertical;
+    .step-node.active .step-circle {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
+        box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
     }
-    .custom-input:focus, .custom-select:focus, .custom-textarea:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px var(--primary-light);
+    .step-node.completed .step-circle {
+        background: #10b981;
+        border-color: #10b981;
+        color: #ffffff;
     }
-
-    /* Invoices Table */
-    .invoices-table-wrap {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        overflow-x: auto;
-    }
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: right;
-        font-size: 0.88rem;
-        white-space: nowrap;
-    }
-    .custom-table th {
-        background: var(--bg-subtle);
-        padding: 14px 18px;
-        color: var(--text-muted);
+    .step-label {
+        font-size: 0.72rem;
         font-weight: 700;
-        border-bottom: 1px solid var(--border-light);
+        color: #64748b;
     }
-    .custom-table td {
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--border-light);
-        color: var(--text-body);
+    .step-node.active .step-label {
+        color: #2563eb;
+        font-weight: 800;
     }
 
-    @media (max-width: 991px) {
-        .user-stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .form-row-3, .form-row-2 { grid-template-columns: 1fr; }
-        .device-info-grid { grid-template-columns: 1fr 1fr; }
+    /* Warranty Card Replica Modal (Exact to User Attachment) */
+    .warranty-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(6px);
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow-y: auto;
     }
-    @media (max-width: 640px) {
-        .user-stats-grid { grid-template-columns: 1fr; }
-        .user-stepper-title { font-size: 0.68rem; }
+    .warranty-modal-backdrop.show {
+        display: flex;
+    }
+    .warranty-modal-box {
+        background: #0b192c;
+        border-radius: 24px;
+        max-width: 580px;
+        width: 100%;
+        padding: 24px;
+        color: #ffffff;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        position: relative;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .user-container {
+            flex-direction: column;
+        }
+        .user-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            transform: translateX(105%);
+            z-index: 10000;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+        }
+        .user-sidebar.open {
+            transform: translateX(0);
+        }
+        .user-sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+        }
+        .user-sidebar-overlay.open {
+            display: block;
+        }
+        .user-main {
+            padding: 10px;
+        }
+        .user-toggle-sidebar {
+            display: flex;
+        }
+        .user-kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .timeline-stepper {
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
     }
 </style>
 @endpush
 
 @section('content')
-<div class="user-portal-container">
+<div class="user-container">
 
-    <!-- Flash message -->
-    @if(session('success'))
-        <div style="background: var(--accent-emerald-light); border: 1px solid var(--accent-emerald); color: var(--accent-emerald); padding: 14px 18px; border-radius: var(--radius-md); font-weight: 700; margin-bottom: 24px;">
-            ✓ {{ session('success') }}
-        </div>
-    @endif
+    <!-- Mobile Backdrop -->
+    <div class="user-sidebar-overlay" id="userSidebarOverlay" onclick="toggleUserSidebar()"></div>
 
-    <!-- User Profile Header -->
-    <div class="user-profile-header">
-        <div class="user-info-area">
-            <div class="user-avatar-circle">
-                {{ mb_substr($user ? $user->name : 'ک', 0, 1) }}
+    <!-- 1. CUSTOMER SIDEBAR -->
+    <aside class="user-sidebar" id="userSidebar">
+        <!-- Customer Profile Card -->
+        <div class="customer-profile-card">
+            <div class="customer-avatar">
+                {{ mb_substr($user ? $user->name : 'مشتری', 0, 1) }}
             </div>
             <div>
-                <h2 class="user-name-title">
-                    <span>{{ $user ? $user->name : 'کاربر سام موبایل' }}</span>
-                    <span class="verified-sms-badge">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span>تایید پیامکی هویت</span>
+                <div class="customer-name">{{ $user ? $user->name : 'مشتری گرامی سام موبایل' }}</div>
+                <div class="customer-phone">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>{{ $userPhone }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <ul class="user-nav-list">
+            <li>
+                <button type="button" class="user-nav-btn active" onclick="switchUserTab('tab-my-devices', this)">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span>
+                        <span>دستگاه‌ها و پیگیری آنلاین</span>
                     </span>
-                </h2>
-                <div class="user-phone-sub">شماره همراه تایید شده: {{ $userPhone }}</div>
-            </div>
+                    <span class="user-nav-badge">{{ $stats['total'] }}</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="user-nav-btn" onclick="switchUserTab('tab-new-request', this)">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span>
+                        <span>ثبت پذیرش دستگاه جدید</span>
+                    </span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="user-nav-btn" onclick="openWarrantyCardView()">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon" style="color: #2563eb;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                        <span>کارت گارانتی دیجیتال</span>
+                    </span>
+                    <span class="user-nav-badge" style="background:#dbeafe; color:#1d4ed8;">۱۸ ماهه</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="user-nav-btn" onclick="switchUserTab('tab-my-tickets', this)">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                        <span>تیکت‌ها و پشتیبانی</span>
+                    </span>
+                    <span class="user-nav-badge">{{ count($myTickets) }}</span>
+                </button>
+            </li>
+            <li>
+                <a href="{{ route('mob.invoice-sample') }}" target="_blank" class="user-nav-btn">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                        <span>نمونه فاکتور رسمی اتحادیه</span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Bottom Logout -->
+        <div class="user-sidebar-bottom">
+            <form action="{{ route('mob.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn-user-logout">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>خروج از حساب کاربری</span>
+                </button>
+            </form>
         </div>
+    </aside>
 
-        <div class="user-header-actions">
-            <a href="{{ route('mob.admin-portal') }}" class="btn-user-action btn-switch-admin" title="سوئیچ به پنل ادمین جهت تست">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                <span>نمایش پنل ادمین (تست)</span>
-            </a>
-            <a href="{{ route('mob.logout') }}" class="btn-user-action btn-user-logout">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                <span>خروج از حساب</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="user-stats-grid">
-        <div class="user-stat-card">
-            <div class="user-stat-icon" style="background: #eff6ff; color: #2563eb;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
-            <div>
-                <div class="user-stat-val">{{ $stats['total'] }}</div>
-                <div class="user-stat-lbl">کل دستگاه‌های ثبت‌شده</div>
-            </div>
-        </div>
-        <div class="user-stat-card">
-            <div class="user-stat-icon" style="background: #fffbeb; color: #d97706;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div>
-                <div class="user-stat-val">{{ $stats['repairing'] }}</div>
-                <div class="user-stat-lbl">در حال بررسی و تعمیر</div>
-            </div>
-        </div>
-        <div class="user-stat-card">
-            <div class="user-stat-icon" style="background: #ecfdf5; color: #059669;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            </div>
-            <div>
-                <div class="user-stat-val">{{ $stats['ready'] }}</div>
-                <div class="user-stat-lbl">آماده ترخیص / تحویل</div>
-            </div>
-        </div>
-        <div class="user-stat-card">
-            <div class="user-stat-icon" style="background: #f5f3ff; color: #7c3aed;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-            </div>
-            <div>
-                <div class="user-stat-val">{{ $stats['delivered'] }}</div>
-                <div class="user-stat-lbl">تحویل داده شده / اتمام</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Navigation Tabs -->
-    <div class="user-nav-tabs">
-        <button type="button" class="user-tab-btn active" id="tabDevicesBtn" onclick="switchUserTab('devices')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            <span>دستگاه‌های من و پیگیری زنده</span>
-        </button>
-        <button type="button" class="user-tab-btn" id="tabNewOrderBtn" onclick="switchUserTab('newOrder')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            <span>ثبت پذیرش دستگاه جدید</span>
-        </button>
-        <button type="button" class="user-tab-btn" id="tabInvoicesBtn" onclick="switchUserTab('invoices')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span>فاکتورهای رسمی من</span>
-        </button>
-        <button type="button" class="user-tab-btn" id="tabSupportBtn" onclick="switchUserTab('support')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>پیام به کارشناس فنی</span>
-        </button>
-    </div>
-
-    <!-- TAB 1: My Devices & Tracking -->
-    <div class="user-tab-panel active" id="panelDevices">
-        @forelse($myOrders as $order)
-            @php
-                $statusMap = [
-                    'received' => ['label' => 'پذیرش اولیه شده', 'color' => '#0284c7', 'bg' => '#e0f2fe', 'step' => 1],
-                    'inspecting' => ['label' => 'در حال کارشناسی فنی', 'color' => '#d97706', 'bg' => '#fef3c7', 'step' => 2],
-                    'repairing' => ['label' => 'در حال تعمیر تخصصی', 'color' => '#2563eb', 'bg' => '#eff6ff', 'step' => 3],
-                    'waiting_parts' => ['label' => 'در انتظار تامین قطعه', 'color' => '#d97706', 'bg' => '#fef3c7', 'step' => 3],
-                    'ready_for_delivery' => ['label' => 'آماده تحویل / ترخیص', 'color' => '#059669', 'bg' => '#ecfdf5', 'step' => 4],
-                    'delivered' => ['label' => 'تحویل داده شد (اتمام خدمت)', 'color' => '#059669', 'bg' => '#ecfdf5', 'step' => 5],
-                    'cancelled' => ['label' => 'لغو شده', 'color' => '#e11d48', 'bg' => '#ffe4e6', 'step' => 0],
-                ];
-                $st = $statusMap[$order->status] ?? ['label' => $order->status, 'color' => '#64748b', 'bg' => '#f1f5f9', 'step' => 1];
-            @endphp
-            <div class="device-order-card">
-                <div class="device-card-header">
-                    <div>
-                        <span class="order-code-badge">{{ $order->tracking_code }}</span>
-                        <span class="device-name-title" style="margin-right: 10px;">{{ $order->device_brand }} {{ $order->device_model }}</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="status-pill" style="background: {{ $st['bg'] }}; color: {{ $st['color'] }};">
-                            ● {{ $st['label'] }}
-                        </span>
-                        @if($order->is_under_warranty)
-                            <span class="status-pill" style="background: #ecfdf5; color: #059669;">
-                                گارانتی ۱۸ ماهه طلایی
-                            </span>
-                        @else
-                            <span class="status-pill" style="background: #f1f5f9; color: #475569;">
-                                خارج از گارانتی (تعرفه اتحادیه)
-                            </span>
-                        @endif
-                    </div>
-                </div>
-
-                <!-- 5-Stage Stepper -->
-                <div class="user-stepper-row">
-                    <div class="user-stepper-node {{ $st['step'] >= 1 ? 'done' : '' }} {{ $st['step'] == 1 ? 'active' : '' }}">
-                        <div class="user-stepper-circle">{{ $st['step'] > 1 ? '✓' : '۱' }}</div>
-                        <div class="user-stepper-title">پذیرش اولیه</div>
-                    </div>
-                    <div class="user-stepper-node {{ $st['step'] >= 2 ? 'done' : '' }} {{ $st['step'] == 2 ? 'active' : '' }}">
-                        <div class="user-stepper-circle">{{ $st['step'] > 2 ? '✓' : '۲' }}</div>
-                        <div class="user-stepper-title">کارشناسی فنی</div>
-                    </div>
-                    <div class="user-stepper-node {{ $st['step'] >= 3 ? 'done' : '' }} {{ $st['step'] == 3 ? 'active' : '' }}">
-                        <div class="user-stepper-circle">{{ $st['step'] > 3 ? '✓' : '۳' }}</div>
-                        <div class="user-stepper-title">تعمیر / تامین قطعه</div>
-                    </div>
-                    <div class="user-stepper-node {{ $st['step'] >= 4 ? 'done' : '' }} {{ $st['step'] == 4 ? 'active' : '' }}">
-                        <div class="user-stepper-circle">{{ $st['step'] > 4 ? '✓' : '۴' }}</div>
-                        <div class="user-stepper-title">کنترل کیفی QC</div>
-                    </div>
-                    <div class="user-stepper-node {{ $st['step'] >= 5 ? 'done' : '' }} {{ $st['step'] == 5 ? 'active' : '' }}">
-                        <div class="user-stepper-circle">{{ $st['step'] >= 5 ? '✓' : '۵' }}</div>
-                        <div class="user-stepper-title">آماده ترخیص</div>
-                    </div>
-                </div>
-
-                <!-- Info Grid -->
-                <div class="device-info-grid">
-                    <div>
-                        <div class="device-info-cell-lbl">شناسه IMEI</div>
-                        <div class="device-info-cell-val" style="font-family: monospace;">{{ $order->imei }}</div>
-                    </div>
-                    <div>
-                        <div class="device-info-cell-lbl">کارشناس فنی مسئول</div>
-                        <div class="device-info-cell-val">{{ $order->assigned_technician ?: 'در صف ارجاع' }}</div>
-                    </div>
-                    <div>
-                        <div class="device-info-cell-lbl">تاریخ تخمینی تکمیل</div>
-                        <div class="device-info-cell-val">{{ $order->estimated_completion_date ?: 'اعلام ظرف ۴۸ ساعت' }}</div>
-                    </div>
-                    <div>
-                        <div class="device-info-cell-lbl">هزینه نهایی خدمت</div>
-                        <div class="device-info-cell-val" style="color: {{ $order->is_under_warranty ? '#059669' : '#0f172a' }};">
-                            {{ $order->is_under_warranty ? 'رایگان (تحت گارانتی)' : number_format($order->total_cost) . ' ریال' }}
-                        </div>
-                    </div>
-                </div>
-
-                @if($order->technician_notes)
-                    <div style="margin-top: 14px; background: #ffffff; border: 1px dashed var(--border-light); padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--text-body);">
-                        <strong>گزارش کارشناس فنی:</strong> {{ $order->technician_notes }}
-                    </div>
-                @endif
-
-                <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-light); padding-top: 12px;">
-                    <button type="button" class="btn-light-primary" style="padding: 8px 18px; font-size: 0.84rem;" onclick="openWarrantyCardModal({
-                        model: '{{ $order->device_brand }} {{ $order->device_model }}',
-                        imei: '{{ $order->imei }}',
-                        country: 'وارداتی رسمی (اصلی)',
-                        startDate: '{{ $order->warranty_start_date ?: date('Y/m/d') }}',
-                        maker: '{{ $order->device_brand }}'
-                    })">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                        <span>مشاهده و چاپ کارت گارانتی رسمی</span>
-                    </button>
+    <!-- 2. MAIN CONTENT -->
+    <main class="user-main">
+        <!-- Top Bar -->
+        <div class="user-topbar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button type="button" class="user-toggle-sidebar" onclick="toggleUserSidebar()" title="باز کردن منو">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div class="user-breadcrumb">
+                    <span>سام موبایل</span>
+                    <span>/</span>
+                    <span>سامانه خدمات</span>
+                    <span>/</span>
+                    <strong id="userBreadcrumbTitle">دستگاه‌های من و پیگیری آنلاین</strong>
                 </div>
             </div>
-        @empty
-            <div style="background: #ffffff; border: 1px dashed var(--border-light); padding: 48px; border-radius: var(--radius-lg); text-align: center;">
-                <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px;">تاکنون دستگاهی به نام شما ثبت نشده است.</p>
-                <button type="button" class="btn-light-primary" onclick="switchUserTab('newOrder')">
-                    <span>ثبت اولین پذیرش دستگاه</span>
+
+            <div>
+                <button type="button" class="btn-table-action primary" onclick="switchUserTab('tab-new-request')">
+                    + ثبت دستگاه جدید
                 </button>
             </div>
-        @endforelse
-    </div>
+        </div>
 
-    <!-- TAB 2: Register New Device Intake -->
-    <div class="user-tab-panel" id="panelNewOrder">
-        <div class="form-box-card">
-            <div style="margin-bottom: 24px;">
-                <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">ثبت درخواست پذیرش دستگاه جدید (ماده ۱۳)</h3>
-                <p style="font-size: 0.86rem; color: var(--text-muted);">اطلاعات دستگاه خود را تکمیل نمایید تا کد رهگیری آنلاین و پیامک پذیرش خدمت صادر گردد.</p>
+        <!-- KPI Summary Cards -->
+        <div class="user-kpi-grid">
+            <div class="u-kpi-card">
+                <div class="u-kpi-val">{{ $stats['total'] }}</div>
+                <div class="u-kpi-lbl">کل پرونده‌های شما</div>
             </div>
-
-            <form action="{{ route('mob.user.store-order') }}" method="POST">
-                @csrf
-                <div class="form-row-3">
-                    <div>
-                        <label class="custom-label">برند دستگاه <span style="color: red;">*</span></label>
-                        <select name="device_brand" class="custom-select" required>
-                            <option value="سامسونگ">سامسونگ (Samsung)</option>
-                            <option value="شیائومی">شیائومی (Xiaomi)</option>
-                            <option value="اپل">اپل (Apple)</option>
-                            <option value="هواوی">هواوی (Huawei)</option>
-                            <option value="آنر">آنر (Honor)</option>
-                            <option value="سایر">سایر برندها</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="custom-label">مدل دقیق دستگاه <span style="color: red;">*</span></label>
-                        <input type="text" name="device_model" class="custom-input" placeholder="مثال: Galaxy S24 Ultra یا Xiaomi 14" required>
-                    </div>
-                    <div>
-                        <label class="custom-label">کد ۱۵ رقمی IMEI دستگاه <span style="color: red;">*</span></label>
-                        <input type="text" name="imei" class="custom-input" placeholder="شماره‌گیری *#06# روی گوشی" maxlength="16" style="direction: ltr; font-family: monospace;" required>
-                    </div>
-                </div>
-
-                <div class="form-row-3">
-                    <div>
-                        <label class="custom-label">شماره سریال (Serial Number)</label>
-                        <input type="text" name="serial_number" class="custom-input" placeholder="مندرج بر روی جعبه دستگاه" style="direction: ltr;">
-                    </div>
-                    <div>
-                        <label class="custom-label">رنگ دستگاه</label>
-                        <input type="text" name="color" class="custom-input" placeholder="مثال: مشکی تیتانیوم">
-                    </div>
-                    <div>
-                        <label class="custom-label">وضعیت ظاهری و بدنه</label>
-                        <input type="text" name="physical_condition" class="custom-input" placeholder="سالم بدون خط و خش / دارای ضربه">
-                    </div>
-                </div>
-
-                <div class="form-row-2">
-                    <div>
-                        <label class="custom-label">روش تحویل دستگاه <span style="color: red;">*</span></label>
-                        <select name="intake_type" class="custom-select" required>
-                            <option value="in_person">تحویل حضوری در دفتر خدمات پس از فروش</option>
-                            <option value="postal">ارسال از طریق پست پیشتاز با بیمه کامل (رایگان در گارانتی)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="custom-label">کد رهگیری پستی مرسوله (در صورت ارسال پستی)</label>
-                        <input type="text" name="postal_tracking_code" class="custom-input" placeholder="بارکد ۲۴ رقمی پست پیشتاز" style="direction: ltr;">
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label class="custom-label">شرح دقیق ایرادات فنی و اظهارات مشتری <span style="color: red;">*</span></label>
-                    <textarea name="reported_issues" class="custom-textarea" placeholder="نقص فنی دقیق دستگاه را شرح دهید (مثلاً خاموش شدن هنگام بازی، عدم شارژ، پرش تصویر، شکستگی تاچ و...)" required></textarea>
-                </div>
-
-                <div class="form-row-2">
-                    <div>
-                        <label class="custom-label">استان و شهر سکونت</label>
-                        <input type="text" name="customer_city" class="custom-input" placeholder="تهران / اصفهان / شیراز و...">
-                    </div>
-                    <div>
-                        <label class="custom-label">آدرس کامل پستی جهت بازگشت دستگاه</label>
-                        <input type="text" name="customer_address" class="custom-input" placeholder="خیابان، پلاک، واحد، کدپستی">
-                    </div>
-                </div>
-
-                <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn-light-primary" style="padding: 12px 36px;">
-                        <span>ثبت رسمی درخواست پذیرش</span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- TAB 3: Official Invoices -->
-    <div class="user-tab-panel" id="panelInvoices">
-        <div class="invoices-table-wrap">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>شماره فاکتور</th>
-                        <th>دستگاه</th>
-                        <th>کد رهگیری</th>
-                        <th>تاریخ صدور</th>
-                        <th>هزینه قطعات</th>
-                        <th>اجرت مصوب</th>
-                        <th>مبلغ نهایی</th>
-                        <th>وضعیت تسویه</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($myOrders as $order)
-                        <tr>
-                            <td style="font-family: monospace; font-weight: 700;">{{ $order->invoice_number ?: 'INV-' . $order->tracking_code }}</td>
-                            <td>{{ $order->device_brand }} {{ $order->device_model }}</td>
-                            <td style="font-family: monospace;">{{ $order->tracking_code }}</td>
-                            <td>{{ $order->invoice_date ?: date('Y/m/d') }}</td>
-                            <td>{{ number_format($order->parts_cost) }} ریال</td>
-                            <td>{{ number_format($order->labor_cost) }} ریال</td>
-                            <td style="font-weight: 800; color: {{ $order->is_under_warranty ? '#059669' : '#0f172a' }};">
-                                {{ $order->is_under_warranty ? '۰ ریال (معاف گارانتی)' : number_format($order->total_cost) . ' ریال' }}
-                            </td>
-                            <td>
-                                @if($order->is_under_warranty || $order->is_paid)
-                                    <span style="color: #059669; font-weight: 700;">✓ تسویه شده</span>
-                                @else
-                                    <span style="color: #d97706; font-weight: 700;">در انتظار پرداخت</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('mob.invoice-sample') }}" target="_blank" style="color: var(--primary); font-weight: 700;">
-                                    مشاهده فاکتور رسمی
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" style="text-align: center; padding: 30px; color: var(--text-muted);">فاکتوری ثبت نشده است.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- TAB 4: Support & Tickets -->
-    <div class="user-tab-panel" id="panelSupport">
-        <div class="form-box-card" style="margin-bottom: 24px;">
-            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">ارسال پیام مستقیم به کارشناس فنی</h3>
-            <form action="{{ route('mob.user.send-ticket') }}" method="POST">
-                @csrf
-                <div class="form-row-2">
-                    <div>
-                        <label class="custom-label">دستگاه مربوطه (کد رهگیری)</label>
-                        <select name="tracking_code" class="custom-select" required>
-                            @foreach($myOrders as $ord)
-                                <option value="{{ $ord->tracking_code }}">{{ $ord->tracking_code }} - {{ $ord->device_brand }} {{ $ord->device_model }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label class="custom-label">موضوع پیام</label>
-                        <input type="text" name="subject" class="custom-input" placeholder="استعلام زمان تحویل / اضافه کردن ایراد" required>
-                    </div>
-                </div>
-                <div style="margin-bottom: 16px;">
-                    <label class="custom-label">متن پیام شما</label>
-                    <textarea name="message" class="custom-textarea" placeholder="متن پیام خود را برای کارشناس بنویسید..." required></textarea>
-                </div>
-                <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn-light-primary">
-                        <span>ارسال پیام</span>
-                    </button>
-                </div>
-            </form>
+            <div class="u-kpi-card">
+                <div class="u-kpi-val" style="color: #d97706;">{{ $stats['repairing'] }}</div>
+                <div class="u-kpi-lbl">در حال تعمیر در کارگاه</div>
+            </div>
+            <div class="u-kpi-card">
+                <div class="u-kpi-val" style="color: #16a34a;">{{ $stats['ready'] }}</div>
+                <div class="u-kpi-lbl">آماده تحویل و ترخیص</div>
+            </div>
+            <div class="u-kpi-card">
+                <div class="u-kpi-val" style="color: #7c3aed;">{{ $stats['delivered'] }}</div>
+                <div class="u-kpi-lbl">تحویل نهایی شده</div>
+            </div>
         </div>
 
-        <!-- Ticket History -->
-        @if($myTickets->isNotEmpty())
-            <div class="form-box-card">
-                <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 14px;">پیام‌های پیشین شما</h4>
-                @foreach($myTickets as $t)
-                    <div style="background: var(--bg-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px;">
-                            <strong>{{ $t->subject }} (دستگاه: {{ $t->tracking_code }})</strong>
-                            <span>{{ $t->created_at }}</span>
-                        </div>
-                        <p style="font-size: 0.88rem; color: var(--text-body); margin-bottom: 8px;">{{ $t->message }}</p>
-                        @if($t->reply)
-                            <div style="background: #ffffff; border-right: 3px solid var(--primary); padding: 10px 14px; border-radius: 6px; font-size: 0.84rem; color: var(--text-main);">
-                                <strong>پاسخ کارشناس سام موبایل:</strong> {{ $t->reply }}
+        <!-- VIEW 1: MY DEVICES & TRACKING -->
+        <div class="user-view active" id="tab-my-devices">
+            @forelse($myOrders as $order)
+                <div class="user-panel">
+                    <div class="user-panel-header">
+                        <div>
+                            <strong style="font-size: 1.1rem; color: #0f172a;">{{ $order->device_brand }} {{ $order->device_model }}</strong>
+                            <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">
+                                کد رهگیری: <span style="font-family: monospace; font-weight: 800; color: #2563eb;">{{ $order->tracking_code }}</span> | 
+                                شماره سریال (IMEI): <span style="font-family: monospace;">{{ $order->imei }}</span>
                             </div>
-                        @else
-                            <span style="font-size: 0.76rem; color: var(--accent-amber); font-weight: 700;">در صف پاسخگویی کارشناس</span>
-                        @endif
+                        </div>
+                        <div>
+                            <button type="button" class="btn-table-action primary" onclick="openWarrantyCardView('{{ $order->device_brand }} {{ $order->device_model }}', '{{ $order->imei }}')">
+                                مشاهده کارت گارانتی ۱۸ ماهه
+                            </button>
+                        </div>
                     </div>
-                @endforeach
-            </div>
-        @endif
-    </div>
 
+                    <!-- 5-Stage Stepper -->
+                    @php
+                        $stOrder = ['received' => 1, 'inspecting' => 2, 'waiting_parts' => 3, 'repairing' => 3, 'ready_for_delivery' => 4, 'delivered' => 5];
+                        $curStep = $stOrder[$order->status] ?? 1;
+                    @endphp
+                    <div class="timeline-stepper">
+                        <div class="step-node {{ $curStep >= 1 ? ($curStep > 1 ? 'completed' : 'active') : '' }}">
+                            <div class="step-circle">۱</div>
+                            <span class="step-label">پذیرش اولیه</span>
+                        </div>
+                        <div class="step-node {{ $curStep >= 2 ? ($curStep > 2 ? 'completed' : 'active') : '' }}">
+                            <div class="step-circle">۲</div>
+                            <span class="step-label">کارشناسی فنی</span>
+                        </div>
+                        <div class="step-node {{ $curStep >= 3 ? ($curStep > 3 ? 'completed' : 'active') : '' }}">
+                            <div class="step-circle">۳</div>
+                            <span class="step-label">تأمین قطعه و تعمیر</span>
+                        </div>
+                        <div class="step-node {{ $curStep >= 4 ? ($curStep > 4 ? 'completed' : 'active') : '' }}">
+                            <div class="step-circle">۴</div>
+                            <span class="step-label">کنترل کیفی و آماده</span>
+                        </div>
+                        <div class="step-node {{ $curStep >= 5 ? 'completed active' : '' }}">
+                            <div class="step-circle">۵</div>
+                            <span class="step-label">تحویل نهایی</span>
+                        </div>
+                    </div>
+
+                    <!-- Order Details -->
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; font-size: 0.82rem; line-height: 1.8;">
+                        <div style="margin-bottom: 4px;">
+                            <strong>شرح ایراد اظهار شده:</strong> {{ $order->problem_description }}
+                        </div>
+                        @if(!empty($order->technician_report))
+                            <div style="color: #0284c7; margin-bottom: 4px;">
+                                <strong>گزارش کارشناسی کارگاه:</strong> {{ $order->technician_report }}
+                            </div>
+                        @endif
+                        <div style="color: #64748b; font-size: 0.74rem;">
+                            وضعیت پوشش: {{ $order->warranty_status == 'under_warranty' ? 'تحت پوشش گارانتی ۱۸ ماهه رسمی سام موبایل' : 'خدمات آزاد مطابق تعرفه مصوب اتحادیه' }}
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="user-panel" style="text-align: center; padding: 40px;">
+                    <p style="color: #64748b; margin-bottom: 16px;">هنوز دستگاهی با شماره تلفن شما در سامانه ثبت نشده است.</p>
+                    <button type="button" class="btn-table-action primary" onclick="switchUserTab('tab-new-request')">
+                        ثبت اولین دستگاه برای دریافت خدمات
+                    </button>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- VIEW 2: SUBMIT NEW REPAIR REQUEST -->
+        <div class="user-view" id="tab-new-request">
+            <div class="user-panel">
+                <div class="user-panel-header">
+                    <div class="user-panel-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        <span>ثبت درخواست پذیرش دستگاه جدید</span>
+                    </div>
+                </div>
+
+                <form action="{{ route('mob.user-order.store') }}" method="POST">
+                    @csrf
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">برند دستگاه *</label>
+                            <select name="device_brand" class="form-select-custom" required>
+                                <option value="Samsung">سامسونگ (Samsung)</option>
+                                <option value="Xiaomi">شیائومی (Xiaomi)</option>
+                                <option value="Apple">اپل (iPhone)</option>
+                                <option value="Honor">آنر (Honor)</option>
+                                <option value="Other">سایر برندها</option>
+                            </select>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">مدل دقیق دستگاه *</label>
+                            <input type="text" name="device_model" class="form-input-custom" placeholder="مثال: Galaxy S23 Ultra" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">شماره سریال (IMEI) دستگاه *</label>
+                            <input type="text" name="imei" class="form-input-custom" placeholder="۱۵ رقم سریال" maxlength="15" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">وضعیت گارانتی</label>
+                            <select name="warranty_status" class="form-select-custom">
+                                <option value="under_warranty">دارای گارانتی ۱۸ ماهه سام موبایل</option>
+                                <option value="out_of_warranty">تعمیر آزاد غیرگارانتی</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom" style="margin-top: 16px;">
+                        <label class="form-label-custom">شرح کامل ایراد دستگاه *</label>
+                        <textarea name="problem_description" class="form-textarea-custom" rows="3" placeholder="توضیح دهید دستگاه چه مشکلی دارد..." required></textarea>
+                    </div>
+
+                    <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn-table-action primary" style="padding: 12px 24px; font-size: 0.9rem;">
+                            ارسال درخواست و دریافت کد رهگیری
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW 3: TICKETS -->
+        <div class="user-view" id="tab-my-tickets">
+            <div class="user-panel">
+                <div class="user-panel-header">
+                    <div class="user-panel-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>تیکت‌ها و مکاتبات پشتیبانی فنی</span>
+                    </div>
+                </div>
+
+                <!-- New Ticket Form -->
+                <form action="{{ route('mob.ticket.store') }}" method="POST" style="margin-bottom: 24px; padding: 18px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0;">
+                    @csrf
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div>
+                            <label class="form-label-custom">موضوع تیکت *</label>
+                            <input type="text" name="subject" class="form-input-custom" placeholder="مثال: سوال درباره زمان ترخیص دستگاه" required>
+                        </div>
+                        <div>
+                            <label class="form-label-custom">اولویت</label>
+                            <select name="priority" class="form-select-custom">
+                                <option value="normal">عادی</option>
+                                <option value="urgent">فوری</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px;">
+                        <label class="form-label-custom">متن پیام *</label>
+                        <textarea name="message" class="form-textarea-custom" rows="3" placeholder="پیام خود را به کارشناسان پشتیبانی بنویسید..." required></textarea>
+                    </div>
+                    <div style="margin-top: 14px; text-align: left;">
+                        <button type="submit" class="btn-table-action primary">
+                            ارسال تیکت به پشتیبانی
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Ticket History -->
+                <div class="table-responsive-box">
+                    <table class="erp-table">
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>موضوع تیکت</th>
+                                <th>تاریخ ثبت</th>
+                                <th>وضعیت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($myTickets as $t)
+                                <tr>
+                                    <td><code>#{{ $t->id }}</code></td>
+                                    <td><strong>{{ $t->subject }}</strong></td>
+                                    <td>{{ $t->created_at }}</td>
+                                    <td>
+                                        <span class="status-badge {{ $t->status == 'open' ? 'repairing' : 'ready_for_delivery' }}">
+                                            {{ $t->status == 'open' ? 'در انتظار بررسی پشتیبان' : 'پاسخ داده شده' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: #94a3b8; padding: 24px;">
+                                        تیکتی یافت نشد.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
 </div>
-@include('home.mobile.warranty-card-modal')
+
+<!-- =========================================================================
+     DIGITAL WARRANTY CARD MODAL (ACCURATE TO ATTACHED IMAGE)
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="userWarrantyModal">
+    <div class="warranty-modal-box">
+        <button type="button" class="btn-close-modal" onclick="closeWarrantyCardView()">&times;</button>
+        
+        <div style="text-align: center; margin-bottom: 14px;">
+            <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin-bottom: 4px;">کارت گارانتی دیجیتال گوشی همراه</h3>
+            <span style="font-size: 0.74rem; color: #94a3b8;">شرکت تامین کانی سام | گارانتی رسمی ۱۸ ماهه</span>
+        </div>
+
+        <!-- Realistic Card Replica (CSS Based) -->
+        <div class="card-preview-wrapper" id="printableUserCard">
+            <!-- Card Front -->
+            <div style="background: linear-gradient(135deg, #021b44 0%, #0a3875 50%, #03204e 100%); border-radius: 16px; padding: 18px; color: #ffffff; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.15); position: relative; overflow: hidden;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 10px; margin-bottom: 12px;">
+                    <div>
+                        <strong style="font-size: 1.05rem; display: block; font-weight: 900;">کارت گارانتی گوشی همراه</strong>
+                        <span style="font-size: 0.70rem; color: #93c5fd;">سام موبایل (تامین کانی سام)</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;">
+                        ۱۸ ماه ضمانت طلایی
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 14px; align-items: center;">
+                    <div style="flex: 1; font-size: 0.78rem; line-height: 1.8;">
+                        <p style="margin: 0 0 6px 0; color: #e2e8f0;">
+                            <strong>همراه ما باشید:</strong> برای استعلام اصالت و شرایط گارانتی کد QR را اسکن کنید.
+                        </p>
+                        <p style="margin: 0; color: #cbd5e1; font-size: 0.72rem;">
+                            <strong>شرایط گارانتی:</strong> این دستگاه به مدت ۱۸ ماه دارای گارانتی رسمی شرکت تامین کانی سام می‌باشد.
+                        </p>
+                    </div>
+                    <div style="width: 80px; height: 80px; background: #ffffff; border-radius: 10px; padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=72x72&data=https://mob.taminkanisam.co.ir" alt="QR" style="width: 72px; height: 72px; display: block;">
+                    </div>
+                </div>
+                <div style="margin-top: 10px; font-size: 0.70rem; color: #60a5fa; font-weight: 800;">
+                    انتخاب هوشمندانه...
+                </div>
+            </div>
+
+            <!-- Card Back -->
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 16px; color: #0f172a;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 14px;">
+                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
+                        🛡️ ۱۸ ماه ضمانت رسمی
+                    </div>
+                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
+                        ⚙️ خدمات پس از فروش
+                    </div>
+                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
+                        🎧 پشتیبانی حرفه‌ای
+                    </div>
+                </div>
+
+                <table style="width: 100%; font-size: 0.74rem; border-collapse: collapse; margin-bottom: 12px;">
+                    <tr>
+                        <td style="padding: 4px; color: #64748b; width: 38%;">۱. برند و مدل کالا:</td>
+                        <td style="padding: 4px; font-weight: 800;" id="userCardModel">Samsung Galaxy S23 Ultra</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #64748b;">۲. شماره سریال (IMEI):</td>
+                        <td style="padding: 4px; font-weight: 800; font-family: monospace;" id="userCardImei">354892019485721</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #64748b;">۳. شرکت گارانتی کننده:</td>
+                        <td style="padding: 4px; font-weight: 800;">تامین کانی سام (سام موبایل)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 4px; color: #64748b;">۴. مدت زمان گارانتی:</td>
+                        <td style="padding: 4px; font-weight: 800;">۱۸ ماه کامل پس از فعال‌سازی</td>
+                    </tr>
+                </table>
+
+                <div style="background: #0b192c; color: #ffffff; border-radius: 8px; padding: 8px 10px; font-size: 0.64rem; line-height: 1.6; margin-bottom: 10px;">
+                    <strong style="color: #60a5fa; display: block; margin-bottom: 2px;">مواردی که شامل گارانتی نمی‌شوند:</strong>
+                    ضربه دیدگی و شکستگی • نفوذ مایعات و رطوبت • تعمیرات توسط افراد غیرمجاز • خرابی ناشی از نوسانات برق • معیوب ماندن باتری در اثر لوازم جانبی غیراستاندارد
+                </div>
+
+                <div style="background: #021b44; color: #ffffff; border-radius: 8px; padding: 8px; font-size: 0.62rem; display: flex; flex-direction: column; gap: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>📞 مرکز تماس: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
+                        <span>🌐 taminkanisam.co.ir</span>
+                        <span>✉️ Marketing@kanisam</span>
+                    </div>
+                    <div style="color: #cbd5e1; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 3px;">
+                        📍 تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="btn-table-action primary" onclick="window.print()">
+                <span>چاپ کارت گارانتی</span>
+            </button>
+            <button type="button" class="btn-table-action" onclick="closeWarrantyCardView()" style="background:#334155; color:#ffffff; border-color:#475569;">
+                بستن
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
-    function switchUserTab(tab) {
-        const tabs = ['devices', 'newOrder', 'invoices', 'support'];
-        tabs.forEach(t => {
-            const btn = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1) + 'Btn');
-            const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
-            if (btn && panel) {
-                if (t === tab) {
-                    btn.classList.add('active');
-                    panel.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                    panel.classList.remove('active');
-                }
-            }
+    function switchUserTab(tabId, el) {
+        document.querySelectorAll('.user-view').forEach(function(v) {
+            v.classList.remove('active');
         });
+        const target = document.getElementById(tabId);
+        if (target) target.classList.add('active');
+
+        if (el) {
+            document.querySelectorAll('.user-nav-btn').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            el.classList.add('active');
+            const title = el.querySelector('span:not(.user-nav-icon):not(.user-nav-left)')?.innerText || 'پنل کاربری';
+            const bcrumb = document.getElementById('userBreadcrumbTitle');
+            if (bcrumb) bcrumb.innerText = title;
+        }
+
+        if (window.innerWidth < 992) {
+            toggleUserSidebar(false);
+        }
+    }
+
+    function toggleUserSidebar(forceState) {
+        const sidebar = document.getElementById('userSidebar');
+        const overlay = document.getElementById('userSidebarOverlay');
+        const isOpen = sidebar.classList.contains('open');
+        const nextState = forceState !== undefined ? forceState : !isOpen;
+
+        if (nextState) {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+        } else {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+    }
+
+    function openWarrantyCardView(model, imei) {
+        if (model) document.getElementById('userCardModel').innerText = model;
+        if (imei) document.getElementById('userCardImei').innerText = imei;
+        document.getElementById('userWarrantyModal').classList.add('show');
+    }
+
+    function closeWarrantyCardView() {
+        document.getElementById('userWarrantyModal').classList.remove('show');
     }
 </script>
 @endpush

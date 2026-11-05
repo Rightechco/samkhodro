@@ -195,34 +195,37 @@
         cursor: not-allowed;
     }
 
-    /* Demo Quick Buttons */
-    .demo-login-box {
-        margin-top: 28px;
-        padding-top: 20px;
-        border-top: 1px solid var(--border-light);
-        text-align: center;
-    }
-    .demo-buttons-row {
+    /* Security badge notice */
+    .auth-security-notice {
+        margin-top: 24px;
+        padding: 14px 16px;
+        border-radius: var(--radius-md);
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
         display: flex;
-        gap: 10px;
-        margin-top: 10px;
+        align-items: center;
+        gap: 12px;
     }
-    .btn-demo-quick {
-        flex: 1;
-        padding: 8px 10px;
-        border-radius: var(--radius-sm);
-        background: var(--bg-subtle);
-        border: 1px solid var(--border-light);
+    .auth-security-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .auth-security-text {
         font-size: 0.78rem;
-        font-weight: 700;
-        color: var(--text-body);
-        cursor: pointer;
-        transition: all 0.2s ease;
+        color: #64748b;
+        line-height: 1.6;
     }
-    .btn-demo-quick:hover {
-        background: #ffffff;
-        border-color: var(--primary);
-        color: var(--primary);
+    .auth-security-text strong {
+        color: #1e293b;
+        display: block;
+        margin-bottom: 2px;
     }
 </style>
 @endpush
@@ -334,16 +337,14 @@
             </form>
         </div>
 
-        <!-- Demo Quick Preview -->
-        <div class="demo-login-box">
-            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">پیش‌نمایش سریع پنل‌ها (محیط تست):</span>
-            <div class="demo-buttons-row">
-                <button type="button" class="btn-demo-quick" onclick="quickDemoLogin('customer')">
-                    👤 پنل مشتریان
-                </button>
-                <button type="button" class="btn-demo-quick" onclick="quickDemoLogin('admin')">
-                    🛡️ پنل ادمین (ماده ۱۳)
-                </button>
+        <!-- Security & Legal Notice -->
+        <div class="auth-security-notice">
+            <div class="auth-security-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="auth-security-text">
+                <strong>سامانه رسمی خدمات پس از فروش سام موبایل</strong>
+                ورود ایمن مطابق با ماده ۱۳ ضوابط اجرایی خدمات و استانداردهای سازمان حمایت از حقوق مصرف‌کنندگان
             </div>
         </div>
     </div>
@@ -540,13 +541,6 @@
         }
     }
 
-    // Quick Demo Mode Switcher
-    function quickDemoLogin(role) {
-        if (role === 'customer') {
-            window.location.href = "{{ route('mob.user-portal') }}";
-        } else {
-            window.location.href = "{{ route('mob.admin-portal') }}";
-        }
-    }
+
 </script>
 @endpush
