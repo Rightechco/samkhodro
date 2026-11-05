@@ -1059,50 +1059,75 @@
         color: #0f172a;
     }
 
-    /* Responsive */
+    /* Responsive Mobile Sidebar & Ultra-Clean Native Layout */
     @media (max-width: 991px) {
         .erp-container {
-            flex-direction: column;
+            flex-direction: column !important;
+            overflow-x: hidden !important;
+            width: 100% !important;
+            max-width: 100vw !important;
         }
         .erp-sidebar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            height: 100vh;
-            margin: 0;
-            border-radius: 0;
-            border-left: none;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
-            transform: translateX(105%);
-            z-index: 10000;
-            overflow-y: auto;
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 295px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            border-left: 1px solid #e2e8f0 !important;
+            box-shadow: -15px 0 40px rgba(15, 23, 42, 0.3) !important;
+            z-index: 100000 !important;
+            overflow-y: auto !important;
+            background: #ffffff !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateX(100%) !important;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
         }
         .erp-sidebar.open {
-            transform: translateX(0);
+            display: flex !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateX(0) !important;
+        }
+        .erp-sidebar-mobile-close {
+            display: flex !important;
         }
         .erp-sidebar-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
+            position: fixed !important;
+            inset: 0 !important;
+            background: rgba(15, 23, 42, 0.55) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+            z-index: 99999 !important;
             display: none;
         }
         .erp-sidebar-overlay.open {
-            display: block;
+            display: block !important;
         }
         .erp-main {
-            padding: 10px;
+            padding: 10px 12px 115px 12px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
         }
         .erp-toggle-sidebar {
-            display: flex;
+            display: flex !important;
         }
         .erp-kpi-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr) !important;
         }
         .erp-search-box {
-            display: none;
+            display: none !important;
+        }
+        .portal-footer, .site-footer-light, .native-bottom-bar:not(.admin-mobile-nav) {
+            display: none !important;
         }
     }
 
@@ -1656,6 +1681,13 @@
 
     <!-- 1. ERP SIDEBAR -->
     <aside class="erp-sidebar" id="erpSidebar">
+        <!-- Mobile Drawer Header with Close Button -->
+        <div class="erp-sidebar-mobile-close" style="display: none; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0;">
+            <span style="font-weight: 800; font-size: 0.88rem; color: #0f172a;">منوی دسترسی سامانه</span>
+            <button type="button" onclick="toggleErpSidebar(false)" style="width: 32px; height: 32px; border-radius: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: #475569;" title="بستن منو">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
         <!-- User Badge -->
         <div class="erp-user-badge">
             <div class="erp-avatar">
@@ -4922,7 +4954,16 @@
                 l.classList.add('active');
             }
         });
-        if (el) el.classList.add('active');
+        if (el && el.classList.contains('erp-nav-link')) el.classList.add('active');
+
+        // Highlight mobile bottom bar active tab
+        document.querySelectorAll('.admin-nav-item').forEach(function(item) {
+            item.classList.remove('active');
+            if (item.getAttribute('data-tab') === tabId) {
+                item.classList.add('active');
+            }
+        });
+        if (el && el.classList.contains('admin-nav-item')) el.classList.add('active');
 
         // Update Breadcrumb
         const title = el?.querySelector('.erp-nav-title')?.innerText || targetView?.getAttribute('data-title') || 'میز مدیریت';

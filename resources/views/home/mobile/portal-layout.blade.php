@@ -481,40 +481,54 @@
                 border-radius: 10px;
             }
             .portal-wrapper {
-                padding: 12px 10px 40px;
+                padding: 10px 10px 110px 10px;
                 display: block;
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
             }
-            .portal-sidebar {
-                position: fixed;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                height: 100vh;
-                margin: 0;
-                border-radius: 0;
-                border: none;
-                box-shadow: -10px 0 30px rgba(15, 23, 42, 0.2);
-                transform: translateX(105%);
-                z-index: 10000;
-                overflow-y: auto;
+            .portal-sidebar, .erp-sidebar, .user-sidebar {
+                display: none !important;
+                position: fixed !important;
+                top: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 295px !important;
+                max-width: 85vw !important;
+                height: 100vh !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                border: none !important;
+                border-left: 1px solid #e2e8f0 !important;
+                box-shadow: -12px 0 35px rgba(15, 23, 42, 0.25) !important;
+                z-index: 100000 !important;
+                overflow-y: auto !important;
+                background: #ffffff !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+                transform: translateX(100%) !important;
+                transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
             }
-            .portal-sidebar.open {
-                transform: translateX(0);
+            .portal-sidebar.open, .erp-sidebar.open, .user-sidebar.open {
+                display: flex !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: translateX(0) !important;
             }
             .portal-backdrop {
                 position: fixed;
                 inset: 0;
-                background: rgba(15, 23, 42, 0.5);
+                background: rgba(15, 23, 42, 0.55);
                 backdrop-filter: blur(4px);
-                z-index: 9999;
+                -webkit-backdrop-filter: blur(4px);
+                z-index: 99999;
                 display: none;
             }
             .portal-backdrop.open {
-                display: block;
+                display: block !important;
             }
-            .portal-footer-inner {
-                flex-direction: column;
-                align-items: flex-start;
+            .portal-footer {
+                display: none !important;
             }
         }
     
@@ -982,7 +996,7 @@
     <script>
         function togglePortalSidebar(force) {
             const sb = document.querySelector('.portal-sidebar') || document.querySelector('.erp-sidebar') || document.querySelector('.user-sidebar');
-            const bd = document.getElementById('portalBackdrop');
+            const bd = document.getElementById('portalBackdrop') || document.getElementById('erpSidebarOverlay');
             if (!sb) return;
             const open = force !== undefined ? force : !sb.classList.contains('open');
             if (open) {
