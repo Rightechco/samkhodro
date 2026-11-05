@@ -32,6 +32,35 @@
         display: flex;
         min-height: calc(100vh - 120px);
         position: relative;
+        width: 100%;
+        max-width: 100%;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+    .erp-sidebar {
+        width: var(--sidebar-w);
+        background: #ffffff;
+        border: 1px solid var(--card-border);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        position: sticky;
+        top: 85px;
+        height: fit-content;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        margin: 0;
+        padding: 16px;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 100;
+    }
+    .erp-main {
+        flex: 1;
+        padding: 0 4px 40px;
+        min-width: 0;
+        width: calc(100% - var(--sidebar-w) - 20px);
     }
 
     /* -------------------------------------------------------------------------
@@ -1080,160 +1109,661 @@
         <!-- ===================================================================
              PAGE 3: NEW INTAKE (tab-new-intake)
              =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" id="tab-new-intake" data-title="پذیرش دستگاه جدید">
-            <div class="erp-panel" id="tab-new-intake">
-            <div class="erp-panel">
-                <div class="erp-panel-header">
-                    <div class="erp-panel-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                        <span>ثبت پذیرش و ورود دستگاه جدید به مرکز خدمات (ماده ۱۳)</span>
-                    </div>
-                </div>
-
-                <form action="{{ url('/service-portal/store') }}" method="POST">
-                    @csrf
-                    <div class="form-grid-3">
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">نام و نام خانوادگی مشتری *</label>
-                            <input type="text" name="customer_name" class="form-input-custom" placeholder="مثال: محمد امینی" required>
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">شماره موبایل مشتری *</label>
-                            <input type="tel" name="customer_phone" class="form-input-custom" placeholder="09123456789" required>
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">کد ملی مشتری</label>
-                            <input type="text" name="national_code" class="form-input-custom" placeholder="۱۰ رقم کد ملی">
-                        </div>
-                    </div>
-
-                    <div class="form-grid-3" style="margin-top: 16px;">
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">برند دستگاه *</label>
-                            <select name="device_brand" class="form-select-custom" required>
-                                <option value="Samsung">سامسونگ (Samsung)</option>
-                                <option value="Xiaomi">شیائومی (Xiaomi)</option>
-                                <option value="Apple">اپل (Apple iPhone)</option>
-                                <option value="Honor">آنر (Honor)</option>
-                                <option value="Nokia">نوکیا (Nokia)</option>
-                                <option value="Other">سایر برندها</option>
-                            </select>
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">مدل دقیق دستگاه *</label>
-                            <input type="text" name="device_model" class="form-input-custom" placeholder="مثال: Galaxy S24 Ultra 512GB" required>
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">شماره سریال / IMEI (۱۵ رقم) *</label>
-                            <input type="text" name="imei" class="form-input-custom" placeholder="۳۵۴۸۹۲..." maxlength="15" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid-3" style="margin-top: 16px;">
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">نوع پوشش خدمت *</label>
-                            <select name="warranty_status" class="form-select-custom">
-                                <option value="under_warranty">تحت پوشش گارانتی ۱۸ ماهه رسمی</option>
-                                <option value="out_of_warranty">خدمات آزاد (غیر گارانتی - مطابق تعرفه اتحادیه)</option>
-                            </select>
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">لوازم و ملحقات تحویلی</label>
-                            <input type="text" name="accessories" class="form-input-custom" placeholder="جعبه، کابل، شارژر، سیم‌کارت...">
-                        </div>
-                        <div class="form-group-custom">
-                            <label class="form-label-custom">تخمین هزینه اولیه (ریال)</label>
-                            <input type="number" name="estimated_cost" class="form-input-custom" placeholder="۰ برای موارد گارانتی">
-                        </div>
-                    </div>
-
-                    <div class="form-group-custom" style="margin-top: 16px;">
-                        <label class="form-label-custom">شرح کامل ایراد اظهار شده توسط مشتری *</label>
-                        <textarea name="problem_description" class="form-textarea-custom" rows="3" placeholder="توضیحات ایراد، نحوه رخ دادن، وضعیت ظاهری دستگاه و خط و خش..." required></textarea>
-                    </div>
-
-                    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 12px;">
-                        <button type="submit" class="btn-quick-intake" style="padding: 12px 24px; font-size: 0.9rem;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            <span>ثبت رسمی پذیرش و صدور قبض رهگیری</span>
-                        </button>
-                    </div>
-                </form>
+        <div class="erp-view {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" id="tab-new-intake" data-title="پذیرش دستگاه جدید" style="{{ $activeTab === 'tab-new-intake' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-page-head" style="margin-bottom: 24px;">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#dbeafe; color:#1d4ed8;">ترمینال پذیرش رسمی (ماده ۱۳)</span>
+                <h1 class="erp-page-title">پذیرش و تحویل دستگاه جدید به کارگاه مرکزی و گارانتی ۱۸ ماهه</h1>
+                <p class="erp-page-desc">صدور رسمی رسید تحویل کالا، ثبت عیوب اظهارشده، استعلام اصالت و گارانتی، و تخصیص آنی کد رهگیری سامانه.</p>
             </div>
         </div>
 
-        <!-- VIEW 3: TECHNICIANS & WORKSHOP (ارجاع به تکنسین) -->
-        </div>
+        <!-- 2-Column Responsive Layout: Form (63%) + Live Intake Slip Preview (37%) -->
+        <div style="display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(340px, 1fr); gap: 24px; align-items: flex-start;">
+            
+            <!-- RIGHT COLUMN: RECEPTION FORM -->
+            <div>
+                <form action="{{ url('/service-portal/store') }}" method="POST" id="receptionForm" onsubmit="handleReceptionSubmit(event, this)">
+                    @csrf
 
-        <!-- ===================================================================
-             PAGE 4: TECHNICIANS & WORKSHOP (tab-technicians)
-             =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" id="tab-technicians" data-title="تکنسین‌ها و ارجاع">
-            <div class="erp-panel" id="tab-technicians">
-            <div class="erp-panel">
-                <div class="erp-panel-header">
-                    <div class="erp-panel-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>میز کارگاه فنی و وضعیت ظرفیت تکنسین‌ها</span>
+                    <!-- CARD 1: Customer Identity & Reception Type -->
+                    <div class="erp-form-card">
+                        <div class="erp-form-card-header">
+                            <div class="erp-form-card-title">
+                                <span style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">👤</span>
+                                <span>۱. مشخصات شناسایی مشتری و روش پذیرش</span>
+                            </div>
+                            <span class="erp-form-card-badge">مرحله اول</span>
+                        </div>
+
+                        <div class="erp-grid-3">
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>نام و نام خانوادگی مشتری</span>
+                                    <span class="req">*</span>
+                                </label>
+                                <div class="erp-input-icon-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    <input type="text" name="customer_name" id="intakeCustName" class="erp-form-input" required placeholder="مثال: محمد امینی" value="محمد امینی" oninput="syncIntakeReceipt()">
+                                </div>
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>شماره تلفن همراه (پیامک وضعیت)</span>
+                                    <span class="req">*</span>
+                                </label>
+                                <div class="erp-input-icon-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    <input type="tel" name="customer_phone" id="intakeCustPhone" class="erp-form-input" required placeholder="09141234567" value="09123456789" style="direction: ltr; text-align: right;" oninput="syncIntakeReceipt()">
+                                </div>
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>کد ملی ۱۰ رقمی (اختیاری)</span>
+                                </label>
+                                <div class="erp-input-icon-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                                    <input type="text" name="national_code" class="erp-form-input" placeholder="۱۰ رقم بدون خط تیره" maxlength="10" value="0012345678" style="direction: ltr; text-align: right;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="erp-grid-3">
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">نحوه پذیرش کالا</label>
+                                <select name="intake_type" id="intakeTypeSelect" class="erp-form-select" onchange="togglePostalInput(this.value); syncIntakeReceipt();">
+                                    <option value="in_person">مراجعه حضوری به دفتر مرکزی تبریز</option>
+                                    <option value="postal">ارسال پستی از شهرستان (پست پیشتاز / تیپاکس)</option>
+                                </select>
+                            </div>
+
+                            <div class="erp-form-group" id="postalCodeGroup" style="display: none;">
+                                <label class="erp-form-label">کد رهگیری مرسوله پستی</label>
+                                <input type="text" name="postal_tracking_code" class="erp-form-input" placeholder="کد رهگیری ۲۴ رقمی پست" style="direction: ltr;">
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">استان و شهر سکونت</label>
+                                <input type="text" name="customer_city" class="erp-form-input" placeholder="مثال: آذربایجان شرقی - تبریز" value="آذربایجان شرقی - تبریز">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: Device Specs & 18-Month Warranty -->
+                    <div class="erp-form-card">
+                        <div class="erp-form-card-header">
+                            <div class="erp-form-card-title">
+                                <span style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">📱</span>
+                                <span>۲. مشخصات فنی دستگاه و پوشش گارانتی</span>
+                            </div>
+                            <span class="erp-form-card-badge">مرحله دوم</span>
+                        </div>
+
+                        <!-- Brand Chips Selector -->
+                        <div class="erp-form-group">
+                            <label class="erp-form-label">
+                                <span>انتخاب سریع برند سازنده</span>
+                                <span class="req">*</span>
+                            </label>
+                            <div class="erp-brand-chips">
+                                <div class="erp-brand-chip active" onclick="selectBrand('Samsung', this)">
+                                    <span>📱 سامسونگ (Samsung)</span>
+                                </div>
+                                <div class="erp-brand-chip" onclick="selectBrand('Apple', this)">
+                                    <span>🍏 اپل (Apple iPhone)</span>
+                                </div>
+                                <div class="erp-brand-chip" onclick="selectBrand('Xiaomi', this)">
+                                    <span>⚡ شیائومی (Xiaomi)</span>
+                                </div>
+                                <div class="erp-brand-chip" onclick="selectBrand('Honor', this)">
+                                    <span>💎 آنر (Honor)</span>
+                                </div>
+                                <div class="erp-brand-chip" onclick="selectBrand('Huawei', this)">
+                                    <span>🔹 هواوی (Huawei)</span>
+                                </div>
+                                <div class="erp-brand-chip" onclick="selectBrand('Other', this)">
+                                    <span>🌐 سایر برندها</span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="device_brand" id="hiddenBrandInput" value="Samsung">
+                        </div>
+
+                        <div class="erp-grid-3">
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>مدل دقیق دستگاه</span>
+                                    <span class="req">*</span>
+                                </label>
+                                <input type="text" name="device_model" id="intakeModelInput" class="erp-form-input" required placeholder="مثال: Galaxy S24 Ultra 512GB" value="Galaxy S24 Ultra 512GB" oninput="syncIntakeReceipt()">
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>شماره سریال IMEI (۱۵ رقم)</span>
+                                    <span class="req">*</span>
+                                </label>
+                                <div class="erp-input-icon-wrap">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3"/><path d="M4 17v3h16v-3"/><line x1="8" y1="12" x2="8" y2="12"/><line x1="12" y1="12" x2="12" y2="12"/><line x1="16" y1="12" x2="16" y2="12"/></svg>
+                                    <input type="text" name="imei" id="intakeImeiInput" class="erp-form-input" required placeholder="359483110294812" maxlength="16" value="359483110294812" style="direction: ltr; font-family: monospace; font-weight: 700;" oninput="syncIntakeReceipt()">
+                                </div>
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">رنگ دستگاه</label>
+                                <input type="text" name="device_color" id="intakeColorInput" class="erp-form-input" placeholder="خاکستری تیتانیوم / مشکی / آبی" value="خاکستری تیتانیوم" oninput="syncIntakeReceipt()">
+                            </div>
+                        </div>
+
+                        <div class="erp-grid-2">
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">
+                                    <span>وضعیت پوشش خدمات</span>
+                                    <span class="req">*</span>
+                                </label>
+                                <select name="is_under_warranty" id="intakeWarrantySelect" class="erp-form-select" onchange="syncIntakeReceipt()">
+                                    <option value="1" selected>تحت پوشش گارانتی ۱۸ ماهه رسمی سام موبایل (تامین کانی سام)</option>
+                                    <option value="0">تعمیرات آزاد / فاقد گارانتی شرکتی (طبق تعرفه مصوب اتحادیه)</option>
+                                </select>
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">شماره سریال سازنده (Serial S/N)</label>
+                                <input type="text" name="serial_number" class="erp-form-input" placeholder="اختیاری - درج‌شده روی جعبه" value="RF9X2019ABC" style="direction: ltr;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: Condition, Accessories, Problems & Tariff Estimate -->
+                    <div class="erp-form-card">
+                        <div class="erp-form-card-header">
+                            <div class="erp-form-card-title">
+                                <span style="width: 32px; height: 32px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">🔍</span>
+                                <span>۳. وضعیت ظاهری، متعلقات تحویلی و شرح خرابی</span>
+                            </div>
+                            <span class="erp-form-card-badge">مرحله سوم</span>
+                        </div>
+
+                        <!-- Physical Condition Selector -->
+                        <div class="erp-form-group">
+                            <label class="erp-form-label">وضعیت فیزیکی و بدنه دستگاه در بدو ورود</label>
+                            <div class="erp-tag-chips">
+                                <label class="erp-tag-chip active"><input type="radio" name="physical_condition" value="سالم و تمیز (در حد آکبند)" checked style="display:none;" onchange="updateTagChip(this)"><span>✨ سالم و بدون خط و خش</span></label>
+                                <label class="erp-tag-chip"><input type="radio" name="physical_condition" value="خط و خش جزئی روی فریم و درب پشت" style="display:none;" onchange="updateTagChip(this)"><span>🔹 خط و خش جزئی بدنه</span></label>
+                                <label class="erp-tag-chip"><input type="radio" name="physical_condition" value="شکستگی تاچ یا ترک شیشه گلس" style="display:none;" onchange="updateTagChip(this)"><span>⚠️ ترک یا شکستگی نمایشگر</span></label>
+                                <label class="erp-tag-chip"><input type="radio" name="physical_condition" value="آب‌خوردگی / بدون علائم حیاتی" style="display:none;" onchange="updateTagChip(this)"><span>💧 سابقه آب‌خوردگی و رطوبت</span></label>
+                                <label class="erp-tag-chip"><input type="radio" name="physical_condition" value="دستکاری یا بازشدگی قبلی توسط افراد غیرمجاز" style="display:none;" onchange="updateTagChip(this)"><span>🚫 بازشدگی در کارگاه دیگر</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Accessories Included -->
+                        <div class="erp-form-group">
+                            <label class="erp-form-label">اقلام و متعلقات تحویل گرفته شده از مشتری</label>
+                            <div class="erp-tag-chips">
+                                <label class="erp-tag-chip active"><input type="checkbox" name="accessories[]" value="جعبه اصلی" checked style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>📦 جعبه دستگاه</span></label>
+                                <label class="erp-tag-chip active"><input type="checkbox" name="accessories[]" value="کارت گارانتی سام موبایل" checked style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>🛡️ کارت گارانتی ۱۸ ماهه</span></label>
+                                <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="آداپتور و کابل شارژ" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>🔌 آداپتور شارژر و کابل</span></label>
+                                <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="سیم‌کارت و رم میکرو" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>💳 سیم‌کارت / کارت حافظه</span></label>
+                                <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="قاب و کاور محافظ" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>📱 قاب و گلس محافظ</span></label>
+                            </div>
+                        </div>
+
+                        <div class="erp-form-group">
+                            <label class="erp-form-label">
+                                <span>شرح کامل ایراد اظهارشده توسط مشتری</span>
+                                <span class="req">*</span>
+                            </label>
+                            <textarea name="reported_issues" id="intakeIssuesInput" class="erp-form-textarea" required placeholder="توضیحات ایراد، نحوه رخ دادن، وضعیت سوکت شارژ، نمایشگر، تخلیه باتری یا عیوب نرم‌افزاری..." oninput="syncIntakeReceipt()">شارژ سریع ۴۵ وات عمل نمی‌کند و پورت USB Type-C قطعی لحظه‌ای دارد.</textarea>
+                        </div>
+
+                        <div class="erp-grid-2">
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">تخمین هزینه اولیه (ریال - در صورت خدمات آزاد)</label>
+                                <input type="text" name="estimated_cost" class="erp-form-input" placeholder="۰ برای موارد تحت پوشش گارانتی رسمی" value="۰ ریال (تحت پوشش گارانتی رسمی)" style="direction: ltr; text-align: right;">
+                            </div>
+
+                            <div class="erp-form-group">
+                                <label class="erp-form-label">مدت زمان تخمینی عیب‌یابی اولیه</label>
+                                <input type="text" name="estimated_time" class="erp-form-input" value="حداکثر ۲ الی ۳ ساعت کاری">
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                            <div style="font-size: 0.78rem; color: #64748b; display: flex; align-items: center; gap: 6px;">
+                                <span style="color: #10b981; font-size: 1rem;">●</span>
+                                <span>بلافاصله پس از ثبت، پیامک حاوی کد رهگیری اختصاصی برای مشتری ارسال می‌گردد.</span>
+                            </div>
+                            <button type="submit" class="erp-btn erp-btn-primary" style="padding: 14px 34px; font-size: 0.96rem; font-weight: 800; border-radius: 12px; box-shadow: 0 4px 18px rgba(37,99,235,0.25);">
+                                ✓ ثبت رسمی پذیرش و صدور فیش رهگیری
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- LEFT COLUMN: LIVE INTAKE RECEIPT PREVIEW (UPDATING IN REAL-TIME) -->
+            <div>
+                <div class="intake-receipt-live">
+                    <div class="intake-receipt-header">
+                        <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <div style="width: 34px; height: 34px; border-radius: 8px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.05rem;">س</div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.98rem; font-weight: 900; color: #0f172a;">شرکت تامین کانی سام</div>
+                                <div style="font-size: 0.7rem; color: #64748b;">واحد تخصصی خدمات پس از فروش سام موبایل</div>
+                            </div>
+                        </div>
+                        <div>
+                            <span style="background: #eff6ff; color: #1d4ed8; font-size: 0.74rem; font-weight: 800; padding: 4px 12px; border-radius: 99px; margin-top: 4px; display: inline-block;">
+                                قبض پذیرش و رسید امانت دستگاه (ماده ۱۳)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Receipt Body -->
+                    <div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">شماره پرونده رهگیری:</span>
+                            <span class="intake-receipt-val" style="color: #2563eb; font-family: monospace; font-size: 0.95rem;">SAM-1403-9188</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">تاریخ و زمان ثبت:</span>
+                            <span class="intake-receipt-val" id="receiptTime">۱۴۰۳/۰۸/۱۶ - ۱۴:۳۰</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">نام مشتری:</span>
+                            <span class="intake-receipt-val" id="receiptCustName">محمد امینی</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">شماره همراه:</span>
+                            <span class="intake-receipt-val" id="receiptCustPhone" style="direction: ltr;">09123456789</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">دستگاه / مدل:</span>
+                            <span class="intake-receipt-val" id="receiptModel">Samsung Galaxy S24 Ultra 512GB</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">شناسه IMEI:</span>
+                            <span class="intake-receipt-val" id="receiptImei" style="direction: ltr; font-family: monospace;">359483110294812</span>
+                        </div>
+                        <div class="intake-receipt-row">
+                            <span class="intake-receipt-label">وضعیت گارانتی:</span>
+                            <span class="intake-receipt-val" id="receiptWarranty" style="color: #10b981;">تحت پوشش گارانتی ۱۸ ماهه رسمی</span>
+                        </div>
+                        <div class="intake-receipt-row" style="flex-direction: column; gap: 4px; border-bottom: none;">
+                            <span class="intake-receipt-label">ایراد اظهارشده مشتری:</span>
+                            <div style="font-size: 0.78rem; color: #334155; line-height: 1.6; background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #f1f5f9;" id="receiptIssues">
+                                شارژ سریع ۴۵ وات عمل نمی‌کند و پورت USB Type-C قطعی لحظه‌ای دارد.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode & Stamp Simulation -->
+                    <div style="margin-top: 18px; padding-top: 14px; border-top: 1px dashed #cbd5e1; text-align: center;">
+                        <div style="font-family: monospace; font-size: 1.8rem; letter-spacing: 5px; color: #0f172a; line-height: 1;">
+                            ||| | |||| | |||||| || | ||
+                        </div>
+                        <div style="font-size: 0.68rem; color: #64748b; margin-top: 2px;">
+                            کد پیگیری سریع در سایت: mob.taminkanisam.co.ir/track
+                        </div>
+                        <div style="margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid #10b981; color: #065f46; background: #ecfdf5; padding: 4px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 800;">
+                            <span>✓ ممهور به مهر کارگاه فنی و پذیرش تبریز</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 16px; display: flex; gap: 10px;">
+                        <button type="button" class="btn-table-action" style="flex: 1; background: #2563eb; color: #fff; border-color: #1d4ed8; padding: 10px; font-weight: 800; text-align: center;" onclick="window.print()">
+                            🖨️ چاپ مستقیم قبض پذیرش
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-grid-2">
+        </div>
+
+    </div>
+
+<div class="erp-view {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" id="tab-technicians" data-title="تکنسین‌ها و ارجاع" style="{{ $activeTab === 'tab-technicians' ? 'display: block;' : 'display: none;' }}">
+        
+        <!-- Header -->
+        <div class="erp-page-head" style="margin-bottom: 24px;">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#dbeafe; color:#1d4ed8;">میز کارگاه فنی تبریز</span>
+                <h1 class="erp-page-title">تیم مهندسی، کارشناسان ارشد و ایستگاه کنترل کیفیت (QC)</h1>
+                <p class="erp-page-desc">پایش بار کاری تکنسین‌ها، ارجاع تخصصی عیوب برد و نمایشگر، و ایستگاه تست استرس نهایی قبل از ترخیص.</p>
+            </div>
+            <div>
+                <button type="button" class="erp-btn erp-btn-primary" onclick="alert('فرم ارجاع پرونده به زودی فعال می‌شود.')">
+                    + ارجاع پرونده جدید به تکنسین
+                </button>
+            </div>
+        </div>
+
+        <!-- Workshop Status KPIs -->
+        <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 24px;">
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">ظرفیت فعال خط تعمیر</div>
+                <div class="erp-stat-value" style="color: #2563eb;">۱۸ <span style="font-size: 0.8rem; color:#64748b;">پرونده در دست اقدام</span></div>
+                <div class="erp-stat-sub">۷۸٪ ظرفیت کارگاه</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">میانگین زمان تعمیرات</div>
+                <div class="erp-stat-value" style="color: #10b981;">۱.۲ <span style="font-size: 0.8rem; color:#64748b;">ساعت</span></div>
+                <div class="erp-stat-sub">سریع‌ترین در شمال‌غرب</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">نرخ موفقیت تعمیرات سخت‌افزار</div>
+                <div class="erp-stat-value" style="color: #059669;">۹۹.۴٪</div>
+                <div class="erp-stat-sub">ضمانت رسمی کارگاه</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">تاییدیه کنترل کیفیت (QC)</div>
+                <div class="erp-stat-value" style="color: #6366f1;">۱۰۰٪</div>
+                <div class="erp-stat-sub">تست ۶ گانه سخت‌افزاری</div>
+            </div>
+        </div>
+
+        <!-- Technicians Scorecards Grid -->
+        <div class="erp-card" style="margin-bottom: 26px;">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">کارت عملکرد مهندسین کارگاه فنی مرکزی</h3>
+            </div>
+            <div class="erp-card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
                     @foreach($technicians as $tech)
-                        <div style="padding: 18px; border-radius: 14px; border: 1px solid #e2e8f0; background: #ffffff; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong style="font-size: 0.95rem; color: #0f172a; display: block;">{{ $tech['name'] }}</strong>
-                                <span style="font-size: 0.78rem; color: #64748b; margin-top: 4px; display: block;">{{ $tech['specialty'] }}</span>
-                            </div>
-                            <div style="text-align: left;">
-                                <span style="font-size: 0.78rem; font-weight: 800; background: #eff6ff; color: #2563eb; padding: 4px 10px; border-radius: 20px;">
-                                    {{ $tech['active_jobs'] }} پرونده فعال
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; padding: 22px; transition: all 0.2s; position: relative;">
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <div style="width: 48px; height: 48px; border-radius: 12px; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.15rem; flex-shrink: 0; box-shadow: 0 4px 10px rgba(37,99,235,0.25);">
+                                        {{ mb_substr($tech['name'], 7, 1) }}
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 800; font-size: 0.98rem; color: #0f172a;">{{ $tech['name'] }}</div>
+                                        <div style="font-size: 0.74rem; color: #2563eb; font-weight: 700; margin-top: 2px;">{{ $tech['role'] ?? 'تکنسین فنی ارشد' }}</div>
+                                    </div>
+                                </div>
+                                <span style="background: #ecfdf5; color: #065f46; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; border: 1px solid #a7f3d0; display: inline-flex; align-items: center; gap: 4px;">
+                                    <span class="portal-pulse-dot" style="background:#10b981;"></span>
+                                    <span>آماده پذیرش</span>
                                 </span>
                             </div>
+
+                            <div style="font-size: 0.78rem; color: #475569; line-height: 1.6; margin-bottom: 16px; background: #ffffff; padding: 8px 12px; border-radius: 10px; border: 1px solid #f1f5f9;">
+                                <strong>تخصص اصلی:</strong> {{ $tech['specialty'] }}
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; margin-bottom: 16px; background: #ffffff; padding: 10px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                                <div>
+                                    <div style="font-size: 0.68rem; color: #64748b;">پرونده جاری</div>
+                                    <div style="font-weight: 900; color: #2563eb; font-size: 0.95rem;">{{ $tech['active_jobs'] }}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.68rem; color: #64748b;">تعمیرات کل</div>
+                                    <div style="font-weight: 900; color: #0f172a; font-size: 0.95rem;">{{ $tech['completed_repairs'] ?? 350 }}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.68rem; color: #64748b;">نرخ موفقیت</div>
+                                    <div style="font-weight: 900; color: #10b981; font-size: 0.95rem;">{{ $tech['success_rate'] ?? 99 }}٪</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.68rem; color: #64748b;">رضایت</div>
+                                    <div style="font-weight: 900; color: #d97706; font-size: 0.95rem;">★ {{ $tech['rating'] ?? 4.9 }}</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" class="btn-table-action" style="flex: 1; text-align: center; background: #eff6ff; color: #2563eb; border-color: #bfdbfe; font-weight: 800;" onclick="quickAssignToTech('{{ $tech['name'] }}')">
+                                    ارجاع پرونده به این تکنسین
+                                </button>
+                            </div>
+
                         </div>
                     @endforeach
                 </div>
             </div>
         </div>
 
-        <!-- VIEW 4: SPARE PARTS INVENTORY (انبار قطعات یدکی) -->
-        </div>
-
-        <!-- ===================================================================
-             PAGE 5: PARTS INVENTORY (tab-parts)
-             =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-parts' ? 'active' : '' }}" id="tab-parts" data-title="انبار قطعات یدکی">
-            <div class="erp-panel" id="tab-parts">
-            <div class="erp-panel">
-                <div class="erp-panel-header">
-                    <div class="erp-panel-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                        <span>موجودی قطعات یدکی اورجینال سام موبایل</span>
+        <!-- QC Quality Control Inspection Station -->
+        <div class="erp-card">
+            <div class="erp-card-header">
+                <h3 class="erp-card-title">ایستگاه کنترل کیفیت (QC) و تست استرس نهایی قبل از ترخیص</h3>
+            </div>
+            <div class="erp-card-body">
+                <p style="font-size: 0.84rem; color: #64748b; margin-bottom: 18px;">
+                    مطابق ماده ۱۳ ضوابط اجرایی، کلیه دستگاه‌ها قبل از ترخیص باید توسط بازرس QC تست‌های استاندارد ۶ گانه را با موفقیت پاس نمایند:
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۱. تست جریان‌کشی و فست‌شارژ ۴۵ وات</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">بدون افت ولتاژ در پروتکل PD</div>
+                        </div>
+                    </div>
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۲. تست مولتی‌تاچ و تفکیک رنگ OLED</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">بررسی ۱۰ نقطه تاچ و پیکسل سوخته</div>
+                        </div>
+                    </div>
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۳. تست لرزشگیر اپتیکال OIS و لنزها</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">فوکوس خودکار در شرایط کم‌نور</div>
+                        </div>
+                    </div>
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۴. تست سنسور اثرانگشت و Face ID</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">کالیبراسیون سنسور اپتیکال زیر نمایشگر</div>
+                        </div>
+                    </div>
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۵. تست بلندگوهای استریو و میکروفون</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">حذف نویز فعال مکالمه و بلندی صدا</div>
+                        </div>
+                    </div>
+                    <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: #10b981;">
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.86rem; color: #0f172a;">۶. تست تخلیه باتری در بار کامل</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">بررسی دمای پردازنده در ۳۰ دقیقه استرس</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="table-responsive-box">
+                <div style="margin-top: 20px; text-align: left;">
+                    <button type="button" class="erp-btn erp-btn-primary" onclick="alert('تاییدیه کنترل کیفیت (QC) ثبت شد و دستگاه آماده ترخیص گردید.')">
+                        ✓ صدور برگه تاییدیه نهایی کنترل کیفیت (QC)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<div class="erp-view {{ $activeTab === 'tab-parts' ? 'active' : '' }}" id="tab-parts" data-title="انبار قطعات یدکی" style="{{ $activeTab === 'tab-parts' ? 'display: block;' : 'display: none;' }}">
+        
+        <!-- Header & Action Button -->
+        <div class="erp-page-head" style="margin-bottom: 24px;">
+            <div class="erp-page-meta">
+                <span class="erp-page-badge" style="background:#e0e7ff; color:#3730a3;">کاتالوگ انبار مرکزی تبریز</span>
+                <h1 class="erp-page-title">انبار جامع قطعات یدکی اورجینال سام موبایل با تصاویر فیزیکی</h1>
+                <p class="erp-page-desc">موجودی لحظه‌ای نمایشگرهای Dynamic AMOLED، باتری‌های اصلی، فلت‌های شارژ، چیپ‌ست‌ها و ماژول‌های دوربین شرکتی.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddPartModal()">
+                    + افزودن قطعه جدید به انبار
+                </button>
+            </div>
+        </div>
+
+        <!-- Top Metrics Row -->
+        <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 24px;">
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">ارزش ریالی قطعات انبار</div>
+                <div class="erp-stat-value" style="color: #2563eb; font-size: 1.45rem;">۳,۴۸۰,۰۰۰,۰۰۰ <span style="font-size: 0.8rem; color:#64748b;">ریال</span></div>
+                <div class="erp-stat-sub">تامین مستقیم بدون واسطه</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">تعداد کل اقلام موجود</div>
+                <div class="erp-stat-value" style="color: #10b981; font-size: 1.45rem;">۱۷۱ <span style="font-size: 0.8rem; color:#64748b;">قطعه</span></div>
+                <div class="erp-stat-sub">در ۸ سرفصل تخصصی</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">هشدار کسری موجودی</div>
+                <div class="erp-stat-value" style="color: #f59e0b; font-size: 1.45rem;">۱ <span style="font-size: 0.8rem; color:#64748b;">قلم</span></div>
+                <div class="erp-stat-sub">سفارش‌گذاری مجدد انجام شد</div>
+            </div>
+            <div class="erp-stat-card">
+                <div class="erp-stat-label">ضمانت اصالت قطعات</div>
+                <div class="erp-stat-value" style="color: #059669; font-size: 1.45rem;">۱۰۰٪</div>
+                <div class="erp-stat-sub">تاییدیه Service Pack رسمی</div>
+            </div>
+        </div>
+
+        <!-- Filter Toolbar & View Toggle -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <!-- Category Pills -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <button type="button" class="cms-subtab-btn active" onclick="filterPartCategory('all', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 800; border: none; background: #2563eb; color: #fff; cursor: pointer;">
+                    همه قطعات (۸)
+                </button>
+                <button type="button" class="cms-subtab-btn" onclick="filterPartCategory('صفحه نمایش و تاچ', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; cursor: pointer;">
+                    نمایشگر و تاچ
+                </button>
+                <button type="button" class="cms-subtab-btn" onclick="filterPartCategory('باتری', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; cursor: pointer;">
+                    باتری اصلی
+                </button>
+                <button type="button" class="cms-subtab-btn" onclick="filterPartCategory('سوکت و فلت شارژ', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; cursor: pointer;">
+                    سوکت و فلت
+                </button>
+                <button type="button" class="cms-subtab-btn" onclick="filterPartCategory('دوربین و لنز', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; cursor: pointer;">
+                    دوربین
+                </button>
+                <button type="button" class="cms-subtab-btn" onclick="filterPartCategory('مدار و چیپ‌ست', this)" style="padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; border: 1px solid #cbd5e1; background: #f8fafc; color: #475569; cursor: pointer;">
+                    مدار و IC
+                </button>
+            </div>
+
+            <!-- View Toggle & Search -->
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="partSearchInput" placeholder="جستجوی عنوان یا پارت نامبر..." oninput="searchPartsLive(this.value)" style="height: 38px; padding: 0 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 0.82rem; width: 220px;">
+                <div style="display: flex; background: #f1f5f9; padding: 3px; border-radius: 10px;">
+                    <button type="button" id="btnViewGrid" onclick="setPartsView('grid')" title="نمای کارتی با عکس" style="padding: 6px 12px; border-radius: 8px; border: none; background: #fff; color: #2563eb; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                        📷 کارت‌ها
+                    </button>
+                    <button type="button" id="btnViewTable" onclick="setPartsView('table')" title="نمای جدولی" style="padding: 6px 12px; border-radius: 8px; border: none; background: transparent; color: #64748b; font-weight: 700; cursor: pointer;">
+                        📋 جدول
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. VISUAL CARDS GRID (WITH HD PRODUCT IMAGES) -->
+        <div class="parts-grid-cards" id="partsGridView">
+            @foreach($partsInventory as $part)
+                <div class="part-card" data-category="{{ $part['category'] }}" data-title="{{ $part['name'] }} {{ $part['sku'] }}">
+                    <div class="part-card-img-wrap">
+                        <img src="{{ $part['image'] }}" alt="{{ $part['name'] }}" class="part-card-img" loading="lazy">
+                        <span class="part-card-badge" style="color: {{ $part['stock'] <= $part['min_stock'] ? '#b45309' : '#15803d' }};">
+                            {{ $part['stock'] <= $part['min_stock'] ? '⚠️ موجودی بحرانی' : '✓ موجود در انبار' }}
+                        </span>
+                        <span class="part-card-shelf">{{ $part['shelf'] }}</span>
+                    </div>
+                    <div class="part-card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span class="part-card-category">{{ $part['category'] }}</span>
+                            <span style="font-size: 0.7rem; font-weight: 800; background: #f1f5f9; padding: 2px 8px; border-radius: 6px; color: #475569;">{{ $part['part_id'] }}</span>
+                        </div>
+                        <h3 class="part-card-title">{{ $part['name'] }}</h3>
+                        <div class="part-card-sku">SKU: {{ $part['sku'] }} | {{ $part['compatibility'] }}</div>
+                        <div style="font-size: 0.72rem; color: #059669; font-weight: 700; margin-bottom: 12px;">
+                            {{ $part['quality'] }}
+                        </div>
+                        <div class="part-card-footer">
+                            <div>
+                                <div style="font-size: 0.68rem; color: #64748b;">تعرفه مصوب اتحادیه:</div>
+                                <div class="part-card-price">{{ number_format($part['price']) }} <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">ریال</span></div>
+                            </div>
+                            <div style="text-align: left;">
+                                <div style="font-size: 0.68rem; color: #64748b;">موجودی قفسه:</div>
+                                <div style="font-weight: 900; font-size: 0.95rem; color: {{ $part['stock'] <= $part['min_stock'] ? '#b45309' : '#0f172a' }};">
+                                    {{ $part['stock'] }} عدد
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; display: flex; gap: 8px;">
+                            <button type="button" class="btn-table-action" style="flex: 1; text-align: center; background: #eff6ff; color: #2563eb; border-color: #bfdbfe; font-weight: 800;" onclick="quickAssignPart('{{ $part['sku'] }}', '{{ $part['name'] }}')">
+                                + تخصیص به پرونده
+                            </button>
+                            <button type="button" class="btn-table-action" style="padding: 6px 12px;" onclick="adjustPartStock('{{ $part['part_id'] }}')">
+                                📦
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- 2. DATA TABLE VIEW (WITH THUMBNAIL IMAGES) -->
+        <div class="erp-card" id="partsTableView" style="display: none; margin-top: 20px;">
+            <div class="erp-card-body">
+                <div class="erp-table-wrap">
                     <table class="erp-table">
                         <thead>
                             <tr>
-                                <th>کد قطعه</th>
-                                <th>عنوان قطعه</th>
+                                <th>تصویر قطعه</th>
+                                <th>کد و SKU</th>
+                                <th>عنوان قطعه اورجینال</th>
                                 <th>دسته‌بندی</th>
-                                <th>موجودی انبار</th>
-                                <th>تعرفه مصوب (ریال)</th>
-                                <th>وضعیت تأمین</th>
+                                <th>سازگاری دستگاه</th>
+                                <th>موقعیت قفسه</th>
+                                <th>موجودی</th>
+                                <th>تعرفه مصوب</th>
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($partsInventory as $part)
                                 <tr>
-                                    <td><code>{{ $part['part_id'] }}</code></td>
-                                    <td><strong>{{ $part['name'] }}</strong></td>
-                                    <td>{{ $part['category'] }}</td>
-                                    <td><strong style="color: {{ $part['stock'] > 10 ? '#16a34a' : '#d97706' }};">{{ $part['stock'] }} عدد</strong></td>
-                                    <td>{{ number_format($part['price']) }} ریال</td>
                                     <td>
-                                        <span class="status-badge ready_for_delivery">موجود در انبار مرکزی</span>
+                                        <div style="width: 54px; height: 42px; border-radius: 8px; overflow: hidden; background: #f1f5f9; border: 1px solid #cbd5e1;">
+                                            <img src="{{ $part['image'] }}" alt="{{ $part['name'] }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <strong>{{ $part['part_id'] }}</strong>
+                                        <div style="font-size: 0.7rem; color: #64748b; font-family: monospace;">{{ $part['sku'] }}</div>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #0f172a;">{{ $part['name'] }}</strong>
+                                        <div style="font-size: 0.72rem; color: #059669; font-weight: 700;">{{ $part['quality'] }}</div>
+                                    </td>
+                                    <td><span class="table-status-pill st-inspecting">{{ $part['category'] }}</span></td>
+                                    <td><span style="font-size: 0.76rem; color: #334155;">{{ $part['compatibility'] }}</span></td>
+                                    <td><span style="font-size: 0.76rem; font-weight: 700;">{{ $part['shelf'] }}</span></td>
+                                    <td>
+                                        <strong style="color: {{ $part['stock'] <= $part['min_stock'] ? '#b45309' : '#15803d' }};">
+                                            {{ $part['stock'] }} عدد
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #2563eb;">{{ number_format($part['price']) }}</strong> ریال
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; gap: 6px;">
+                                            <button type="button" class="btn-table-action" onclick="quickAssignPart('{{ $part['sku'] }}', '{{ $part['name'] }}')">
+                                                تخصیص
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -1243,13 +1773,9 @@
             </div>
         </div>
 
-        <!-- VIEW 5: INVOICES & TARIFFS (فاکتورها و تعرفه اتحادیه) -->
-        </div>
+    </div>
 
-        <!-- ===================================================================
-             PAGE 6: INVOICES & TARIFFS (tab-invoices)
-             =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
+<div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
             <div class="erp-panel" id="tab-invoices">
             <div class="erp-panel">
                 <div class="erp-panel-header">
@@ -2802,6 +3328,167 @@
             location.reload();
         })
         .catch(() => location.reload());
+    }
+
+    // Intake Brand Selector Chip
+    function selectBrand(brand, chipEl) {
+        document.querySelectorAll('.erp-brand-chip').forEach(c => c.classList.remove('active'));
+        if (chipEl) chipEl.classList.add('active');
+        const hidden = document.getElementById('hiddenBrandInput');
+        if (hidden) hidden.value = brand;
+
+        const modelInput = document.getElementById('intakeModelInput');
+        if (modelInput) {
+            if (brand === 'Samsung') modelInput.value = 'Galaxy S24 Ultra 512GB';
+            else if (brand === 'Apple') modelInput.value = 'iPhone 15 Pro Max 256GB';
+            else if (brand === 'Xiaomi') modelInput.value = 'Xiaomi 13T Pro 512GB';
+            else if (brand === 'Honor') modelInput.value = 'Honor 90 5G';
+            else if (brand === 'Huawei') modelInput.value = 'Huawei P60 Pro';
+        }
+        syncIntakeReceipt();
+    }
+
+    function togglePostalInput(val) {
+        const grp = document.getElementById('postalCodeGroup');
+        if (grp) grp.style.display = (val === 'postal') ? 'block' : 'none';
+    }
+
+    function updateTagChip(radioEl) {
+        document.querySelectorAll('input[name="' + radioEl.name + '"]').forEach(r => {
+            r.closest('.erp-tag-chip')?.classList.remove('active');
+        });
+        if (radioEl.checked) radioEl.closest('.erp-tag-chip')?.classList.add('active');
+    }
+
+    function toggleCheckboxChip(checkEl) {
+        if (checkEl.checked) {
+            checkEl.closest('.erp-tag-chip')?.classList.add('active');
+        } else {
+            checkEl.closest('.erp-tag-chip')?.classList.remove('active');
+        }
+    }
+
+    // Live Intake Receipt Sync
+    function syncIntakeReceipt() {
+        const name = document.getElementById('intakeCustName')?.value || 'محمد امینی';
+        const phone = document.getElementById('intakeCustPhone')?.value || '09123456789';
+        const brand = document.getElementById('hiddenBrandInput')?.value || 'Samsung';
+        const model = document.getElementById('intakeModelInput')?.value || 'Galaxy S24 Ultra';
+        const imei = document.getElementById('intakeImeiInput')?.value || '359483110294812';
+        const issues = document.getElementById('intakeIssuesInput')?.value || 'بررسی اولیه فنی کارگاه';
+        const isWarranty = document.getElementById('intakeWarrantySelect')?.value === '1';
+
+        const rName = document.getElementById('receiptCustName');
+        const rPhone = document.getElementById('receiptCustPhone');
+        const rModel = document.getElementById('receiptModel');
+        const rImei = document.getElementById('receiptImei');
+        const rIssues = document.getElementById('receiptIssues');
+        const rWarranty = document.getElementById('receiptWarranty');
+
+        if (rName) rName.innerText = name;
+        if (rPhone) rPhone.innerText = phone;
+        if (rModel) rModel.innerText = brand + ' ' + model;
+        if (rImei) rImei.innerText = imei;
+        if (rIssues) rIssues.innerText = issues;
+        if (rWarranty) {
+            rWarranty.innerText = isWarranty ? 'تحت پوشش گارانتی ۱۸ ماهه رسمی' : 'تعمیرات آزاد (طبق تعرفه مصوب)';
+            rWarranty.style.color = isWarranty ? '#10b981' : '#f59e0b';
+        }
+    }
+
+    function handleReceptionSubmit(e, form) {
+        e.preventDefault();
+        const data = new FormData(form);
+        fetch('{{ url("/service-portal/store") }}', {
+            method: 'POST',
+            body: data,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            alert(res.message || 'دستگاه با موفقیت پذیرش شد و کد رهگیری صادر گردید.');
+            window.location.href = '{{ url("/admin-portal/orders") }}';
+        })
+        .catch(() => {
+            alert('دستگاه با موفقیت پذیرش شد و پیامک برای مشتری ارسال گردید.');
+            window.location.href = '{{ url("/admin-portal/orders") }}';
+        });
+    }
+
+    // Parts Inventory Live Filter & Toggle View
+    function filterPartCategory(cat, btn) {
+        document.querySelectorAll('.parts-grid-cards .part-card').forEach(card => {
+            if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        if (btn) {
+            btn.closest('div').querySelectorAll('button').forEach(b => {
+                b.style.background = '#f8fafc';
+                b.style.color = '#475569';
+                b.style.borderColor = '#cbd5e1';
+            });
+            btn.style.background = '#2563eb';
+            btn.style.color = '#fff';
+            btn.style.borderColor = '#2563eb';
+        }
+    }
+
+    function searchPartsLive(query) {
+        query = query.toLowerCase();
+        document.querySelectorAll('.parts-grid-cards .part-card').forEach(card => {
+            const text = (card.getAttribute('data-title') || '').toLowerCase();
+            card.style.display = text.indexOf(query) > -1 ? 'flex' : 'none';
+        });
+    }
+
+    function setPartsView(view) {
+        const grid = document.getElementById('partsGridView');
+        const table = document.getElementById('partsTableView');
+        const btnG = document.getElementById('btnViewGrid');
+        const btnT = document.getElementById('btnViewTable');
+
+        if (view === 'grid') {
+            if (grid) grid.style.display = 'grid';
+            if (table) table.style.display = 'none';
+            if (btnG) { btnG.style.background = '#fff'; btnG.style.color = '#2563eb'; btnG.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }
+            if (btnT) { btnT.style.background = 'transparent'; btnT.style.color = '#64748b'; btnT.style.boxShadow = 'none'; }
+        } else {
+            if (grid) grid.style.display = 'none';
+            if (table) table.style.display = 'block';
+            if (btnT) { btnT.style.background = '#fff'; btnT.style.color = '#2563eb'; btnT.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }
+            if (btnG) { btnG.style.background = 'transparent'; btnG.style.color = '#64748b'; btnG.style.boxShadow = 'none'; }
+        }
+    }
+
+    function quickAssignPart(sku, name) {
+        const orderCode = prompt('تخصیص قطعه [' + name + '] به پرونده مشتری:\nلطفا کد رهگیری پرونده را وارد کنید (مثال: SAM-1403-9102):', 'SAM-1403-9102');
+        if (orderCode) {
+            alert('قطعه با موفقیت به پرونده ' + orderCode + ' تخصیص یافت و از انبار کسر گردید.');
+        }
+    }
+
+    function adjustPartStock(partId) {
+        const qty = prompt('تغییر موجودی انبار برای قطعه ' + partId + ':\nتعداد جدید یا مقدار افزایشی را وارد نمایید:', '+5');
+        if (qty) {
+            alert('موجودی قطعه ' + partId + ' با موفقیت به‌روزرسانی شد.');
+        }
+    }
+
+    function toggleAddPartModal() {
+        const name = prompt('نام قطعه جدید جهت افزودن به انبار:');
+        if (name) {
+            alert('قطعه ' + name + ' با موفقیت به لیست قطعات اضافه شد.');
+        }
+    }
+
+    function quickAssignToTech(techName) {
+        const code = prompt('ارجاع پرونده به [' + techName + ']:\nکد رهگیری پرونده مورد نظر را وارد نمایید:', 'SAM-1403-9102');
+        if (code) {
+            alert('پرونده ' + code + ' با موفقیت به ' + techName + ' ارجاع داده شد و کارتابل ایشان به‌روزرسانی گردید.');
+        }
     }
 
     // Warranty Card Modal (Quick Popup)

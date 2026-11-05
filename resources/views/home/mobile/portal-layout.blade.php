@@ -69,7 +69,7 @@
             height: 70px;
         }
         .portal-topbar-inner {
-            max-width: 1540px;
+            max-width: 1720px; width: 100%;
             margin: 0 auto;
             padding: 0 24px;
             height: 100%;
@@ -246,7 +246,7 @@
            --------------------------------------------------------------------- */
         .portal-wrapper {
             flex: 1;
-            max-width: 1540px;
+            max-width: 1720px; width: 100%;
             width: 100%;
             margin: 0 auto;
             padding: 20px 24px 40px;
@@ -426,7 +426,7 @@
             margin-top: auto;
         }
         .portal-footer-inner {
-            max-width: 1540px;
+            max-width: 1720px; width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -481,8 +481,8 @@
                 border-radius: 10px;
             }
             .portal-wrapper {
-                padding: 14px 14px 40px;
-                flex-direction: column;
+                padding: 12px 10px 40px;
+                display: block;
             }
             .portal-sidebar {
                 position: fixed;
@@ -517,6 +517,370 @@
                 align-items: flex-start;
             }
         }
+    
+        /* =========================================================================
+           ENTERPRISE MASTER FORM & INPUT DESIGN SYSTEM (ULTRA-PREMIUM LIGHT THEME)
+           ========================================================================= */
+        .erp-form-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+            margin-bottom: 22px;
+            transition: all 0.25s ease;
+        }
+        .erp-form-card:hover {
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.06);
+            border-color: #cbd5e1;
+        }
+        .erp-form-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .erp-form-card-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .erp-form-card-badge {
+            font-size: 0.72rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 99px;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+        .erp-form-card-desc {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: -12px;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        /* Form Group & Labels */
+        .erp-form-group, .form-group-custom {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .erp-form-label, .form-label-custom {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .erp-form-label .req, .form-label-custom .req {
+            color: #ef4444;
+            font-weight: 800;
+        }
+        .erp-form-label-hint {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-right: auto;
+        }
+
+        /* Standardized Form Inputs */
+        .erp-form-input, .form-input-custom, 
+        .erp-form-select, .form-select-custom, 
+        .erp-form-textarea {
+            width: 100% !important;
+            height: 48px;
+            padding: 0 16px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: #0f172a;
+            background-color: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+            box-sizing: border-box;
+            outline: none;
+        }
+        .erp-form-textarea {
+            height: auto !important;
+            min-height: 110px;
+            padding: 12px 16px;
+            line-height: 1.7;
+            resize: vertical;
+        }
+        .erp-form-input::placeholder, .form-input-custom::placeholder, .erp-form-textarea::placeholder {
+            color: #94a3b8;
+            font-size: 0.86rem;
+            font-weight: 400;
+        }
+        .erp-form-input:hover, .form-input-custom:hover, 
+        .erp-form-select:hover, .form-select-custom:hover, 
+        .erp-form-textarea:hover {
+            border-color: #94a3b8;
+            background-color: #fafbfc;
+        }
+        .erp-form-input:focus, .form-input-custom:focus, 
+        .erp-form-select:focus, .form-select-custom:focus, 
+        .erp-form-textarea:focus {
+            border-color: #2563eb !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14) !important;
+        }
+
+        /* Input with prefix/suffix icons */
+        .erp-input-icon-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .erp-input-icon-wrap svg {
+            position: absolute;
+            right: 14px;
+            color: #94a3b8;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+        .erp-input-icon-wrap input {
+            padding-right: 44px !important;
+        }
+        .erp-input-icon-wrap:focus-within svg {
+            color: #2563eb;
+        }
+
+        /* Multi-column Grid Layouts */
+        .form-grid-3, .erp-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .form-grid-2, .erp-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .erp-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+        @media (max-width: 1024px) {
+            .form-grid-3, .erp-grid-3 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .erp-grid-4 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .form-grid-3, .erp-grid-3, .form-grid-2, .erp-grid-2, .erp-grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Interactive Brand Chips */
+        .erp-brand-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .erp-brand-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .erp-brand-chip:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+        .erp-brand-chip.active {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #1d4ed8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Checkbox & Radio Chips */
+        .erp-tag-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .erp-tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 99px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .erp-tag-chip.active, .erp-tag-chip input:checked + span {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border-color: #93c5fd;
+        }
+
+        /* Spare Parts HD Gallery Cards */
+        .parts-grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .part-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        .part-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.1);
+            border-color: #93c5fd;
+        }
+        .part-card-img-wrap {
+            position: relative;
+            height: 190px;
+            background: #f8fafc;
+            overflow: hidden;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .part-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .part-card:hover .part-card-img {
+            transform: scale(1.06);
+        }
+        .part-card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .part-card-shelf {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: rgba(15, 23, 42, 0.85);
+            color: #ffffff;
+        }
+        .part-card-body {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .part-card-category {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #2563eb;
+            margin-bottom: 6px;
+        }
+        .part-card-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        .part-card-sku {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-family: monospace;
+            margin-bottom: 12px;
+        }
+        .part-card-footer {
+            margin-top: auto;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .part-card-price {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #2563eb;
+        }
+
+        /* Live Intake Receipt Preview */
+        .intake-receipt-live {
+            background: #ffffff;
+            border: 2px dashed #93c5fd;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.05);
+            position: sticky;
+            top: 90px;
+        }
+        .intake-receipt-header {
+            text-align: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 16px;
+        }
+        .intake-receipt-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            padding: 8px 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .intake-receipt-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+        .intake-receipt-val {
+            color: #0f172a;
+            font-weight: 800;
+        }
+    
     </style>
     @stack('styles')
 </head>
