@@ -225,6 +225,63 @@ class MobileServiceController extends Controller
             }
 
             // ۵. جدول کمپین‌های نظرسنجی
+                        // ==================== ADVANCED CRM TABLES ====================
+            if (!Schema::hasTable('mobile_order_timelines')) {
+                Schema::create('mobile_order_timelines', function ($table) {
+                    $table->id();
+                    $table->string('tracking_code', 50)->index();
+                    $table->string('action', 50);
+                    $table->string('title', 150);
+                    $table->text('description')->nullable();
+                    $table->string('operator_name', 100)->default('مدیر سامانه');
+                    $table->string('operator_role', 50)->default('سرپرست کارگاه');
+                    $table->longText('metadata')->nullable();
+                    $table->timestamps();
+                });
+                $this->seedInitialTimelines();
+            }
+
+            if (!Schema::hasTable('mobile_qc_inspections')) {
+                Schema::create('mobile_qc_inspections', function ($table) {
+                    $table->id();
+                    $table->string('tracking_code', 50)->unique();
+                    $table->string('inspector_name', 100)->default('مهندس بازرسی کیفی');
+                    $table->integer('score')->default(100);
+                    $table->string('status', 30)->default('passed');
+                    $table->longText('checklist')->nullable();
+                    $table->text('notes')->nullable();
+                    $table->string('certificate_code', 50)->nullable();
+                    $table->timestamps();
+                });
+                $this->seedInitialQcData();
+            }
+
+            if (!Schema::hasTable('mobile_order_photos')) {
+                Schema::create('mobile_order_photos', function ($table) {
+                    $table->id();
+                    $table->string('tracking_code', 50)->index();
+                    $table->string('stage', 50)->default('intake');
+                    $table->text('photo_url');
+                    $table->string('caption', 255)->nullable();
+                    $table->timestamps();
+                });
+                $this->seedInitialPhotos();
+            }
+
+            if (!Schema::hasTable('mobile_technician_tasks')) {
+                Schema::create('mobile_technician_tasks', function ($table) {
+                    $table->id();
+                    $table->string('tracking_code', 50)->index();
+                    $table->string('technician_name', 100);
+                    $table->enum('status', ['pending', 'in_progress', 'paused', 'completed'])->default('pending');
+                    $table->timestamp('started_at')->nullable();
+                    $table->timestamp('completed_at')->nullable();
+                    $table->integer('duration_minutes')->default(0);
+                    $table->text('work_log')->nullable();
+                    $table->timestamps();
+                });
+            }
+
             if (!Schema::hasTable('mobile_survey_campaigns')) {
                 Schema::create('mobile_survey_campaigns', function ($table) {
                     $table->id();
@@ -2231,6 +2288,351 @@ class MobileServiceController extends Controller
             'settings' => $settings,
             'pageType' => 'custom',
         ]);
+    }
+
+
+    // =========================================================================
+    // ADVANCED CRM ENTERPRISE MODULES: QC, TIMELINE, PHOTOS, EXPORT & TASKS
+    // =========================================================================
+
+    public function exportOrdersCsv(Request $request)
+    {
+        $status = $request->query('status');
+        $query = DB::table('mobile_service_orders')->orderBy('id', 'desc');
+        if ($status && $status !== 'all') {
+            $query->where('status', $status);
+        }
+        $orders = $query->get();
+
+        $filename = 'sam_mobile_orders_' . date('Y-m-d_H-i') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $columns = [
+            'شناسه', 'کد رهگیری', 'نام مشتری', 'شماره تماس', 'کد ملی', 'برند دستگاه',
+            'مدل دقیق', 'سریال / IMEI', 'وضعیت گارانتی', 'وضعیت تعمیر', 'تکنسین مسئول',
+            'نحوه پذیرش', 'هزینه قطعات (ریال)', 'اجرت تعمیر (ریال)', 'مبلغ کل (ریال)',
+            'شماره فاکتور', 'تاریخ پذیرش', 'عیوب اظهارشده'
+        ];
+
+        $callback = function () use ($orders, $columns) {
+            $file = fopen('php://output', 'w');
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            fputcsv($file, $columns);
+
+            $statusMap = [
+                'received' => 'پذیرش شده',
+                'inspecting' => 'در حال کارشناسی فنی',
+                'repairing' => 'در دست تعمیر',
+                'waiting_parts' => 'در انتظار قطعه',
+                'ready_for_delivery' => 'آماده تحویل (QC تایید)',
+                'delivered' => 'تحویل نهایی به مشتری'
+            ];
+
+            foreach ($orders as $row) {
+                fputcsv($file, [
+                    $row->id,
+                    $row->tracking_code,
+                    $row->customer_name,
+                    $row->customer_phone,
+                    $row->customer_national_code ?? '-',
+                    $row->device_brand,
+                    $row->device_model,
+                    $row->imei,
+                    (!empty($row->is_under_warranty)) ? 'تحت پوشش گارانتی ۱۸ ماهه' : 'تعمیر آزاد',
+                    $statusMap[$row->status] ?? $row->status,
+                    $row->assigned_technician ?? 'تخصیص‌نیافته',
+                    $row->intake_type === 'postal' ? 'ارسال پستی' : 'مراجعه حضوری',
+                    $row->parts_cost,
+                    $row->labor_cost,
+                    $row->total_cost,
+                    $row->invoice_number ?? '-',
+                    $row->created_at,
+                    str_replace(["\r", "\n"], ' ', $row->reported_issues ?? '')
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function getOrderTimeline(Request $request, $code)
+    {
+        $events = DB::table('mobile_order_timelines')
+            ->where('tracking_code', $code)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        if ($events->isEmpty()) {
+            $order = DB::table('mobile_service_orders')->where('tracking_code', $code)->first();
+            $events = collect([
+                (object)[
+                    'id' => 1,
+                    'tracking_code' => $code,
+                    'action' => 'intake',
+                    'title' => 'پذیرش رسمی دستگاه (ماده ۱۳)',
+                    'description' => 'پذیرش دستگاه با ثبت کامل اطلاعات، عیوب اظهارشده و استعلام اصالت گارانتی ۱۸ ماهه در سامانه مرکزی تبریز.',
+                    'operator_name' => 'مهندس کاظمی',
+                    'operator_role' => 'پذیرش مرکزی تبریز',
+                    'created_at' => $order ? $order->created_at : now()
+                ]
+            ]);
+        }
+
+        return response()->json(['status' => 'success', 'data' => $events]);
+    }
+
+    public function addOrderTimelineEvent(Request $request, $code)
+    {
+        $title = $request->input('title', 'ثبت رویداد فنی');
+        $desc = $request->input('description', '');
+        $action = $request->input('action', 'note');
+        $user = $this->getCurrentAuthUser();
+        $operator = $user ? $user->name : 'مدیر سامانه';
+
+        DB::table('mobile_order_timelines')->insert([
+            'tracking_code' => $code,
+            'action' => $action,
+            'title' => $title,
+            'description' => $desc,
+            'operator_name' => $operator,
+            'operator_role' => 'کارگاه مرکزی تبریز',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'رویداد با موفقیت به تاریخچه پرونده اضافه شد.']);
+    }
+
+    public function getOrderQc(Request $request, $code)
+    {
+        $qc = DB::table('mobile_qc_inspections')->where('tracking_code', $code)->first();
+        if ($qc && $qc->checklist) {
+            $qc->checklist = json_decode($qc->checklist, true);
+        }
+        return response()->json(['status' => 'success', 'data' => $qc]);
+    }
+
+    public function saveOrderQc(Request $request, $code)
+    {
+        $score = (int) $request->input('score', 100);
+        $inspector = $request->input('inspector_name', 'مهندس مهدی‌زاده (سرپرست QC)');
+        $notes = $request->input('notes', 'کلیه عملکردهای سخت‌افزاری و نرم‌افزاری مطابق استاندارد کارگاه مرکزی تبریز تایید شد.');
+        $checklist = $request->input('checklist', []);
+        $certCode = 'QC-SAM-' . strtoupper(substr(md5($code . time()), 0, 8));
+
+        DB::table('mobile_qc_inspections')->updateOrInsert(
+            ['tracking_code' => $code],
+            [
+                'inspector_name' => $inspector,
+                'score' => $score,
+                'status' => $score >= 80 ? 'passed' : 'conditional',
+                'checklist' => json_encode($checklist),
+                'notes' => $notes,
+                'certificate_code' => $certCode,
+                'updated_at' => now(),
+                'created_at' => now()
+            ]
+        );
+
+        if ($score >= 80) {
+            DB::table('mobile_service_orders')->where('tracking_code', $code)->update([
+                'status' => 'ready_for_delivery',
+                'updated_at' => now()
+            ]);
+
+            DB::table('mobile_order_timelines')->insert([
+                'tracking_code' => $code,
+                'action' => 'qc_passed',
+                'title' => 'کنترل کیفی نهایی (QC) تایید شد',
+                'description' => "تست ۲۰ گانه سخت‌افزار با امتیاز {$score}٪ انجام شد و گواهی سلامت {$certCode} صادر گردید.",
+                'operator_name' => $inspector,
+                'operator_role' => 'واحد تضمین کیفیت',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "برگه کنترل کیفی ثبت شد و گواهی سلامت {$certCode} صادر گردید.",
+            'certificate_code' => $certCode
+        ]);
+    }
+
+    public function getOrderPhotos(Request $request, $code)
+    {
+        $photos = DB::table('mobile_order_photos')->where('tracking_code', $code)->orderBy('id', 'asc')->get();
+        return response()->json(['status' => 'success', 'data' => $photos]);
+    }
+
+    public function addOrderPhoto(Request $request, $code)
+    {
+        $stage = $request->input('stage', 'intake_front');
+        $url = $request->input('photo_url');
+        $caption = $request->input('caption', 'تصویر وضعیت فیزیکی دستگاه');
+
+        if (!$url) {
+            return response()->json(['status' => 'error', 'message' => 'آدرس تصویر الزامی است.'], 422);
+        }
+
+        DB::table('mobile_order_photos')->insert([
+            'tracking_code' => $code,
+            'stage' => $stage,
+            'photo_url' => $url,
+            'caption' => $caption,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'تصویر با موفقیت در پرونده ثبت شد.']);
+    }
+
+    public function toggleTechnicianTaskTimer(Request $request, $code)
+    {
+        $tech = $request->input('technician_name', 'مهندس کارگاه');
+        $action = $request->input('timer_action', 'start');
+
+        $task = DB::table('mobile_technician_tasks')->where('tracking_code', $code)->first();
+
+        if ($action === 'start') {
+            DB::table('mobile_technician_tasks')->updateOrInsert(
+                ['tracking_code' => $code],
+                [
+                    'technician_name' => $tech,
+                    'status' => 'in_progress',
+                    'started_at' => now(),
+                    'updated_at' => now()
+                ]
+            );
+            return response()->json(['status' => 'success', 'message' => 'تایمر کارگاه برای این پرونده فعال گردید.']);
+        } else {
+            DB::table('mobile_technician_tasks')->where('tracking_code', $code)->update([
+                'status' => 'completed',
+                'completed_at' => now(),
+                'updated_at' => now()
+            ]);
+            return response()->json(['status' => 'success', 'message' => 'تایمر متوقف شد و زمان تعمیر ثبت گردید.']);
+        }
+    }
+
+    private function seedInitialTimelines()
+    {
+        $demoEvents = [
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'action' => 'intake',
+                'title' => 'پذیرش رسمی دستگاه (ماده ۱۳)',
+                'description' => 'پذیرش Galaxy S24 Ultra با شماره سریال 359483110294812 به علت شکستگی گلس صفحه و استعلام گارانتی ۱۸ ماهه.',
+                'operator_name' => 'مهندس کاظمی',
+                'operator_role' => 'پذیرش مرکزی',
+                'created_at' => now()->subHours(8),
+                'updated_at' => now()->subHours(8),
+            ],
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'action' => 'assigned',
+                'title' => 'ارجاع به ایستگاه کارشناسی فنی',
+                'description' => 'پرونده به مهندس رضایی (تکنسین ارشد سامسونگ) جهت بازرسی داخلی و تست مدار تغذیه ارجاع شد.',
+                'operator_name' => 'سرپرست کارگاه',
+                'operator_role' => 'واحد تخصیص کارگاه',
+                'created_at' => now()->subHours(6),
+                'updated_at' => now()->subHours(6),
+            ],
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'action' => 'parts_assigned',
+                'title' => 'تخصیص قطعه اورجینال از انبار',
+                'description' => 'نمایشگر کامل Dynamic AMOLED 2X سامسونگ (SKU: GH96-16281A) از قفسه A-02 تحویل تکنسین گردید.',
+                'operator_name' => 'انبار مرکزی تبریز',
+                'operator_role' => 'انبارداری و لجستیک',
+                'created_at' => now()->subHours(4),
+                'updated_at' => now()->subHours(4),
+            ],
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'action' => 'qc_passed',
+                'title' => 'تاییدیه بازرسی کنترل کیفی (QC)',
+                'description' => 'تست ۲۰ گانه عملکرد تاچ، اسپیکر، دوربین و فست‌شارژ با امتیاز ۱۰۰٪ موفقیت‌آمیز بود. گواهی QC صادر شد.',
+                'operator_name' => 'مهندس مهدی‌زاده',
+                'operator_role' => 'سرپرست QC',
+                'created_at' => now()->subHours(1),
+                'updated_at' => now()->subHours(1),
+            ],
+        ];
+
+        DB::table('mobile_order_timelines')->insert($demoEvents);
+    }
+
+    private function seedInitialQcData()
+    {
+        $checklist = [
+            'touch_screen' => true,
+            'display_pixels' => true,
+            'face_fingerprint' => true,
+            'true_tone' => true,
+            'camera_main' => true,
+            'camera_selfie' => true,
+            'speakers' => true,
+            'microphones' => true,
+            'battery_health' => true,
+            'fast_charge' => true,
+            'network_signal' => true,
+            'wifi_bluetooth' => true,
+            'housing_screws' => true,
+            'sensor_proximity' => true
+        ];
+
+        DB::table('mobile_qc_inspections')->insert([
+            'tracking_code' => 'SAM-1403-9101',
+            'inspector_name' => 'مهندس مهدی‌زاده (سرپرست QC)',
+            'score' => 100,
+            'status' => 'passed',
+            'checklist' => json_encode($checklist),
+            'notes' => 'دستگاه فاقد هرگونه نشتی ولتاژ بوده، صفحه نمایش با استاندارد کارخانه کالیبره گردید و آماده تحویل به مشتری می‌باشد.',
+            'certificate_code' => 'QC-SAM-9101-PASS',
+            'created_at' => now()->subHours(1),
+            'updated_at' => now()->subHours(1)
+        ]);
+    }
+
+    private function seedInitialPhotos()
+    {
+        $photos = [
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'stage' => 'intake_front',
+                'photo_url' => 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=600&q=80',
+                'caption' => 'نمای جلوی دستگاه در لحظه پذیرش (ترک‌خوردگی گلس خارجی)',
+                'created_at' => now()->subHours(8),
+                'updated_at' => now()->subHours(8)
+            ],
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'stage' => 'intake_back',
+                'photo_url' => 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=600&q=80',
+                'caption' => 'نمای پشت دستگاه و ماژول دوربین در وضعیت کاملا سالم',
+                'created_at' => now()->subHours(8),
+                'updated_at' => now()->subHours(8)
+            ],
+            [
+                'tracking_code' => 'SAM-1403-9101',
+                'stage' => 'old_part',
+                'photo_url' => 'https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=600&q=80',
+                'caption' => 'قطعه داغی معیوب خارج‌شده از گوشی مشتری جهت شفافیت',
+                'created_at' => now()->subHours(3),
+                'updated_at' => now()->subHours(3)
+            ],
+        ];
+
+        DB::table('mobile_order_photos')->insert($photos);
     }
 
 }

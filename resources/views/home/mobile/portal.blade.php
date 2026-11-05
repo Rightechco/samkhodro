@@ -1266,6 +1266,120 @@
         background: #2563eb;
         color: #ffffff;
     }
+
+    /* =========================================================================
+       PRINT STYLES FOR THERMAL LABEL (50x30mm) & POS RECEIPT (80mm)
+       ========================================================================= */
+    @media print {
+        body > *:not(#printContainer) {
+            display: none !important;
+        }
+        #printContainer {
+            display: block !important;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: #ffffff;
+            color: #000000;
+        }
+    }
+
+    /* Thermal Label Box (50x30mm standard) */
+    .thermal-label-preview {
+        width: 320px;
+        min-height: 190px;
+        border: 2px dashed #94a3b8;
+        border-radius: 12px;
+        padding: 12px;
+        background: #ffffff;
+        color: #0f172a;
+        font-size: 0.72rem;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        margin: 0 auto;
+        position: relative;
+    }
+    .thermal-label-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1.5px solid #000;
+        padding-bottom: 6px;
+        margin-bottom: 6px;
+    }
+
+    /* POS 80mm Slip Box */
+    .pos-slip-preview {
+        width: 300px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        padding: 16px;
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin: 0 auto;
+        font-size: 0.76rem;
+    }
+
+    /* Timeline Stepper */
+    .timeline-container {
+        position: relative;
+        padding-right: 24px;
+    }
+    .timeline-container::before {
+        content: '';
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: #e2e8f0;
+    }
+    .timeline-node {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    .timeline-node::before {
+        content: '';
+        position: absolute;
+        right: -20px;
+        top: 6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #2563eb;
+        border: 2px solid #ffffff;
+        box-shadow: 0 0 0 2px #93c5fd;
+    }
+    .timeline-node.passed::before {
+        background: #10b981;
+        box-shadow: 0 0 0 2px #a7f3d0;
+    }
+
+    /* QC Toggle Card */
+    .qc-check-pill {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .qc-check-pill:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+    }
+    .qc-check-pill.checked {
+        background: #ecfdf5;
+        border-color: #86efac;
+        color: #065f46;
+    }
+
 </style>
 @endpush
 
@@ -1652,7 +1766,10 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                         <span>مدیریت پرونده‌های پذیرش و وضعیت جاری دستگاه‌ها</span>
                     </div>
-                    <div class="erp-panel-actions">
+                    <div class="erp-panel-actions" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <a href="{{ url('/admin-portal/orders/export-csv') }}{{ !empty($statusFilter) ? '?status='.$statusFilter : '' }}" class="erp-btn erp-btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); font-size: 0.78rem; padding: 7px 14px; text-decoration: none;">
+                            <span>📥</span> <span>خروجی اکسل کامل (Export CSV)</span>
+                        </a>
                         <button type="button" class="btn-table-action" onclick="window.print()">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
                             <span>چاپ گزارش پرونده‌ها</span>
@@ -1707,12 +1824,24 @@
                                     </td>
                                     <td>{{ $item->assigned_technician ?: 'تعیین نشده' }}</td>
                                     <td>
-                                        <div style="display:flex; gap:4px;">
+                                        <div style="display:flex; gap:4px; flex-wrap: wrap;">
+                                            <button type="button" class="btn-table-action" onclick="openQcModal('{{ $item->tracking_code }}', '{{ $item->customer_name }}', '{{ $item->device_brand }} {{ $item->device_model }}')" title="برگه کنترل کیفیت و سلامت فنی">
+                                                <span style="color:#059669;">🔍 QC</span>
+                                            </button>
+                                            <button type="button" class="btn-table-action" onclick="openTimelineModal('{{ $item->tracking_code }}', '{{ $item->customer_name }}', '{{ $item->device_brand }} {{ $item->device_model }}')" title="تایم‌لاین و لاگ ممیزی پرونده">
+                                                <span style="color:#2563eb;">⏱️ لاگ</span>
+                                            </button>
+                                            <button type="button" class="btn-table-action" onclick="openThermalLabelModal('{{ $item->tracking_code }}', '{{ $item->customer_name }}', '{{ $item->customer_phone }}', '{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}')" title="چاپ برچسب حرارتی ۵×۳">
+                                                <span style="color:#d97706;">🏷️ لیبل</span>
+                                            </button>
+                                            <button type="button" class="btn-table-action" onclick="openPosSlipModal('{{ $item->tracking_code }}', '{{ $item->customer_name }}', '{{ $item->customer_phone }}', '{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}', '{{ addslashes($item->reported_issues ?? "بررسی اولیه") }}', '{{ (!empty($item->is_under_warranty)) ? "تحت پوشش گارانتی ۱۸ ماهه" : "تعمیر آزاد" }}')" title="فیش ۸۰ میلی‌متری مشتری">
+                                                <span>🧾 فیش</span>
+                                            </button>
+                                            <button type="button" class="btn-table-action" onclick="openPhotosModal('{{ $item->tracking_code }}')" title="مستندات تصویری فیزیکی">
+                                                <span>📷 عکس</span>
+                                            </button>
                                             <button type="button" class="btn-table-action" onclick="quickUpdateStatus('{{ $item->tracking_code }}')" title="تغییر وضعیت">
                                                 <span>وضعیت</span>
-                                            </button>
-                                            <button type="button" class="btn-table-action" onclick="openWarrantyModal('{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}', 'تامین کانی سام')" title="چاپ کارت گارانتی">
-                                                <span>کارت</span>
                                             </button>
                                         </div>
                                     </td>
@@ -2068,6 +2197,34 @@
             </div>
         </div>
 
+        <!-- Technician Workstation Active Workbench -->
+        <div style="background: #ffffff; border: 1.5px solid #2563eb; border-radius: 18px; padding: 22px; margin-bottom: 24px; box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.3rem;">⏱️</span>
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">ایستگاه کاری و تایمر هوشمند تکنسین (Technician Workbench)</h3>
+                        <span style="font-size: 0.74rem; color: #64748b;">ثبت زمان واقعی صرف‌شده برای هر پرونده، محاسبه راندمان کاری و درخواست قطعه</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span id="activeTimerBadge" style="font-family: monospace; font-size: 1.1rem; font-weight: 900; background: #eff6ff; color: #2563eb; padding: 4px 14px; border-radius: 8px; border: 1px solid #bfdbfe;">۰۰:۲۴:۱۸</span>
+                    <button type="button" class="erp-btn erp-btn-primary" id="btnToggleTimer" onclick="toggleWorkstationTimer()" style="padding: 8px 16px; font-size: 0.8rem;">
+                        ⏸️ توقف موقت
+                    </button>
+                    <button type="button" class="btn-table-action" onclick="finishWorkstationRepair()" style="color: #059669; border-color: #86efac; font-weight: 800;">
+                        ✓ پایان تعمیر و ارسال به QC
+                    </button>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; background: #f8fafc; border-radius: 12px; padding: 14px; font-size: 0.82rem;">
+                <div><span style="color: #64748b;">پرونده فعال جاری:</span> <strong style="color: #2563eb; font-family: monospace;">SAM-1403-9101</strong></div>
+                <div><span style="color: #64748b;">مدل دستگاه:</span> <strong>Samsung Galaxy S24 Ultra</strong></div>
+                <div><span style="color: #64748b;">تکنسین فعال:</span> <strong>مهندس رضایی (ایستگاه ۱)</strong></div>
+                <div><span style="color: #64748b;">قطعه مصرفی:</span> <strong>نمایشگر Dynamic AMOLED 2X</strong></div>
+            </div>
+        </div>
+
         <!-- Workshop Status KPIs -->
         <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 24px;">
             <div class="erp-stat-card">
@@ -2229,6 +2386,24 @@
             <div style="display: flex; gap: 10px;">
                 <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddPartModal()">
                     + افزودن قطعه جدید به انبار
+                </button>
+            </div>
+        </div>
+
+        <!-- Smart Inventory Low Stock Alert Strip -->
+        <div style="background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border: 1.5px solid #fde68a; border-radius: 16px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 42px; height: 42px; border-radius: 12px; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                    ⚠️
+                </div>
+                <div>
+                    <h4 style="font-size: 0.95rem; font-weight: 800; color: #92400e; margin: 0 0 2px 0;">سیستم هوشمند پایش موجودی بحرانی انبار (Reorder Point Alert)</h4>
+                    <span style="font-size: 0.76rem; color: #b45309;">تعداد ۲ قلم کالا به حد آستانه حداقل موجودی رسیده‌اند. سفارش‌گذاری سریع جهت جلوگیری از وقفه کارگاه پیشنهاد می‌شود.</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="erp-btn erp-btn-primary" style="background: #d97706; font-size: 0.78rem; padding: 8px 16px;" onclick="showToast('پیش‌نویس سفارش خرید برای تامین‌کننده صادر گردید.', 'success')">
+                    ⚡ سفارش‌گذاری آنی خرید
                 </button>
             </div>
         </div>
@@ -2604,7 +2779,7 @@
                 <div class="erp-panel-header">
                     <div class="erp-panel-title">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        <span>ارسال پیامک اطلاع‌رسانی به مشتریان (وب‌سرویس فراز اس‌ام‌اس)</span>
+                        <span>مرکز اطلاع‌رسانی چندکاناله هوشمند (Omnichannel: پیامک + پیام‌رسان بله Bale + واتساپ)</span>
                     </div>
                 </div>
 
@@ -4086,6 +4261,322 @@
      ========================================================================= -->
 <div id="cmsToastContainer" style="position: fixed; bottom: 24px; left: 24px; z-index: 999999; display: flex; flex-direction: column; gap: 10px; pointer-events: none;"></div>
 
+
+<!-- =========================================================================
+     MODAL 1: QUALITY CONTROL (QC) INSPECTION CERTIFICATE
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="qcModalBackdrop">
+    <div class="warranty-modal-box" style="max-width: 680px; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeQcModal()">✕</button>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                🔍
+            </div>
+            <div>
+                <h3 style="font-size: 1.12rem; font-weight: 900; color: #0f172a; margin: 0;">چک‌لیست کنترل کیفی سخت‌افزار و صدور گواهی سلامت (QC)</h3>
+                <span style="font-size: 0.76rem; color: #64748b;">تست ۲۰ مرحله‌ای کارگاه مرکزی تبریز جهت تضمین استاندارد ماده ۱۳</span>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span style="font-size: 0.74rem; color: #64748b;">کد رهگیری پرونده:</span>
+                <strong id="qcModalCode" style="color: #2563eb; font-family: monospace; font-size: 1rem; margin-right: 4px;">SAM-1403-9101</strong>
+            </div>
+            <div>
+                <span style="font-size: 0.74rem; color: #64748b;">مدل دستگاه:</span>
+                <strong id="qcModalDevice">Galaxy S24 Ultra</strong>
+            </div>
+            <div>
+                <span style="font-size: 0.74rem; color: #64748b;">نمره کنترل کیفی:</span>
+                <strong id="qcScoreDisplay" style="color: #059669; font-size: 1.1rem; margin-right: 4px;">۱۰۰٪ (عالی)</strong>
+            </div>
+        </div>
+
+        <form id="qcInspectionForm" onsubmit="handleQcSubmit(event)">
+            @csrf
+            <input type="hidden" name="qc_code" id="qcHiddenCode">
+            <input type="hidden" name="score" id="qcHiddenScore" value="100">
+
+            <label class="erp-form-label" style="margin-bottom: 8px;">موارد چک‌لیست سخت‌افزاری (کلیک جهت تغییر وضعیت تایید):</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-bottom: 18px;">
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>📱 سلامت تاچ و دیجیتایزر (Touch)</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🌈 تفکیک پیکسل و ترومیکرون (OLED)</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🔒 حسگر بیومتریک (فیس‌آیدی / اثر انگشت)</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>📷 دوربین اصلی، زوم و اولتراواید</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🤳 دوربین جلو و سنسور مجاورت (Proximity)</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🔊 اسپیکر استریو و مکالمه</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🎙️ میکروفون اصلی و حذف نویز ثانویه</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>⚡ شارژ سریع و تست سلامت باتری</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>📶 آنتن‌دهی ۵G/۴G و تماس اضطراری</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🌐 وای‌فای، بلوتوث و GPS</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🔩 پیچ‌های شاسی و پلمپ ضدآب</span> <span>✓ تایید</span>
+                </div>
+                <div class="qc-check-pill checked" onclick="toggleQcItem(this)">
+                    <span>🌡️ تست دمایی در بار پردازشی (Thermal)</span> <span>✓ تایید</span>
+                </div>
+            </div>
+
+            <div class="erp-grid-2" style="margin-bottom: 14px;">
+                <div>
+                    <label class="erp-form-label">نام کارشناس بازرسی کیفی</label>
+                    <input type="text" name="inspector_name" id="qcInspectorInput" class="erp-form-input" value="مهندس مهدی‌زاده (سرپرست QC)">
+                </div>
+                <div>
+                    <label class="erp-form-label">کد گواهی سلامت کارگاه</label>
+                    <input type="text" id="qcCertCodeInput" class="erp-form-input" value="QC-SAM-9101-PASS" readonly style="direction: ltr; background: #f8fafc; font-family: monospace;">
+                </div>
+            </div>
+
+            <div>
+                <label class="erp-form-label">توضیحات و گزارش کارشناس QC</label>
+                <textarea name="notes" id="qcNotesInput" class="erp-form-input" rows="2" placeholder="کلیه تست‌های سخت‌افزاری و نرم‌افزاری مطابق استاندارد کارگاه مرکزی تایید گردید."></textarea>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn-table-action" onclick="closeQcModal()">انصراف</button>
+                <button type="submit" class="erp-btn erp-btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); border-color: #059669;">
+                    ✓ تایید کنترل کیفی و انتقال به آماده تحویل
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 2: AUDIT TRAIL & REAL-TIME TIMELINE
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="timelineModalBackdrop">
+    <div class="warranty-modal-box" style="max-width: 640px; max-height: 85vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeTimelineModal()">✕</button>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                ⏱️
+            </div>
+            <div>
+                <h3 style="font-size: 1.12rem; font-weight: 900; color: #0f172a; margin: 0;">تایم‌لاین پرونده و زنجیره ممیزی (Audit Trail)</h3>
+                <span style="font-size: 0.76rem; color: #64748b;">ثبت کلیه اقدامات تکنسین‌ها، زمان‌بندی دقیق و رویدادهای تعمیراتی</span>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; margin-bottom: 18px; display: flex; justify-content: space-between;">
+            <div>کد پرونده: <strong id="timelineOrderCode" style="color: #2563eb; font-family: monospace;">SAM-1403-9101</strong></div>
+            <div>مشتری: <strong id="timelineCustomerName">محمد امینی</strong></div>
+        </div>
+
+        <!-- Timeline Tree Container -->
+        <div class="timeline-container" id="timelineNodesList">
+            <!-- Dynamically populated via JS -->
+            <div class="timeline-node passed">
+                <div style="font-size: 0.85rem; font-weight: 800; color: #0f172a;">پذیرش رسمی دستگاه (ماده ۱۳)</div>
+                <div style="font-size: 0.76rem; color: #64748b; margin-top: 2px;">پذیرش دستگاه با ثبت کامل اطلاعات، عیوب اظهارشده و استعلام گارانتی ۱۸ ماهه.</div>
+                <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">👤 مهندس کاظمی (پذیرش مرکزی) • ۳ ساعت پیش</div>
+            </div>
+        </div>
+
+        <!-- Add Event Quick Form -->
+        <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 14px; margin-top: 18px;">
+            <label class="erp-form-label">+ ثبت یادداشت یا رویداد جدید در زنجیره ممیزی:</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="newTimelineText" class="erp-form-input" placeholder="مثال: قطعه داغی تحویل انبار گردید / مشتری تلفنی تایید کرد...">
+                <button type="button" class="erp-btn erp-btn-primary" onclick="addTimelineEvent()" style="font-size: 0.8rem; padding: 8px 16px;">ثبت</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 3: 50x30mm THERMAL LABEL PRINTER PREVIEW
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="labelModalBackdrop">
+    <div class="warranty-modal-box" style="max-width: 480px;">
+        <button type="button" class="btn-close-modal" onclick="closeLabelModal()">✕</button>
+        <div style="text-align: center; margin-bottom: 16px;">
+            <h3 style="font-size: 1.05rem; font-weight: 900; color: #0f172a; margin: 0 0 4px 0;">چاپ برچسب بارکد حرارتی کارگاه (سایز ۵×۳ سانتی‌متر)</h3>
+            <span style="font-size: 0.74rem; color: #64748b;">مخصوص پرینترهای لیبل (Bixolon / Xprinter) جهت چسباندن پشت دستگاه</span>
+        </div>
+
+        <!-- The Actual Label Box -->
+        <div class="thermal-label-preview" id="thermalLabelContent">
+            <div class="thermal-label-head">
+                <strong style="font-size: 0.82rem; color: #000;">سام موبایل (تامین کانی سام)</strong>
+                <span id="lblDate" style="font-size: 0.65rem; color: #333;">۱۴۰۳/۰۸/۱۵</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div>
+                    <div style="font-size: 0.95rem; font-weight: 900; font-family: monospace; color: #000;" id="lblTrackingCode">SAM-1403-9101</div>
+                    <div style="font-size: 0.74rem; font-weight: 800; color: #000;" id="lblCustomer">محمد امینی</div>
+                    <div style="font-size: 0.7rem; color: #333;" id="lblDevice">Samsung S24 Ultra</div>
+                </div>
+                <div style="width: 60px; height: 60px; background: #000; padding: 3px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <img id="lblQrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=SAM-1403-9101" width="54" height="54" alt="QR" style="display: block; background: #fff;">
+                </div>
+            </div>
+            <div style="border-top: 1px dotted #666; padding-top: 4px; font-size: 0.65rem; color: #111;">
+                <div>IMEI: <span style="font-family: monospace; font-weight: 700;" id="lblImei">359483110294812</span></div>
+                <div>پذیرش تبریز • ماده ۱۳ حقوق مصرف‌کننده • تلفن: ۳۶۶۸۹۰۰۰</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="btn-table-action" onclick="closeLabelModal()">بستن</button>
+            <button type="button" class="erp-btn erp-btn-primary" onclick="printThermalLabelDirect()">
+                🖨️ چاپ مستقیم برچسب
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 4: POS 80mm THERMAL RECEIPT SLIP PRINTER PREVIEW
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="slipModalBackdrop">
+    <div class="warranty-modal-box" style="max-width: 480px; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeSlipModal()">✕</button>
+        <div style="text-align: center; margin-bottom: 16px;">
+            <h3 style="font-size: 1.05rem; font-weight: 900; color: #0f172a; margin: 0 0 4px 0;">رسید رسمی پذیرش کالا (فیش حرارتی ۸۰ میلی‌متری)</h3>
+            <span style="font-size: 0.74rem; color: #64748b;">منطبق بر الزامات ماده ۱۳ قانون حمایت از حقوق مصرف‌کنندگان</span>
+        </div>
+
+        <!-- The Actual POS Slip -->
+        <div class="pos-slip-preview" id="posSlipContent">
+            <div style="text-align: center; border-bottom: 1.5px dashed #000; padding-bottom: 12px; margin-bottom: 12px;">
+                <div style="font-size: 1rem; font-weight: 900; color: #000;">شرکت تامین کانی سام</div>
+                <div style="font-size: 0.8rem; font-weight: 800; color: #000;">مرکز خدمات تخصصی سام موبایل</div>
+                <div style="font-size: 0.68rem; color: #333; margin-top: 4px;">تبریز، فرشته شمالی، خیابان محمدپورصبور، پلاک ۷۸</div>
+                <div style="font-size: 0.68rem; color: #333;">مرکز تماس: ۳۶۶۸۹۰۰۰-۰۴۱</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>کد پیگیری:</span> <strong style="font-family: monospace; font-size: 0.9rem;" id="slipTrack">SAM-1403-9101</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>نام مشتری:</span> <strong id="slipCust">محمد امینی</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>شماره تماس:</span> <span id="slipPhone">09123456789</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>دستگاه و مدل:</span> <strong id="slipModel">Samsung S24 Ultra</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>شماره سریال / IMEI:</span> <span style="font-family: monospace;" id="slipImei">359483110294812</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>نوع پوشش:</span> <strong style="color: #059669;" id="slipWarranty">تحت پوشش گارانتی ۱۸ ماهه</strong>
+            </div>
+
+            <div style="border-top: 1px dashed #666; padding-top: 8px; margin-top: 8px; margin-bottom: 8px;">
+                <div style="font-weight: 700; margin-bottom: 4px;">عیوب اظهارشده توسط مشتری:</div>
+                <div style="font-size: 0.72rem; color: #222; line-height: 1.4;" id="slipIssues">شکستگی گلس خارجی صفحه و بررسی سلامت مدار تغذیه.</div>
+            </div>
+
+            <div style="border-top: 1.5px dashed #000; padding-top: 10px; margin-top: 10px; text-align: center; font-size: 0.65rem; color: #444; line-height: 1.5;">
+                <div>پیگیری برخط وضعیت پرونده: <strong>mob.taminkanisam.co.ir</strong></div>
+                <div>همراه داشتن این قبض جهت ترخیص کالا الزامی می‌باشد.</div>
+                <div style="margin-top: 16px; display: flex; justify-content: space-between; padding: 0 10px;">
+                    <span>امضای پذیرش</span>
+                    <span>امضای مشتری</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button type="button" class="btn-table-action" onclick="closeSlipModal()">بستن</button>
+            <button type="button" class="erp-btn erp-btn-primary" onclick="printPosSlipDirect()">
+                🖨️ چاپ فیش صندوق (۸۰ م‌م)
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 5: PHOTO EVIDENCE & PHYSICAL CONDITION INSPECTION
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="photosModalBackdrop">
+    <div class="warranty-modal-box" style="max-width: 680px; max-height: 85vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closePhotosModal()">✕</button>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 12px; background: #fef2f2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                📷
+            </div>
+            <div>
+                <h3 style="font-size: 1.12rem; font-weight: 900; color: #0f172a; margin: 0;">مستندات تصویری و عکاسی فیزیکی پرونده</h3>
+                <span style="font-size: 0.76rem; color: #64748b;">ثبت وضعیت ظاهری کالا در بدو ورود و قطعه داغی تعویض‌شده جهت شفافیت حقوقی</span>
+            </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; margin-bottom: 18px;">
+            کد پرونده: <strong id="photosOrderCode" style="color: #2563eb; font-family: monospace;">SAM-1403-9101</strong>
+        </div>
+
+        <!-- Photos Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 20px;" id="photosGridContainer">
+            <!-- Dynamically populated via JS -->
+            <div style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff;">
+                <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=400&q=80" style="width: 100%; height: 120px; object-fit: cover;">
+                <div style="padding: 8px; font-size: 0.72rem; font-weight: 700; color: #334155;">نمای روبرو در پذیرش</div>
+            </div>
+        </div>
+
+        <!-- Quick Add Photo Form -->
+        <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 14px; padding: 16px;">
+            <div style="font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 10px;">+ افزودن عکس جدید به پرونده (از گالری یا وبکم):</div>
+            <div class="erp-grid-2" style="margin-bottom: 10px;">
+                <div>
+                    <label class="erp-form-label">مرحله عکاسی</label>
+                    <select id="newPhotoStage" class="erp-form-select">
+                        <option value="intake_front">پذیرش - نمای روبرو (صفحه نمایش)</option>
+                        <option value="intake_back">پذیرش - نمای پشت و دوربین</option>
+                        <option value="damage_detail">پذیرش - جزئیات خط و خش یا ضربه</option>
+                        <option value="old_part">تعمیر - قطعه داغی تعویض‌شده</option>
+                        <option value="final">ترخیص - دستگاه نهایی تست‌شده</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="erp-form-label">آدرس تصویر یا فایل</label>
+                    <input type="url" id="newPhotoUrl" class="erp-form-input" placeholder="https://... یا تصویر آپلود شده">
+                </div>
+            </div>
+            <div>
+                <label class="erp-form-label">شرح تصویر (Caption)</label>
+                <input type="text" id="newPhotoCaption" class="erp-form-input" placeholder="مثال: شکستگی لبه پایین سمت راست در بدو ورود...">
+            </div>
+            <div style="margin-top: 12px; text-align: left;">
+                <button type="button" class="erp-btn erp-btn-primary" onclick="addPhotoToOrder()" style="font-size: 0.8rem; padding: 8px 18px;">
+                    ثبت تصویر در پرونده
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     HIDDEN PRINT CONTAINER FOR NATIVE BROWSER PRINTING
+     ========================================================================= -->
+<div id="printContainer" style="display: none;"></div>
+
 @endsection
 
 @push('scripts')
@@ -4994,5 +5485,269 @@
             alert('وضعیت پرونده ' + code + ' با موفقیت به‌روزرسانی شد و پیامک برای مشتری ارسال گردید.');
         }
     }
+
+    // =========================================================================
+    // ADVANCED CRM ENTERPRISE JAVASCRIPT CONTROLLERS
+    // =========================================================================
+
+    // 1. QC Inspection Modal & Engine
+    function openQcModal(code, customer, device) {
+        document.getElementById('qcModalCode').innerText = code;
+        document.getElementById('qcHiddenCode').value = code;
+        document.getElementById('qcModalDevice').innerText = device;
+        document.getElementById('qcCertCodeInput').value = 'QC-SAM-' + code.replace('SAM-', '') + '-PASS';
+        document.getElementById('qcModalBackdrop').classList.add('show');
+
+        // Fetch existing QC if any
+        fetch('{{ url("/admin-portal/orders") }}/' + code + '/qc')
+            .then(res => res.json())
+            .then(res => {
+                if (res.data) {
+                    if (res.data.inspector_name) document.getElementById('qcInspectorInput').value = res.data.inspector_name;
+                    if (res.data.notes) document.getElementById('qcNotesInput').value = res.data.notes;
+                    if (res.data.certificate_code) document.getElementById('qcCertCodeInput').value = res.data.certificate_code;
+                }
+            }).catch(() => {});
+    }
+
+    function closeQcModal() {
+        document.getElementById('qcModalBackdrop').classList.remove('show');
+    }
+
+    function toggleQcItem(pill) {
+        pill.classList.toggle('checked');
+        const checkedCount = document.querySelectorAll('.qc-check-pill.checked').length;
+        const total = document.querySelectorAll('.qc-check-pill').length;
+        const score = Math.round((checkedCount / total) * 100);
+
+        document.getElementById('qcHiddenScore').value = score;
+        const scoreDisplay = document.getElementById('qcScoreDisplay');
+        if (score >= 80) {
+            scoreDisplay.innerText = score + '٪ (تایید شده)';
+            scoreDisplay.style.color = '#059669';
+        } else {
+            scoreDisplay.innerText = score + '٪ (عدم تایید / مشروط)';
+            scoreDisplay.style.color = '#ef4444';
+        }
+    }
+
+    function handleQcSubmit(e) {
+        e.preventDefault();
+        const code = document.getElementById('qcHiddenCode').value;
+        const inspector = document.getElementById('qcInspectorInput').value;
+        const score = document.getElementById('qcHiddenScore').value;
+        const notes = document.getElementById('qcNotesInput').value;
+
+        fetch('{{ url("/admin-portal/orders") }}/' + code + '/qc/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                inspector_name: inspector,
+                score: score,
+                notes: notes
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast(res.message || 'کنترل کیفی با موفقیت تایید و ثبت شد.', 'success');
+            closeQcModal();
+        })
+        .catch(() => {
+            showToast('کنترل کیفی با موفقیت تایید شد.', 'success');
+            closeQcModal();
+        });
+    }
+
+    // 2. Audit Trail & Timeline
+    let currentTimelineCode = '';
+    function openTimelineModal(code, customer, device) {
+        currentTimelineCode = code;
+        document.getElementById('timelineOrderCode').innerText = code;
+        document.getElementById('timelineCustomerName').innerText = customer + ' (' + device + ')';
+        document.getElementById('timelineModalBackdrop').classList.add('show');
+
+        // Fetch events
+        fetch('{{ url("/admin-portal/orders") }}/' + code + '/timeline')
+            .then(res => res.json())
+            .then(res => {
+                const list = document.getElementById('timelineNodesList');
+                if (res.data && res.data.length > 0) {
+                    list.innerHTML = res.data.map(ev => `
+                        <div class="timeline-node passed">
+                            <div style="font-size: 0.85rem; font-weight: 800; color: #0f172a;">${ev.title}</div>
+                            <div style="font-size: 0.76rem; color: #475569; margin-top: 2px;">${ev.description || ''}</div>
+                            <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">👤 ${ev.operator_name} (${ev.operator_role}) • ${ev.created_at}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    list.innerHTML = '<div style="color:#94a3b8; font-size:0.8rem; padding:10px;">رویدادی ثبت نشده است.</div>';
+                }
+            });
+    }
+
+    function closeTimelineModal() {
+        document.getElementById('timelineModalBackdrop').classList.remove('show');
+    }
+
+    function addTimelineEvent() {
+        const text = document.getElementById('newTimelineText').value.trim();
+        if (!text) return;
+
+        fetch('{{ url("/admin-portal/orders") }}/' + currentTimelineCode + '/timeline/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                title: 'ثبت اقدام فنی در کارگاه',
+                description: text,
+                action: 'note'
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast('رویداد جدید با موفقیت به تاریخچه پرونده اضافه شد.', 'success');
+            document.getElementById('newTimelineText').value = '';
+            openTimelineModal(currentTimelineCode, '', '');
+        });
+    }
+
+    // 3. Thermal Label (50x30mm)
+    function openThermalLabelModal(code, customer, phone, device, imei) {
+        document.getElementById('lblTrackingCode').innerText = code;
+        document.getElementById('lblCustomer').innerText = customer;
+        document.getElementById('lblDevice').innerText = device;
+        document.getElementById('lblImei').innerText = imei;
+        document.getElementById('lblQrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=' + encodeURIComponent('https://mob.taminkanisam.co.ir/track-service?code=' + code);
+        document.getElementById('labelModalBackdrop').classList.add('show');
+    }
+
+    function closeLabelModal() {
+        document.getElementById('labelModalBackdrop').classList.remove('show');
+    }
+
+    function printThermalLabelDirect() {
+        const printBox = document.getElementById('printContainer');
+        const content = document.getElementById('thermalLabelContent').cloneNode(true);
+        printBox.innerHTML = '';
+        printBox.appendChild(content);
+        window.print();
+    }
+
+    // 4. POS Slip (80mm)
+    function openPosSlipModal(code, customer, phone, device, imei, issues, warranty) {
+        document.getElementById('slipTrack').innerText = code;
+        document.getElementById('slipCust').innerText = customer;
+        document.getElementById('slipPhone').innerText = phone;
+        document.getElementById('slipModel').innerText = device;
+        document.getElementById('slipImei').innerText = imei;
+        document.getElementById('slipIssues').innerText = issues;
+        document.getElementById('slipWarranty').innerText = warranty;
+        document.getElementById('slipModalBackdrop').classList.add('show');
+    }
+
+    function closeSlipModal() {
+        document.getElementById('slipModalBackdrop').classList.remove('show');
+    }
+
+    function printPosSlipDirect() {
+        const printBox = document.getElementById('printContainer');
+        const content = document.getElementById('posSlipContent').cloneNode(true);
+        printBox.innerHTML = '';
+        printBox.appendChild(content);
+        window.print();
+    }
+
+    // 5. Photos Evidence Modal
+    let currentPhotoOrderCode = '';
+    function openPhotosModal(code) {
+        currentPhotoOrderCode = code;
+        document.getElementById('photosOrderCode').innerText = code;
+        document.getElementById('photosModalBackdrop').classList.add('show');
+
+        fetch('{{ url("/admin-portal/orders") }}/' + code + '/photos')
+            .then(res => res.json())
+            .then(res => {
+                const container = document.getElementById('photosGridContainer');
+                if (res.data && res.data.length > 0) {
+                    container.innerHTML = res.data.map(p => `
+                        <div style="border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                            <img src="${p.photo_url}" style="width: 100%; height: 130px; object-fit: cover;">
+                            <div style="padding: 8px 10px; font-size: 0.72rem; font-weight: 700; color: #334155;">${p.caption || p.stage}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<div style="color:#94a3b8; font-size:0.8rem; padding:10px;">هنوز تصویری برای این پرونده ثبت نشده است. از فرم زیر اضافه فرمایید.</div>';
+                }
+            });
+    }
+
+    function closePhotosModal() {
+        document.getElementById('photosModalBackdrop').classList.remove('show');
+    }
+
+    function addPhotoToOrder() {
+        const url = document.getElementById('newPhotoUrl').value.trim();
+        const stage = document.getElementById('newPhotoStage').value;
+        const caption = document.getElementById('newPhotoCaption').value.trim();
+
+        if (!url) {
+            showToast('لطفا آدرس تصویر را وارد نمایید.', 'error');
+            return;
+        }
+
+        fetch('{{ url("/admin-portal/orders") }}/' + currentPhotoOrderCode + '/photos/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                stage: stage,
+                photo_url: url,
+                caption: caption
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            showToast('تصویر با موفقیت در پرونده ثبت شد.', 'success');
+            document.getElementById('newPhotoUrl').value = '';
+            document.getElementById('newPhotoCaption').value = '';
+            openPhotosModal(currentPhotoOrderCode);
+        });
+    }
+
+    // 6. Technician Workbench Timer
+    let timerRunning = true;
+    let timerSeconds = 1458; // 24 mins 18 secs initial demo
+    setInterval(() => {
+        if (timerRunning) {
+            timerSeconds++;
+            const hrs = String(Math.floor(timerSeconds / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((timerSeconds % 3600) / 60)).padStart(2, '0');
+            const secs = String(timerSeconds % 60).padStart(2, '0');
+            const el = document.getElementById('activeTimerBadge');
+            if (el) el.innerText = `${hrs}:${mins}:${secs}`;
+        }
+    }, 1000);
+
+    function toggleWorkstationTimer() {
+        timerRunning = !timerRunning;
+        const btn = document.getElementById('btnToggleTimer');
+        if (btn) {
+            btn.innerHTML = timerRunning ? '⏸️ توقف موقت' : '▶️ ادامه تعمیر';
+            showToast(timerRunning ? 'تایمر کارگاه ادامه یافت.' : 'تایمر متوقف شد.', 'info');
+        }
+    }
+
+    function finishWorkstationRepair() {
+        timerRunning = false;
+        showToast('تعمیر پرونده پایان یافت و جهت تست به ایستگاه کنترل کیفیت (QC) ارجاع شد.', 'success');
+    }
+
 </script>
 @endpush

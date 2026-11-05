@@ -78,6 +78,16 @@ $registerMobileRoutes = function () {
     Route::post('/admin-portal/surveys/campaign/store', [MobileServiceController::class, 'storeSurveyCampaign'])->name('mob.admin.survey-campaign.store');
     Route::post('/admin-portal/surveys/{id}/status', [MobileServiceController::class, 'updateSurveyStatus'])->name('mob.admin.survey.status');
     Route::post('/admin-portal/surveys/{id}/delete', [MobileServiceController::class, 'deleteSurvey'])->name('mob.admin.survey.delete');
+
+// ==================== ENTERPRISE CRM ADVANCED MODULES ====================
+Route::get('/admin-portal/orders/export-csv', [MobileServiceController::class, 'exportOrdersCsv'])->name('mob.admin.orders.export-csv');
+Route::get('/admin-portal/orders/{code}/timeline', [MobileServiceController::class, 'getOrderTimeline'])->name('mob.admin.orders.timeline');
+Route::post('/admin-portal/orders/{code}/timeline/add', [MobileServiceController::class, 'addOrderTimelineEvent'])->name('mob.admin.orders.timeline.add');
+Route::get('/admin-portal/orders/{code}/qc', [MobileServiceController::class, 'getOrderQc'])->name('mob.admin.orders.qc.get');
+Route::post('/admin-portal/orders/{code}/qc/save', [MobileServiceController::class, 'saveOrderQc'])->name('mob.admin.orders.qc.save');
+Route::get('/admin-portal/orders/{code}/photos', [MobileServiceController::class, 'getOrderPhotos'])->name('mob.admin.orders.photos.get');
+Route::post('/admin-portal/orders/{code}/photos/add', [MobileServiceController::class, 'addOrderPhoto'])->name('mob.admin.orders.photos.add');
+Route::post('/admin-portal/orders/{code}/task/timer', [MobileServiceController::class, 'toggleTechnicianTaskTimer'])->name('mob.admin.orders.task.timer');
 };
 
 // شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های سام موبایل در ریشه لود می‌شوند
