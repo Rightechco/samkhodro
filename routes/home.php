@@ -7,6 +7,7 @@ use \App\Http\Controllers\Home\ArchiveController;
 use \App\Http\Controllers\Home\GoogleController;
 use \App\Http\Controllers\Home\LikeController;
 use \App\Http\Controllers\Home\ViewController;
+use \App\Http\Controllers\Home\MobileServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,3 +63,30 @@ Route::post('/change-user-password', [AuthController::class , 'changeUserPasswor
 Route::get('/google-login', [GoogleController::class, 'redirectToProvider']);
 Route::get('/callback', [GoogleController::class, 'handleProviderCallback']);
 Route::post('/view', [ViewController::class , 'view']);
+
+////////////////////////////////////////////////////// سام موبایل (mob.taminkanisam.co.ir)
+$registerMobileRoutes = function () {
+    Route::get('/', [MobileServiceController::class, 'index'])->name('mob.index');
+    Route::get('/service-portal', [MobileServiceController::class, 'servicePortal'])->name('mob.service-portal');
+    Route::post('/service-portal/store', [MobileServiceController::class, 'storeReception'])->name('mob.portal.store');
+    Route::post('/service-portal/{id}/update-status', [MobileServiceController::class, 'updateOrderStatus'])->name('mob.portal.update-status');
+    Route::post('/service-portal/{id}/order-part', [MobileServiceController::class, 'orderPart'])->name('mob.portal.order-part');
+    Route::post('/service-portal/{id}/complete', [MobileServiceController::class, 'completeService'])->name('mob.portal.complete');
+    Route::post('/track', [MobileServiceController::class, 'trackOrder'])->name('mob.track');
+    Route::get('/customer-rights', [MobileServiceController::class, 'customerRights'])->name('mob.customer-rights');
+    Route::get('/warranty-terms', [MobileServiceController::class, 'warrantyTerms'])->name('mob.warranty-terms');
+    Route::get('/survey', [MobileServiceController::class, 'survey'])->name('mob.survey');
+    Route::post('/survey/store', [MobileServiceController::class, 'storeSurvey'])->name('mob.survey.store');
+    Route::get('/complaints', [MobileServiceController::class, 'complaints'])->name('mob.complaints');
+    Route::post('/complaints/store', [MobileServiceController::class, 'storeComplaint'])->name('mob.complaints.store');
+    Route::post('/complaints/track', [MobileServiceController::class, 'trackComplaint'])->name('mob.complaints.track');
+    Route::get('/invoice-sample', [MobileServiceController::class, 'invoiceSample'])->name('mob.invoice-sample');
+    Route::get('/shipping-guide', [MobileServiceController::class, 'shippingGuide'])->name('mob.shipping-guide');
+    Route::get('/regulations', [MobileServiceController::class, 'regulations'])->name('mob.regulations');
+};
+
+// 1. بر روی ساب‌دامنه mob.taminkanisam.co.ir
+Route::domain('mob.taminkanisam.co.ir')->group($registerMobileRoutes);
+
+// 2. همچنین تحت پیشوند /mob در دامنه اصلی جهت دسترسی فوری
+Route::prefix('mob')->group($registerMobileRoutes);

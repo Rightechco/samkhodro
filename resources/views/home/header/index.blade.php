@@ -1384,6 +1384,135 @@
             border-radius: 10px !important;
         }
     }
+
+    /* Megamenu for خدمات پس از فروش */
+    .underMenu.services-megamenu {
+        min-width: 720px !important;
+        width: 720px !important;
+        display: grid !important;
+        grid-template-columns: 1.35fr 1fr 1fr !important;
+        gap: 14px !important;
+        padding: 16px !important;
+        box-shadow: 0 24px 50px -10px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(226, 232, 240, 0.9) inset !important;
+    }
+    .service-mega-col {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+    .mega-col-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 10px;
+        margin-bottom: 8px;
+    }
+    .mega-col-icon {
+        font-size: 20px;
+        line-height: 1;
+    }
+    .mega-col-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+    .mega-col-sub {
+        font-size: 11px;
+        color: #64748b;
+    }
+    .mega-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .mega-list li a {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 7px 10px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: #334155 !important;
+        border-radius: 8px !important;
+        transition: all 0.15s ease !important;
+        line-height: 1.4 !important;
+        text-decoration: none !important;
+    }
+    .mega-list li a:hover {
+        background: #e0f2fe !important;
+        color: #0284c7 !important;
+        transform: translateX(-3px) !important;
+    }
+    .mega-mob-col {
+        border-color: #bae6fd;
+        background: #f0f9ff;
+    }
+    .mega-mob-col .mega-col-title {
+        color: #0369a1;
+    }
+
+    /* Mobile Drawer Service Groups */
+    .drawer-service-groups {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 8px 14px 14px;
+    }
+    .drawer-group-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 10px;
+    }
+    .drawer-group-head {
+        font-size: 13px;
+        font-weight: 800;
+        color: #38bdf8;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .drawer-pill-badge {
+        font-size: 10px;
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+    .drawer-group-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .drawer-group-links li a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #cbd5e1;
+        padding: 6px 8px;
+        border-radius: 8px;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    .drawer-group-links li a:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+    }
 </style>
 
 <div class="allHeaderHome {{ $isActive ? 'active' : '' }}">
@@ -1570,7 +1699,7 @@
 
                     @foreach($structuredNavigation as $item)
                         @php
-                            $hasChilds = !empty($item['childs']) && $item['childs']->count() > 0;
+                            $hasChilds = (!empty($item['childs']) && $item['childs']->count() > 0) || str_contains($item['name'], 'خدمات');
                             $isRed = $item['is_red'];
                             $isItemExternal = $isRed || isExternalMenuUrl($item['slug']);
                         @endphp
@@ -1597,6 +1726,60 @@
                                     $lastChild = $isAnnouncementMenu ? $item['childs']->sortByDesc('id')->first() : null;
                                     $latestCircularId = $lastChild ? $lastChild->id : null;
                                 @endphp
+                                @if(str_contains($item['name'], 'خدمات'))
+                                <div class="underMenu services-megamenu">
+                                    <!-- خدمات پس از فروش موبایل -->
+                                    <div class="service-mega-col mega-mob-col">
+                                        <div class="mega-col-head">
+                                            <div class="mega-col-icon">📱</div>
+                                            <div>
+                                                <div class="mega-col-title">خدمات پس از فروش موبایل</div>
+                                                <div class="mega-col-sub">سام موبایل (تامین کانی سام)</div>
+                                            </div>
+                                        </div>
+                                        <ul class="mega-list">
+                                            <li><a href="https://mob.taminkanisam.co.ir"><span class="underMenu-dot"></span>ورود به سایت اصلی</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/service-portal"><span class="underMenu-dot"></span>سامانه مدیریت خدمات</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><span class="underMenu-dot"></span>منشور حقوق مشتریان</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><span class="underMenu-dot"></span>شرایط گارانتی</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/survey"><span class="underMenu-dot"></span>نظرسنجی</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/complaints"><span class="underMenu-dot"></span>شکایات</a></li>
+                                            <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><span class="underMenu-dot"></span>نمونه فاکتور هزینه خدمات</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- خدمات پس از فروش خودرو -->
+                                    <div class="service-mega-col mega-car-col">
+                                        <div class="mega-col-head">
+                                            <div class="mega-col-icon">🚗</div>
+                                            <div>
+                                                <div class="mega-col-title">خدمات پس از فروش خودرو</div>
+                                                <div class="mega-col-sub">سام خودرو</div>
+                                            </div>
+                                        </div>
+                                        <ul class="mega-list">
+                                            <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>گارانتی</a></li>
+                                            <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>واحد فنی و مهندسی</a></li>
+                                            <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><span class="underMenu-dot"></span>مرکز آموزش</a></li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- خدمات پس از فروش لاستیک -->
+                                    <div class="service-mega-col mega-tire-col">
+                                        <div class="mega-col-head">
+                                            <div class="mega-col-icon">🛞</div>
+                                            <div>
+                                                <div class="mega-col-title">خدمات پس از فروش لاستیک</div>
+                                                <div class="mega-col-sub">گارانتی تایر سام</div>
+                                            </div>
+                                        </div>
+                                        <ul class="mega-list">
+                                            <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><span class="underMenu-dot"></span>کارت گارانتی لاستیک</a></li>
+                                            <li><a href="/tire-warranty-agents"><span class="underMenu-dot"></span>نمایندگان</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                @else
                                 <ul class="underMenu">
                                     @foreach($item['childs'] as $child)
                                         @php
@@ -1622,6 +1805,7 @@
                                         </li>
                                     @endforeach
                                 </ul>
+                                @endif
                             @endif
                         </li>
                     @endforeach
@@ -1770,7 +1954,7 @@
 
             @foreach($structuredNavigation as $item)
                 @php
-                    $hasChilds = !empty($item['childs']) && $item['childs']->count() > 0;
+                    $hasChilds = (!empty($item['childs']) && $item['childs']->count() > 0) || str_contains($item['name'], 'خدمات');
                     $isRed = $item['is_red'];
                     $isDrawerExternal = $isRed || isExternalMenuUrl($item['slug']);
                 @endphp
@@ -1795,6 +1979,49 @@
                     </div>
 
                     @if($hasChilds)
+                        @if(str_contains($item['name'], 'خدمات'))
+                        <div class="drawer-service-groups">
+                            <!-- موبایل -->
+                            <div class="drawer-group-box">
+                                <div class="drawer-group-head">
+                                    <span>📱 خدمات پس از فروش موبایل</span>
+                                    <span class="drawer-pill-badge">سام موبایل</span>
+                                </div>
+                                <ul class="drawer-group-links">
+                                    <li><a href="https://mob.taminkanisam.co.ir"><span class="drawer-sub-dot"></span><span>ورود به سایت اصلی</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/service-portal"><span class="drawer-sub-dot"></span><span>سامانه مدیریت خدمات</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/customer-rights"><span class="drawer-sub-dot"></span><span>منشور حقوق مشتریان</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/warranty-terms"><span class="drawer-sub-dot"></span><span>شرایط گارانتی</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/survey"><span class="drawer-sub-dot"></span><span>نظرسنجی</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/complaints"><span class="drawer-sub-dot"></span><span>شکایات</span></a></li>
+                                    <li><a href="https://mob.taminkanisam.co.ir/invoice-sample"><span class="drawer-sub-dot"></span><span>نمونه فاکتور هزینه خدمات غیرگارانتی و گارانتی مطابق با تعرفه اتحادیه</span></a></li>
+                                </ul>
+                            </div>
+
+                            <!-- خودرو -->
+                            <div class="drawer-group-box">
+                                <div class="drawer-group-head">
+                                    <span>🚗 خدمات پس از فروش خودرو</span>
+                                </div>
+                                <ul class="drawer-group-links">
+                                    <li><a href="https://namikhodro.com/%da%af%d8%a7%d8%b1%d8%a7%d9%86%d8%aa%db%8c/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>گارانتی</span></a></li>
+                                    <li><a href="https://namikhodro.com/%d9%88%d8%a7%d8%ad%d8%af-%d9%81%d9%86%db%8c-%d9%85%d9%87%d9%86%d8%af%d8%b3%db%8c/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>واحد فنی و مهندسی</span></a></li>
+                                    <li><a href="https://namikhodro.com/%d9%85%d8%b1%da%a9%d8%b2-%d8%a2%d9%85%d9%88%d8%b2%d8%b4-%d9%86%d8%a7%d9%85%db%8c-%d8%ae%d9%88%d8%af%d8%b1%d9%88-%d9%be%db%8c%d8%b4%d8%b1%d9%88/" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>مرکز آموزش</span></a></li>
+                                </ul>
+                            </div>
+
+                            <!-- لاستیک -->
+                            <div class="drawer-group-box">
+                                <div class="drawer-group-head">
+                                    <span>🛞 خدمات پس از فروش لاستیک</span>
+                                </div>
+                                <ul class="drawer-group-links">
+                                    <li><a href="/upload/image/2026/1/1792399485.pdf" target="_blank" rel="noopener"><span class="drawer-sub-dot"></span><span>کارت گارانتی لاستیک</span></a></li>
+                                    <li><a href="/tire-warranty-agents"><span class="drawer-sub-dot"></span><span>نمایندگان</span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        @else
                         @php
                             $isAnnouncementDrawer = (str_contains($item['name'], 'اطلاعیه های فروش') || str_contains($item['name'], 'بخشنامه')) && !str_contains($item['name'], 'خدمات');
                             $lastChildDrawer = $isAnnouncementDrawer ? $item['childs']->sortByDesc('id')->first() : null;
@@ -1824,6 +2051,7 @@
                                 </li>
                             @endforeach
                         </ul>
+                        @endif
                     @endif
                 </li>
             @endforeach
