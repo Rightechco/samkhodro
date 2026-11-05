@@ -1,4 +1,4 @@
-@extends('home.mobile.layout')
+@extends('home.mobile.portal-layout')
 
 @section('title', 'پنل اختصاصی مشتریان سام موبایل | سامانه خدمات و گارانتی')
 @section('meta_description', 'میز کار و پنل کاربری مشتریان سام موبایل جهت پیگیری آنلاین وضعیت تعمیر دستگاه، مشاهده کارت گارانتی دیجیتال و ثبت درخواست‌های جدید')
@@ -485,7 +485,7 @@
                 </button>
             </li>
             <li>
-                <a href="{{ route('mob.invoice-sample') }}" target="_blank" class="user-nav-btn">
+                <a href="{{ url('/invoice-sample') }}" target="_blank" class="user-nav-btn">
                     <span class="user-nav-left">
                         <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
                         <span>نمونه فاکتور رسمی اتحادیه</span>
@@ -496,7 +496,7 @@
 
         <!-- Bottom Logout -->
         <div class="user-sidebar-bottom">
-            <form action="{{ route('mob.logout') }}" method="POST">
+            <form action="{{ url('/logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn-user-logout">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -632,7 +632,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('mob.user-order.store') }}" method="POST">
+                <form action="{{ url('/user-portal/store-order') }}" method="POST">
                     @csrf
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                         <div class="form-group-custom">
@@ -690,7 +690,7 @@
                 </div>
 
                 <!-- New Ticket Form -->
-                <form action="{{ route('mob.ticket.store') }}" method="POST" style="margin-bottom: 24px; padding: 18px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0;">
+                <form action="{{ url('/user-portal/send-ticket') }}" method="POST" style="margin-bottom: 24px; padding: 18px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0;">
                     @csrf
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                         <div>

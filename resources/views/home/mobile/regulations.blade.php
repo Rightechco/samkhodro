@@ -1,114 +1,215 @@
 @extends('home.mobile.layout')
 
-@section('title', 'ضوابط اجرایی خدمات پس از فروش وزارت صمت | سام موبایل')
+@section('title', 'ضوابط اجرایی خدمات پس از فروش و ماده ۱۳ قانون حمایت | سام موبایل')
+@section('meta_description', 'ضوابط رسمی اجرایی خدمات پس از فروش و آیین‌نامه ماده ۱۳ ضوابط فنی مهندسی وزارت صنعت، معدن و تجارت در سام موبایل')
 
 @section('content')
-<div class="container">
-    <div class="page-header-card">
-        <span class="section-tag">دستورالعمل‌های قانونی</span>
-        <h1>ضوابط اجرایی خدمات پس از فروش وزارت صنعت، معدن و تجارت</h1>
-        <p>مصوب کارگروه خدمات پس از فروش و ضوابط اختصاصی کالاهای الکتریکی، الکترونیکی و وسایل ارتباطی در ۴۰ ماده و ۴ پیوست</p>
+<div class="container" style="max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px;">
+
+    <!-- Page Header -->
+    <div class="reg-page-header">
+        <span class="reg-badge-pill">ضوابط فنی و قانونی وزارت صمت</span>
+        <h1 class="reg-title">آیین‌نامه و ضوابط اجرایی سامانه مدیریت خدمات (ماده ۱۳)</h1>
+        <p class="reg-subtitle">مجموعه مصوبات رسمی سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان جهت تضمین کیفیت خدمات پس از فروش تلفن همراه</p>
     </div>
 
-    <div class="glass-card regulations-card">
-        <div class="reg-intro-box">
-            <h3 style="color:#fff; font-size:17px; font-weight:800; margin-bottom:8px;">مقدمه و استناد قانونی:</h3>
-            <p style="font-size:13.5px; line-height:1.8; color:var(--text-muted); margin:0;">
-                به استناد تکالیف ناشی از مواد ۳، ۴ و ۲۱ قانون حمایت از حقوق مصرف‌کنندگان مصوب ۱۳۸۸/۰۷/۱۵ مجلس شورای اسلامی و ضوابط اختصاصی گروه کالایی لوازم‌خانگی، برقی و الکترونیک موضوع ماده ۲ تبصره ۴ ماده ۱۸ قانون مبارزه با قاچاق کالا و ارز ابلاغی مورخ ۱۳۹۸/۰۳/۰۱ ریاست محترم جمهوری، دستورالعمل شماره ۶۰/۲۰۷۸۶۸ و اصلاحیه ابلاغیه شماره ۶۰/۲۰۲۰۲۳ مورخ ۱۴۰۱/۰۸/۲۲ تحت عنوان <strong>«ضوابط اجرایی خدمات پس از فروش مصنوعات الکتریکی، الکترونیکی و وسایل ارتباطی»</strong> به شرح زیر در تمامی شعب و نمایندگی‌های شرکت تامین کانی سام لازم‌الاجرا می‌باشد.
+    <!-- Main Regulation Card (Pure Light Executive) -->
+    <div class="reg-card">
+        <div class="reg-header-tag">
+            <span class="reg-dot"></span>
+            <span>ماده ۱۳ ضوابط اجرایی خدمات پس از فروش</span>
+        </div>
+        <h2 class="reg-heading">الزامات فنی سامانه مدیریت خدمات و رهگیری یکپارچه</h2>
+        <div class="reg-body-text">
+            <p>
+                مطابق با <strong>ماده ۱۳ ضوابط اجرایی سامانه مدیریت خدمات</strong> ابلاغی وزارت صنعت، معدن و تجارت و سازمان حمایت از حقوق مصرف‌کنندگان؛ کلیه شرکت‌های واردکننده موظف به راه‌اندازی و اتصال برخط سامانه‌ای جامع با قابلیت‌های زیر می‌باشند:
             </p>
         </div>
 
-        <!-- Highlight of Article 13 -->
-        <div class="article-13-highlight" id="article13">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
-                <h3 style="color:#38bdf8; font-size:19px; font-weight:900;">ماده ۱۳ - ضوابط اجرائی سامانه مدیریت خدمات پس از فروش</h3>
-                <span style="font-size:12px; padding:3px 10px; border-radius:12px; background:rgba(56,189,248,0.2); color:#38bdf8; font-weight:700;">مبنای سامانه مدیریت خدمات سام موبایل</span>
+        <div class="reg-features-grid">
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۱</span>
+                <div>
+                    <strong>قابلیت ثبت آنلاین پذیرش:</strong>
+                    <p>امکان ثبت پرونده با کد رهگیری اختصاصی و ثبت شناسه ۱۵ رقمی IMEI دستگاه به همراه لوازم جانبی تحویلی.</p>
+                </div>
             </div>
-            <p style="font-size:14.5px; line-height:1.85; color:#f8fafc; margin-bottom:14px;">
-                عرضه‌کنندگان و واسطه خدمات پس از فروش مکلف به راه‌اندازی و بکارگیری سیستم‌های مبتنی بر فناوری اطلاعات جهت خدمات پس از فروش با قابلیت اتصال به «سامانه» و انتقال برخط و بهنگام اطلاعات می‌باشند. سیستم مذکور باید علاوه بر پایش قطعات مورد نیاز و تجهیز انبار قطعات و پایش و بهبود بخش‌های مختلف واحد خدمات پس از فروش، زمان دقیق مراجعه، تاریخ پذیرش و نوع خدمات ارائه شده را به طور کامل در سیستم تعریف نماید.
-            </p>
-            <div class="sub-rules-list">
-                <div><strong>تبصره ۱:</strong> واسطه خدمات پس از فروش موظف به راه‌اندازی سامانه تلفنی جهت ثبت درخواست بوده که در آن زمان تماس و صدای مصرف‌کننده (حداقل یکماه) ذخیره گردد.</div>
-                <div><strong>تبصره ۲:</strong> عرضه کنندگان موظف به ارائه آدرس اینترنتی لینک دسترسی به قانون حمایت از حقوق مصرف‌کنندگان در راهنمای محصول می‌باشند.</div>
-                <div><strong>تبصره ۳:</strong> سیستم‌های خدمات پس از فروش باید حاوی بخش نظارت بر عملکرد نمایندگی‌های مجاز و کیفیت خدمات ارائه شده در شبکه تحت پوشش باشد.</div>
-                <div><strong>تبصره ۴:</strong> سیستم‌ها باید حاوی بخش اخذ بازخورد در رابطه با کیفیت محصولات و خدمات و رسیدگی به شکایات و نظام نظرسنجی از مشتریان باشد.</div>
-                <div><strong>تبصره ۵:</strong> واسطه خدمات پس از فروش باید هرگونه اطلاع‌رسانی در خصوص تشخیص عیب یا نقص کالا و یا اعلام دقیق زمان تحویل کالاهای مشمول تعمیر را از طریق سیستم خدمات پس از فروش به مصرف‌کننده اعلام نماید.</div>
+
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۲</span>
+                <div>
+                    <strong>قابلیت ارجاع و تقسیم کار کارگاهی:</strong>
+                    <p>ارجاع مکانیزه دستگاه به کارشناسان و تکنسین‌های فنی مجاز بر اساس نوع تخصص و نظارت بر زمان تعمیر.</p>
+                </div>
             </div>
-            <div style="margin-top:16px;">
-                <a href="{{ route('mob.service-portal') }}" class="btn-glow" style="padding:10px 22px; font-size:13.5px;">
-                    ورود به سامانه مدیریت خدمات منطبق بر ماده ۱۳
-                </a>
+
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۳</span>
+                <div>
+                    <strong>قابلیت ردیابی لحظه‌ای خدمت:</strong>
+                    <p>امکان استعلام آنلاین وضعیت پیشرفت تعمیر در ۵ مرحله برای مشتریان و ارسال خودکار پیامک در هر مرحله.</p>
+                </div>
             </div>
-        </div>
 
-        <!-- Highlight of Article 28 -->
-        <div class="article-box" style="margin-top:24px;">
-            <h3 style="color:#f59e0b; font-size:17px; font-weight:800; margin-bottom:8px;">ماده ۲۸ - حداقل مدت زمان ضمانت و تبصره‌های قانونی</h3>
-            <p style="font-size:14px; line-height:1.8; color:var(--text-muted);">
-                حداقل مدت زمان ضمانت برای کالاهای مشمول، ۲۴ ماه و برای تلفن همراه، تبلت و لوازم جانبی <strong>۱۸ ماه</strong> می‌باشد.<br>
-                <strong>تبصره ۵ ماده ۲۸:</strong> مبنای محاسبه زمان شروع گارانتی برای کالاهای تلفن همراه و تبلت، زمان فعال‌سازی در سامانه همتا و <strong>حداکثر ۶ ماه پس از زمان اظهار واردات در سامانه جامع تجارت</strong> خواهد بود.
-            </p>
-        </div>
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۴</span>
+                <div>
+                    <strong>مدیریت سفارش قطعات یدکی:</strong>
+                    <p>ثبت سیستمی درخواست قطعات اورجینال از انبار مرکزی، کنترل اصالت قطعه و تخصیص قطعات تعویض شده.</p>
+                </div>
+            </div>
 
-        <!-- Highlight of Article 16 -->
-        <div class="article-box" style="margin-top:20px;">
-            <h3 style="color:#10b981; font-size:17px; font-weight:800; margin-bottom:8px;">ماده ۱۶ - صورتحساب دقیق خدمات و ضمانت ۶ ماهه</h3>
-            <p style="font-size:14px; line-height:1.8; color:var(--text-muted);">
-                واسطه خدمات پس از فروش و نمایندگی مجاز تعمیر موظف هستند پیش از ارائه خدمات، تخمین هزینه‌ها را در اختیار مصرف‌کننده قرار داده و در صورت تأیید مصرف‌کننده اقدام نمایند. در پایان ارائه خدمات، باید صورتحساب دقیق شامل انواع خدمات یا قطعات استاندارد ارائه شده، بهای هر یک، نوع عیب، تاریخ شروع و خاتمه خدمات و توضیحات مرتبط با تضمین خدمت ارائه گردد. <strong>کلیه قطعات تعویضی و خدمات تعمیری دارای ۶ ماه ضمانت می‌باشند.</strong>
-            </p>
-        </div>
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۵</span>
+                <div>
+                    <strong>اتمام خدمت، صدور فاکتور و کنترل کیفی (QC):</strong>
+                    <p>ارزیابی نهایی کیفیت توسط واحد کنترل کیفی، ثبت گزارش داغی قطعات و صدور صورتحساب منطبق با تعرفه رسمی اتحادیه.</p>
+                </div>
+            </div>
 
-        <!-- Highlight of Article 38 -->
-        <div class="article-box" style="margin-top:20px;">
-            <h3 style="color:#818cf8; font-size:17px; font-weight:800; margin-bottom:8px;">ماده ۳۸ - نظام رسیدگی به شکایات</h3>
-            <p style="font-size:14px; line-height:1.8; color:var(--text-muted);">
-                مسئولیت رسیدگی به شکایات مصرف‌کنندگان و جلب رضایت ایشان در مرحله اول بر عهده عرضه‌کننده می‌باشد. در صورت عدم رفع اختلاف، از طریق انجمن تخصصی ذیربط و سازمان حمایت مصرف‌کنندگان و تولیدکنندگان قابل پیگیری خواهد بود.
-            </p>
+            <div class="reg-feature-item">
+                <span class="reg-feat-icon">۶</span>
+                <div>
+                    <strong>سامانه نظرسنجی و رسیدگی به شکایات:</strong>
+                    <p>جمع‌آوری مکانیزه بازخورد مشتریان پس از ترخیص کالا و رسیدگی مستند به شکایات طبق مهلت‌های قانونی ماده ۲۸.</p>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
 @endsection
 
 @push('styles')
 <style>
-    .page-header-card { text-align: center; padding: 40px 20px 20px; margin-bottom: 20px; }
-    .page-header-card h1 { font-size: 26px; font-weight: 900; color: var(--text-main); margin: 12px 0 8px; }
-    .page-header-card p { font-size: 14.5px; color: var(--text-muted); max-width: 720px; margin: 0 auto; }
-
-    .regulations-card { max-width: 960px; margin: 0 auto 40px; padding: 40px; }
-    .reg-intro-box {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border-light);
-        border-radius: 16px;
-        padding: 22px;
-        margin-bottom: 26px;
+    /* =========================================================================
+       100% PURE LIGHT EXECUTIVE THEME FOR REGULATIONS
+       ========================================================================= */
+    .reg-page-header {
+        text-align: center;
+        padding: 30px 20px 20px;
+        margin-bottom: 24px;
+    }
+    .reg-badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 14px;
+        border-radius: 99px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+        font-size: 0.78rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+    .reg-title {
+        font-size: 1.85rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+    .reg-subtitle {
+        font-size: 0.94rem;
+        color: #475569;
+        max-width: 720px;
+        margin: 0 auto;
+        line-height: 1.8;
     }
 
-    .article-13-highlight {
-        background: linear-gradient(135deg, rgba(3, 105, 161, 0.25), rgba(15, 23, 42, 0.9));
-        border: 1px solid rgba(56, 189, 248, 0.45);
+    .reg-card {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 24px;
+        padding: 36px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    }
+    .reg-header-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 14px;
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #a7f3d0;
         border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        font-size: 0.74rem;
+        font-weight: 800;
+        margin-bottom: 14px;
     }
-    .sub-rules-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        font-size: 13.5px;
-        color: #cbd5e1;
-        line-height: 1.7;
-        background: rgba(0, 0, 0, 0.25);
-        padding: 16px;
-        border-radius: 12px;
+    .reg-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #10b981;
     }
-    .sub-rules-list strong { color: #38bdf8; }
+    .reg-heading {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 16px;
+    }
+    .reg-body-text {
+        font-size: 0.90rem;
+        color: #334155;
+        line-height: 1.8;
+        margin-bottom: 28px;
+    }
 
-    .article-box {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid var(--border-light);
+    .reg-features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .reg-feature-item {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 16px;
         padding: 22px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .reg-feature-item:hover {
+        background: #ffffff;
+        border-color: #bfdbfe;
+        transform: translateY(-2px);
+    }
+    .reg-feat-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 1.0rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+    .reg-feature-item strong {
+        font-size: 0.95rem;
+        color: #0f172a;
+        display: block;
+        margin-bottom: 4px;
+    }
+    .reg-feature-item p {
+        font-size: 0.83rem;
+        color: #475569;
+        line-height: 1.7;
+    }
+
+    @media (max-width: 800px) {
+        .reg-features-grid {
+            grid-template-columns: 1fr;
+        }
+        .reg-title {
+            font-size: 1.4rem;
+        }
     }
 </style>
 @endpush

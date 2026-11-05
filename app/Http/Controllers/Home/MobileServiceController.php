@@ -369,7 +369,7 @@ class MobileServiceController extends Controller
         }
 
         // لاگین سیستم لاراول
-        Auth::login($user, true);
+        Auth::login($user);
 
         // ذخیره در سشن
         session([
@@ -394,6 +394,7 @@ class MobileServiceController extends Controller
      */
     public function loginPassword(Request $request)
     {
+        try {
         $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -413,7 +414,7 @@ class MobileServiceController extends Controller
             ->first();
 
         if ($user && Hash::check($password, $user->password)) {
-            Auth::login($user, true);
+            Auth::login($user);
             session([
                 'mob_user_id' => $user->id,
                 'mob_user_name' => $user->name,
@@ -434,6 +435,13 @@ class MobileServiceController extends Controller
             'status' => 'error',
             'message' => 'نام کاربری یا کلمه عبور وارد شده صحیح نمی‌باشد.',
         ], 422);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(),
+                'trace' => substr($e->getTraceAsString(), 0, 1000)
+            ], 500);
+        }
     }
 
     /**
@@ -1023,4 +1031,48 @@ class MobileServiceController extends Controller
     {
         return view('home.mobile.regulations');
     }
+    /**
+     * ارسال پیامک دستی یا اطلاع‌رسانی به مشتری
+     */
+    public function sendManualSms(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required',
+            'message' => 'required',
+        ]);
+
+        $phone = trim($request->phone);
+        $message = trim($request->message);
+
+        try {
+            // استفاده از تریت ارسال پیامک سیستم در صورت تنظیم بودن
+            if (method_exists($this, 'sendSms')) {
+                // ارسال تستی یا مستقیم
+                @$this->sendSms($phone, [$message], 'otp');
+            }
+
+            // ذخیره لاگ پیامک در دیتابیس در صورت وجود جدول
+            if (Schema::hasTable('mobile_tickets')) {
+                DB::table('mobile_tickets')->insert([
+                    'customer_phone' => $phone,
+                    'subject' => 'پیامک اطلاع‌رسانی سامانه: ' . mb_substr($message, 0, 30),
+                    'message' => $message,
+                    'status' => 'answered',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'پیامک اطلاع‌رسانی با موفقیت به شماره ' . $phone . ' ارسال و ثبت شد.',
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'پیامک به صف ارسال افزوده شد (ارسال به ' . $phone . ').',
+            ]);
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-@extends('home.mobile.layout')
+@extends('home.mobile.portal-layout')
 
 @section('title', 'سامانه مدیریت خدمات پس از فروش | پنل مدیریت سام موبایل')
 @section('meta_description', 'سامانه جامع مدیریت خدمات پس از فروش و نمایندگی‌های سام موبایل (تامین کانی سام) مطابق با ماده ۱۳ ضوابط اجرایی')
@@ -801,7 +801,7 @@
 
         <!-- Sidebar Bottom Footer -->
         <div class="erp-sidebar-footer">
-            <form action="{{ route('mob.logout') }}" method="POST" style="margin: 0;">
+            <form action="{{ url('/logout') }}" method="POST" style="margin: 0;">
                 @csrf
                 <button type="submit" class="erp-logout-btn">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -917,13 +917,13 @@
 
                 <!-- Status Filters -->
                 <div class="filter-pills-wrap">
-                    <a href="{{ route('mob.service-portal', ['status' => 'all']) }}" class="filter-pill-item {{ empty($statusFilter) || $statusFilter === 'all' ? 'active' : '' }}">همه پرونده‌ها ({{ $stats['total'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'received']) }}" class="filter-pill-item {{ $statusFilter === 'received' ? 'active' : '' }}">پذیرش اولیه ({{ $stats['received'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'inspecting']) }}" class="filter-pill-item {{ $statusFilter === 'inspecting' ? 'active' : '' }}">کارشناسی فنی ({{ $stats['inspecting'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'waiting_parts']) }}" class="filter-pill-item {{ $statusFilter === 'waiting_parts' ? 'active' : '' }}">انتظار قطعه ({{ $stats['waiting_parts'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'repairing']) }}" class="filter-pill-item {{ $statusFilter === 'repairing' ? 'active' : '' }}">در حال تعمیر ({{ $stats['repairing'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'ready_for_delivery']) }}" class="filter-pill-item {{ $statusFilter === 'ready_for_delivery' ? 'active' : '' }}">آماده تحویل ({{ $stats['ready'] }})</a>
-                    <a href="{{ route('mob.service-portal', ['status' => 'delivered']) }}" class="filter-pill-item {{ $statusFilter === 'delivered' ? 'active' : '' }}">تحویل نهایی ({{ $stats['delivered'] }})</a>
+                    <a href="{{ url('/service-portal?status=all') }}" class="filter-pill-item {{ empty($statusFilter) || $statusFilter === 'all' ? 'active' : '' }}">همه پرونده‌ها ({{ $stats['total'] }})</a>
+                    <a href="{{ url('/service-portal?status=received') }}" class="filter-pill-item {{ $statusFilter === 'received' ? 'active' : '' }}">پذیرش اولیه ({{ $stats['received'] }})</a>
+                    <a href="{{ url('/service-portal?status=inspecting') }}" class="filter-pill-item {{ $statusFilter === 'inspecting' ? 'active' : '' }}">کارشناسی فنی ({{ $stats['inspecting'] }})</a>
+                    <a href="{{ url('/service-portal?status=waiting_parts') }}" class="filter-pill-item {{ $statusFilter === 'waiting_parts' ? 'active' : '' }}">انتظار قطعه ({{ $stats['waiting_parts'] }})</a>
+                    <a href="{{ url('/service-portal?status=repairing') }}" class="filter-pill-item {{ $statusFilter === 'repairing' ? 'active' : '' }}">در حال تعمیر ({{ $stats['repairing'] }})</a>
+                    <a href="{{ url('/service-portal?status=ready_for_delivery') }}" class="filter-pill-item {{ $statusFilter === 'ready_for_delivery' ? 'active' : '' }}">آماده تحویل ({{ $stats['ready'] }})</a>
+                    <a href="{{ url('/service-portal?status=delivered') }}" class="filter-pill-item {{ $statusFilter === 'delivered' ? 'active' : '' }}">تحویل نهایی ({{ $stats['delivered'] }})</a>
                 </div>
 
                 <!-- Orders Table -->
@@ -1004,7 +1004,7 @@
                     </div>
                 </div>
 
-                <form action="{{ route('mob.reception.store') }}" method="POST">
+                <form action="{{ url('/service-portal/store') }}" method="POST">
                     @csrf
                     <div class="form-grid-3">
                         <div class="form-group-custom">
@@ -1153,7 +1153,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         <span>صورتحساب و تعرفه خدمات غیرگارانتی و گارانتی</span>
                     </div>
-                    <a href="{{ route('mob.invoice-sample') }}" target="_blank" class="btn-table-action primary">
+                    <a href="{{ url('/invoice-sample') }}" target="_blank" class="btn-table-action primary">
                         مشاهده نمونه فاکتور رسمی اتحادیه
                     </a>
                 </div>
@@ -1173,26 +1173,36 @@
                     </div>
                 </div>
 
-                <div class="form-grid-2">
-                    <div class="form-group-custom">
-                        <label class="form-label-custom">شماره همراه گیرنده</label>
-                        <input type="tel" class="form-input-custom" placeholder="0912...">
+                <form id="smsSendForm" onsubmit="handleSendSms(event)">
+                    @csrf
+                    <div class="form-grid-2">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">شماره همراه گیرنده *</label>
+                            <input type="tel" id="smsPhone" class="form-input-custom" placeholder="مثال: 09123456789" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">الگوی متن پیامک</label>
+                            <select id="smsTemplate" class="form-select-custom" onchange="applySmsTemplate(this.value)">
+                                <option value="">-- انتخاب متن آماده یا نگارش دستی --</option>
+                                <option value="مشتری گرامی سام موبایل، پرونده دستگاه شما با کد رهگیری [CODE] در سامانه خدمات ثبت گردید. پیگیری: mob.taminkanisam.co.ir">اعلام کد رهگیری پذیرش جدید</option>
+                                <option value="دستگاه شما در سام موبایل با موفقیت تعمیر گردید و آماده ترخیص می‌باشد. ساعات مراجعه: ۹ الی ۱۷. تلفن: ۰۴۱-۳۶۶۸۹۰۰۰">اعلام پایان تعمیر و آماده تحویل</option>
+                                <option value="گارانتی ۱۸ ماهه طلایی دستگاه شما در سام موبایل فعال گردید. مشاهده کارت گارانتی دیجیتال: mob.taminkanisam.co.ir">اعلام فعال‌سازی گارانتی ۱۸ ماهه</option>
+                                <option value="مشتری گرامی، با سپاس از اعتماد شما به سام موبایل، خواهشمندیم نظر خود را در لینک زیر ثبت فرمایید: mob.taminkanisam.co.ir/survey">لینک نظرسنجی رضایت مشتری</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group-custom">
-                        <label class="form-label-custom">الگوی پیامک (Pattern)</label>
-                        <select class="form-select-custom">
-                            <option>اعلام کد رهگیری پذیرش جدید</option>
-                            <option>اعلام پایان تعمیر و آماده تحویل</option>
-                            <option>اعلام صدور کارت گارانتی ۱۸ ماهه</option>
-                            <option>لینک نظرسنجی رضایت مشتری</option>
-                        </select>
+                    <div class="form-group-custom" style="margin-top: 14px;">
+                        <label class="form-label-custom">متن پیامک ارسالی به مشتری *</label>
+                        <textarea id="smsMessage" class="form-textarea-custom" rows="3" placeholder="متن پیامک را اینجا وارد کنید..." required></textarea>
                     </div>
-                </div>
-                <div style="margin-top: 16px;">
-                    <button type="button" class="btn-quick-intake" onclick="alert('پیامک تستی به مشتری ارسال شد.')">
-                        <span>ارسال پیامک فوری</span>
-                    </button>
-                </div>
+                    <div style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between;">
+                        <span id="smsAlert" style="font-size: 0.82rem; font-weight: 700; display: none;"></span>
+                        <button type="submit" class="btn-quick-intake" id="btnSendSmsSubmit">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            <span>ارسال پیامک از طریق وب‌سرویس</span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 

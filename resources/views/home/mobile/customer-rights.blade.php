@@ -1,248 +1,286 @@
 @extends('home.mobile.layout')
 
-@section('title', 'منشور حقوق مشتریان | سام موبایل (تامین کانی سام)')
+@section('title', 'منشور حقوق مشتریان و مصرف‌کنندگان | سام موبایل (تامین کانی سام)')
+@section('meta_description', 'منشور ۱۰ گانه حقوق قانونی مشتریان شرکت تامین کانی سام (سام موبایل) منطبق بر ضوابط اجرایی وزارت صمت و سازمان حمایت از مصرف‌کنندگان')
 
 @section('content')
-<div class="container">
-    <div class="page-header-card">
-        <span class="section-tag">حقوق مصرف‌کنندگان</span>
-        <h1>منشور حقوق مشتریان شرکت تامین کانی سام (سام موبایل)</h1>
-        <p>به منظور شفافیت در خدمات پس از فروش و آگاهی کامل مشتریان از حقوق قانونی خود منطبق بر ضوابط اجرایی وزارت صمت</p>
+<div class="container" style="max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px;">
+
+    <!-- Page Header -->
+    <div class="cr-page-header">
+        <span class="cr-badge-pill">حقوق مصرف‌کنندگان</span>
+        <h1 class="cr-title">منشور حقوق مشتریان شرکت تامین کانی سام (سام موبایل)</h1>
+        <p class="cr-subtitle">تضمین بالاترین استانداردهای شفافیت، پاسخگویی و احترام به حقوق قانونی خریداران منطبق بر مصوبات وزارت صمت</p>
     </div>
 
-    <!-- Alert Box: Tabreh 5 Madeh 28 -->
-    <div class="law-alert-box">
-        <div class="law-alert-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <!-- Tabreh 5 Madeh 28 Alert Box (Crisp Amber Light) -->
+    <div class="cr-law-box">
+        <div class="cr-law-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         </div>
-        <div class="law-alert-content">
-            <h4>نکته بسیار مهم پیرامون تاریخ شروع گارانتی ۱۸ ماهه (تبصره ۵ ماده ۲۸ ضوابط صمت):</h4>
-            <p>
-                طبق تبصره ۵ ماده ۲۸ ضوابط اجرایی سازمان فنی و مهندسی وزارت صنعت، معدن و تجارت؛ در صورتی که دستگاه‌های وارداتی پس از <strong>۶ ماه از تاریخ ترخیص</strong> فعال‌سازی نشوند، گارانتی آنها به صورت خودکار به مدت ۱۸ ماه آغاز می‌گردد. جهت اطلاع از تاریخ ترخیص کالا، وارد سامانه جامع گارانتی (ایران گارانتی) شده و با ورود شناسه IMEI تاریخ ترخیص کالا را مشاهده فرمایید.
+        <div class="cr-law-content">
+            <h3 class="cr-law-title">نکته بسیار مهم پیرامون تاریخ شروع گارانتی ۱۸ ماهه (تبصره ۵ ماده ۲۸ ضوابط صمت):</h3>
+            <p class="cr-law-text">
+                طبق تبصره ۵ ماده ۲۸ ضوابط اجرایی وزارت صنعت، معدن و تجارت؛ در صورتی که تلفن همراه پس از <strong>۶ ماه از تاریخ ترخیص رسمی گمرک</strong> فعال‌سازی نشود، گارانتی کالا به صورت خودکار به مدت ۱۸ ماه محاسبه و آغاز می‌گردد. جهت اطلاع از تاریخ دقیق ترخیص کالا، وارد سامانه جامع ایران گارانتی شده و با ثبت شناسه IMEI تاریخ ترخیص را مشاهده فرمایید.
             </p>
         </div>
     </div>
 
-    <!-- 10 Principles of Customer Rights -->
-    <div class="charter-grid">
-        <!-- Principle 1 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۱</div>
-            <div class="charter-content">
-                <h3>ضمانت ۶ ماهه کلیه خدمات و قطعات</h3>
-                <p>کلیه خدمات فنی ارائه شده و قطعات تعویض شده در تمامی شعب و نمایندگی‌های سام موبایل تا ۶ ماه دارای ضمانت رسمی می‌باشند.</p>
+    <!-- 10 Consumer Rights Articles Grid (Pure Light) -->
+    <div class="cr-grid">
+        <div class="cr-card">
+            <span class="cr-card-num">۱</span>
+            <div>
+                <h4 class="cr-card-title">حق دریافت اطلاعات کامل و شفاف</h4>
+                <p class="cr-card-body">مشتری حق دارد قبل و بعد از خرید، از مشخصات فنی، دوره گارانتی ۱۸ ماهه، استعلام اصالت کالا و نحوه استفاده از خدمات پس از فروش آگاهی کامل یابد.</p>
             </div>
         </div>
 
-        <!-- Principle 2 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۲</div>
-            <div class="charter-content">
-                <h3>تعهد ۵ ساله پشتیبانی و تأمین قطعات</h3>
-                <p>مدت زمان پشتیبانی و تعهد تأمین قطعات یدکی استاندارد تلفن همراه، ۵ سال از تاریخ فروش کالا می‌باشد.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۲</span>
+            <div>
+                <h4 class="cr-card-title">حق بهره‌مندی از خدمات رایگان در دوره گارانتی</h4>
+                <p class="cr-card-body">کلیه خدمات سخت‌افزاری و قطعات تعویض شده در طول دوره ۱۸ ماهه برای عیوب ذاتی ناشی از تولید کاملاً رایگان و بدون هیچ‌گونه وجه اضافی می‌باشد.</p>
             </div>
         </div>
 
-        <!-- Principle 3 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۳</div>
-            <div class="charter-content">
-                <h3>ارائه رسید پذیرش رسمی</h3>
-                <p>شرکت در قبال دریافت فرم تکمیل‌شده اظهارات مشتری و دریافت گوشی، موظف به صدور آنی رسید پذیرش معتبر و کد رهگیری یکتا است.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۳</span>
+            <div>
+                <h4 class="cr-card-title">حق تعویض دستگاه در ۷ روز اول خرید</h4>
+                <p class="cr-card-body">در صورت احراز نقص فنی ذاتی ظرف مدت ۷ روز کاری از تاریخ فاکتور معتبر رسمی، شرکت موظف به تعویض دستگاه با کالای نو یا عودت وجه است.</p>
             </div>
         </div>
 
-        <!-- Principle 4 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۴</div>
-            <div class="charter-content">
-                <h3>الزام صدور فاکتور رسمی</h3>
-                <p>صدور رسید و صورتحساب رسمی برای هرگونه ارائه خدمت (خواه دستگاه تحت گارانتی باشد یا نباشد) با ذکر مشخصات قطعات و دستمزد الزامی است.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۴</span>
+            <div>
+                <h4 class="cr-card-title">حق دریافت رسید و قبض رهگیری پذیرش رسمی</h4>
+                <p class="cr-card-body">مرکز خدمات موظف است در بدو تحویل دستگاه، قبض رسمی الکترونیکی حاوی شرح ایراد اظهار شده، وضعیت ظاهری و کد رهگیری یکتا صادر نماید.</p>
             </div>
         </div>
 
-        <!-- Principle 5 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۵</div>
-            <div class="charter-content">
-                <h3>اعلام حدود هزینه پیش از تعمیر</h3>
-                <p>شرکت و نمایندگی‌ها موظف به اعلام حدود هزینه قبل از شروع تعمیرات هستند. در صورتی که حین تعمیر عیب جدیدی مشاهده شود، مراتب حداکثر ظرف ۳ روز کاری به مشتری اعلام می‌گردد.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۵</span>
+            <div>
+                <h4 class="cr-card-title">حق استفاده از دستگاه امانی (Loaner Phone)</h4>
+                <p class="cr-card-body">در صورتی که عملیات تعمیر و رفع عیب بیش از زمان استاندارد ضوابط صمت به طول بینجامد، دستگاه جایگزین موقت تا پایان تعمیر در اختیار مشتری قرار می‌گیرد.</p>
             </div>
         </div>
 
-        <!-- Principle 6 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۶</div>
-            <div class="charter-content">
-                <h3>پاسخ‌دهی اولیه حداکثر ظرف ۲ روز کاری</h3>
-                <p>بیشترین زمان در خصوص تعیین وضعیت اولیه کالا، عیب‌یابی فنی و پاسخ‌دهی اولیه به مشتری حداکثر ۲ روز کاری خواهد بود.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۶</span>
+            <div>
+                <h4 class="cr-card-title">تضمین ۶ ماهه قطعات تعویضی و اجرت</h4>
+                <p class="cr-card-body">کلیه قطعات اورجینال تعویض شده و خدمات انجام گرفته در شعب سام موبایل مشمول ۶ ماه گارانتی کیفیت بدون قید و شرط می‌باشند.</p>
             </div>
         </div>
 
-        <!-- Principle 7 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۷</div>
-            <div class="charter-content">
-                <h3>تعویض دستگاه غیرقابل تعمیر با گوشی آکبند</h3>
-                <p>در طول دوره ۱۸ ماهه گارانتی، چنانچه اطمینان حاصل گردد ایراد با تعمیرات قابل رفع نبوده و کالا مشمول ابطال گارانتی نباشد، دستگاه با مدل آکبند تعویض، یا وجه فاکتور پس از کارشناسی عودت داده می‌شود.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۷</span>
+            <div>
+                <h4 class="cr-card-title">حق تحویل داغی قطعات در تعمیرات آزاد</h4>
+                <p class="cr-card-body">برای خدمات خارج از گارانتی، قطعه معیوب و داغی تعویض شده به همراه فاکتور رسمی مصوب اتحادیه به مشتری تحویل داده می‌شود.</p>
             </div>
         </div>
 
-        <!-- Principle 8 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۸</div>
-            <div class="charter-content">
-                <h3>تعویض کالا در تکرار عیب (مرتبه سوم)</h3>
-                <p>چنانچه در دوره ۱۸ ماهه ضمانت، بعد از ۲ بار تعمیر (مرتبه سوم مراجعه) از یک ایراد سخت‌افزاری مشخص مشکل پابرجا باشد، شرکت متعهد به تعویض با دستگاه همسان و آکبند می‌باشد.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۸</span>
+            <div>
+                <h4 class="cr-card-title">حق حفظ محرمانگی و حریم خصوصی داده‌ها</h4>
+                <p class="cr-card-body">اطلاعات هویتی و داده‌های حافظه کلاینت به عنوان امانت تلقی شده و کارشناسان فنی حق دسترسی غیرمرتبط به داده‌های شخصی کاربر را ندارند.</p>
             </div>
         </div>
 
-        <!-- Principle 9 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۰۹</div>
-            <div class="charter-content">
-                <h3>افزایش دوره گارانتی به ازای تأخیر</h3>
-                <p>در صورت طولانی شدن تعمیرات بیش از ۱۴ روز در شرکت، به ازای هر روز تأخیر، ۴ روز به دوره گارانتی دستگاه افزوده خواهد شد. همچنین در صورت تعلیق فعالیت، مدت تعلیق به دوره گارانتی اضافه می‌گردد.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۹</span>
+            <div>
+                <h4 class="cr-card-title">حق ثبت و رسیدگی سریع به شکایات</h4>
+                <p class="cr-card-body">مشتریان حق دارند هرگونه نارضایتی را در بخش شکایات ثبت نمایند؛ واحد بازرسی موظف به اعلام نتیجه ظرف حداکثر ۴۸ ساعت کاری می‌باشد.</p>
             </div>
         </div>
 
-        <!-- Principle 10 -->
-        <div class="glass-card charter-card">
-            <div class="charter-num">۱۰</div>
-            <div class="charter-content">
-                <h3>جبران خسارت حین تعمیرات</h3>
-                <p>در صورتی که حین فرایند تعمیرات به دستگاه آسیبی وارد گردد، جبران خسارت وارده تا حصول رضایت کامل مشتری بر عهده شرکت تامین کانی سام می‌باشد.</p>
+        <div class="cr-card">
+            <span class="cr-card-num">۱۰</span>
+            <div>
+                <h4 class="cr-card-title">حق ارزیابی و نظرسنجی دوره‌ای کیفیت</h4>
+                <p class="cr-card-body">پس از اتمام هر خدمت، لینک نظرسنجی از طریق پیامک ارسال گردیده و نمره رضایت‌سنجی به صورت مستقیم در رتبه‌بندی عملکرد تکنسین‌ها لحاظ می‌شود.</p>
             </div>
         </div>
     </div>
 
-    <!-- Loaner Device Section -->
-    <div class="glass-card loaner-card" style="margin-top: 30px;">
-        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
-            <div class="loaner-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-            </div>
-            <div style="flex: 1; min-width: 260px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">تخصیص گوشی امانی موقت به مشتریان</h3>
-                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">
-                    چنانچه زمان انتظار پذیرش حضوری در دفاتر خدمات بیش از ۳ ساعت به طول بینجامد یا زمان تأمین قطعه بیش از ۶ روز کاری شود، با درخواست مشتری، سام موبایل یک دستگاه تلفن همراه به صورت امانی در اختیار ایشان قرار می‌دهد.
-                </p>
-            </div>
-            <a href="{{ route('mob.service-portal') }}" class="btn-glow">
-                <span>سامانه مدیریت خدمات</span>
-            </a>
+    <!-- Loaner Device Section (Crisp Blue Light) -->
+    <div class="cr-loaner-box">
+        <div class="cr-loaner-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <div class="cr-loaner-content">
+            <h3 class="cr-loaner-title">طرح پشتیبانی ویژه: تحویل گوشی امانی در تعمیرات طولانی‌مدت</h3>
+            <p class="cr-loaner-text">
+                چنانچه به تشخیص کارشناسی زمان تأمین قطعه یا رفع نقص بیش از ۵ روز کاری زمان ببرد، به منظور عدم اختلال در ارتباطات روزمره مشتری، یک دستگاه تلفن همراه هوشمند تا موعد ترخیص کالا به صورت امانت رایگان تقدیم می‌گردد.
+            </p>
         </div>
     </div>
+
 </div>
 @endsection
 
 @push('styles')
 <style>
-    .page-header-card {
+    /* =========================================================================
+       100% PURE LIGHT EXECUTIVE THEME FOR CUSTOMER RIGHTS
+       ========================================================================= */
+    .cr-page-header {
         text-align: center;
-        padding: 40px 20px;
+        padding: 30px 20px 20px;
         margin-bottom: 24px;
     }
-    .page-header-card h1 {
-        font-size: 28px;
-        font-weight: 900;
-        color: var(--text-main);
-        margin: 12px 0 10px;
-    }
-    .page-header-card p {
-        font-size: 15px;
-        color: var(--text-muted);
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .law-alert-box {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
-        border: 1px solid rgba(245, 158, 11, 0.4);
-        border-radius: 18px;
-        padding: 22px;
-        display: flex;
-        gap: 16px;
-        align-items: flex-start;
-        margin-bottom: 32px;
-        color: #fef3c7;
-    }
-    .law-alert-icon {
-        color: #f59e0b;
-        flex-shrink: 0;
-        margin-top: 2px;
-    }
-    .law-alert-content h4 {
-        font-size: 15px;
+    .cr-badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 14px;
+        border-radius: 99px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+        font-size: 0.78rem;
         font-weight: 800;
-        color: #fbbf24;
-        margin-bottom: 6px;
+        margin-bottom: 12px;
     }
-    .law-alert-content p {
-        font-size: 13.5px;
+    .cr-title {
+        font-size: 1.85rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+    .cr-subtitle {
+        font-size: 0.94rem;
+        color: #475569;
+        max-width: 720px;
+        margin: 0 auto;
         line-height: 1.8;
-        color: #fef3c7;
     }
 
-    .charter-grid {
+    /* Law Alert Box (Light Amber) */
+    .cr-law-box {
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-right: 5px solid #d97706;
+        border-radius: 18px;
+        padding: 24px 28px;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 36px;
+        box-shadow: 0 4px 16px rgba(217, 119, 6, 0.04);
+    }
+    .cr-law-icon {
+        color: #d97706;
+        flex-shrink: 0;
+        padding-top: 2px;
+    }
+    .cr-law-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #92400e;
+        margin-bottom: 8px;
+    }
+    .cr-law-text {
+        font-size: 0.88rem;
+        color: #78350f;
+        line-height: 1.8;
+    }
+
+    /* Grid of 10 Cards */
+    .cr-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
+        margin-bottom: 36px;
     }
-    .charter-card {
+    .cr-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 24px;
         display: flex;
         align-items: flex-start;
-        gap: 18px;
-        padding: 24px;
+        gap: 16px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.02);
+        transition: transform 0.2s, box-shadow 0.2s;
     }
-    .charter-num {
-        font-size: 22px;
+    .cr-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+        border-color: #bfdbfe;
+    }
+    .cr-card-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: #ffffff;
         font-weight: 900;
-        color: var(--primary);
-        font-family: monospace;
-        background: rgba(56, 189, 248, 0.12);
-        border: 1px solid rgba(56, 189, 248, 0.25);
-        border-radius: 12px;
-        width: 48px;
-        height: 48px;
+        font-size: 1.0rem;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
-    .charter-content h3 {
-        font-size: 16px;
+    .cr-card-title {
+        font-size: 0.98rem;
         font-weight: 800;
-        color: var(--text-main);
+        color: #0f172a;
         margin-bottom: 6px;
     }
-    .charter-content p {
-        font-size: 13.5px;
-        color: var(--text-muted);
-        line-height: 1.7;
+    .cr-card-body {
+        font-size: 0.84rem;
+        color: #475569;
+        line-height: 1.8;
     }
 
-    .loaner-card {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(6, 9, 19, 0.95));
-        border-color: rgba(56, 189, 248, 0.35);
-        padding: 30px;
-    }
-    .loaner-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 16px;
-        background: rgba(56, 189, 248, 0.15);
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        color: var(--primary);
+    /* Loaner Device Box */
+    .cr-loaner-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-right: 5px solid #16a34a;
+        border-radius: 18px;
+        padding: 24px 28px;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: flex-start;
+        gap: 20px;
+        box-shadow: 0 4px 16px rgba(22, 163, 74, 0.04);
+    }
+    .cr-loaner-icon {
+        color: #16a34a;
         flex-shrink: 0;
+        padding-top: 2px;
+    }
+    .cr-loaner-title {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #166534;
+        margin-bottom: 8px;
+    }
+    .cr-loaner-text {
+        font-size: 0.88rem;
+        color: #14532d;
+        line-height: 1.8;
     }
 
     @media (max-width: 800px) {
-        .charter-grid {
+        .cr-grid {
             grid-template-columns: 1fr;
+        }
+        .cr-title {
+            font-size: 1.4rem;
+        }
+        .cr-law-box, .cr-loaner-box {
+            flex-direction: column;
+            gap: 12px;
         }
     }
 </style>

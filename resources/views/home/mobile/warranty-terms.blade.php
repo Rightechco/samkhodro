@@ -1,332 +1,549 @@
 @extends('home.mobile.layout')
 
 @section('title', 'شرایط و ضوابط ۱۸ ماهه گارانتی و آموزش فعال‌سازی همتا | سام موبایل')
+@section('meta_description', 'شرایط رسمی ۱۸ ماهه گارانتی تلفن همراه شرکت تامین کانی سام (سام موبایل)، تعهدات خدمات پس از فروش و راهنمای ۱۰ مرحله‌ای فعال‌سازی سامانه همتا')
 
 @section('content')
-<div class="container">
-    <div class="page-header-card">
-        <span class="section-tag">ضوابط و تعهدات</span>
-        <h1>شرایط گارانتی ۱۸ ماهه شرکت تامین کانی سام (سام موبایل)</h1>
-        <p>آشنایی با تعهدات پوشش گارانتی، موارد ابطال و راهنمای گام به گام فعال‌سازی در سامانه همتا</p>
+<div class="container" style="max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px;">
+
+    <!-- Page Header Header -->
+    <div class="wt-page-header">
+        <span class="wt-badge-pill">ضوابط و تعهدات رسمی</span>
+        <h1 class="wt-title">شرایط گارانتی ۱۸ ماهه شرکت تامین کانی سام (سام موبایل)</h1>
+        <p class="wt-subtitle">آشنایی کامل با دامنه پوشش طلایی، تعهدات شرکت طبق ضوابط اجرایی صمت و راهنمای ۱۰ مرحله‌ای فعال‌سازی همتا</p>
     </div>
 
-    <!-- Hamta Activation Steps (10 Steps from PDF Page 3) -->
-    <div class="glass-card hamta-full-card">
-        <div class="panel-header-badge">
-            <span class="ping-dot"></span>
-            <span>مهم‌ترین اقدام پس از خرید</span>
+    <!-- Official Warranty Card Showcase (Exact to Attached User Image) -->
+    <div class="wt-showcase-box">
+        <div class="wt-showcase-header">
+            <span class="wt-badge-gold">✓ کارت اصالت و گارانتی معتبر</span>
+            <h2 class="wt-showcase-title">کارت رسمی گارانتی ۱۸ ماهه تلفن همراه تامین کانی سام</h2>
+            <p class="wt-showcase-sub">تمامی گوشی‌های وارداتی دارای کارت ضمانت فیزیکی و دیجیتال همراه با هولوگرام امنیتی و QR کد استعلام لحظه‌ای می‌باشند.</p>
         </div>
-        <h2 style="font-size: 22px; font-weight: 900; color: var(--text-main); margin-bottom: 8px;">
-            راهنمای ۱۰ مرحله‌ای فعال‌سازی دستگاه در سامانه همتا با کد دستوری <span style="color:#fde047; direction:ltr; display:inline-block;">*7777#</span>
-        </h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">
-            مطابق مصوبات قانونی، فعال‌سازی رسمی گوشی با سیم‌کارت خریدار الزامی است. جهت شروع گارانتی مراحل زیر را طی نمایید:
-        </p>
-
-        <div class="steps-list-grid">
-            <div class="hamta-step-item">
-                <span class="step-badge">۱</span>
-                <p>ابتدا با سیم‌کارت خود کد دستوری <strong>#7777*</strong> را شماره‌گیری نموده و گزینه تماس را انتخاب کنید.</p>
+        <div class="wt-card-preview-area">
+            <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی ۱۸ ماهه سام موبایل" class="wt-card-img" onerror="this.onerror=null; this.src='/assets/images/mobile/banner-1.jpg';">
+        </div>
+        <div class="wt-showcase-footer">
+            <div class="wt-footer-meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>مرکز تماس و استعلام: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
             </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۲</span>
-                <p>با ارسال عدد <strong>۲</strong>، گزینه <strong>«فعالسازی»</strong> را انتخاب فرمایید.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۳</span>
-                <p>شناسه ۱۵ رقمی (IMEI) دستگاه را وارد و ارسال کنید (۱۵ رقم بدون خط فاصله، ممیز و کاراکتر اضافی).</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۴</span>
-                <p>شماره سیم‌کارتی که قصد فعال‌سازی دستگاه با آن سیم‌کارت را دارید وارد نمایید.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۵</span>
-                <p>کد فعال‌سازی ۶ رقمی درج‌شده روی کارت یا لیبل گارانتی سام موبایل را وارد فرمایید.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۶</span>
-                <p>پیغامی نمایش داده می‌شود که در آن شناسه IMEI و شماره سیم‌کارت وارد شده به شما نشان داده می‌شود.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۷</span>
-                <p>در صورتی که اطلاعات پیغام مورد تأیید شماست، عدد <strong>۱</strong> را وارد و ارسال نمایید.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۸</span>
-                <p>پیغام تأیید موفقیت‌آمیز فعال‌سازی نمایش داده شده و پیامک فعال‌سازی نیز بلافاصله ارسال می‌گردد.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۹</span>
-                <p>در صورت بروز هرگونه مشکل فعال‌سازی (کد اشتباه، گم شدن کارت) با مرکز تماس تامین کانی سام تماس حاصل فرمایید.</p>
-            </div>
-            <div class="hamta-step-item">
-                <span class="step-badge">۱۰</span>
-                <p>در صورت مشاهده خطای «غیرقانونی بودن» به علت عدم به‌روزرسانی سامانه، مراتب را سریعاً به پشتیبانی اعلام فرمایید.</p>
+            <div class="wt-footer-meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>دفتر مرکزی خدمات: تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش استاد میرعلی تبریزی، پلاک ۷۸</span>
             </div>
         </div>
-    </
-        <!-- Official Warranty Card Showcase -->
-        <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: 24px; padding: 32px; margin-bottom: 36px; box-shadow: var(--shadow-sm); text-align: center;">
-            <span class="section-tag-pill" style="margin-bottom: 12px;">نمونه رسمی شرکت</span>
-            <h3 style="font-size: 1.35rem; font-weight: 900; color: var(--text-main); margin-bottom: 10px;">کارت رسمی گارانتی ۱۸ ماهه تلفن همراه تامین کانی سام</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 650px; margin: 0 auto 24px;">تمامی محصولات وارداتی شرکت دارای کارت گارانتی هولوگرام‌دار با قابلیت استعلام آنلاین و اسکن QR کد می‌باشند.</p>
-            <div style="max-width: 520px; margin: 0 auto 16px;">
-                <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی گوشی همراه تامین کانی سام" style="width: 100%; border-radius: 18px; box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12); border: 2px solid #0f3ba0;">
-            </div>
-            <div style="display: flex; justify-content: center; gap: 16px; font-size: 0.82rem; color: var(--text-muted);">
-                <span>📞 تلفن مرکز تماس: ۰۴۱۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
-                <span>📍 دفتر مرکزی: تبریز، پلاک ۷۸</span>
-            </div>
-        </div>
-div>
+    </div>
 
-    <!-- Warranty Terms & Coverage Details (From PDF Page 1) -->
-    <div style="margin-top: 36px;">
-        <div class="section-header" style="text-align: right; margin-bottom: 24px;">
-            <span class="section-tag">پوشش‌های رسمی</span>
-            <h2 class="section-title">دامنه و تعهدات ۱۸ ماهه گارانتی سام موبایل</h2>
+    <!-- Hamta Activation Steps (100% Crisp Light Theme) -->
+    <div class="wt-hamta-card">
+        <div class="wt-hamta-top">
+            <div class="wt-hamta-tag">
+                <span class="wt-ping-dot"></span>
+                <span>اقدام ضروری پس از خرید</span>
+            </div>
+            <h2 class="wt-hamta-heading">
+                راهنمای ۱۰ مرحله‌ای فعال‌سازی دستگاه در سامانه همتا با کد دستوری 
+                <span class="wt-code-tag">*7777#</span>
+            </h2>
+            <p class="wt-hamta-desc">
+                مطابق قوانین رگولاتوری، فعال‌سازی رسمی گوشی با سیم‌کارت خریدار الزامی است. جهت شروع گارانتی ۱۸ ماهه مراحل زیر را دنبال فرمایید:
+            </p>
         </div>
 
-        <div class="terms-grid">
-            <div class="glass-card term-item">
-                <div class="term-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <div>
-                    <h4>عدم پرداخت هرگونه هزینه</h4>
-                    <p>مشتریان برای رفع ایرادات، خسارات و مشکلاتی که مشمول موارد ۱۸ ماهه گارانتی باشد هیچ‌گونه هزینه‌ای پرداخت نمی‌کنند.</p>
+        <div class="wt-steps-grid">
+            <div class="wt-step-item">
+                <span class="wt-step-num">۱</span>
+                <div class="wt-step-text">
+                    <strong>شماره‌گیری کد همتا:</strong>
+                    ابتدا با سیم‌کارت خریدار، کد دستوری <code class="wt-inline-code">#7777*</code> را شماره‌گیری و دکمه تماس را بفشارید.
                 </div>
             </div>
-
-            <div class="glass-card term-item">
-                <div class="term-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                </div>
-                <div>
-                    <h4>ارسال و دریافت پستی رایگان</h4>
-                    <p>ارسال و دریافت کالا برای مشتریانی که در شهر آنها نمایندگی رسمی تامین کانی سام وجود ندارد کاملاً رایگان است.</p>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۲</span>
+                <div class="wt-step-text">
+                    <strong>انتخاب منوی فعال‌سازی:</strong>
+                    در منوی نمایش داده شده با ارسال عدد <strong>۲</strong>، گزینه «فعالسازی» را انتخاب کنید.
                 </div>
             </div>
-
-            <div class="glass-card term-item">
-                <div class="term-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                </div>
-                <div>
-                    <h4>تعویض در ۷ روز اول خرید</h4>
-                    <p>در صورت شناسایی ایراد سخت‌افزاری طی ۷ روز تقویمی از تاریخ فاکتور معتبر (به شرط فعال‌سازی در ۳ روز اول خرید)، کالای آکبند تقدیم یا وجه عودت داده می‌شود.</p>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۳</span>
+                <div class="wt-step-text">
+                    <strong>ورود شناسه IMEI:</strong>
+                    شناسه ۱۵ رقمی IMEI دستگاه را (مندرج روی جعبه کالا یا با شماره‌گیری <code class="wt-inline-code">*#06#</code>) وارد نمایید.
                 </div>
             </div>
-
-            <div class="glass-card term-item">
-                <div class="term-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۴</span>
+                <div class="wt-step-text">
+                    <strong>شماره سیم‌کارت:</strong>
+                    شماره همراه سیم‌کارتی که قصد دارید گوشی با آن فعال و استفاده شود را وارد کنید.
                 </div>
-                <div>
-                    <h4>تضمین ۶ ماهه قطعات تعویض شده</h4>
-                    <p>کلیه خدماتی که در شعب سام موبایل ارائه می‌شوند از جمله قطعات تعویض‌شده تا ۶ ماه دارای ضمانت بی‌قیدوشرط می‌باشند.</p>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۵</span>
+                <div class="wt-step-text">
+                    <strong>کد فعال‌سازی ۶ رقمی:</strong>
+                    کد فعال‌سازی ۶ رقمی مندرج روی کارت گارانتی سام موبایل را وارد فرمایید.
+                </div>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۶</span>
+                <div class="wt-step-text">
+                    <strong>بررسی اطلاعات:</strong>
+                    پیش‌نمایش شناسه IMEI و شماره سیم‌کارت را با دقت بازبینی فرمایید.
+                </div>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۷</span>
+                <div class="wt-step-text">
+                    <strong>تأیید نهایی:</strong>
+                    در صورت صحت اطلاعات، عدد <strong>۱</strong> را ارسال نمایید.
+                </div>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۸</span>
+                <div class="wt-step-text">
+                    <strong>دریافت پیامک موفقیت:</strong>
+                    پیامک تأیید فعال‌سازی رسمی از سامانه همتا به گوشی شما ارسال می‌شود.
+                </div>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۹</span>
+                <div class="wt-step-text">
+                    <strong>پشتیبانی آنلاین:</strong>
+                    در صورت هرگونه مغایرت کد یا مفقودی کارت با مرکز تماس تامین کانی سام تماس حاصل فرمایید.
+                </div>
+            </div>
+            <div class="wt-step-item">
+                <span class="wt-step-num">۱۰</span>
+                <div class="wt-step-text">
+                    <strong>اطمینان از اصالت:</strong>
+                    پس از فعال‌سازی، تاریخ گارانتی و اطلاعات دستگاه در سامانه جامع ایران گارانتی ثبت می‌گردد.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Void Warranty Conditions (7 Items from PDF Page 2) -->
-    <div style="margin-top: 40px;">
-        <div class="section-header" style="text-align: right; margin-bottom: 24px;">
-            <span class="section-tag" style="color:#f43f5e; background:rgba(244,63,94,0.12); border-color:rgba(244,63,94,0.3);">موارد سلب مسئولیت</span>
-            <h2 class="section-title">شرایط ابطال گارانتی (خارج از شمول ضمانت)</h2>
-            <p class="section-subtitle" style="margin: 0;">بر اساس ماده ۲ ضوابط اجرایی، موارد زیر موجب ابطال گارانتی کالا می‌گردد:</p>
+    <!-- Official Warranty Coverage Details (Pure Light Theme) -->
+    <div style="margin-top: 48px;">
+        <div class="wt-section-head">
+            <span class="wt-badge-pill">پوشش‌های طلایی</span>
+            <h2 class="wt-section-title">دامنه و تعهدات ۱۸ ماهه گارانتی سام موبایل</h2>
+            <p class="wt-section-desc">کلیه تعهدات به صورت رسمی و مطابق با استانداردهای سازمان حمایت از مصرف‌کنندگان اجرا می‌گردد:</p>
         </div>
 
-        <div class="void-rules-list">
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۱</div>
+        <div class="wt-terms-grid">
+            <div class="wt-term-card">
+                <div class="wt-term-icon" style="background:#eff6ff; color:#2563eb;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
                 <div>
-                    <h4>آسیب فیزیکی، ضربه و فشار به صفحه نمایش (LCD)</h4>
-                    <p>هرگونه ضربه، شکستگی، ترک، تغییر شکل ظاهری بدنه یا معیوب شدن تصویر ال‌سی‌دی، شکستگی سوکت شارژ در اثر استفاده ناصحیح و آسیب ناشی از نوسانات برق یا شارژر غیراستاندارد.</p>
+                    <h3 class="wt-term-title">عدم پرداخت هزینه تعمیرات مشمول</h3>
+                    <p class="wt-term-body">مشتریان برای رفع ایرادات سخت‌افزاری و قطعاتی که مشمول موارد ۱۸ ماهه گارانتی باشد هیچ‌گونه هزینه‌ای پرداخت نمی‌نمایند.</p>
                 </div>
             </div>
 
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۲</div>
+            <div class="wt-term-card">
+                <div class="wt-term-icon" style="background:#ecfdf5; color:#059669;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
                 <div>
-                    <h4>نفوذ مایعات و رطوبت</h4>
-                    <p>هرگونه تماس با مایعات، به نحوی که رطوبت یا آب به داخل دستگاه نفوذ نماید یا برچسب‌های سنسور رطوبت تغییر رنگ دهند.</p>
+                    <h3 class="wt-term-title">ارسال و دریافت پستی رایگان</h3>
+                    <p class="wt-term-body">ارسال و تحویل دستگاه از طریق پست پیشتاز برای مشتریان سراسر کشور که در شهرشان شعبه مستقیم وجود ندارد کاملاً رایگان است.</p>
                 </div>
             </div>
 
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۳</div>
+            <div class="wt-term-card">
+                <div class="wt-term-icon" style="background:#fef3c7; color:#d97706;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+                </div>
                 <div>
-                    <h4>سرویس و تعمیر توسط افراد غیرمجاز</h4>
-                    <p>باز شدن، تعمیر، لحیم‌کاری یا هرگونه دستکاری در قطعات دستگاه توسط تعمیرکاران و مراکز خدمات متفرقه غیر از نمایندگی‌های سام موبایل.</p>
+                    <h3 class="wt-term-title">تعویض در ۷ روز ابتدایی خرید</h3>
+                    <p class="wt-term-body">در صورت بروز نقص ذاتی سخت‌افزاری ظرف ۷ روز از تاریخ فاکتور معتبر، دستگاه با کالای آکبند تعویض یا وجه کامل مسترد می‌گردد.</p>
                 </div>
             </div>
 
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۴</div>
-                <div>
-                    <h4>دستکاری و مخدوش شدن شماره سریال (IMEI)</h4>
-                    <p>تغییر یا دستکاری در شماره سریال IMEI در داخل نرم‌افزار، مخدوش شدن برچسب سریال جعبه یا کارت گارانتی.</p>
+            <div class="wt-term-card">
+                <div class="wt-term-icon" style="background:#ede9fe; color:#7c3aed;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
-            </div>
-
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۵</div>
                 <div>
-                    <h4>عدم تطابق شماره سریال دستگاه و جعبه</h4>
-                    <p>یکسان نبودن شناسه IMEI جعبه، بدنه و شماره قابل نمایش در گوشی با شماره‌گیری کد <strong style="direction:ltr; display:inline-block; color:#38bdf8;">*#06#</strong>.</p>
-                </div>
-            </div>
-
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۶</div>
-                <div>
-                    <h4>نرم‌افزارهای مخرب و روت کردن سیستم‌عامل</h4>
-                    <p>مشکلات ناشی از نصب نرم‌افزارهای نامعتبر، آلودگی به ویروس یا ایجاد تغییرات در سیستم‌عامل دستگاه (مانند روت کردن، باز کردن بوت‌لودر یا کاستوم رام).</p>
-                </div>
-            </div>
-
-            <div class="glass-card void-rule-card">
-                <div class="rule-num">۷</div>
-                <div>
-                    <h4>قفل‌های کاربری (FRP، گوگل اکانت، Mi Account و Apple ID)</h4>
-                    <p>شکستن قفل‌های امنیتی ناشی از فراموشی رمز توسط کاربر خارج از شمول خدمات رایگان گارانتی بوده و مشمول هزینه است.</p>
+                    <h3 class="wt-term-title">تضمین ۶ ماهه قطعات تعویضی</h3>
+                    <p class="wt-term-body">کلیه قطعات و خدمات ارائه شده در مرکز خدمات پس از فروش سام موبایل دارای ۶ ماه ضمانت بی‌قیدوشرط تعویض قطعه می‌باشند.</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Void Warranty Conditions (Crisp Red/Light Style) -->
+    <div style="margin-top: 48px;">
+        <div class="wt-section-head">
+            <span class="wt-badge-pill" style="background:#fff1f2; color:#e11d48; border-color:#fecdd3;">موارد سلب مسئولیت قانونی</span>
+            <h2 class="wt-section-title">شرایط ابطال و خروج از پوشش گارانتی</h2>
+            <p class="wt-section-desc">بر اساس ماده ۲ ضوابط اجرایی خدمات، موارد زیر از پوشش گارانتی رایگان خارج می‌باشند:</p>
+        </div>
+
+        <div class="wt-void-list">
+            <div class="wt-void-item">
+                <span class="wt-void-badge">۱</span>
+                <div>
+                    <strong class="wt-void-title">آسیب‌های فیزیکی، ضربه و شکستگی صفحه نمایش (LCD):</strong>
+                    <p class="wt-void-text">هرگونه ضربه‌دیدگی، سقوط، شکستگی تاچ و ال‌سی‌دی، دفرمگی بدنه یا خرابی پورت شارژ در اثر کشیدگی کابل و نوسانات الکتریکی.</p>
+                </div>
+            </div>
+
+            <div class="wt-void-item">
+                <span class="wt-void-badge">۲</span>
+                <div>
+                    <strong class="wt-void-title">نفوذ رطوبت، آب و مایعات شیمیایی:</strong>
+                    <p class="wt-void-text">هرگونه تماس با مایعات و رطوبت که موجب فعال‌سازی سنسورهای رطوبت‌سنج دستگاه یا سولفاته شدن بردهای الکترونیکی شود.</p>
+                </div>
+            </div>
+
+            <div class="wt-void-item">
+                <span class="wt-void-badge">۳</span>
+                <div>
+                    <strong class="wt-void-title">تعمیر یا بازشدن دستگاه توسط افراد غیرمجاز:</strong>
+                    <p class="wt-void-text">باز شدن پیچ‌ها، مخدوش شدن پلمپ یا اقدام به تعمیر توسط مراکزی به جز نمایندگی رسمی شرکت تامین کانی سام.</p>
+                </div>
+            </div>
+
+            <div class="wt-void-item">
+                <span class="wt-void-badge">۴</span>
+                <div>
+                    <strong class="wt-void-title">دستکاری‌های نرم‌افزاری و روت (Root / Bootloader):</strong>
+                    <p class="wt-void-text">تغییر رام رسمی دستگاه، باز کردن قفل بوت‌لودر، روت کردن سیستم‌عامل یا نصب بدافزار که به فریم‌ور دستگاه صدمه بزند.</p>
+                </div>
+            </div>
+
+            <div class="wt-void-item">
+                <span class="wt-void-badge">۵</span>
+                <div>
+                    <strong class="wt-void-title">قفل‌های کاربری فراموش شده (FRP / iCloud / Mi Account):</strong>
+                    <p class="wt-void-text">فراموشی گذرواژه‌ها و قفل‌های کاربری مشمول خدمات گارانتی رایگان نبوده و رفع آن مستلزم ارائه مدارک هویتی و پرداخت هزینه است.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 @endsection
 
 @push('styles')
 <style>
-    .page-header-card {
+    /* =========================================================================
+       100% LIGHT ULTRA-PREMIUM STYLING FOR WARRANTY-TERMS
+       ========================================================================= */
+    .wt-page-header {
         text-align: center;
-        padding: 40px 20px 20px;
-        margin-bottom: 20px;
+        padding: 30px 20px 20px;
+        margin-bottom: 24px;
     }
-    .page-header-card h1 {
-        font-size: 28px;
+    .wt-badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 14px;
+        border-radius: 99px;
+        background: #eff6ff;
+        color: #2563eb;
+        border: 1px solid #bfdbfe;
+        font-size: 0.78rem;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+    .wt-title {
+        font-size: 1.85rem;
         font-weight: 900;
-        color: var(--text-main);
-        margin: 12px 0 10px;
+        color: #0f172a;
+        margin-bottom: 12px;
+        line-height: 1.4;
     }
-    .page-header-card p {
-        font-size: 15px;
-        color: var(--text-muted);
-        max-width: 700px;
+    .wt-subtitle {
+        font-size: 0.94rem;
+        color: #475569;
+        max-width: 720px;
         margin: 0 auto;
+        line-height: 1.8;
     }
 
-    .hamta-full-card {
-        background: linear-gradient(135deg, rgba(3, 105, 161, 0.35), rgba(15, 23, 42, 0.9));
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        padding: 36px;
+    /* Showcase Box */
+    .wt-showcase-box {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        padding: 32px;
+        margin-bottom: 36px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+        text-align: center;
     }
-    .panel-header-badge {
+    .wt-badge-gold {
+        display: inline-flex;
+        padding: 4px 12px;
+        border-radius: 99px;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+        font-size: 0.76rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+    .wt-showcase-title {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 8px;
+    }
+    .wt-showcase-sub {
+        font-size: 0.88rem;
+        color: #64748b;
+        max-width: 660px;
+        margin: 0 auto 24px;
+        line-height: 1.7;
+    }
+    .wt-card-preview-area {
+        max-width: 480px;
+        margin: 0 auto 20px;
+    }
+    .wt-card-img {
+        width: 100%;
+        border-radius: 18px;
+        box-shadow: 0 12px 36px rgba(15, 23, 42, 0.10);
+        border: 2px solid #2563eb;
+    }
+    .wt-showcase-footer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+        padding-top: 18px;
+        border-top: 1px solid #f1f5f9;
+        font-size: 0.82rem;
+        color: #475569;
+        font-weight: 700;
+    }
+    .wt-footer-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+    }
+
+    /* Hamta Card (Crisp Light) */
+    .wt-hamta-card {
+        background: #ffffff;
+        border: 1px solid #dbeafe;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 6px 24px rgba(37, 99, 235, 0.04);
+        margin-bottom: 36px;
+    }
+    .wt-hamta-top {
+        margin-bottom: 24px;
+    }
+    .wt-hamta-tag {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         padding: 4px 14px;
-        background: rgba(253, 224, 71, 0.15);
-        color: #fde047;
-        border: 1px solid rgba(253, 224, 71, 0.3);
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #a7f3d0;
         border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 0.74rem;
+        font-weight: 800;
         margin-bottom: 12px;
     }
-    .steps-list-grid {
+    .wt-ping-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #10b981;
+    }
+    .wt-hamta-heading {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .wt-code-tag {
+        font-family: monospace;
+        direction: ltr;
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 2px 10px;
+        border-radius: 8px;
+        border: 1px solid #bfdbfe;
+        font-weight: 900;
+    }
+    .wt-hamta-desc {
+        font-size: 0.88rem;
+        color: #64748b;
+        line-height: 1.8;
+    }
+
+    /* Steps Grid */
+    .wt-steps-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
     }
-    .hamta-step-item {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border-light);
+    .wt-step-item {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 14px;
         padding: 16px;
         display: flex;
         align-items: flex-start;
         gap: 14px;
+        transition: transform 0.2s;
     }
-    .step-badge {
-        width: 32px;
-        height: 32px;
+    .wt-step-item:hover {
+        background: #ffffff;
+        border-color: #bfdbfe;
+        transform: translateY(-2px);
+    }
+    .wt-step-num {
+        width: 34px;
+        height: 34px;
         border-radius: 10px;
-        background: linear-gradient(135deg, #0284c7, #38bdf8);
-        color: var(--text-main);
-        font-weight: 800;
-        font-size: 15px;
+        background: #2563eb;
+        color: #ffffff;
+        font-weight: 900;
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
-    .hamta-step-item p {
-        font-size: 13.5px;
+    .wt-step-text {
+        font-size: 0.84rem;
+        color: #334155;
         line-height: 1.7;
-        color: var(--text-body);
+    }
+    .wt-step-text strong {
+        color: #0f172a;
+        display: block;
+        margin-bottom: 2px;
+    }
+    .wt-inline-code {
+        font-family: monospace;
+        font-weight: 800;
+        background: #e2e8f0;
+        padding: 1px 6px;
+        border-radius: 6px;
+        color: #1e293b;
     }
 
-    .terms-grid {
+    /* Section Header */
+    .wt-section-head {
+        text-align: right;
+        margin-bottom: 24px;
+    }
+    .wt-section-title {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-top: 8px;
+    }
+    .wt-section-desc {
+        font-size: 0.86rem;
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    /* Terms Grid */
+    .wt-terms-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
     }
-    .term-item {
+    .wt-term-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 22px;
         display: flex;
         align-items: flex-start;
         gap: 16px;
-        padding: 22px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.02);
     }
-    .term-icon {
-        width: 46px;
-        height: 46px;
-        border-radius: 12px;
-        background: rgba(56, 189, 248, 0.12);
-        color: var(--primary);
+    .wt-term-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
     }
-    .term-item h4 { font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
-    .term-item p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+    .wt-term-title {
+        font-size: 1.0rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+    .wt-term-body {
+        font-size: 0.84rem;
+        color: #475569;
+        line-height: 1.8;
+    }
 
-    .void-rules-list {
+    /* Void Rules */
+    .wt-void-list {
         display: flex;
         flex-direction: column;
         gap: 14px;
     }
-    .void-rule-card {
+    .wt-void-item {
+        background: #ffffff;
+        border: 1px solid #fecdd3;
+        border-right: 5px solid #e11d48;
+        border-radius: 14px;
+        padding: 18px 22px;
         display: flex;
         align-items: flex-start;
-        gap: 18px;
-        padding: 20px 24px;
-        border-right: 4px solid #f43f5e;
+        gap: 16px;
+        box-shadow: 0 2px 10px rgba(225, 29, 72, 0.02);
     }
-    .rule-num {
-        font-size: 18px;
+    .wt-void-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #fff1f2;
+        color: #e11d48;
         font-weight: 900;
-        color: #f43f5e;
-        background: rgba(244, 63, 94, 0.12);
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        border: 1px solid #fecdd3;
     }
-    .void-rule-card h4 { font-size: 15.5px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; }
-    .void-rule-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+    .wt-void-title {
+        font-size: 0.92rem;
+        color: #0f172a;
+        display: block;
+        margin-bottom: 4px;
+    }
+    .wt-void-text {
+        font-size: 0.83rem;
+        color: #475569;
+        line-height: 1.7;
+    }
 
     @media (max-width: 800px) {
-        .steps-list-grid, .terms-grid {
+        .wt-steps-grid, .wt-terms-grid {
             grid-template-columns: 1fr;
+        }
+        .wt-title {
+            font-size: 1.4rem;
         }
     }
 </style>

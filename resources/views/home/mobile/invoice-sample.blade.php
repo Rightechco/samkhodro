@@ -49,12 +49,12 @@
                 <div><span>شماره ثبت:</span> <strong>۵۸۹۸۲۱</strong></div>
             </div>
             <div class="inv-grid-3" style="margin-top: 6px;">
-                <div><span>استان و شهرستان:</span> <strong>تهران - تهران</strong></div>
-                <div><span>کد پستی ۱۰ رقمی:</span> <strong>۱۱۴۵۹۸۲۱۳۱</strong></div>
-                <div><span>تلفن تماس:</span> <strong>۰۲۱-۶۵۰۲۱۰۸۵</strong></div>
+                <div><span>استان و شهرستان:</span> <strong>آذربایجان شرقی - تبریز</strong></div>
+                <div><span>کد پستی ۱۰ رقمی:</span> <strong>۵۱۵۷۹۷۴۷۱۱</strong></div>
+                <div><span>تلفن تماس:</span> <strong>۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</strong></div>
             </div>
             <div style="margin-top: 6px; font-size: 12.5px;">
-                <span>نشانی کامل:</span> <strong>تهران، میدان فردوسی، مرکز تجارت جهانی، ورودی اداری، طبقه ۵، واحد ۵۱۵</strong>
+                <span>نشانی کامل:</span> <strong>تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</strong>
             </div>
         </div>
 

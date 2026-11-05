@@ -23,17 +23,21 @@ $registerMobileRoutes = function () {
     Route::post('/login/send-otp', [MobileServiceController::class, 'sendOtp'])->name('mob.login.send-otp');
     Route::post('/login/verify-otp', [MobileServiceController::class, 'verifyOtp'])->name('mob.login.verify-otp');
     Route::post('/login/password', [MobileServiceController::class, 'loginPassword'])->name('mob.login.password');
-    Route::get('/logout', [MobileServiceController::class, 'logout'])->name('mob.logout');
+    Route::match(['get', 'post'], '/logout', [MobileServiceController::class, 'logout'])->name('mob.logout');
 
     // پنل‌های تخصصی سامانه خدمات
     Route::get('/service-portal', [MobileServiceController::class, 'servicePortal'])->name('mob.service-portal');
     Route::get('/user-portal', [MobileServiceController::class, 'userPortal'])->name('mob.user-portal');
     Route::get('/admin-portal', [MobileServiceController::class, 'adminPortal'])->name('mob.admin-portal');
     Route::post('/user-portal/store-order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user.store-order');
+    Route::post('/user-portal/order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user-order.store');
     Route::post('/user-portal/send-ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.user.send-ticket');
+    Route::post('/user-portal/ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.ticket.store');
 
     // عملیات کارشناسی و ماده ۱۳
+    Route::post('/service-portal/send-sms', [MobileServiceController::class, 'sendManualSms'])->name('mob.portal.send-sms');
     Route::post('/service-portal/store', [MobileServiceController::class, 'storeReception'])->name('mob.portal.store');
+    Route::post('/service-portal/reception', [MobileServiceController::class, 'storeReception'])->name('mob.reception.store');
     Route::post('/service-portal/{id}/update-status', [MobileServiceController::class, 'updateOrderStatus'])->name('mob.portal.update-status');
     Route::post('/service-portal/{id}/order-part', [MobileServiceController::class, 'orderPart'])->name('mob.portal.order-part');
     Route::post('/service-portal/{id}/complete', [MobileServiceController::class, 'completeService'])->name('mob.portal.complete');

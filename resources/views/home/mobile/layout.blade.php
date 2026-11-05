@@ -230,16 +230,7 @@
             border-bottom: 1px solid var(--border-light);
             box-shadow: var(--shadow-sm);
         }
-        .header-inner {
-            max-width: 1360px;
-            margin: 0 auto;
-            padding: 0 20px;
-            height: 74px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-        }
+        
         
         /* Logo */
         .brand-logo-area {
@@ -277,38 +268,7 @@
             font-weight: 500;
         }
 
-        /* Single-line Navigation Menu */
-        .nav-single-line {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 4px 0;
-        }
-        .nav-single-line::-webkit-scrollbar {
-            display: none;
-        }
-        .nav-item-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 13px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-body);
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .nav-item-link:hover {
-            color: var(--primary);
-            background: var(--primary-light);
-        }
+        
         .nav-item-link.active {
             color: var(--primary);
             background: var(--primary-light);
@@ -384,11 +344,7 @@
                 backdrop-filter: blur(20px) !important;
                 -webkit-backdrop-filter: blur(20px) !important;
             }
-            .header-inner {
-                height: 58px !important;
-                padding: 0 14px !important;
-                gap: 10px !important;
-            }
+            
             .brand-logo-area {
                 gap: 8px !important;
             }
@@ -1027,7 +983,124 @@
                 display: flex !important;
             }
         }
-    </style>
+            .glass-card {
+            background: #ffffff !important;
+            border: 1px solid var(--border-light) !important;
+            border-radius: var(--radius-lg) !important;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03) !important;
+            color: var(--text-body) !important;
+        }
+
+        .header-inner {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        /* Desktop Dropdown Navbar */
+        .nav-single-line {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: nowrap;
+        }
+        .nav-mini-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 1px 6px;
+            border-radius: 99px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid #bfdbfe;
+            margin-right: 4px;
+        }
+        .nav-dropdown {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .nav-dropdown-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-body);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .nav-dropdown-btn:hover,
+        .nav-dropdown:hover .nav-dropdown-btn,
+        .nav-dropdown-btn.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        .nav-dropdown-btn svg {
+            transition: transform 0.25s ease;
+            color: var(--text-muted);
+        }
+        .nav-dropdown:hover .nav-dropdown-btn svg {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 240px;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 14px;
+            box-shadow: 0 14px 38px rgba(15, 23, 42, 0.12);
+            padding: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .nav-dropdown:hover .nav-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .nav-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 700;
+            color: var(--text-body);
+            text-decoration: none;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+        }
+        .nav-dropdown-item:hover,
+        .nav-dropdown-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .nav-dropdown-item svg {
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+</style>
     @stack('styles')
 </head>
 <body>
@@ -1067,38 +1140,76 @@
                 </div>
             </a>
 
-            <!-- Single-Line Clean Navigation Menu -->
+            <!-- Ultra-Premium Desktop Navigation with Dropdowns (100% Responsive) -->
             <nav class="nav-single-line">
                 <a href="{{ url('/') }}" class="nav-item-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}">
                     <span>صفحه اصلی</span>
                 </a>
                 <a href="{{ url('/#inquiry-section') }}" class="nav-item-link">
-                    <span>استعلام گارانتی (IMEI)</span>
+                    <span>استعلام اصالت (IMEI)</span>
                 </a>
                 <a href="{{ url('/service-portal') }}" class="nav-item-link {{ request()->is('*service-portal*') || request()->is('*user-portal*') || request()->is('*admin-portal*') ? 'active' : '' }}">
-                    <span>سامانه مدیریت خدمات (ماده ۱۳)</span>
+                    <span>سامانه مدیریت خدمات</span>
+                    <span class="nav-mini-badge">ماده ۱۳</span>
                 </a>
-                <a href="{{ url('/warranty-terms') }}" class="nav-item-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
-                    <span>شرایط گارانتی ۱۸ ماهه</span>
-                </a>
-                <a href="{{ url('/customer-rights') }}" class="nav-item-link {{ request()->is('*customer-rights*') ? 'active' : '' }}">
-                    <span>منشور حقوق مشتریان</span>
-                </a>
-                <a href="{{ url('/shipping-guide') }}" class="nav-item-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}">
-                    <span>راهنمای پذیرش و ارسال</span>
-                </a>
-                <a href="{{ url('/invoice-sample') }}" class="nav-item-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}">
-                    <span>تعرفه و فاکتور رسمی</span>
-                </a>
-                <a href="{{ url('/complaints') }}" class="nav-item-link {{ request()->is('*complaints*') ? 'active' : '' }}">
-                    <span>ثبت شکایات</span>
-                </a>
-                <a href="{{ url('/survey') }}" class="nav-item-link {{ request()->is('*survey*') ? 'active' : '' }}">
-                    <span>نظرسنجی</span>
-                </a>
-                <a href="{{ url('/regulations') }}" class="nav-item-link {{ request()->is('*regulations*') ? 'active' : '' }}">
-                    <span>ضوابط صمت</span>
-                </a>
+
+                <!-- Dropdown 1: خدمات و تعرفه‌ها -->
+                <div class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-btn {{ request()->is('*invoice-sample*') || request()->is('*warranty-terms*') || request()->is('*shipping-guide*') ? 'active' : '' }}">
+                        <span>خدمات و تعرفه‌ها</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="nav-dropdown-menu">
+                        <a href="{{ url('/invoice-sample') }}" class="nav-dropdown-item {{ request()->is('*invoice-sample*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>تعرفه و فاکتور رسمی اتحادیه</span>
+                        </a>
+                        <a href="{{ url('/warranty-terms') }}" class="nav-dropdown-item {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <span>شرایط گارانتی ۱۸ ماهه</span>
+                        </a>
+                        <a href="{{ url('/shipping-guide') }}" class="nav-dropdown-item {{ request()->is('*shipping-guide*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            <span>راهنمای پذیرش و ارسال کالا</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dropdown 2: منشور و ضوابط -->
+                <div class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-btn {{ request()->is('*customer-rights*') || request()->is('*regulations*') ? 'active' : '' }}">
+                        <span>منشور و ضوابط</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="nav-dropdown-menu">
+                        <a href="{{ url('/customer-rights') }}" class="nav-dropdown-item {{ request()->is('*customer-rights*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <span>منشور حقوق مشتریان</span>
+                        </a>
+                        <a href="{{ url('/regulations') }}" class="nav-dropdown-item {{ request()->is('*regulations*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <span>ضوابط صمت (ماده ۱۳)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dropdown 3: ارتباط و شکایات -->
+                <div class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-btn {{ request()->is('*complaints*') || request()->is('*survey*') ? 'active' : '' }}">
+                        <span>شکایات و نظرسنجی</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="nav-dropdown-menu">
+                        <a href="{{ url('/complaints') }}" class="nav-dropdown-item {{ request()->is('*complaints*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            <span>ثبت شکایات و بازرسی</span>
+                        </a>
+                        <a href="{{ url('/survey') }}" class="nav-dropdown-item {{ request()->is('*survey*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>نظرسنجی رضایت مشتری</span>
+                        </a>
+                    </div>
+                </div>
             </nav>
 
             <!-- Actions -->
@@ -1113,11 +1224,11 @@
                         <span>پنل</span>
                     </a>
                 @else
-                    <a href="{{ route('mob.login') }}" class="btn-track-quick" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                    <a href="{{ url('/login') }}" class="btn-track-quick" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                         <span>ورود / ثبت‌نام پیامکی</span>
                     </a>
-                    <a href="{{ route('mob.login') }}" class="mobile-quick-auth-btn">
+                    <a href="{{ url('/login') }}" class="mobile-quick-auth-btn">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                         <span>ورود</span>
                     </a>
@@ -1171,7 +1282,7 @@
                     <span style="font-size: 0.78rem; font-weight: 700; color: #2563eb;">ورود به پنل ›</span>
                 </a>
             @else
-                <a href="{{ route('mob.login') }}" class="drawer-user-card">
+                <a href="{{ url('/login') }}" class="drawer-user-card">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <div style="width: 38px; height: 38px; border-radius: 50%; background: #2563eb; color: #ffffff; display: flex; align-items: center; justify-content: center;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
@@ -1491,7 +1602,7 @@
                 <span>حساب من</span>
             </a>
         @else
-            <a href="{{ route('mob.login') }}" class="native-tab-item {{ request()->is('*login*') ? 'active' : '' }}">
+            <a href="{{ url('/login') }}" class="native-tab-item {{ request()->is('*login*') ? 'active' : '' }}">
                 <span class="native-tab-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
                 </span>
