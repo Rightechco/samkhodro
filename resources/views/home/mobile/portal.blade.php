@@ -12,6 +12,473 @@
 
 @push('styles')
 <style>
+
+    /* =========================================================================
+       LOCAL VAZIRMATN FONT FACES & GLOBAL TYPOGRAPHY ENFORCEMENT
+       ========================================================================= */
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: url('/fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: url('/fonts/vazirmatn/Vazirmatn-Medium.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: url('/fonts/vazirmatn/Vazirmatn-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: url('/fonts/vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Vazirmatn';
+        src: url('/fonts/vazirmatn/Vazirmatn-ExtraBold.woff2') format('woff2');
+        font-weight: 800;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    *, *::before, *::after {
+        font-family: 'Vazirmatn', 'Vazir', Tahoma, -apple-system, BlinkMacSystemFont, sans-serif !important;
+        box-sizing: border-box;
+    }
+    body, button, input, select, textarea, optgroup, p, span, a, h1, h2, h3, h4, h5, h6, table, th, td, div {
+        font-family: 'Vazirmatn', 'Vazir', Tahoma, -apple-system, BlinkMacSystemFont, sans-serif !important;
+    }
+
+    /* =========================================================================
+       CORE ENTERPRISE CONTAINERS & HEADERS
+       ========================================================================= */
+    .erp-page-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+    .erp-page-meta {
+        flex: 1;
+        min-width: 260px;
+    }
+    .erp-page-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.74rem;
+        font-weight: 800;
+        padding: 4px 12px;
+        border-radius: 99px;
+        margin-bottom: 8px;
+    }
+    .erp-page-title {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin: 0 0 6px 0;
+        line-height: 1.4;
+        letter-spacing: -0.02em;
+    }
+    .erp-page-desc {
+        font-size: 0.84rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* Buttons */
+    .erp-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 12px;
+        font-size: 0.86rem;
+        font-weight: 800;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        text-decoration: none;
+        white-space: nowrap;
+    }
+    .erp-btn-primary {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: #ffffff !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+    }
+    .erp-btn-primary:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.38);
+    }
+    .erp-btn-primary:active {
+        transform: translateY(0);
+    }
+
+    /* Cards */
+    .erp-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+        margin-bottom: 24px;
+        overflow: hidden;
+        transition: all 0.25s ease;
+    }
+    .erp-card:hover {
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.07);
+    }
+    .erp-card-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+    }
+    .erp-card-title {
+        font-size: 1.02rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+    }
+    .erp-card-body {
+        padding: 24px;
+    }
+    .erp-table-wrap {
+        overflow-x: auto;
+        border-radius: 12px;
+    }
+
+    /* Stats Grid & Cards */
+    .erp-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+    .erp-stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 18px 20px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .erp-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+        border-color: #cbd5e1;
+    }
+    .erp-stat-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 8px;
+    }
+    .erp-stat-value {
+        font-size: 1.65rem;
+        font-weight: 900;
+        color: #0f172a;
+        line-height: 1.2;
+        margin-bottom: 4px;
+    }
+    .erp-stat-sub {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-weight: 600;
+    }
+
+    /* =========================================================================
+       ULTRA-PREMIUM INPUTS & FORM CONTROLS
+       ========================================================================= */
+    .erp-form-grid {
+        display: grid;
+        gap: 18px;
+    }
+    .erp-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+    .erp-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+    @media (max-width: 860px) {
+        .erp-grid-2, .erp-grid-3 {
+            grid-template-columns: 1fr;
+        }
+    }
+    .erp-form-group, .form-group-custom {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+        text-align: right;
+    }
+    .erp-form-label, .form-label-custom {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 2px;
+    }
+    .erp-form-label .req {
+        color: #ef4444;
+        font-weight: 900;
+    }
+    .erp-form-input, .erp-form-select, .erp-form-textarea,
+    .form-input-custom, .form-select-custom, .form-textarea-custom {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 11px 16px !important;
+        font-size: 0.86rem !important;
+        font-weight: 600 !important;
+        color: #0f172a !important;
+        background: #ffffff !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        outline: none !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+        display: block;
+    }
+    .erp-form-input:hover, .erp-form-select:hover, .erp-form-textarea:hover,
+    .form-input-custom:hover, .form-select-custom:hover, .form-textarea-custom:hover {
+        border-color: #94a3b8 !important;
+    }
+    .erp-form-input:focus, .erp-form-select:focus, .erp-form-textarea:focus,
+    .form-input-custom:focus, .form-select-custom:focus, .form-textarea-custom:focus {
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12) !important;
+        background: #ffffff !important;
+    }
+    .erp-form-input::placeholder, .erp-form-textarea::placeholder,
+    .form-input-custom::placeholder, .form-textarea-custom::placeholder {
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+    }
+    .erp-input-icon-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .erp-input-icon-wrap svg {
+        position: absolute;
+        right: 14px;
+        color: #94a3b8;
+        pointer-events: none;
+        z-index: 2;
+    }
+    .erp-input-icon-wrap .erp-form-input {
+        padding-right: 44px !important;
+    }
+    .erp-form-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 22px 24px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.03);
+    }
+    .erp-form-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .erp-form-card-title {
+        font-size: 0.98rem;
+        font-weight: 800;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .erp-form-card-badge {
+        font-size: 0.72rem;
+        font-weight: 800;
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 4px 10px;
+        border-radius: 99px;
+    }
+
+    /* =========================================================================
+       SPARE PARTS HD GALLERY CARDS
+       ========================================================================= */
+    .parts-grid-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .part-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+        transition: all 0.25s ease;
+    }
+    .part-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+        border-color: #93c5fd;
+    }
+    .part-card-img-wrap {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        background: #f8fafc;
+        overflow: hidden;
+    }
+    .part-card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .part-card:hover .part-card-img {
+        transform: scale(1.06);
+    }
+    .part-card-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .part-card-body {
+        padding: 16px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .part-card-title {
+        font-size: 0.92rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 6px;
+    }
+    .part-card-sku {
+        font-size: 0.74rem;
+        color: #64748b;
+        font-family: monospace;
+        margin-bottom: 10px;
+    }
+    .part-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 12px;
+        border-top: 1px solid #f1f5f9;
+    }
+    .part-card-price {
+        font-size: 0.95rem;
+        font-weight: 900;
+        color: #10b981;
+    }
+    .part-card-shelf {
+        font-size: 0.74rem;
+        color: #475569;
+        background: #f1f5f9;
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    /* Tag Chips & Brands */
+    .erp-tag-chips, .erp-brand-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .erp-tag-chip, .erp-brand-chip {
+        padding: 7px 14px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .erp-tag-chip.active, .erp-brand-chip.active {
+        background: #eff6ff;
+        border-color: #2563eb;
+        color: #1d4ed8;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Intake Receipt Live */
+    .intake-receipt-live {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 6px 24px rgba(15, 23, 42, 0.05);
+        position: sticky;
+        top: 24px;
+    }
+    .intake-receipt-header {
+        text-align: center;
+        padding-bottom: 16px;
+        border-bottom: 1.5px dashed #cbd5e1;
+        margin-bottom: 16px;
+    }
+    .intake-receipt-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.8rem;
+    }
+    .intake-receipt-label {
+        color: #64748b;
+        font-weight: 600;
+    }
+    .intake-receipt-val {
+        color: #0f172a;
+        font-weight: 800;
+    }
+
     /* =========================================================================
        PREMIUM ERP DASHBOARD & SIDEBAR STYLING (100% LIGHT THEME)
        ========================================================================= */
@@ -2706,145 +3173,261 @@
     <div class="erp-view {{ $activeTab === 'tab-blog' ? 'active' : '' }}" id="tab-blog" data-title="وبلاگ تخصصی و سئو" style="{{ $activeTab === 'tab-blog' ? 'display: block;' : 'display: none;' }}">
         <div class="erp-page-head">
             <div class="erp-page-meta">
-                <span class="erp-page-badge" style="background:#dcfce7; color:#166534;">استودیوی سئو و وبلاگ</span>
-                <h1 class="erp-page-title">مدیریت وبلاگ فوق تخصصی و مقالات منطبق بر استانداردهای سئو</h1>
-                <p class="erp-page-desc">نگارش مقالات، تگ‌های متا، کلمات کلیدی، پیش‌نمایش در نتایج جستجوی گوگل (SERP) و رتبه‌بندی محتوا.</p>
+                <span class="erp-page-badge" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #14532d; border: 1px solid #86efac;">
+                    ✨ استودیوی هوشمند وبلاگ و ممیزی سئو (SEO Studio)
+                </span>
+                <h1 class="erp-page-title">مدیریت وبلاگ تخصصی، مقالات آموزشی و سئوی گوگل</h1>
+                <p class="erp-page-desc">تولید محتوای بهینه‌شده، سنجش برخط شاخص سلامت سئو، شبیه‌سازی پیش‌نمایش در نتایج ارگانیک گوگل و تحلیل رفتار کاربران.</p>
             </div>
-            <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddBlogForm()">
-                + نگارش و انتشار مقاله جدید
-            </button>
-        </div>
-
-        <!-- SEO Metrics Strip -->
-        <div class="erp-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 24px;">
-            <div class="erp-stat-card">
-                <div class="erp-stat-label">تعداد مقالات منتشر شده</div>
-                <div class="erp-stat-value" style="color: #2563eb;">{{ count($blogPosts) }}</div>
-                <div class="erp-stat-sub">مقالات تخصصی کارگاه</div>
-            </div>
-            <div class="erp-stat-card">
-                <div class="erp-stat-label">مجموع بازدید مقالات</div>
-                <div class="erp-stat-value" style="color: #10b981;">{{ number_format(collect($blogPosts)->sum('views')) }}</div>
-                <div class="erp-stat-sub">مطالعه کاربران</div>
-            </div>
-            <div class="erp-stat-card">
-                <div class="erp-stat-label">شاخص سلامت سئو (On-Page)</div>
-                <div class="erp-stat-value" style="color: #059669;">۱۰۰٪</div>
-                <div class="erp-stat-sub">دارای Schema JSON-LD</div>
-            </div>
-            <div class="erp-stat-card">
-                <div class="erp-stat-label">میانگین زمان مطالعه</div>
-                <div class="erp-stat-value" style="color: #d97706;">۴.۵ دقیقه</div>
-                <div class="erp-stat-sub">تعامل بالای کاربر</div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="erp-btn erp-btn-primary" onclick="toggleAddBlogForm()" style="background: linear-gradient(135deg, #059669 0%, #047857 100%); box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);">
+                    <span>✍️</span> <span>نگارش و انتشار مقاله جدید</span>
+                </button>
+                <a href="{{ url('/blog') }}" target="_blank" class="erp-btn" style="background: #ffffff; border: 1.5px solid #cbd5e1; color: #334155;">
+                    <span>👁️</span> <span>مشاهده وبلاگ در سایت</span>
+                </a>
             </div>
         </div>
 
-        <!-- Add Blog Post Collapsible Form with Google SERP Preview -->
-        <div id="addBlogFormBox" style="display: none; background: #ffffff; border: 1px solid #10b981; border-radius: 18px; padding: 26px; margin-bottom: 28px; box-shadow: 0 4px 25px rgba(16,185,129,0.08);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 1.1rem; font-weight: 800; color: #0f172a;">نگارش مقاله جدید با بهینه‌سازی پیشرفته سئو</h3>
-                <button type="button" onclick="toggleAddBlogForm()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #64748b;">✕</button>
+        <!-- SEO Metrics KPI Strip -->
+        <div class="erp-stats-grid">
+            <div class="erp-stat-card" style="border-right: 4px solid #2563eb;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div class="erp-stat-label">تعداد مقالات منتشر شده</div>
+                        <div class="erp-stat-value" style="color: #2563eb;">{{ count($blogPosts) }}</div>
+                        <div class="erp-stat-sub">محتوای رسمی کارگاه مرکزی</div>
+                    </div>
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        📚
+                    </div>
+                </div>
             </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #10b981;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div class="erp-stat-label">مجموع بازدیدهای یکتا</div>
+                        <div class="erp-stat-value" style="color: #10b981;">{{ number_format(collect($blogPosts)->sum('views')) }}</div>
+                        <div class="erp-stat-sub">مطالعه کاربران از سراسر کشور</div>
+                    </div>
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        👁️
+                    </div>
+                </div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #059669;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div class="erp-stat-label">شاخص سلامت سئو (On-Page)</div>
+                        <div class="erp-stat-value" style="color: #059669;">۱۰۰٪ ممتاز</div>
+                        <div class="erp-stat-sub">دارای Schema JSON-LD & OpenGraph</div>
+                    </div>
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        🎯
+                    </div>
+                </div>
+            </div>
+            <div class="erp-stat-card" style="border-right: 4px solid #d97706;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <div class="erp-stat-label">میانگین زمان مطالعه</div>
+                        <div class="erp-stat-value" style="color: #d97706;">۴.۵ دقیقه</div>
+                        <div class="erp-stat-sub">نرخ تعامل (Engagement) بسیار بالا</div>
+                    </div>
+                    <div style="width: 40px; height: 40px; border-radius: 10px; background: #fffbeb; color: #d97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        ⏱️
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Blog Post Collapsible Form with Integrated Live SEO Studio -->
+        <div id="addBlogFormBox" style="display: none; background: #ffffff; border: 1.5px solid #10b981; border-radius: 20px; padding: 28px; margin-bottom: 28px; box-shadow: 0 10px 35px rgba(16,185,129,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #f1f5f9;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                        📝
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1.15rem; font-weight: 900; color: #0f172a; margin: 0;">نگارش مقاله جدید در استودیوی سئو سام موبایل</h3>
+                        <span style="font-size: 0.78rem; color: #64748b;">تولید محتوا، بهینه‌سازی تگ‌های متای گوگل و تحلیل لحظه‌ای سلامت ارگانیک</span>
+                    </div>
+                </div>
+                <button type="button" onclick="toggleAddBlogForm()" style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 50%; width: 34px; height: 34px; font-size: 1rem; cursor: pointer; color: #475569; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+            </div>
+
             <form onsubmit="handleBlogStore(event, this)">
                 @csrf
-                <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;">
+                    
+                    <!-- Real-Time SEO Quality Audit Meter Gauge -->
                     <div style="grid-column: 1 / -1;">
-                        <label class="erp-form-label">عنوان اصلی مقاله (H1 Title)</label>
-                        <input type="text" name="title" id="blogInputTitle" class="erp-form-input" required placeholder="مثال: آموزش تعویض ال‌سی‌دی اورجینال سامسونگ در منزل" oninput="updateGooglePreview()">
+                        <div class="seo-meter-card">
+                            <div class="seo-meter-head">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 44px; height: 44px; border-radius: 12px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                                        🎯
+                                    </div>
+                                    <div>
+                                        <h4 style="font-size: 0.98rem; font-weight: 900; color: #065f46; margin: 0;">ارزیابی هوشمند کیفیت و سئوی محتوا (On-Page SEO Audit)</h4>
+                                        <div style="font-size: 0.75rem; color: #047857;">تحلیل لحظه‌ای عنوان اصلی، جذابیت اسلاگ، چکیده، طول مقاله و استانداردهای گوگل</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: left;">
+                                    <span class="seo-score-circle" id="seoScoreText">۱۰۰ / ۱۰۰</span>
+                                    <div style="font-size: 0.72rem; font-weight: 800; color: #059669;">کیفیت ممتاز سئو</div>
+                                </div>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; margin: 12px 0;">
+                                <div id="seoProgressBar" style="width: 100%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); transition: width 0.3s ease;"></div>
+                            </div>
+                            <div class="seo-checklist">
+                                <div class="seo-check-item valid" id="chkTitle"><span>✓</span> <span>عنوان اصلی مقاله (حداقل ۱۰ کاراکتر)</span></div>
+                                <div class="seo-check-item valid" id="chkSlug"><span>✓</span> <span>نامک انگلیسی بهینه‌شده (Slug یکتا)</span></div>
+                                <div class="seo-check-item valid" id="chkExcerpt"><span>✓</span> <span>چکیده و مقدمه ترغیب‌کننده برای کلیک</span></div>
+                                <div class="seo-check-item valid" id="chkContent"><span>✓</span> <span>محتوای متنی غنی (حداقل ۱۰۰ کلمه)</span></div>
+                                <div class="seo-check-item valid" id="chkMeta"><span>✓</span> <span>توضیحات متای بهینه‌شده برای نتایج گوگل</span></div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">
+                            <span>عنوان اصلی مقاله (H1 Title)</span>
+                            <span class="req">*</span>
+                        </label>
+                        <input type="text" name="title" id="blogInputTitle" class="erp-form-input" required placeholder="مثال: آموزش تعویض ال‌سی‌دی اورجینال سامسونگ در منزل با گارانتی ۱۸ ماهه" oninput="updateGooglePreview(); calculateSeoScore();">
+                    </div>
+
                     <div>
-                        <label class="erp-form-label">نامک سئو (URL Slug)</label>
-                        <input type="text" name="slug" id="blogInputSlug" class="erp-form-input" required placeholder="samsung-lcd-replacement" style="direction: ltr;" oninput="updateGooglePreview()">
+                        <label class="erp-form-label">
+                            <span>نامک سئو و آدرس یکتا (URL Slug)</span>
+                            <span class="req">*</span>
+                        </label>
+                        <input type="text" name="slug" id="blogInputSlug" class="erp-form-input" required placeholder="samsung-lcd-replacement-guide" style="direction: ltr;" oninput="updateGooglePreview(); calculateSeoScore();">
+                        <span style="font-size: 0.72rem; color: #64748b; margin-top: 4px; display: block;">مسیر اختصاصی در سایت: <code>mob.taminkanisam.co.ir/blog/slug</code></span>
                     </div>
+
                     <div>
                         <label class="erp-form-label">دسته‌بندی مقاله</label>
-                        <select name="category" class="erp-form-input">
+                        <select name="category" class="erp-form-select">
                             <option value="آموزش گارانتی">آموزش گارانتی</option>
                             <option value="نگهداری سخت‌افزار">نگهداری سخت‌افزار</option>
                             <option value="اخبار فناوری">اخبار فناوری</option>
                             <option value="اصالت قطعات">اصالت قطعات</option>
                         </select>
                     </div>
+
                     <div>
-                        <label class="erp-form-label">نام نویسنده</label>
+                        <label class="erp-form-label">نام نویسنده / تیم فنی</label>
                         <input type="text" name="author" class="erp-form-input" value="تیم فنی سام سرویس">
                     </div>
+
                     <div>
                         <label class="erp-form-label">زمان تقریبی مطالعه</label>
                         <input type="text" name="read_time" class="erp-form-input" value="۴ دقیقه">
                     </div>
+
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">آدرس تصویر شاخص (Featured Image URL)</label>
                         <input type="url" name="featured_image" class="erp-form-input" value="https://images.unsplash.com/photo-1511707171634-5f897ff02560?auto=format&fit=crop&w=800&q=80">
                     </div>
+
                     <div style="grid-column: 1 / -1;">
-                        <label class="erp-form-label">چکیده مقاله (Excerpt)</label>
-                        <textarea name="excerpt" id="blogInputExcerpt" class="erp-form-input" rows="2" placeholder="مقدمه کوتاه جهت نمایش در شبکه‌های اجتماعی و لیست مقالات..." oninput="updateGooglePreview()"></textarea>
-                    </div>
-                    <div style="grid-column: 1 / -1;">
-                        <label class="erp-form-label">متن کامل مقاله (Content)</label>
-                        <textarea name="content" class="erp-form-input" rows="8" required placeholder="متن کامل آموزشی، سرفصل‌ها و نکات فنی را اینجا وارد کنید..."></textarea>
+                        <label class="erp-form-label">چکیده مقاله (Excerpt - نمایش در لیست و شبکه‌های اجتماعی)</label>
+                        <textarea name="excerpt" id="blogInputExcerpt" class="erp-form-input" rows="2" placeholder="مقدمه‌ای کوتاه و جذاب جهت جذب کاربر و نمایش در کارت‌های وبلاگ..." oninput="updateGooglePreview(); calculateSeoScore();"></textarea>
                     </div>
 
-                    <!-- Google SERP Snippet Preview Box -->
-                    <div style="grid-column: 1 / -1; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; padding: 20px;">
-                        <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                            <img src="https://www.google.com/favicon.ico" width="16" height="16" alt="Google">
-                            <span>پیش‌نمایش زنده در نتایج جستجوی گوگل (SERP Snippet):</span>
-                        </div>
-                        <div id="serpSnippetCard" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; transition: all 0.3s ease; font-family: Arial, sans-serif; max-width: 650px;">
-                            <div style="font-size: 0.76rem; color: #202124; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-                                <span>https://mob.taminkanisam.co.ir › blog › <span id="serpSlugPreview">slug</span></span>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="erp-form-label">
+                            <span>متن کامل مقاله (Content - همراه با عناوین فرعی و پاراگراف‌ها)</span>
+                            <span class="req">*</span>
+                        </label>
+                        <textarea name="content" id="blogInputContent" class="erp-form-input" rows="9" required placeholder="متن کامل مقاله آموزشی را اینجا وارد نمایید. می‌توانید از تگ‌های HTML نظیر <h3>, <p>, <ul> نیز استفاده فرمایید..." oninput="calculateSeoScore();"></textarea>
+                    </div>
+
+                    <!-- Google SERP Snippet Preview Box with Desktop / Mobile Simulator -->
+                    <div style="grid-column: 1 / -1; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 16px; padding: 22px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px;">
+                            <div style="font-weight: 800; color: #0f172a; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="Google">
+                                <span>شبیه‌ساز زنده نمایش در نتایج ارگانیک گوگل (Google SERP Snippet):</span>
                             </div>
-                            <div style="font-size: 1.15rem; color: #1a0dab; font-weight: 600; line-height: 1.3; margin-bottom: 6px; cursor: pointer;" id="serpTitlePreview">
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" class="btn-table-action" id="serpBtnDesktop" style="background: #2563eb; color: #fff; border-color: #2563eb;" onclick="setSerpDevice('desktop')">💻 دسکتاپ</button>
+                                <button type="button" class="btn-table-action" id="serpBtnMobile" onclick="setSerpDevice('mobile')">📱 موبایل</button>
+                            </div>
+                        </div>
+
+                        <div id="serpSnippetCard" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; transition: all 0.3s ease; max-width: 650px;">
+                            <div style="font-size: 0.76rem; color: #202124; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; direction: ltr; text-align: left;">
+                                <span style="color: #202124; font-weight: 500;">https://mob.taminkanisam.co.ir</span>
+                                <span style="color: #5f6368;">› blog › <span id="serpSlugPreview">slug</span></span>
+                            </div>
+                            <div style="font-size: 1.18rem; color: #1a0dab; font-weight: 600; line-height: 1.35; margin-bottom: 6px; cursor: pointer; text-decoration: none;" id="serpTitlePreview">
                                 عنوان مقاله در نتایج جستجوی گوگل
                             </div>
-                            <div style="font-size: 0.82rem; color: #4d5156; line-height: 1.5;" id="serpDescPreview">
+                            <div style="font-size: 0.84rem; color: #4d5156; line-height: 1.55;" id="serpDescPreview">
                                 توضیحات متا دیسکریپشن مقاله در اینجا نمایش داده خواهد شد...
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 18px;">
                             <div>
-                                <label class="erp-form-label">عنوان متای سئو (Meta Title - حداکثر ۶۰ کاراکتر)</label>
-                                <input type="text" name="meta_title" id="blogMetaTitle" class="erp-form-input" placeholder="عنوان بهینه‌شده برای کلیک بیشتر" oninput="updateGooglePreview()">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label class="erp-form-label" style="margin: 0;">عنوان متای گوگل (Meta Title)</label>
+                                    <span style="font-size: 0.7rem; color: #64748b;" id="metaTitleCounter">حداکثر ۶۰ کاراکتر</span>
+                                </div>
+                                <input type="text" name="meta_title" id="blogMetaTitle" class="erp-form-input" placeholder="عنوان بهینه‌شده برای جذب کلیک در صفحه اول گوگل" oninput="updateGooglePreview(); calculateSeoScore();">
                             </div>
+
                             <div>
                                 <label class="erp-form-label">کلمات کلیدی سئو (Meta Keywords)</label>
-                                <input type="text" name="meta_keywords" class="erp-form-input" placeholder="تعمیر گوشی, گارانتی سام موبایل, تامین کانی سام">
+                                <input type="text" name="meta_keywords" class="erp-form-input" placeholder="تعمیر گوشی, گارانتی سام موبایل, تامین کانی سام, تعویض قطعات">
                             </div>
+
                             <div style="grid-column: 1 / -1;">
-                                <label class="erp-form-label">توضیحات متای سئو (Meta Description - حداکثر ۱۶۰ کاراکتر)</label>
-                                <textarea name="meta_description" id="blogMetaDesc" class="erp-form-input" rows="2" placeholder="متنی جذاب برای ترغیب کاربر به کلیک در گوگل..." oninput="updateGooglePreview()"></textarea>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <label class="erp-form-label" style="margin: 0;">توضیحات متای گوگل (Meta Description)</label>
+                                    <span style="font-size: 0.7rem; color: #64748b;" id="metaDescCounter">حداکثر ۱۶۰ کاراکتر</span>
+                                </div>
+                                <textarea name="meta_description" id="blogMetaDesc" class="erp-form-input" rows="2" placeholder="متنی حرفه‌ای و ترغیب‌کننده بنویسید تا کاربر در نتایج گوگل روی سایت شما کلیک کند..." oninput="updateGooglePreview(); calculateSeoScore();"></textarea>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                    <button type="button" class="btn-table-action" onclick="toggleAddBlogForm()">انصراف</button>
-                    <button type="submit" class="erp-btn erp-btn-primary" style="background: #10b981; border-color: #059669;">
-                        🚀 انتشار مقاله با رعایت استانداردهای سئو
+                <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+                    <button type="button" class="btn-table-action" onclick="toggleAddBlogForm()" style="padding: 10px 20px; font-size: 0.85rem;">انصراف</button>
+                    <button type="submit" class="erp-btn erp-btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #059669; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);">
+                        <span>🚀</span> <span>انتشار مقاله با رعایت استانداردهای سئو</span>
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Articles Table -->
+        <!-- Articles Archive Table -->
         <div class="erp-card">
             <div class="erp-card-header">
-                <h3 class="erp-card-title">آرشیو مقالات و وضعیت ایندکس سئو</h3>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2rem;">📰</span>
+                    <h3 class="erp-card-title">آرشیو مقالات منتشرشده و وضعیت ایندکس در گوگل</h3>
+                </div>
+                <span style="font-size: 0.76rem; background: #ecfdf5; color: #047857; padding: 4px 10px; border-radius: 99px; font-weight: 800;">
+                    مجموع: {{ count($blogPosts) }} مقاله فعال
+                </span>
             </div>
             <div class="erp-card-body">
                 <div class="erp-table-wrap">
                     <table class="erp-table">
                         <thead>
                             <tr>
-                                <th>تصویر</th>
-                                <th>عنوان مقاله</th>
+                                <th>تصویر شاخص</th>
+                                <th>عنوان و آدرس مقاله</th>
                                 <th>دسته‌بندی</th>
                                 <th>نویسنده</th>
-                                <th>بازدید</th>
+                                <th>بازدید یکتا</th>
                                 <th>زمان مطالعه</th>
                                 <th>وضعیت سئو</th>
                                 <th>عملیات</th>
@@ -2854,16 +3437,16 @@
                             @forelse($blogPosts as $post)
                                 <tr>
                                     <td>
-                                        <div style="width: 50px; height: 38px; border-radius: 8px; overflow: hidden; background: #e2e8f0;">
+                                        <div style="width: 58px; height: 42px; border-radius: 10px; overflow: hidden; background: #e2e8f0; border: 1px solid #cbd5e1; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                                             <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
                                     </td>
                                     <td>
-                                        <div style="font-weight: 800; font-size: 0.88rem; color: #0f172a;">{{ $post->title }}</div>
-                                        <div style="font-size: 0.72rem; color: #64748b; direction: ltr; text-align: right;">/blog/{{ $post->slug }}</div>
+                                        <div style="font-weight: 800; font-size: 0.88rem; color: #0f172a; margin-bottom: 2px;">{{ $post->title }}</div>
+                                        <div style="font-size: 0.72rem; color: #64748b; direction: ltr; text-align: right;"><code>/blog/{{ $post->slug }}</code></div>
                                     </td>
                                     <td><span class="table-status-pill st-inspecting">{{ $post->category }}</span></td>
-                                    <td><span style="font-size: 0.78rem;">{{ $post->author }}</span></td>
+                                    <td><span style="font-size: 0.78rem; font-weight: 600;">{{ $post->author }}</span></td>
                                     <td><strong>{{ number_format($post->views) }}</strong></td>
                                     <td><span style="font-size: 0.78rem; color: #64748b;">{{ $post->read_time }}</span></td>
                                     <td><span class="table-status-pill st-ready_for_delivery">✓ سئو تاییدشده</span></td>
@@ -2877,7 +3460,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" style="text-align: center; color: #94a3b8; padding: 20px;">هیچ مقاله‌ای منتشر نشده است.</td>
+                                    <td colspan="8" style="text-align: center; color: #94a3b8; padding: 24px;">هیچ مقاله‌ای منتشر نشده است.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -2886,8 +3469,7 @@
             </div>
         </div>
     </div>
-
-    <!-- ==================== 12. VIEW: SURVEYS & ANALYTICS ==================== -->
+<!-- ==================== 12. VIEW: SURVEYS & ANALYTICS ==================== -->
     <div class="erp-view {{ $activeTab === 'tab-surveys' ? 'active' : '' }}" id="tab-surveys" data-title="نظرسنجی و تحلیل نظرات" style="{{ $activeTab === 'tab-surveys' ? 'display: block;' : 'display: none;' }}">
         <div class="erp-page-head">
             <div class="erp-page-meta">
@@ -3654,9 +4236,11 @@
 
     // Live Google SERP Snippet Preview
     function updateGooglePreview() {
-        const title = document.getElementById('blogMetaTitle')?.value || document.getElementById('blogInputTitle')?.value || 'عنوان مقاله در نتایج جستجوی گوگل';
+        const rawTitle = document.getElementById('blogMetaTitle')?.value || document.getElementById('blogInputTitle')?.value || '';
+        const title = rawTitle || 'عنوان مقاله در نتایج جستجوی گوگل';
         const slug = document.getElementById('blogInputSlug')?.value || 'slug';
-        const desc = document.getElementById('blogMetaDesc')?.value || document.getElementById('blogInputExcerpt')?.value || 'توضیحات متا دیسکریپشن مقاله در اینجا نمایش داده خواهد شد...';
+        const rawDesc = document.getElementById('blogMetaDesc')?.value || document.getElementById('blogInputExcerpt')?.value || '';
+        const desc = rawDesc || 'توضیحات متا دیسکریپشن مقاله در اینجا نمایش داده خواهد شد...';
 
         const pTitle = document.getElementById('serpTitlePreview');
         const pSlug = document.getElementById('serpSlugPreview');
@@ -3665,6 +4249,20 @@
         if (pTitle) pTitle.innerText = title;
         if (pSlug) pSlug.innerText = slug;
         if (pDesc) pDesc.innerText = desc;
+
+        const titleCounter = document.getElementById('metaTitleCounter');
+        if (titleCounter) {
+            const len = (document.getElementById('blogMetaTitle')?.value || '').length;
+            titleCounter.innerText = `${len} / ۶۰ کاراکتر`;
+            titleCounter.style.color = len > 60 ? '#ef4444' : '#64748b';
+        }
+
+        const descCounter = document.getElementById('metaDescCounter');
+        if (descCounter) {
+            const len = (document.getElementById('blogMetaDesc')?.value || '').length;
+            descCounter.innerText = `${len} / ۱۶۰ کاراکتر`;
+            descCounter.style.color = len > 160 ? '#ef4444' : '#64748b';
+        }
     }
 
     // =========================================================================
