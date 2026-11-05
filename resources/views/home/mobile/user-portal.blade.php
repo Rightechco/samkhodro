@@ -366,15 +366,36 @@
         display: flex;
     }
     .warranty-modal-box {
-        background: #0b192c;
+        background: #ffffff;
         border-radius: 24px;
-        max-width: 580px;
+        max-width: 620px;
         width: 100%;
         padding: 24px;
-        color: #ffffff;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #0f172a;
+        box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+        border: 1px solid #e2e8f0;
         position: relative;
+    }
+    .btn-close-modal {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-close-modal:hover {
+        background: #e2e8f0;
+        color: #0f172a;
     }
 
     /* Responsive */
@@ -758,105 +779,173 @@
 <!-- =========================================================================
      DIGITAL WARRANTY CARD MODAL (ACCURATE TO ATTACHED IMAGE)
      ========================================================================= -->
+<!-- =========================================================================
+     ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
+     ========================================================================= -->
 <div class="warranty-modal-backdrop" id="userWarrantyModal">
     <div class="warranty-modal-box">
         <button type="button" class="btn-close-modal" onclick="closeWarrantyCardView()">&times;</button>
         
-        <div style="text-align: center; margin-bottom: 14px;">
-            <h3 style="font-size: 1.1rem; font-weight: 800; color: #ffffff; margin-bottom: 4px;">کارت گارانتی دیجیتال گوشی همراه</h3>
-            <span style="font-size: 0.74rem; color: #94a3b8;">شرکت تامین کانی سام | گارانتی رسمی ۱۸ ماهه</span>
+        <div style="text-align: center; margin-bottom: 16px;">
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #1d4ed8; padding: 4px 12px; border-radius: 99px; font-size: 0.72rem; font-weight: 800; margin-bottom: 6px; border: 1px solid #bfdbfe;">
+                <span>🛡️ کارت گارانتی هوشمند سام موبایل</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 900; color: #0f172a; margin: 0 0 4px 0;">کارت گارانتی ۱۸ ماهه گوشی همراه</h3>
+            <span style="font-size: 0.76rem; color: #64748b; font-weight: 600;">شرکت تامین کانی سام | مطابق با ضوابط ماده ۱۳ سامانه جامع گارانتی</span>
         </div>
 
-        <!-- Realistic Card Replica (CSS Based) -->
-        <div class="card-preview-wrapper" id="printableUserCard">
-            <!-- Card Front -->
-            <div style="background: linear-gradient(135deg, #021b44 0%, #0a3875 50%, #03204e 100%); border-radius: 16px; padding: 18px; color: #ffffff; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.15); position: relative; overflow: hidden;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 10px; margin-bottom: 12px;">
-                    <div>
-                        <strong style="font-size: 1.05rem; display: block; font-weight: 900;">کارت گارانتی گوشی همراه</strong>
-                        <span style="font-size: 0.70rem; color: #93c5fd;">سام موبایل (تامین کانی سام)</span>
+        <!-- Realistic Card Replica (Front & Back Exact to Brand Design) -->
+        <div class="card-preview-wrapper" id="printableWarrantyCard">
+            <!-- 1. CARD FRONT (روی کارت) -->
+            <div class="official-card-front" style="background: linear-gradient(135deg, #021a3f 0%, #08336d 45%, #05418c 70%, #031c44 100%); border-radius: 20px; padding: 18px 20px; color: #ffffff; margin-bottom: 18px; border: 2px solid rgba(59, 130, 246, 0.4); box-shadow: 0 16px 36px rgba(2, 26, 63, 0.35); position: relative; overflow: hidden; min-height: 230px; display: flex; flex-direction: column; justify-content: space-between;">
+                <!-- Neon ambient curve -->
+                <div style="position: absolute; top: -50px; right: -50px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+                
+                <!-- Front Header -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2;">
+                    <!-- Right Title -->
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="border-right: 3px solid #60a5fa; padding-right: 10px;">
+                            <span style="font-size: 1.25rem; font-weight: 900; display: block; line-height: 1.2; letter-spacing: -0.5px; color: #ffffff;">کارت گارانتی</span>
+                            <span style="font-size: 0.85rem; font-weight: 800; color: #93c5fd; display: block;">گوشی همراه</span>
+                        </div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800;">
-                        ۱۸ ماه ضمانت طلایی
+                    <!-- Left Brand Logo -->
+                    <div style="display: flex; align-items: center; gap: 8px; direction: ltr;">
+                        <svg width="34" height="26" viewBox="0 0 40 30" fill="none">
+                            <path d="M5 25 L15 8 L22 18 L28 10 L35 25 Z" stroke="#38bdf8" stroke-width="3" stroke-linejoin="round" fill="rgba(56, 189, 248, 0.2)"/>
+                        </svg>
+                        <div style="text-align: right; line-height: 1.1;">
+                            <span style="font-size: 0.84rem; font-weight: 900; color: #ffffff; display: block;">تامین کانی سام</span>
+                            <span style="font-size: 0.60rem; color: #93c5fd; letter-spacing: 0.5px; display: block;">Taminkanisam</span>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 14px; align-items: center;">
-                    <div style="flex: 1; font-size: 0.78rem; line-height: 1.8;">
-                        <p style="margin: 0 0 6px 0; color: #e2e8f0;">
-                            <strong>همراه ما باشید:</strong> برای استعلام اصالت و شرایط گارانتی کد QR را اسکن کنید.
-                        </p>
-                        <p style="margin: 0; color: #cbd5e1; font-size: 0.72rem;">
-                            <strong>شرایط گارانتی:</strong> این دستگاه به مدت ۱۸ ماه دارای گارانتی رسمی شرکت تامین کانی سام می‌باشد.
-                        </p>
-                    </div>
-                    <div style="width: 80px; height: 80px; background: #ffffff; border-radius: 10px; padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=72x72&data=https://mob.taminkanisam.co.ir" alt="QR" style="width: 72px; height: 72px; display: block;">
+                <!-- Front Content Body -->
+                <div style="display: flex; gap: 16px; align-items: center; margin: 12px 0; position: relative; z-index: 2;">
+                    <!-- Right Interactive Pills -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+                        <!-- Pill 1: Stay with us -->
+                        <div style="background: rgba(255, 255, 255, 0.10); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.20); border-radius: 12px; padding: 8px 12px; display: flex; align-items: center; gap: 10px;">
+                            <div style="flex: 1;">
+                                <div style="display: inline-block; background: #ffffff; color: #021a3f; font-size: 0.64rem; font-weight: 900; padding: 2px 8px; border-radius: 99px; margin-bottom: 3px;">همراه ما باشید</div>
+                                <div style="font-size: 0.68rem; color: #e2e8f0; line-height: 1.4;">برای فعال‌سازی گارانتی و استعلام اصالت، کد QR را اسکن کنید و یا به سایت شرکت مراجعه نمایید.</div>
+                            </div>
+                            <div style="width: 58px; height: 58px; background: #ffffff; border-radius: 8px; padding: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=52x52&data=https://mob.taminkanisam.co.ir" alt="QR" style="width: 52px; height: 52px; display: block;">
+                            </div>
+                        </div>
+
+                        <!-- Pill 2: Terms -->
+                        <div style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 8px 12px;">
+                            <div style="display: inline-block; background: #38bdf8; color: #021a3f; font-size: 0.64rem; font-weight: 900; padding: 2px 8px; border-radius: 99px; margin-bottom: 3px;">شرایط گارانتی</div>
+                            <div style="font-size: 0.68rem; color: #cbd5e1; line-height: 1.4;">این دستگاه به مدت ۱۸ ماه دارای گارانتی رسمی شرکت تامین کانی سام می‌باشد. جهت کسب اطلاعات بیشتر شرایط گارانتی، کد QR را اسکن فرمایید.</div>
+                        </div>
                     </div>
                 </div>
-                <div style="margin-top: 10px; font-size: 0.70rem; color: #60a5fa; font-weight: 800;">
-                    انتخاب هوشمندانه...
+
+                <!-- Front Footer Slogan -->
+                <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2; border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 8px;">
+                    <span style="font-size: 0.74rem; font-weight: 800; color: #60a5fa; letter-spacing: 0.5px;">انتخاب هوشمندانه...</span>
+                    <span style="font-size: 0.65rem; color: #cbd5e1;">ضمانت اصالت و سلامت فیزیکی قطعات</span>
                 </div>
             </div>
 
-            <!-- Card Back -->
-            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 16px; color: #0f172a;">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 14px;">
-                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
-                        🛡️ ۱۸ ماه ضمانت رسمی
+            <!-- 2. CARD BACK (پشت کارت) -->
+            <div class="official-card-back" style="background: #ffffff; border: 2px solid #cbd5e1; border-radius: 20px; padding: 16px 18px; color: #0f172a; box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10); position: relative;">
+                <!-- Upper Section: 3 Left Badges & 5 Right Numbered Fields -->
+                <div style="display: flex; gap: 14px; margin-bottom: 12px;">
+                    <!-- Left Column: 3 Official Seals -->
+                    <div style="width: 130px; display: flex; flex-direction: column; justify-content: space-around; gap: 8px; padding-left: 10px; border-left: 1px dashed #cbd5e1; text-align: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #eff6ff; color: #1d4ed8; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; box-shadow: 0 2px 6px rgba(37,99,235,0.15);">🛡️</div>
+                            <span style="font-size: 0.64rem; font-weight: 800; color: #1e3a8a; line-height: 1.2;">۱۸ ماه ضمانت رسمی<br>پس از فعال‌سازی</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #f0fdf4; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; box-shadow: 0 2px 6px rgba(22,163,74,0.15);">⚙️</div>
+                            <span style="font-size: 0.64rem; font-weight: 800; color: #14532d; line-height: 1.2;">خدمات پس از فروش<br>تخصصی ماده ۱۳</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                            <div style="width: 32px; height: 32px; border-radius: 50%; background: #fef3c7; color: #b45309; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; box-shadow: 0 2px 6px rgba(217,119,6,0.15);">🎧</div>
+                            <span style="font-size: 0.64rem; font-weight: 800; color: #78350f; line-height: 1.2;">پشتیبانی حرفه‌ای<br>مرکز تماس تبریز</span>
+                        </div>
                     </div>
-                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
-                        ⚙️ خدمات پس از فروش
-                    </div>
-                    <div style="background: #eff6ff; padding: 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 800; color: #1d4ed8;">
-                        🎧 پشتیبانی حرفه‌ای
+
+                    <!-- Right Column: 5 Numbered Rows -->
+                    <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                            <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۱. کشور سازنده:</span>
+                            <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="cardCountry">جمهوری اسلامی ایران / سازنده رسمی</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                            <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۲. برند و مدل کالا:</span>
+                            <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="userCardModel">Samsung Galaxy S23 Ultra</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                            <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۳. شماره سریال کالا (IMEI):</span>
+                            <span style="font-size: 0.74rem; font-weight: 900; font-family: monospace; color: #1d4ed8; direction: ltr;" id="userCardImei">354892019485721</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                            <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۴. تاریخ شروع گارانتی:</span>
+                            <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="cardWarrantyDates">۱۴۰۳/۰۸/۱۵ (به مدت ۱۸ ماه)</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
+                            <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۵. نام شرکت سازنده کالا:</span>
+                            <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;" id="cardModalCompany">شرکت تامین کانی سام (سهامی خاص)</span>
+                        </div>
                     </div>
                 </div>
 
-                <table style="width: 100%; font-size: 0.74rem; border-collapse: collapse; margin-bottom: 12px;">
-                    <tr>
-                        <td style="padding: 4px; color: #64748b; width: 38%;">۱. برند و مدل کالا:</td>
-                        <td style="padding: 4px; font-weight: 800;" id="userCardModel">Samsung Galaxy S23 Ultra</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 4px; color: #64748b;">۲. شماره سریال (IMEI):</td>
-                        <td style="padding: 4px; font-weight: 800; font-family: monospace;" id="userCardImei">354892019485721</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 4px; color: #64748b;">۳. شرکت گارانتی کننده:</td>
-                        <td style="padding: 4px; font-weight: 800;">تامین کانی سام (سام موبایل)</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 4px; color: #64748b;">۴. مدت زمان گارانتی:</td>
-                        <td style="padding: 4px; font-weight: 800;">۱۸ ماه کامل پس از فعال‌سازی</td>
-                    </tr>
-                </table>
-
-                <div style="background: #0b192c; color: #ffffff; border-radius: 8px; padding: 8px 10px; font-size: 0.64rem; line-height: 1.6; margin-bottom: 10px;">
-                    <strong style="color: #60a5fa; display: block; margin-bottom: 2px;">مواردی که شامل گارانتی نمی‌شوند:</strong>
-                    ضربه دیدگی و شکستگی • نفوذ مایعات و رطوبت • تعمیرات توسط افراد غیرمجاز • خرابی ناشی از نوسانات برق • معیوب ماندن باتری در اثر لوازم جانبی غیراستاندارد
+                <!-- Exclusions Dark-Blue Rounded Banner -->
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px;">
+                    <div style="text-align: center; font-size: 0.72rem; font-weight: 900; color: #38bdf8; margin-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 4px;">
+                        مواردی که شامل گارانتی نمی‌شوند:
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 12px; font-size: 0.65rem; color: #e2e8f0;">
+                        <div>• ضربه دیدگی، شکستگی و آسیب فیزیکی</div>
+                        <div>• نفوذ مایعات و رطوبت و نم‌زدگی</div>
+                        <div>• خرابی ناشی از نوسانات برق و شارژر غیرمجاز</div>
+                        <div>• معیوب ماندن باتری و لوازم جانبی مستهلک</div>
+                        <div>• تعمیرات و دستکاری توسط افراد غیرمجاز</div>
+                        <div>• تمامی موارد خارج از شرایط گارانتی و استهلاک عادی</div>
+                    </div>
                 </div>
 
-                <div style="background: #021b44; color: #ffffff; border-radius: 8px; padding: 8px; font-size: 0.62rem; display: flex; flex-direction: column; gap: 4px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span>📞 مرکز تماس: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
-                        <span>🌐 taminkanisam.co.ir</span>
-                        <span>✉️ Marketing@kanisam</span>
+                <!-- Card Back Official Footer Strip -->
+                <div style="background: #021a3f; color: #ffffff; border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; font-size: 0.66rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                        <span style="display: inline-flex; align-items: center; gap: 4px; font-weight: 800; color: #93c5fd;">
+                            📞 ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px; color: #e2e8f0;">
+                            🌐 taminkanisam.co.ir
+                        </span>
+                        <span style="display: inline-flex; align-items: center; gap: 4px; color: #e2e8f0; direction: ltr;">
+                            ✉️ Marketing@kanisam
+                        </span>
                     </div>
-                    <div style="color: #cbd5e1; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 3px;">
-                        📍 تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 4px; color: #cbd5e1; font-size: 0.62rem;">
+                        <span>📍 تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</span>
+                        <span style="font-weight: 800; color: #38bdf8;">شرکت تامین کانی سام</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px;">
-            <button type="button" class="btn-table-action primary" onclick="window.print()">
-                <span>چاپ کارت گارانتی</span>
-            </button>
-            <button type="button" class="btn-table-action" onclick="closeWarrantyCardView()" style="background:#334155; color:#ffffff; border-color:#475569;">
-                بستن
-            </button>
+        <!-- Modal Actions -->
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px;">
+            <div style="font-size: 0.72rem; color: #64748b;">
+                دارای تاییدیه رسمی اتحادیه فناوران رایانه و سامانه صمت
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-table-action" style="background: #2563eb; color: #ffffff; border-color: #1d4ed8; padding: 8px 18px; font-weight: 800;" onclick="window.print()">
+                    🖨️ چاپ کارت گارانتی
+                </button>
+                <button type="button" class="btn-table-action" onclick="closeWarrantyCardView()" style="background: #f1f5f9; color: #475569; border-color: #cbd5e1; padding: 8px 14px;">
+                    بستن
+                </button>
+            </div>
         </div>
     </div>
 </div>

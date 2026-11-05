@@ -559,11 +559,30 @@
 
                 @php
                     $u = Auth::check() ? Auth::user() : null;
-                    $userName = $u ? $u->name : (session('mob_user_name') ?: 'کاربر سامانه');
+                    $userName = $u ? $u->name : (session('mob_user_name') ?: 'کاربر گرامی');
+                    $userLvl = $u ? (int)$u->level : (session('mob_level') !== null ? (int)session('mob_level') : 0);
+                    $roleTitle = 'مشتری گرامی';
+                    $roleClass = 'role-customer';
+                    if ($userLvl >= 3) {
+                        $roleTitle = 'مدیر ارشد سامانه';
+                        $roleClass = 'role-super';
+                    } elseif ($userLvl == 2) {
+                        $roleTitle = 'کارشناس پذیرش و تحویل';
+                        $roleClass = 'role-agent';
+                    } elseif ($userLvl == 1) {
+                        $roleTitle = 'تکنسین فنی';
+                        $roleClass = 'role-tech';
+                    }
                 @endphp
                 <div class="portal-user-chip">
                     <div class="portal-avatar-small">{{ mb_substr($userName, 0, 1) }}</div>
-                    <span class="portal-user-chip-name">{{ $userName }}</span>
+                    <div style="display: flex; flex-direction: column;">
+                        <span class="portal-user-chip-name">{{ $userName }}</span>
+                        <span class="portal-role-badge {{ $roleClass }}">
+                            <span class="portal-pulse-dot"></span>
+                            {{ $roleTitle }}
+                        </span>
+                    </div>
                 </div>
 
                 <a href="{{ url('/logout') }}" class="btn-topbar-logout" title="خروج از سامانه">

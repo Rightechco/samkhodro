@@ -124,8 +124,79 @@ class MobileServiceController extends Controller
                     $table->timestamps();
                 });
             }
+
+            // تضمین وجود و به‌روزرسانی کاربران ۴ نقش اصلی
+            $this->seedDefaultRolesAndUsers();
         } catch (\Exception $e) {
             // Log silently
+        }
+    }
+
+        /**
+     * ایجاد و همگام‌سازی ۴ نقش سازمانی سامانه خدمات با سطوح دسترسی تفکیک‌شده
+     */
+    private function seedDefaultRolesAndUsers()
+    {
+        try {
+            $roles = [
+                [
+                    'name' => 'مهندس کاظمی (مدیر ارشد سامانه)',
+                    'number' => '09148874622',
+                    'email' => 'admin@taminkanisam.co.ir',
+                    'password' => 'SamMob@2026!',
+                    'level' => 3, // Super Admin
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'خانم رستمی (کارشناس پذیرش و تحویل)',
+                    'number' => '09148874623',
+                    'email' => 'reception@taminkanisam.co.ir',
+                    'password' => 'SamReception@2026!',
+                    'level' => 2, // Reception & Intake Officer
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'مهندس صادقی (تکنسین ارشد تعمیرات)',
+                    'number' => '09148874624',
+                    'email' => 'technician@taminkanisam.co.ir',
+                    'password' => 'SamTech@2026!',
+                    'level' => 1, // Workshop Technician
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'آقای رضایی (مشتری گرامی)',
+                    'number' => '09148874625',
+                    'email' => 'customer@taminkanisam.co.ir',
+                    'password' => 'SamUser@2026!',
+                    'level' => 0, // Customer
+                    'contact' => 0,
+                ],
+            ];
+
+            foreach ($roles as $r) {
+                $user = User::where('number', $r['number'])
+                    ->orWhere('email', $r['email'])
+                    ->first();
+                if ($user) {
+                    $user->name = $r['name'];
+                    $user->number = $r['number'];
+                    $user->email = $r['email'];
+                    $user->level = $r['level'];
+                    $user->password = Hash::make($r['password']);
+                    $user->save();
+                } else {
+                    User::create([
+                        'name' => $r['name'],
+                        'number' => $r['number'],
+                        'email' => $r['email'],
+                        'password' => Hash::make($r['password']),
+                        'level' => $r['level'],
+                        'contact' => 0,
+                    ]);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Silently handle
         }
     }
 
@@ -372,11 +443,22 @@ class MobileServiceController extends Controller
         Auth::login($user);
 
         // ذخیره در سشن
+        $userRole = 'customer';
+        if ($user->level >= 3) {
+            $userRole = 'super_admin';
+        } elseif ($user->level == 2) {
+            $userRole = 'reception_agent';
+        } elseif ($user->level == 1) {
+            $userRole = 'technician';
+        }
+
         session([
             'mob_user_id' => $user->id,
             'mob_user_name' => $user->name,
             'mob_user_phone' => $user->number,
-            'mob_role' => $user->level >= 2 ? 'admin' : 'customer',
+            'mob_role' => ($user->level >= 2) ? 'admin' : 'customer',
+            'mob_role_slug' => $userRole,
+            'mob_level' => (int)$user->level,
         ]);
 
         $redirectUrl = ($user->level >= 2) ? route('mob.admin-portal') : route('mob.user-portal');
@@ -415,11 +497,22 @@ class MobileServiceController extends Controller
 
         if ($user && Hash::check($password, $user->password)) {
             Auth::login($user);
+            $userRole = 'customer';
+            if ($user->level >= 3) {
+                $userRole = 'super_admin';
+            } elseif ($user->level == 2) {
+                $userRole = 'reception_agent';
+            } elseif ($user->level == 1) {
+                $userRole = 'technician';
+            }
+
             session([
                 'mob_user_id' => $user->id,
                 'mob_user_name' => $user->name,
                 'mob_user_phone' => $user->number,
-                'mob_role' => $user->level >= 2 ? 'admin' : 'customer',
+                'mob_role' => ($user->level >= 2) ? 'admin' : 'customer',
+                'mob_role_slug' => $userRole,
+                'mob_level' => (int)$user->level,
             ]);
 
             $redirectUrl = ($user->level >= 2) ? route('mob.admin-portal') : route('mob.user-portal');
