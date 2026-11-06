@@ -484,9 +484,12 @@
         /* ---------------------------------------------------------------------
            RESPONSIVE MOBILE BREAKPOINTS
            --------------------------------------------------------------------- */
+        /* ---------------------------------------------------------------------
+           RESPONSIVE MOBILE BREAKPOINTS (max-width: 991px)
+           --------------------------------------------------------------------- */
         @media (max-width: 991px) {
             .portal-topbar {
-                height: 58px;
+                height: 56px;
                 padding: 0 10px;
             }
             .portal-topbar-inner {
@@ -540,21 +543,6 @@
                 align-items: center;
                 justify-content: center;
             }
-            .portal-footer {
-                display: none !important;
-            }
-        }
-            .portal-hotline-pill, .btn-view-site {
-                display: none;
-            }
-            .portal-logo-title {
-                font-size: 1.0rem;
-            }
-            .portal-logo-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
-            }
             .portal-wrapper {
                 padding: 10px 10px 110px 10px;
                 display: block;
@@ -603,6 +591,27 @@
                 display: block !important;
             }
             .portal-footer {
+                display: none !important;
+            }
+        }
+
+        /* ---------------------------------------------------------------------
+           DESKTOP WORKSPACE & SIDEBAR (min-width: 992px)
+           --------------------------------------------------------------------- */
+        @media (min-width: 992px) {
+            .portal-sidebar, .erp-sidebar, .user-sidebar {
+                display: flex !important;
+                position: sticky !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                top: 80px !important;
+                opacity: 1 !important;
+            }
+            .portal-drawer-toggle {
+                display: none !important;
+            }
+            .portal-backdrop {
                 display: none !important;
             }
         }

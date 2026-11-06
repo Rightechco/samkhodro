@@ -498,6 +498,43 @@
         }
     }
 
+
+    /* =========================================================================
+       EXPLICIT DESKTOP SUITE (min-width: 992px)
+       ========================================================================= */
+    @media (min-width: 992px) {
+        .user-container {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: flex-start !important;
+        }
+        .user-sidebar {
+            display: flex !important;
+            position: sticky !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: none !important;
+            opacity: 1 !important;
+            top: 80px !important;
+            width: 275px !important;
+            min-width: 275px !important;
+            max-width: 275px !important;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03) !important;
+            border-radius: 18px !important;
+            border: 1px solid var(--card-border) !important;
+            background: #ffffff !important;
+            z-index: 100 !important;
+            margin: 12px !important;
+            padding: 16px !important;
+        }
+        .user-mobile-nav {
+            display: none !important;
+        }
+        .user-sidebar-overlay {
+            display: none !important;
+        }
+    }
+
 </style>
 @endpush
 
