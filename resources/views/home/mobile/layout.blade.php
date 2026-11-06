@@ -269,6 +269,22 @@
         }
 
         
+        .nav-item-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-body);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .nav-item-link:hover,
         .nav-item-link.active {
             color: var(--primary);
             background: var(--primary-light);
@@ -1006,8 +1022,9 @@
         .nav-single-line {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             flex-wrap: nowrap;
+            white-space: nowrap;
         }
         .nav-mini-badge {
             font-size: 0.65rem;
@@ -1221,15 +1238,23 @@
                     <span>تماس با ما</span>
                 </a>
 
-                {{-- آیتم‌های داینامیک منوی هدر (مدیریت شده از پنل ادمین) --}}
+                {{-- آیتم‌های داینامیک سفارشی جدید (جلوگیری از تکرار منوهای پیش‌فرض سیستم) --}}
+                @php
+                    $builtInUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track'];
+                @endphp
                 @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
                     @foreach($headerMenuItems as $navItem)
-                        <a href="{{ url($navItem->url) }}" class="nav-item-link" target="{{ $navItem->target ?? '_self' }}">
-                            <span>{{ $navItem->title }}</span>
-                            @if(!empty($navItem->badge))
-                                <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.68rem; padding: 1px 6px; border-radius: 8px; margin-right: 4px;">{{ $navItem->badge }}</span>
-                            @endif
-                        </a>
+                        @php
+                            $cleanNavUrl = '/' . ltrim($navItem->url, '/');
+                        @endphp
+                        @if(!in_array($cleanNavUrl, $builtInUrls) && !in_array($navItem->url, $builtInUrls))
+                            <a href="{{ url($navItem->url) }}" class="nav-item-link" target="{{ $navItem->target ?? '_self' }}">
+                                <span>{{ $navItem->title }}</span>
+                                @if(!empty($navItem->badge))
+                                    <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.68rem; padding: 1px 6px; border-radius: 8px; margin-right: 4px;">{{ $navItem->badge }}</span>
+                                @endif
+                            </a>
+                        @endif
                     @endforeach
                 @endif
             </nav>
