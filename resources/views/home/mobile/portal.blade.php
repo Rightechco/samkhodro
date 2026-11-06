@@ -719,6 +719,13 @@
         padding: 16px 20px 40px;
         min-width: 0;
     }
+    
+    @media (max-width: 991px) {
+        .erp-topbar {
+            display: none !important;
+        }
+    }
+    
     .erp-topbar {
         display: flex;
         align-items: center;
@@ -1575,7 +1582,14 @@
             box-sizing: border-box !important;
             overflow-x: hidden !important;
         }
+        
+    @media (max-width: 991px) {
         .erp-topbar {
+            display: none !important;
+        }
+    }
+    
+    .erp-topbar {
             padding: 10px 14px !important;
             border-radius: 14px !important;
             margin-bottom: 16px !important;

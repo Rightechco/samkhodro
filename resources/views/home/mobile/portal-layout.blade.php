@@ -933,6 +933,173 @@
             font-weight: 800;
         }
     
+    
+        .mobile-portal-badge {
+            display: none;
+        }
+        .portal-avatar-pulse {
+            display: none;
+        }
+
+        /* ---------------------------------------------------------------------
+           ULTRA-PREMIUM NATIVE MOBILE TOPBAR SUITE (<= 991px)
+           --------------------------------------------------------------------- */
+        @media (max-width: 991px) {
+            .portal-topbar {
+                height: 58px !important;
+                background: rgba(255, 255, 255, 0.96) !important;
+                backdrop-filter: blur(20px) saturate(180%) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+                border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+                box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+                position: sticky !important;
+                top: 0 !important;
+                z-index: 99990 !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+                box-sizing: border-box !important;
+            }
+            .portal-topbar-inner {
+                padding: 0 12px !important;
+                height: 58px !important;
+                gap: 8px !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+            }
+            .portal-topbar-right {
+                gap: 8px !important;
+                align-items: center !important;
+            }
+            .portal-drawer-toggle {
+                display: flex !important;
+                width: 38px !important;
+                height: 38px !important;
+                border-radius: 11px !important;
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                color: #0f172a !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+                flex-shrink: 0 !important;
+                cursor: pointer !important;
+            }
+            .portal-logo-area {
+                gap: 8px !important;
+            }
+            .portal-logo-icon {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 11px !important;
+                box-shadow: 0 3px 10px rgba(37, 99, 235, 0.28) !important;
+                flex-shrink: 0 !important;
+            }
+            .portal-logo-text {
+                gap: 1px !important;
+            }
+            .portal-logo-title {
+                font-size: 0.95rem !important;
+                font-weight: 900 !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                line-height: 1.2 !important;
+            }
+            .mobile-portal-badge {
+                display: inline-flex !important;
+                font-size: 0.65rem !important;
+                font-weight: 800 !important;
+                padding: 1px 7px !important;
+                border-radius: 99px !important;
+                line-height: 1.2 !important;
+            }
+            .mobile-portal-badge.badge-admin {
+                background: #eff6ff !important;
+                color: #2563eb !important;
+                border: 1px solid #bfdbfe !important;
+            }
+            .mobile-portal-badge.badge-user {
+                background: #ecfdf5 !important;
+                color: #059669 !important;
+                border: 1px solid #a7f3d0 !important;
+            }
+
+            /* Completely hide heavy desktop clutter */
+            .portal-logo-sub,
+            .portal-system-tag,
+            .portal-hotline-pill,
+            .btn-view-site,
+            .portal-user-chip-text {
+                display: none !important;
+            }
+
+            .portal-topbar-left {
+                gap: 8px !important;
+                align-items: center !important;
+            }
+            .portal-user-chip {
+                background: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                gap: 0 !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+            .portal-avatar-small {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 11px !important;
+                font-size: 0.90rem !important;
+                font-weight: 800 !important;
+                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+                color: #ffffff !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25) !important;
+                position: relative !important;
+                flex-shrink: 0 !important;
+            }
+            .portal-avatar-pulse {
+                display: block !important;
+                position: absolute !important;
+                bottom: -2px !important;
+                left: -2px !important;
+                width: 10px !important;
+                height: 10px !important;
+                border-radius: 50% !important;
+                background: #10b981 !important;
+                border: 2px solid #ffffff !important;
+                box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3) !important;
+            }
+            .btn-topbar-logout {
+                width: 36px !important;
+                height: 36px !important;
+                border-radius: 11px !important;
+                background: #fff1f2 !important;
+                border: 1px solid #ffe4e6 !important;
+                color: #e11d48 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                flex-shrink: 0 !important;
+            }
+
+            /* HIDE SECONDARY STACKED HEADERS (NO MORE DOUBLE HEADER) */
+            .erp-topbar,
+            .user-topbar {
+                display: none !important;
+            }
+
+            .portal-wrapper {
+                padding: 12px 10px 115px 10px !important;
+            }
+        }
+
     </style>
     @stack('styles')
 </head>
@@ -946,16 +1113,17 @@
         <div class="portal-topbar-inner">
             <div class="portal-topbar-right">
                 <button type="button" class="portal-drawer-toggle" onclick="togglePortalSidebar()" title="منوی سامانه">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
-                <a href="{{ url('/service-portal') }}" class="portal-logo-area">
+                <a href="{{ request()->is('*user-portal*') ? url('/user-portal') : url('/admin-portal') }}" class="portal-logo-area">
                     <div class="portal-logo-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                     </div>
                     <div class="portal-logo-text">
                         <span class="portal-logo-title">
                             سام موبایل
-                            <span class="portal-system-tag">سامانه مدیریت خدمات</span>
+                            <span class="portal-system-tag">{{ request()->is('*user-portal*') ? 'میز کاربری' : 'سامانه مدیریت خدمات' }}</span>
+                            <span class="mobile-portal-badge {{ request()->is('*user-portal*') ? 'badge-user' : 'badge-admin' }}">{{ request()->is('*user-portal*') ? 'پنل کاربری' : 'مدیریت' }}</span>
                         </span>
                         <span class="portal-logo-sub">شرکت تامین کانی سام | گارانتی رسمی ۱۸ ماهه</span>
                     </div>
@@ -991,8 +1159,11 @@
                     }
                 @endphp
                 <div class="portal-user-chip">
-                    <div class="portal-avatar-small">{{ mb_substr($userName, 0, 1) }}</div>
-                    <div style="display: flex; flex-direction: column;">
+                    <div class="portal-avatar-small" title="{{ $userName }} ({{ $roleTitle }})">
+                        <span>{{ mb_substr($userName, 0, 1) }}</span>
+                        <span class="portal-avatar-pulse"></span>
+                    </div>
+                    <div class="portal-user-chip-text" style="display: flex; flex-direction: column;">
                         <span class="portal-user-chip-name">{{ $userName }}</span>
                         <span class="portal-role-badge {{ $roleClass }}">
                             <span class="portal-pulse-dot"></span>

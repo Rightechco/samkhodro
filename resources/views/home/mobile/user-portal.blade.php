@@ -305,7 +305,103 @@
             display: flex;
         }
     }
-</style>
+
+    @media (max-width: 991px) {
+        .user-topbar {
+            display: none !important;
+        }
+        .user-container {
+            flex-direction: column !important;
+            padding-bottom: 110px !important;
+        }
+        .user-sidebar {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 295px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            border-left: 1px solid #e2e8f0 !important;
+            box-shadow: -15px 0 40px rgba(15, 23, 42, 0.3) !important;
+            z-index: 100000 !important;
+            overflow-y: auto !important;
+            background: #ffffff !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateX(100%) !important;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
+        }
+        .user-sidebar.open {
+            display: flex !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateX(0) !important;
+        }
+        .user-mobile-nav {
+            display: flex !important;
+        }
+    }
+
+    /* User Mobile Sticky Bottom Navigation */
+    .user-mobile-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        max-width: 100vw;
+        height: calc(64px + env(safe-area-inset-bottom, 0px));
+        padding: 0 10px env(safe-area-inset-bottom, 0px) 10px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-top: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+        z-index: 99990;
+        align-items: center;
+        justify-content: space-around;
+        direction: rtl;
+        box-sizing: border-box;
+    }
+    .user-bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: #64748b;
+        font-size: 0.70rem;
+        font-weight: 700;
+        height: 56px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+        text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .user-bottom-nav-item.active {
+        color: #2563eb !important;
+        font-weight: 900 !important;
+    }
+    .user-bottom-nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        width: 16px;
+        height: 3px;
+        border-radius: 99px;
+        background: #2563eb;
+    }
+
+    </style>
 @endpush
 
 @section('content')
@@ -830,6 +926,7 @@
                 </div>
             </div>
         </div>
+        </div>
 
     </main>
 </div>
@@ -837,13 +934,34 @@
 <!-- =========================================================================
      DIGITAL WARRANTY CARD MODAL (ACCURATE TO ATTACHED IMAGE)
      ========================================================================= -->
-<!-- =========================================================================
-     ACCURATE 100% LIGHT THEME WARRANTY CARD MODAL (MATCHING OFFICIAL DESIGN)
-     ========================================================================= -->
-        </div>
 
-    </main>
-</div>
+
+
+<!-- User Portal Mobile Sticky Bottom Bar -->
+<nav class="user-mobile-nav" id="userMobileNav">
+    <button type="button" class="user-bottom-nav-item {{ $activeTab === 'tab-my-devices' ? 'active' : '' }}" onclick="switchUserTab('tab-my-devices', this, event)" data-tab="tab-my-devices">
+        <div class="user-nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <span>دستگاه‌ها</span>
+    </button>
+    <button type="button" class="user-bottom-nav-item {{ $activeTab === 'tab-warranty-card' ? 'active' : '' }}" onclick="switchUserTab('tab-warranty-card', this, event)" data-tab="tab-warranty-card">
+        <div class="user-nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span>کارت گارانتی</span>
+    </button>
+    <div class="admin-nav-center">
+        <button type="button" class="admin-center-btn" onclick="switchUserTab('tab-new-request', this, event)" data-tab="tab-new-request" title="ثبت پذیرش جدید">
+            <div class="admin-center-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+            <span class="admin-center-label">پذیرش جدید</span>
+        </button>
+    </div>
+    <button type="button" class="user-bottom-nav-item {{ $activeTab === 'tab-my-invoices' ? 'active' : '' }}" onclick="switchUserTab('tab-my-invoices', this, event)" data-tab="tab-my-invoices">
+        <div class="user-nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <span>فاکتورها</span>
+    </button>
+    <button type="button" class="user-bottom-nav-item" onclick="toggleUserSidebar(true)">
+        <div class="user-nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+        <span>منوی کامل</span>
+    </button>
+</nav>
 
 @endsection
 
@@ -870,7 +988,16 @@
                 b.classList.add('active');
             }
         });
-        if (el) el.classList.add('active');
+        if (el && el.classList.contains('user-nav-btn')) el.classList.add('active');
+
+        // Highlight mobile bottom nav items
+        document.querySelectorAll('.user-bottom-nav-item').forEach(function(item) {
+            item.classList.remove('active');
+            if (item.getAttribute('data-tab') === tabId) {
+                item.classList.add('active');
+            }
+        });
+        if (el && el.classList.contains('user-bottom-nav-item')) el.classList.add('active');
 
         const title = el?.querySelector('.user-nav-title')?.innerText || target?.getAttribute('data-title') || 'پنل کاربری';
         const bcrumb = document.getElementById('userBreadcrumbTitle');
