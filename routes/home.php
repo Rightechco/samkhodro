@@ -88,6 +88,8 @@ Route::post('/admin-portal/orders/{code}/qc/save', [MobileServiceController::cla
 Route::get('/admin-portal/orders/{code}/photos', [MobileServiceController::class, 'getOrderPhotos'])->name('mob.admin.orders.photos.get');
 Route::post('/admin-portal/orders/{code}/photos/add', [MobileServiceController::class, 'addOrderPhoto'])->name('mob.admin.orders.photos.add');
 Route::post('/admin-portal/orders/{code}/task/timer', [MobileServiceController::class, 'toggleTechnicianTaskTimer'])->name('mob.admin.orders.task.timer');
+Route::post('/admin-portal/orders/{code}/update-status', [MobileServiceController::class, 'updatePortalOrderStatus'])->name('mob.admin.orders.update-status');
+Route::post('/admin-portal/sms/send-quick', [MobileServiceController::class, 'sendQuickSms'])->name('mob.admin.sms.send-quick');
 };
 
 // شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های سام موبایل در ریشه لود می‌شوند

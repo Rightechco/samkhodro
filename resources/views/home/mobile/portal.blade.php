@@ -1,4 +1,17 @@
 @extends('home.mobile.portal-layout')
+@php
+    if (!function_exists('shamsi')) {
+        function shamsi($date, $format = 'Y/m/d - H:i') {
+            if (empty($date)) return '-';
+            try {
+                return \App\Http\Controllers\Home\MobileServiceController::toJalali($date, $format);
+            } catch (\Exception $e) {
+                return is_string($date) ? $date : '-';
+            }
+        }
+    }
+@endphp
+
 
 @section('title', 'میز مدیریت خدمات پس از فروش و گارانتی | سام موبایل')
 @section('header_title', 'میز مدیریت خدمات')
@@ -1695,6 +1708,92 @@
         }
     }
 
+
+    /* BULLETPROOF MOBILE RESPONSIVE & HORIZONTAL OVERFLOW PREVENTION */
+    html, body {
+        overflow-x: clip !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+    }
+    .portal-wrapper, .erp-container, .erp-main {
+        overflow-x: clip !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .erp-table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        display: block !important;
+        border-radius: 14px !important;
+    }
+
+    @media (max-width: 991px) {
+        /* COMPLETELY SUPPRESS SECOND HEADER ON MOBILE */
+        .erp-topbar {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            opacity: 0 !important;
+        }
+
+        /* BULLETPROOF DRAWER HIDING ON MOBILE - PREVENT PHANTOM SCROLL */
+        .erp-sidebar {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 290px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            border-left: 1px solid #e2e8f0 !important;
+            box-shadow: none !important;
+            z-index: 100000 !important;
+            overflow-y: auto !important;
+            background: #ffffff !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateX(110%) !important;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
+        }
+        .erp-sidebar.open {
+            display: flex !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateX(0) !important;
+            box-shadow: -15px 0 40px rgba(15, 23, 42, 0.3) !important;
+        }
+        .erp-sidebar-mobile-close {
+            display: flex !important;
+        }
+        .erp-sidebar-overlay {
+            position: fixed !important;
+            inset: 0 !important;
+            background: rgba(15, 23, 42, 0.55) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+            z-index: 99999 !important;
+            display: none;
+        }
+        .erp-sidebar-overlay.open {
+            display: block !important;
+        }
+        .erp-main {
+            padding: 8px 10px 105px 10px !important;
+        }
+    }
+
 </style>
 @endpush
 
@@ -3135,6 +3234,78 @@
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <!-- SMS DISPATCH LOGS SECTION -->
+            <div class="erp-panel" style="margin-top: 24px;">
+                <div class="erp-panel-header" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div class="erp-panel-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>گزارش زنده ارسال پیامک‌های اطلاع‌رسانی به مشتریان (سرویس خودکار SMS)</span>
+                    </div>
+                    <span class="badge" style="background:#ecfdf5; color:#059669; font-weight:700; padding:6px 12px; border-radius:10px; font-size:0.78rem;">
+                        متصل به پنل پیامکی فعال
+                    </span>
+                </div>
+                <div class="erp-card-body" style="padding: 0;">
+                    <div class="erp-table-responsive">
+                        <table class="erp-table" id="smsLogsTable" style="width: 100%; border-collapse: collapse; text-align: right;">
+                            <thead>
+                                <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem;">
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">#</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">مشتری</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">شماره همراه</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">کد پرونده</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">متن پیامک</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">وضعیت تحویل</th>
+                                    <th style="padding: 12px 14px; font-weight: 800; color: #475569;">تاریخ شمسی</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $smsLogs = [];
+                                    try {
+                                        if (\Illuminate\Support\Facades\Schema::hasTable('mobile_sms_logs')) {
+                                            $smsLogs = \Illuminate\Support\Facades\DB::table('mobile_sms_logs')
+                                                ->orderBy('id', 'desc')
+                                                ->limit(20)
+                                                ->get();
+                                        }
+                                    } catch (\Exception $e) {}
+                                @endphp
+
+                                @forelse($smsLogs as $idx => $slog)
+                                <tr style="border-bottom: 1px solid #f1f5f9; font-size: 0.82rem;">
+                                    <td style="padding: 12px 14px; color: #94a3b8; font-weight: 700;">{{ $idx + 1 }}</td>
+                                    <td style="padding: 12px 14px; font-weight: 700; color: #0f172a;">{{ $slog->customer_name ?? '-' }}</td>
+                                    <td style="padding: 12px 14px; font-family: monospace; direction: ltr; text-align: right; color: #2563eb; font-weight: 700;">{{ $slog->phone }}</td>
+                                    <td style="padding: 12px 14px; font-family: monospace; color: #475569;">{{ $slog->tracking_code ?? '-' }}</td>
+                                    <td style="padding: 12px 14px; color: #334155; max-width: 340px; line-height: 1.5;">{{ $slog->message }}</td>
+                                    <td style="padding: 12px 14px;">
+                                        @if(($slog->status ?? '') === 'sent')
+                                            <span style="background: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+                                                تحویل به مخابرات
+                                            </span>
+                                        @else
+                                            <span style="background: #fef2f2; color: #dc2626; padding: 4px 10px; border-radius: 8px; font-size: 0.72rem; font-weight: 700;">خطا در ارسال</span>
+                                        @endif
+                                    </td>
+                                    <td style="padding: 12px 14px; color: #64748b; font-size: 0.76rem; white-space: nowrap;">
+                                        {{ shamsi($slog->created_at) }}
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" style="padding: 24px; text-align: center; color: #94a3b8; font-size: 0.85rem;">
+                                        هنوز پیامکی ثبت نشده است. با تغییر وضعیت پرونده‌ها یا ارسال سریع، پیامک‌های ارسالی در اینجا درج می‌گردند.
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -4897,6 +5068,84 @@
 <!-- =========================================================================
      HIDDEN PRINT CONTAINER FOR NATIVE BROWSER PRINTING
      ========================================================================= -->
+
+    <!-- MODAL: CHANGE ORDER STATUS & DISPATCH CUSTOMER SMS -->
+    <div class="warranty-modal-backdrop" id="statusModalBackdrop" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(5px); z-index: 100000; align-items: center; justify-content: center; padding: 14px;">
+        <div class="warranty-modal-box" style="background: #ffffff; border-radius: 20px; max-width: 540px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow: hidden; animation: modalPop 0.25s ease-out;">
+            <div style="padding: 16px 20px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-weight: 900; font-size: 1rem;">تغییر وضعیت پرونده و اطلاع‌رسانی پیامکی</div>
+                        <div style="font-size: 0.74rem; opacity: 0.9;" id="statusModalSubtitle">کد رهگیری: -</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeStatusModal();" style="background: rgba(255,255,255,0.15); border: none; color: #fff; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">✕</button>
+            </div>
+
+            <form id="statusUpdateForm" onsubmit="submitStatusUpdate(event);" style="padding: 20px;">
+                <input type="hidden" id="statusOrderCode" name="tracking_code">
+                <input type="hidden" id="statusCustomerPhone" name="customer_phone">
+                <input type="hidden" id="statusCustomerName" name="customer_name">
+
+                <!-- Customer & Device Mini Card -->
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 16px; margin-bottom: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem;">
+                    <div><span style="color: #64748b;">مشتری:</span> <strong id="statusModalCustomer">-</strong></div>
+                    <div><span style="color: #64748b;">شماره تماس:</span> <strong id="statusModalPhone" style="font-family: monospace;">-</strong></div>
+                    <div style="grid-column: span 2;"><span style="color: #64748b;">دستگاه:</span> <strong id="statusModalDevice">-</strong></div>
+                </div>
+
+                <!-- Select New Status -->
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-weight: 800; font-size: 0.84rem; color: #0f172a; margin-bottom: 6px;">انتخاب وضعیت جدید:</label>
+                    <select id="statusSelect" name="status" class="erp-select" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-weight: 700; font-size: 0.9rem;" onchange="updateSmsPreviewText();">
+                        <option value="pending">در انتظار بررسی و عیب‌یابی اولیه</option>
+                        <option value="in_progress">در حال بررسی و تعمیر تخصصی در کارگاه</option>
+                        <option value="waiting_parts">در انتظار تامین قطعه یدکی از انبار</option>
+                        <option value="ready">آماده تحویل به مشتری (تأیید کنترل کیفی QC)</option>
+                        <option value="delivered">تحویل نهایی شده به مشتری با گارانتی</option>
+                        <option value="cancelled">لغو شده / عدم امکان تعمیر</option>
+                    </select>
+                </div>
+
+                <!-- Technician Note -->
+                <div style="margin-bottom: 14px;">
+                    <label style="display: block; font-weight: 800; font-size: 0.84rem; color: #0f172a; margin-bottom: 6px;">یادداشت تکنسین (اختیاری):</label>
+                    <input type="text" id="statusNoteInput" name="note" placeholder="مثال: تعویض فلت شارژ با قطعه ۱۰۰٪ اورجینال شرکتی" class="erp-input" style="width: 100%; padding: 10px 14px; border-radius: 12px; border: 1.5px solid #cbd5e1; font-size: 0.85rem;">
+                </div>
+
+                <!-- SMS Notification Box -->
+                <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 14px; margin-bottom: 18px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                        <label style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: #1d4ed8; font-size: 0.85rem; cursor: pointer;">
+                            <input type="checkbox" id="sendSmsCheckbox" name="send_sms" value="1" checked onchange="toggleSmsPreview(this.checked);" style="width: 17px; height: 17px; accent-color: #2563eb;">
+                            <span>ارسال پیامک اطلاع‌رسانی خودکار به مشتری</span>
+                        </label>
+                        <span style="font-size: 0.72rem; color: #3b82f6; font-weight: 700;">سرویس آنی SMS</span>
+                    </div>
+
+                    <div id="smsMessageArea">
+                        <textarea id="statusSmsText" name="sms_text" rows="3" class="erp-input" style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #93c5fd; font-size: 0.82rem; line-height: 1.5; resize: none; background: #ffffff;"></textarea>
+                        <div style="font-size: 0.72rem; color: #64748b; margin-top: 4px; text-align: left;">
+                            متن پیامک به طور خودکار براساس وضعیت انتخاب‌شده آماده می‌شود و قابل ویرایش است.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" onclick="closeStatusModal();" class="erp-btn" style="background: #f1f5f9; color: #475569; padding: 10px 20px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer;">انصراف</button>
+                    <button type="submit" id="btnSubmitStatus" class="erp-btn" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; padding: 10px 24px; border-radius: 12px; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.3); display: inline-flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span>ثبت تغییر و ارسال پیامک</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <div id="printContainer" style="display: none;"></div>
 
 
@@ -6092,35 +6341,65 @@
         document.getElementById('photosModalBackdrop').classList.remove('show');
     }
 
-    function addPhotoToOrder() {
-        const url = document.getElementById('newPhotoUrl').value.trim();
-        const stage = document.getElementById('newPhotoStage').value;
-        const caption = document.getElementById('newPhotoCaption').value.trim();
-
-        if (!url) {
-            showToast('لطفا آدرس تصویر را وارد نمایید.', 'error');
+    async function addPhotoToOrder(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        const code = (typeof currentPhotoOrderCode !== 'undefined' && currentPhotoOrderCode) 
+                  || (typeof currentPhotosOrderCode !== 'undefined' && currentPhotosOrderCode) 
+                  || '';
+        if (!code) {
+            alert('لطفا ابتدا یک پرونده را انتخاب فرمایید.');
             return;
         }
 
-        fetch('{{ url("/admin-portal/orders") }}/' + currentPhotoOrderCode + '/photos/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                stage: stage,
-                photo_url: url,
-                caption: caption
-            })
-        })
-        .then(res => res.json())
-        .then(res => {
-            showToast('تصویر با موفقیت در پرونده ثبت شد.', 'success');
-            document.getElementById('newPhotoUrl').value = '';
-            document.getElementById('newPhotoCaption').value = '';
-            openPhotosModal(currentPhotoOrderCode);
-        });
+        const fileInput = document.getElementById('photoFileInput');
+        const stage = document.getElementById('photoStageSelect')?.value || document.getElementById('newPhotoStage')?.value || 'intake';
+        const note = document.getElementById('photoNoteInput')?.value || document.getElementById('newPhotoCaption')?.value || '';
+        const urlInput = document.getElementById('newPhotoUrl')?.value?.trim() || '';
+
+        const formData = new FormData();
+        formData.append('stage', stage);
+        formData.append('note', note);
+        formData.append('caption', note);
+
+        if (fileInput && fileInput.files && fileInput.files[0]) {
+            formData.append('photo_file', fileInput.files[0]);
+        } else if (urlInput) {
+            formData.append('photo_url', urlInput);
+        } else {
+            alert('لطفا یا فایل تصویر را انتخاب کنید یا آدرس آن را وارد نمایید.');
+            return;
+        }
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+        try {
+            const res = await fetch(`/admin-portal/orders/${code}/photos/add`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                if (typeof showToast === 'function') {
+                    showToast('تصویر با موفقیت در پرونده بارگذاری و ذخیره شد.', 'success');
+                } else {
+                    alert('تصویر با موفقیت در پرونده بارگذاری و ذخیره شد.');
+                }
+                if (typeof clearSelectedPhotoFile === 'function') clearSelectedPhotoFile();
+                if (document.getElementById('newPhotoUrl')) document.getElementById('newPhotoUrl').value = '';
+                if (document.getElementById('newPhotoCaption')) document.getElementById('newPhotoCaption').value = '';
+                if (document.getElementById('photoNoteInput')) document.getElementById('photoNoteInput').value = '';
+                openPhotosModal(code);
+            } else {
+                alert('خطا در ذخیره تصویر: ' + (data.message || 'خطای سرور'));
+            }
+        } catch (err) {
+            alert('خطای اتصال به سرور: ' + err.message);
+        }
     }
 
     // 6. Technician Workbench Timer
@@ -6149,6 +6428,218 @@
     function finishWorkstationRepair() {
         timerRunning = false;
         showToast('تعمیر پرونده پایان یافت و جهت تست به ایستگاه کنترل کیفیت (QC) ارجاع شد.', 'success');
+    }
+
+
+    /* =========================================================================
+       STATUS UPDATE & SMS NOTIFICATION CONTROLLER
+       ========================================================================= */
+    function openStatusUpdateModal(code, customerName, customerPhone, deviceModel, currentStatus) {
+        document.getElementById('statusOrderCode').value = code || '';
+        document.getElementById('statusCustomerName').value = customerName || '';
+        document.getElementById('statusCustomerPhone').value = customerPhone || '';
+        
+        document.getElementById('statusModalSubtitle').innerText = 'کد پرونده: ' + (code || '-');
+        document.getElementById('statusModalCustomer').innerText = customerName || 'مشتری گرامی';
+        document.getElementById('statusModalPhone').innerText = customerPhone || '-';
+        document.getElementById('statusModalDevice').innerText = deviceModel || '-';
+
+        const select = document.getElementById('statusSelect');
+        if (select) {
+            select.value = currentStatus || 'in_progress';
+        }
+        
+        updateSmsPreviewText();
+
+        const modal = document.getElementById('statusModalBackdrop');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeStatusModal() {
+        const modal = document.getElementById('statusModalBackdrop');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    function toggleSmsPreview(checked) {
+        const area = document.getElementById('smsMessageArea');
+        if (area) {
+            area.style.opacity = checked ? '1' : '0.4';
+            area.style.pointerEvents = checked ? 'auto' : 'none';
+        }
+    }
+
+    function updateSmsPreviewText() {
+        const status = document.getElementById('statusSelect').value;
+        const name = document.getElementById('statusModalCustomer').innerText || 'مشتری گرامی';
+        const code = document.getElementById('statusOrderCode').value || '';
+        const device = document.getElementById('statusModalDevice').innerText || 'دستگاه شما';
+        const txtArea = document.getElementById('statusSmsText');
+        if (!txtArea) return;
+
+        let msg = '';
+        if (status === 'pending') {
+            msg = `${name} عزیز، دستگاه ${device} با کد پیگیری ${code} در مرکز خدمات سام موبایل پذیرش گردید و در صف بررسی اولیه قرار گرفت. پیگیری: mob.taminkanisam.co.ir`;
+        } else if (status === 'in_progress') {
+            msg = `${name} گرامی، دستگاه ${device} با کد پیگیری ${code} توسط تکنسین فنی سام موبایل در دست عیب‌یابی و تعمیر قرار دارد.`;
+        } else if (status === 'waiting_parts') {
+            msg = `${name} گرامی، پرونده ${code} جهت تخصیص قطعات یدکی اورجینال در سامانه انبار ثبت گردید و روند تعمیر ادامه دارد.`;
+        } else if (status === 'ready') {
+            msg = `${name} عزیز، تعمیر دستگاه ${device} (کد: ${code}) با موفقیت به پایان رسید و کنترل کیفی تایید شد. جهت تحویل به مرکز خدمات مراجعه فرمایید.`;
+        } else if (status === 'delivered') {
+            msg = `${name} گرامی، دستگاه ${device} تحویل گردید. گارانتی ۱۸ ماهه رسمی خدمات سام موبایل برای شما فعال شد. سپاس از اعتماد شما.`;
+        } else {
+            msg = `${name} گرامی، وضعیت پرونده ${code} در سامانه سام موبایل به‌روزرسانی شد. مشاهده جزئیات: mob.taminkanisam.co.ir`;
+        }
+        txtArea.value = msg;
+    }
+
+    async function submitStatusUpdate(e) {
+        e.preventDefault();
+        const code = document.getElementById('statusOrderCode').value;
+        if (!code) {
+            alert('کد رهگیری نامعتبر است.');
+            return;
+        }
+
+        const btn = document.getElementById('btnSubmitStatus');
+        btn.disabled = true;
+        btn.innerHTML = '<span>در حال ارسال و ثبت...</span>';
+
+        const form = document.getElementById('statusUpdateForm');
+        const formData = new FormData(form);
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            const res = await fetch(`/admin-portal/orders/${code}/update-status`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                alert('✅ وضعیت با موفقیت تغییر یافت و پیامک به مشتری ارسال گردید.');
+                closeStatusModal();
+                location.reload();
+            } else {
+                alert('خطا در ثبت وضعیت: ' + (data.message || 'خطای سرور'));
+            }
+        } catch (err) {
+            alert('خطای اتصال به سرور: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>ثبت تغییر و ارسال پیامک</span>';
+        }
+    }
+
+    /* =========================================================================
+       PHOTO EVIDENCE FILE UPLOAD HANDLERS
+       ========================================================================= */
+    function handlePhotoFileSelected(input) {
+        if (!input.files || !input.files[0]) return;
+        const file = input.files[0];
+        
+        const previewBox = document.getElementById('photoPreviewBox');
+        const placeholder = document.getElementById('photoDropPlaceholder');
+        const previewImg = document.getElementById('photoPreviewImg');
+        const nameEl = document.getElementById('photoPreviewName');
+        const sizeEl = document.getElementById('photoPreviewSize');
+
+        if (nameEl) nameEl.innerText = file.name;
+        if (sizeEl) sizeEl.innerText = (file.size / 1024).toFixed(1) + ' KB';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            if (previewImg) previewImg.src = e.target.result;
+            if (placeholder) placeholder.style.display = 'none';
+            if (previewBox) previewBox.style.display = 'flex';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function clearSelectedPhotoFile() {
+        const input = document.getElementById('photoFileInput');
+        if (input) input.value = '';
+        const previewBox = document.getElementById('photoPreviewBox');
+        const placeholder = document.getElementById('photoDropPlaceholder');
+        if (previewBox) previewBox.style.display = 'none';
+        if (placeholder) placeholder.style.display = 'block';
+    }
+
+
+
+
+    /* =========================================================================
+       SMS SEND & TEMPLATE CONTROLLER
+       ========================================================================= */
+    function applySmsTemplate(val) {
+        if (!val) return;
+        const txtArea = document.getElementById('smsMessage');
+        if (txtArea) txtArea.value = val;
+    }
+
+    async function handleSendSms(e) {
+        e.preventDefault();
+        const phone = document.getElementById('smsPhone')?.value?.trim();
+        const message = document.getElementById('smsMessage')?.value?.trim();
+        const alertEl = document.getElementById('smsAlert');
+        const btn = document.getElementById('btnSendSmsSubmit');
+
+        if (!phone || !message) {
+            alert('لطفا شماره همراه و متن پیامک را وارد نمایید.');
+            return;
+        }
+
+        if (btn) btn.disabled = true;
+        if (alertEl) {
+            alertEl.style.display = 'block';
+            alertEl.style.color = '#2563eb';
+            alertEl.innerText = 'در حال ارسال پیامک به اپراتور مخابراتی...';
+        }
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+        try {
+            const res = await fetch('/admin-portal/sms/send-quick', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ phone, message })
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                if (alertEl) {
+                    alertEl.style.color = '#059669';
+                    alertEl.innerText = '✅ ' + (data.message || 'پیامک با موفقیت ارسال و ثبت گردید.');
+                }
+                alert('پیامک با موفقیت به شماره ' + phone + ' ارسال شد.');
+                setTimeout(() => { location.reload(); }, 1200);
+            } else {
+                if (alertEl) {
+                    alertEl.style.color = '#dc2626';
+                    alertEl.innerText = 'خطا: ' + (data.message || 'ارسال پیامک با مشکل مواجه شد.');
+                }
+                alert('خطا در ارسال: ' + (data.message || 'ارسال ناموفق'));
+            }
+        } catch (err) {
+            if (alertEl) {
+                alertEl.style.color = '#dc2626';
+                alertEl.innerText = 'خطای اتصال به سرور: ' + err.message;
+            }
+            alert('خطای اتصال: ' + err.message);
+        } finally {
+            if (btn) btn.disabled = false;
+        }
     }
 
 </script>

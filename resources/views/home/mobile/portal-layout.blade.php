@@ -64,6 +64,13 @@
         /* ---------------------------------------------------------------------
            PORTAL DEDICATED TOPBAR
            --------------------------------------------------------------------- */
+        
+        html, body {
+            overflow-x: clip !important;
+            max-width: 100vw !important;
+            width: 100% !important;
+        }
+
         .portal-topbar {
             position: sticky;
             top: 0;
@@ -478,22 +485,65 @@
            RESPONSIVE MOBILE BREAKPOINTS
            --------------------------------------------------------------------- */
         @media (max-width: 991px) {
-            .portal-topbar-inner {
-            max-width: 100% !important;
-            width: 100% !important;
-            margin: 0 auto;
-            padding: 0 16px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            box-sizing: border-box !important;
-            overflow: hidden !important;
-        }
-            .portal-drawer-toggle {
-                display: flex;
+            .portal-topbar {
+                height: 58px;
+                padding: 0 10px;
             }
+            .portal-topbar-inner {
+                padding: 0 4px;
+                gap: 8px;
+            }
+            .portal-drawer-toggle {
+                display: inline-flex !important;
+                width: 38px;
+                height: 38px;
+                flex-shrink: 0;
+            }
+            .portal-logo-area {
+                gap: 8px;
+            }
+            .portal-logo-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
+            }
+            .portal-logo-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+            .portal-logo-title {
+                font-size: 0.95rem;
+                gap: 6px;
+            }
+            .portal-logo-sub,
+            .portal-system-tag,
+            .portal-hotline-pill,
+            .btn-view-site,
+            .portal-user-chip-text {
+                display: none !important;
+            }
+            .portal-user-chip {
+                padding: 0;
+                background: transparent;
+                border: none;
+            }
+            .portal-avatar-small {
+                width: 36px;
+                height: 36px;
+                font-size: 0.95rem;
+            }
+            .btn-topbar-logout {
+                width: 36px;
+                height: 36px;
+                padding: 0;
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+            .portal-footer {
+                display: none !important;
+            }
+        }
             .portal-hotline-pill, .btn-view-site {
                 display: none;
             }

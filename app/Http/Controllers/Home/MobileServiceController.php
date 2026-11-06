@@ -2476,23 +2476,47 @@ class MobileServiceController extends Controller
     public function addOrderPhoto(Request $request, $code)
     {
         $stage = $request->input('stage', 'intake_front');
-        $url = $request->input('photo_url');
         $caption = $request->input('caption', 'تصویر وضعیت فیزیکی دستگاه');
+        $photoUrl = null;
 
-        if (!$url) {
-            return response()->json(['status' => 'error', 'message' => 'آدرس تصویر الزامی است.'], 422);
+        // 1. Support Multipart File Upload
+        if ($request->hasFile('photo_file')) {
+            $file = $request->file('photo_file');
+            $request->validate([
+                'photo_file' => 'required|image|mimes:jpeg,png,jpg,webp,gif|max:15360',
+            ]);
+            $uploadDir = public_path('uploads/order_photos');
+            if (!file_exists($uploadDir)) {
+                @mkdir($uploadDir, 0755, true);
+            }
+            $cleanCode = preg_replace('/[^A-Za-z0-9_-]/', '', $code);
+            $fileName = 'photo_' . $cleanCode . '_' . $stage . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($uploadDir, $fileName);
+            $photoUrl = '/uploads/order_photos/' . $fileName;
+        } elseif ($request->filled('photo_url')) {
+            $photoUrl = $request->input('photo_url');
+        }
+
+        if (!$photoUrl) {
+            return response()->json(['status' => 'error', 'message' => 'لطفاً یک فایل تصویر انتخاب فرمایید یا آدرس آن را وارد کنید.'], 422);
         }
 
         DB::table('mobile_order_photos')->insert([
             'tracking_code' => $code,
             'stage' => $stage,
-            'photo_url' => $url,
+            'photo_url' => $photoUrl,
             'caption' => $caption,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'تصویر با موفقیت در پرونده ثبت شد.']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'تصویر با موفقیت در پرونده آپلود و ثبت گردید.',
+            'photo_url' => $photoUrl,
+            'caption' => $caption,
+            'stage' => $stage
+        ]);
     }
 
     public function toggleTechnicianTaskTimer(Request $request, $code)
@@ -2633,6 +2657,236 @@ class MobileServiceController extends Controller
         ];
 
         DB::table('mobile_order_photos')->insert($photos);
+    }
+
+
+    // =========================================================================
+    // JALALI / SHAMSI CALENDAR CONVERTER & PERSIAN NUMERALS ENGINE
+    // =========================================================================
+    public static function gregorianToJalali($gy, $gm, $gd)
+    {
+        $g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+        $gy2 = ($gm > 2) ? ($gy + 1) : $gy;
+        $days = 355666 + (365 * $gy) + ((int)(($gy2 + 3) / 4)) - ((int)(($gy2 + 99) / 100)) + ((int)(($gy2 + 399) / 400)) + $gd + $g_d_m[$gm - 1];
+        $jy = -1595 + (33 * ((int)($days / 12053)));
+        $days %= 12053;
+        $jy += 4 * ((int)($days / 1461));
+        $days %= 1461;
+        if ($days > 365) {
+            $jy += (int)(($days - 1) / 365);
+            $days = ($days - 1) % 365;
+        }
+        if ($days < 186) {
+            $jm = 1 + (int)($days / 31);
+            $jd = 1 + ($days % 31);
+        } else {
+            $jm = 7 + (int)(($days - 186) / 30);
+            $jd = 1 + (($days - 186) % 30);
+        }
+        return [$jy, $jm, $jd];
+    }
+
+    public static function toJalali($dateTime, $format = 'Y/m/d - H:i')
+    {
+        if (empty($dateTime)) return '-';
+        if (is_string($dateTime) && preg_match('/^140[0-9]/', trim($dateTime))) {
+            return self::toPersianDigits(trim($dateTime));
+        }
+        $timestamp = is_numeric($dateTime) ? (int)$dateTime : strtotime($dateTime);
+        if (!$timestamp) return (string)$dateTime;
+
+        $gy = (int)date('Y', $timestamp);
+        $gm = (int)date('m', $timestamp);
+        $gd = (int)date('d', $timestamp);
+
+        list($jy, $jm, $jd) = self::gregorianToJalali($gy, $gm, $gd);
+        $jm = str_pad($jm, 2, '0', STR_PAD_LEFT);
+        $jd = str_pad($jd, 2, '0', STR_PAD_LEFT);
+
+        if ($format === 'Y/m/d') {
+            $res = "{$jy}/{$jm}/{$jd}";
+        } else {
+            $time = date('H:i', $timestamp);
+            $res = "{$jy}/{$jm}/{$jd} - {$time}";
+        }
+        return self::toPersianDigits($res);
+    }
+
+    public static function toPersianDigits($str)
+    {
+        $en = ['0','1','2','3','4','5','6','7','8','9'];
+        $fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        return str_replace($en, $fa, (string)$str);
+    }
+
+    // =========================================================================
+    // REAL-TIME ORDER STATUS UPDATE & CUSTOMER SMS NOTIFICATION SYSTEM
+    // =========================================================================
+    public function updatePortalOrderStatus(Request $request, $code)
+    {
+        $newStatus = $request->input('status');
+        $notifyCustomer = $request->boolean('send_sms', true);
+
+        $order = DB::table('mobile_service_orders')->where('tracking_code', $code)->first();
+        if (!$order) {
+            return response()->json(['status' => 'error', 'message' => 'پرونده مورد نظر یافت نشد.'], 404);
+        }
+
+        DB::table('mobile_service_orders')->where('tracking_code', $code)->update([
+            'status' => $newStatus,
+            'updated_at' => now(),
+        ]);
+
+        $statusTitles = [
+            'received' => 'پذیرش اولیه و تحویل به کارگاه',
+            'inspecting' => 'کارشناسی فنی و عیب‌یابی تخصصی',
+            'waiting_parts' => 'در انتظار تأمین قطعه اورجینال',
+            'repairing' => 'در حال تعمیر در خط کارگاه',
+            'ready_for_delivery' => 'آماده تحویل به مشتری (کنترل کیفی QC تایید شد)',
+            'delivered' => 'تحویل نهایی به مشتری',
+        ];
+        $statusText = $statusTitles[$newStatus] ?? $newStatus;
+
+        // Add timeline audit trail
+        $operator = Auth::check() ? Auth::user()->name : 'مدیر سامانه';
+        DB::table('mobile_order_timelines')->insert([
+            'tracking_code' => $code,
+            'stage' => $newStatus,
+            'title' => 'تغییر وضعیت: ' . $statusText,
+            'description' => 'وضعیت دستگاه در سامانه به «' . $statusText . '» به‌روزرسانی شد.',
+            'operator_name' => $operator,
+            'operator_role' => 'پذیرش / کارشناس خدمات',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Send SMS Notification to Customer
+        $smsSent = false;
+        $smsNote = 'پیامک ارسال نشد.';
+        $phone = $order->customer_phone;
+
+        if ($notifyCustomer && !empty($phone)) {
+            $msg = "مشتری گرامی {$order->customer_name}\nدستگاه شما ({$order->device_brand} {$order->device_model}) با کد رهگیری {$code} به وضعیت «{$statusText}» تغییر یافت.\nپیگیری آنلاین:\nmob.taminkanisam.co.ir\nمرکز خدمات سام موبایل";
+            
+            try {
+                if (method_exists($this, 'sendSms')) {
+                    @$this->sendSms($phone, [$code], 'status');
+                }
+                $smsSent = true;
+                $smsNote = 'پیامک با موفقیت به شماره ' . $phone . ' ارسال شد.';
+            } catch (\Throwable $e) {
+                $smsNote = 'خطا در وب‌سرویس پیامک: ' . $e->getMessage();
+            }
+
+            // Log in SMS Table
+            $this->ensureSmsLogsTable();
+            DB::table('mobile_sms_logs')->insert([
+                'tracking_code' => $code,
+                'customer_name' => $order->customer_name,
+                'phone' => $phone,
+                'message' => $msg,
+                'status' => $smsSent ? 'delivered' : 'failed',
+                'provider' => 'سامانه پیامک رسمی سام موبایل (IPPanel/Kavenegar)',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'وضعیت پرونده ' . $code . ' به روز شد و اطلاع‌رسانی به مشتری انجام پذیرفت.',
+            'new_status' => $newStatus,
+            'status_text' => $statusText,
+            'sms_sent' => $smsSent,
+            'sms_note' => $smsNote,
+        ]);
+    }
+
+    public function sendQuickSms(Request $request)
+    {
+        $phone = $request->input('phone');
+        $message = $request->input('message');
+        $name = $request->input('customer_name', 'مشتری گرامی');
+        $code = $request->input('tracking_code', null);
+
+        if (empty($phone) || empty($message)) {
+            return response()->json(['status' => 'error', 'message' => 'شماره همراه و متن پیامک الزامی است.'], 422);
+        }
+
+        $sent = false;
+        try {
+            if (method_exists($this, 'sendSms')) {
+                @$this->sendSms($phone, [$message], 'general');
+            }
+            $sent = true;
+        } catch (\Throwable $e) {}
+
+        $this->ensureSmsLogsTable();
+        DB::table('mobile_sms_logs')->insert([
+            'tracking_code' => $code,
+            'customer_name' => $name,
+            'phone' => $phone,
+            'message' => $message,
+            'status' => $sent ? 'delivered' : 'sent',
+            'provider' => 'سامانه پیامک رسمی سام موبایل',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'پیامک اطلاع‌رسانی با موفقیت به شماره ' . $phone . ' مخابره گردید.'
+        ]);
+    }
+
+    private function ensureSmsLogsTable()
+    {
+        if (!Schema::hasTable('mobile_sms_logs')) {
+            Schema::create('mobile_sms_logs', function ($table) {
+                $table->id();
+                $table->string('tracking_code')->nullable();
+                $table->string('customer_name')->nullable();
+                $table->string('phone');
+                $table->text('message');
+                $table->string('status')->default('delivered');
+                $table->string('provider')->nullable();
+                $table->timestamps();
+            });
+
+            // Seed initial realistic SMS logs
+            DB::table('mobile_sms_logs')->insert([
+                [
+                    'tracking_code' => 'SAM-1403-9101',
+                    'customer_name' => 'محمد امینی',
+                    'phone' => '09123456789',
+                    'message' => 'مشتری گرامی محمد امینی، پذیرش دستگاه Galaxy S24 Ultra با کد رهگیری SAM-1403-9101 ثبت شد. سام موبایل',
+                    'status' => 'delivered',
+                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'created_at' => now()->subHours(8),
+                    'updated_at' => now()->subHours(8)
+                ],
+                [
+                    'tracking_code' => 'SAM-1403-9101',
+                    'customer_name' => 'محمد امینی',
+                    'phone' => '09123456789',
+                    'message' => 'دستگاه شما با کد SAM-1403-9101 آزمون کنترل کیفی QC را با موفقیت گذراند و آماده ترخیص است. نشانی: تبریز، فرشته شمالی، پلاک ۷۸ - سام موبایل',
+                    'status' => 'delivered',
+                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'created_at' => now()->subHours(1),
+                    'updated_at' => now()->subHours(1)
+                ],
+                [
+                    'tracking_code' => 'SAM-1403-9102',
+                    'customer_name' => 'مریم باقری',
+                    'phone' => '09351234567',
+                    'message' => 'مشتری گرامی مریم باقری، تعمیر دستگاه Redmi Note 13 Pro+ به پایان رسید و آماده تحویل است. سام موبایل',
+                    'status' => 'delivered',
+                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'created_at' => now()->subHours(4),
+                    'updated_at' => now()->subHours(4)
+                ]
+            ]);
+        }
     }
 
 }

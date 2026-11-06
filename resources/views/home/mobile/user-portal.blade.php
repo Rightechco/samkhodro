@@ -1,4 +1,17 @@
 @extends('home.mobile.portal-layout')
+@php
+    if (!function_exists('shamsi')) {
+        function shamsi($date, $format = 'Y/m/d - H:i') {
+            if (empty($date)) return '-';
+            try {
+                return \App\Http\Controllers\Home\MobileServiceController::toJalali($date, $format);
+            } catch (\Exception $e) {
+                return is_string($date) ? $date : '-';
+            }
+        }
+    }
+@endphp
+
 
 @section('title', 'پنل کاربری و پیگیری آنلاین خدمات | سام موبایل')
 @section('header_title', 'میز کاربری مشتریان')
@@ -401,7 +414,91 @@
         background: #2563eb;
     }
 
-    </style>
+    
+    /* BULLETPROOF MOBILE RESPONSIVE & HORIZONTAL OVERFLOW PREVENTION */
+    html, body {
+        overflow-x: clip !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+    }
+    .user-container, .user-main {
+        overflow-x: clip !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .erp-table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    @media (max-width: 991px) {
+        .user-topbar {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+        }
+        .user-container {
+            flex-direction: column !important;
+            padding-bottom: 110px !important;
+        }
+        .user-sidebar {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 290px !important;
+            max-width: 85vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+            border-left: 1px solid #e2e8f0 !important;
+            box-shadow: none !important;
+            z-index: 100000 !important;
+            overflow-y: auto !important;
+            background: #ffffff !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            transform: translateX(110%) !important;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
+        }
+        .user-sidebar.open {
+            display: flex !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+            transform: translateX(0) !important;
+            box-shadow: -15px 0 40px rgba(15, 23, 42, 0.3) !important;
+        }
+        .user-sidebar-overlay {
+            position: fixed !important;
+            inset: 0 !important;
+            background: rgba(15, 23, 42, 0.55) !important;
+            backdrop-filter: blur(4px) !important;
+            z-index: 99999 !important;
+            display: none;
+        }
+        .user-sidebar-overlay.open {
+            display: block !important;
+        }
+        .user-main {
+            padding: 8px 10px 105px 10px !important;
+        }
+        .user-mobile-nav {
+            display: flex !important;
+        }
+    }
+
+</style>
 @endpush
 
 @section('content')
@@ -743,7 +840,7 @@
                                     </div>
                                     <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
                                         <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۴. تاریخ شروع گارانتی:</span>
-                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;">{{ $firstOrder->warranty_start_date ?? ($firstOrder->reception_date ?? ($firstOrder->created_at ?? '۱۴۰۳/۰۸/۱۵')) }} (۱۸ ماه)</span>
+                                        <span style="font-size: 0.72rem; font-weight: 900; color: #0f172a;">{{ shamsi($firstOrder->warranty_start_date ?? ($firstOrder->reception_date ?? ($firstOrder->created_at ?? now())), 'Y/m/d') }} (۱۸ ماه)</span>
                                     </div>
                                     <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px;">
                                         <span style="font-size: 0.70rem; color: #475569; font-weight: 700;">۵. نام شرکت سازنده کالا:</span>
@@ -823,7 +920,7 @@
                                 <tr>
                                     <td><span class="table-track-code">{{ $invOrder->invoice_number ?? ('INV-' . $invOrder->tracking_code) }}</span></td>
                                     <td><strong>{{ $invOrder->device_brand }} {{ $invOrder->device_model }}</strong></td>
-                                    <td>{{ $invOrder->invoice_date ?? ($invOrder->reception_date ?? substr($invOrder->created_at, 0, 10)) }}</td>
+                                    <td>{{ shamsi($invOrder->invoice_date ?? ($invOrder->reception_date ?? ($invOrder->created_at ?? now())), 'Y/m/d') }}</td>
                                     <td>{{ number_format($invOrder->parts_cost) }} ریال</td>
                                     <td>{{ number_format($invOrder->wage_cost ?? ($invOrder->labor_cost ?? 0)) }} ریال</td>
                                     <td><strong style="color: #2563eb;">{{ number_format($invOrder->total_cost) }} ریال</strong></td>
@@ -907,7 +1004,7 @@
                                 <tr>
                                     <td><code>#{{ $t->id }}</code></td>
                                     <td><strong>{{ $t->subject }}</strong></td>
-                                    <td>{{ $t->created_at }}</td>
+                                    <td>{{ shamsi($t->created_at) }}</td>
                                     <td>
                                         <span class="status-badge {{ $t->status == 'open' ? 'repairing' : 'ready_for_delivery' }}">
                                             {{ $t->status == 'open' ? 'در انتظار بررسی پشتیبان' : 'پاسخ داده شده' }}
