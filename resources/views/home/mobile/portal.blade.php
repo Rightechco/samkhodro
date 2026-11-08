@@ -733,7 +733,7 @@
         min-width: 0;
     }
     
-    @media (max-width: 991px) { .erp-topbar, .user-topbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; } } @media (min-width: 992px) { .erp-topbar {
+    .erp-topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -879,11 +879,14 @@
        4. ERP VIEWS & PANELS
        ------------------------------------------------------------------------- */
     .erp-view {
-        display: none;
-        animation: fadeInView 0.25s ease-out forwards;
+        display: none !important;
     }
     .erp-view.active {
-        display: block;
+        display: block !important;
+        animation: fadeInView 0.25s ease-out forwards;
+    }
+    .erp-view:not(.active) {
+        display: none !important;
     }
     @keyframes fadeInView {
         from { opacity: 0; transform: translateY(6px); }
@@ -1590,7 +1593,7 @@
             overflow-x: hidden !important;
         }
         
-    @media (max-width: 991px) { .erp-topbar, .user-topbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; } } @media (min-width: 992px) { .erp-topbar {
+    .erp-topbar {
             padding: 10px 14px !important;
             border-radius: 14px !important;
             margin-bottom: 16px !important;
@@ -1826,15 +1829,20 @@
 
     @media (max-width: 991px) {
         .erp-toggle-sidebar {
-            display: none !important; /* Top layout header already has main toggle button */
+            display: none !important;
         }
         .erp-topbar {
-            padding: 8px 12px !important;
-            margin-bottom: 12px !important;
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            opacity: 0 !important;
         }
         .erp-search-box {
-            max-width: 100% !important;
-            width: 100% !important;
+            display: none !important;
         }
     }
 
@@ -2392,7 +2400,7 @@
         <!-- ===================================================================
              PAGE 3: NEW INTAKE (tab-new-intake)
              =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" id="tab-new-intake" data-title="پذیرش دستگاه جدید" style="{{ $activeTab === 'tab-new-intake' ? 'display: block;' : 'display: none;' }}">
+        <div class="erp-view {{ $activeTab === 'tab-new-intake' ? 'active' : '' }}" id="tab-new-intake" data-title="پذیرش دستگاه جدید">
         <div class="erp-page-head" style="margin-bottom: 24px;">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background:#dbeafe; color:#1d4ed8;">ترمینال پذیرش رسمی (ماده ۱۳)</span>
@@ -2707,7 +2715,7 @@
 
     </div>
 
-<div class="erp-view {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" id="tab-technicians" data-title="تکنسین‌ها و ارجاع" style="{{ $activeTab === 'tab-technicians' ? 'display: block;' : 'display: none;' }}">
+<div class="erp-view {{ $activeTab === 'tab-technicians' ? 'active' : '' }}" id="tab-technicians" data-title="تکنسین‌ها و ارجاع">
         
         <!-- Header -->
         <div class="erp-page-head" style="margin-bottom: 24px;">
@@ -2900,7 +2908,7 @@
 
     </div>
 
-<div class="erp-view {{ $activeTab === 'tab-parts' ? 'active' : '' }}" id="tab-parts" data-title="انبار قطعات یدکی" style="{{ $activeTab === 'tab-parts' ? 'display: block;' : 'display: none;' }}">
+<div class="erp-view {{ $activeTab === 'tab-parts' ? 'active' : '' }}" id="tab-parts" data-title="انبار قطعات یدکی">
         
         <!-- Header & Action Button -->
         <div class="erp-page-head" style="margin-bottom: 24px;">
@@ -3415,7 +3423,7 @@
         </div>
 
     <!-- ==================== 9. VIEW: SITE SETTINGS & CMS ==================== -->
-    <div class="erp-view {{ $activeTab === 'tab-site-settings' ? 'active' : '' }}" id="tab-site-settings" data-title="تنظیمات سایت و منوها" style="{{ $activeTab === 'tab-site-settings' ? 'display: block;' : 'display: none;' }}">
+    <div class="erp-view {{ $activeTab === 'tab-site-settings' ? 'active' : '' }}" id="tab-site-settings" data-title="تنظیمات سایت و منوها">
         <div class="erp-page-head">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background:#fef3c7; color:#92400e;">مدیریت محتوا (CMS)</span>
@@ -3786,7 +3794,7 @@
     </div>
 
     <!-- ==================== 10. VIEW: PAGES MANAGEMENT ==================== -->
-    <div class="erp-view {{ $activeTab === 'tab-pages' ? 'active' : '' }}" id="tab-pages" data-title="مدیریت صفحات سایت" style="{{ $activeTab === 'tab-pages' ? 'display: block;' : 'display: none;' }}">
+    <div class="erp-view {{ $activeTab === 'tab-pages' ? 'active' : '' }}" id="tab-pages" data-title="مدیریت صفحات سایت">
         <div class="erp-page-head">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background:#e0e7ff; color:#3730a3;">مدیریت صفحات (Pages)</span>
@@ -3943,7 +3951,7 @@
     </div>
 
     <!-- ==================== 11. VIEW: BLOG & SEO STUDIO ==================== -->
-    <div class="erp-view {{ $activeTab === 'tab-blog' ? 'active' : '' }}" id="tab-blog" data-title="وبلاگ تخصصی و سئو" style="{{ $activeTab === 'tab-blog' ? 'display: block;' : 'display: none;' }}">
+    <div class="erp-view {{ $activeTab === 'tab-blog' ? 'active' : '' }}" id="tab-blog" data-title="وبلاگ تخصصی و سئو">
         <div class="erp-page-head">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #14532d; border: 1px solid #86efac;">
@@ -4243,7 +4251,7 @@
         </div>
     </div>
 <!-- ==================== 12. VIEW: SURVEYS & ANALYTICS ==================== -->
-    <div class="erp-view {{ $activeTab === 'tab-surveys' ? 'active' : '' }}" id="tab-surveys" data-title="نظرسنجی و تحلیل نظرات" style="{{ $activeTab === 'tab-surveys' ? 'display: block;' : 'display: none;' }}">
+    <div class="erp-view {{ $activeTab === 'tab-surveys' ? 'active' : '' }}" id="tab-surveys" data-title="نظرسنجی و تحلیل نظرات">
         <div class="erp-page-head">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background:#fce7f3; color:#9d174d;">سنجش رضایت مشتریان (CSAT)</span>
@@ -4742,7 +4750,7 @@
                             @forelse($tickets as $tk)
                             <tr style="border-bottom: 1px solid #f1f5f9;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                                 <td style="padding: 12px 14px; font-weight: 800; color: #2563eb; font-size: 0.84rem;">
-                                    <span style="background: #eff6ff; padding: 3px 8px; border-radius: 6px; border: 1px solid #dbeafe;">{{ $tk->ticket_number }}</span>
+                                    <span style="background: #eff6ff; padding: 3px 8px; border-radius: 6px; border: 1px solid #dbeafe;">{{ $tk->tracking_code ?? ($tk->ticket_number ?? ('TK-' . $tk->id)) }}</span>
                                 </td>
                                 <td style="padding: 12px 14px;">
                                     <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem;">{{ $tk->customer_name }}</div>
@@ -4889,7 +4897,7 @@
                                     <span style="background: #fee2e2; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">{{ $cmp->tracking_code }}</span>
                                 </td>
                                 <td style="padding: 12px 14px;">
-                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem;">{{ $cmp->name }}</div>
+                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem;">{{ $cmp->name ?? ($cmp->full_name ?? ($cmp->customer_name ?? 'مشتری')) }}</div>
                                     <div style="font-size: 0.78rem; color: #64748b; direction: ltr; text-align: right;">{{ $cmp->phone }}</div>
                                 </td>
                                 <td style="padding: 12px 14px;">
@@ -4901,7 +4909,7 @@
                                     <div style="font-size: 0.76rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $cmp->description }}</div>
                                 </td>
                                 <td style="padding: 12px 14px; font-size: 0.82rem; color: #475569;">
-                                    {{ $cmp->agency_name ?: 'دفتر مرکزی' }}
+                                    {{ $cmp->agency_name ?? ($cmp->branch_name ?? 'دفتر مرکزی') }}
                                 </td>
                                 <td style="padding: 12px 14px; text-align: center; font-size: 0.78rem; color: #64748b;">
                                     {{ shamsi($cmp->created_at, 'Y/m/d') }}
@@ -7989,7 +7997,7 @@
     // =========================================================================
     function openTicketReplyModal(tk) {
         document.getElementById('tkId').value = tk.id;
-        document.getElementById('tkModalSubtitle').innerText = 'تیکت شماره: ' + tk.ticket_number;
+        document.getElementById('tkModalSubtitle').innerText = 'تیکت شماره: ' + (tk.tracking_code || tk.ticket_number || ('TK-' + tk.id));
         document.getElementById('tkCustomerName').innerText = tk.customer_name;
         document.getElementById('tkPhone').innerText = tk.customer_phone;
         document.getElementById('tkSubject').innerText = 'موضوع: ' + tk.subject;

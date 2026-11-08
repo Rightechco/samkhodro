@@ -198,11 +198,14 @@
 
     /* Views */
     .user-view {
-        display: none;
-        animation: fadeInView 0.25s ease-out forwards;
+        display: none !important;
     }
     .user-view.active {
-        display: block;
+        display: block !important;
+        animation: fadeInView 0.25s ease-out forwards;
+    }
+    .user-view:not(.active) {
+        display: none !important;
     }
 
     .user-panel {
