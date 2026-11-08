@@ -3119,7 +3119,7 @@
             <div class="erp-page-head">
                 <div class="erp-page-meta">
                     <span class="erp-page-badge" style="background:#eff6ff; color:#1d4ed8;">ابلاغیه رسمی نرخ‌گذاری سال ۱۴۰۵</span>
-                    <h1 class="erp-page-title">نرخ‌نامه و تعرفه مصوب اتحادیه دستگاه‌های مخابراتی تهران</h1>
+                    <h1 class="erp-page-title">نرخ تعرفه خدمات غیر گارانتی</h1>
                     <p class="erp-page-desc">سقف مصوب اجرت خدمات سخت‌افزاری و نرم‌افزاری تلفن همراه بر اساس ارزش روز گوشی (نرخ‌ها به تومان) به انضمام ضوابط و تبصره‌های ماده ۱۶ صمت.</p>
                 </div>
                 <div style="display: flex; gap: 8px;">

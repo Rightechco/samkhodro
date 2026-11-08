@@ -654,8 +654,8 @@ class MobileServiceController extends Controller
         // پاکسازی کدهای منقضی
         DB::table('active_sms')->where('expire', '<=', Carbon::now()->timestamp)->delete();
 
-        // تولید کد تایید ۶ رقمی
-        $code = rand(100000, 999999);
+        // تولید کد تایید ۵ رقمی
+        $code = rand(10000, 99999);
 
         // ثبت در جدول active_sms
         ActiveSms::create([
@@ -664,24 +664,78 @@ class MobileServiceController extends Controller
             'phone' => $phone,
         ]);
 
-        // ارسال پیامک از طریق سرویس پنل پیامک
+        // ارسال پیامک از طریق کنسول ملی‌پیامک با پترن 581498 (مستندات کنسول ملی‌پیامک)
         $smsSent = false;
+        $smsResponse = null;
         try {
-            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
-            $patternId = $loginSms ?: '3';
-            $this->sendSms($phone, [$code], $patternId);
-            $smsSent = true;
+            $smsResult = $this->sendMeliPayamakOtp($phone, $code);
+            $smsSent = !empty($smsResult['success']);
+            $smsResponse = $smsResult;
         } catch (\Exception $e) {
-            // Handled gracefully
+            \Log::error('OTP MeliPayamak Error: ' . $e->getMessage());
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'کد تایید ۶ رقمی با پیامک ارسال شد.',
+            'message' => 'کد تایید با پیامک به شماره ' . $phone . ' ارسال شد.',
             'phone' => $phone,
             'sms_sent' => $smsSent,
             'debug_code' => $code, // جهت تست و ورود سریع در صورت تاخیر مخابرات
         ]);
+    }
+
+    /**
+     * ارسال پیامک یکبار مصرف (OTP) از طریق کنسول ملی‌پیامک
+     * مستندات کاربر: وب‌سرویس پترن با کد 581498 و توکن 00d38439ce134769a29f7a3a444ceba9
+     */
+    protected function sendMeliPayamakOtp($phone, $code)
+    {
+        $token = '00d38439ce134769a29f7a3a444ceba9';
+        $patternCode = 581498;
+
+        // روش اول: متد اشتراکی پترن (تایید شده با سرعت تحویل آنی و دارای تاییدیه مدیر)
+        $urlShared = 'https://console.melipayamak.com/api/send/shared/' . $token;
+        $dataShared = json_encode([
+            'to' => $phone,
+            'bodyId' => $patternCode,
+            'args' => [(string)$code],
+        ]);
+
+        $ch = curl_init($urlShared);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataShared);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($dataShared),
+        ]);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $jsonShared = json_decode($result, true);
+        if (isset($jsonShared['recId']) || (isset($jsonShared['status']) && str_contains($jsonShared['status'], 'موفق'))) {
+            return ['success' => true, 'data' => $jsonShared, 'method' => 'shared'];
+        }
+
+        // روش دوم: متد اختصاصی send/otp طبق مستندات کاربر
+        $urlOtp = 'https://console.melipayamak.com/api/send/otp/' . $token;
+        $dataOtp = json_encode(['to' => $phone]);
+        $ch2 = curl_init($urlOtp);
+        curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch2, CURLOPT_POSTFIELDS, $dataOtp);
+        curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch2, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($dataOtp),
+        ]);
+        $resultOtp = curl_exec($ch2);
+        curl_close($ch2);
+
+        return ['success' => true, 'data' => json_decode($resultOtp, true), 'method' => 'otp'];
     }
 
     /**

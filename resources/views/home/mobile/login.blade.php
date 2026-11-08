@@ -268,7 +268,7 @@
                             </span>
                             <input type="tel" id="inputPhone" class="auth-input" placeholder="09121234567" maxlength="11" required>
                         </div>
-                        <span style="font-size: 0.76rem; color: var(--text-muted); margin-top: 4px; display: block;">کد تایید ۶ رقمی به این شماره پیامک خواهد شد.</span>
+                        <span style="font-size: 0.76rem; color: var(--text-muted); margin-top: 4px; display: block;">کد تایید به این شماره پیامک خواهد شد.</span>
                     </div>
 
                     <button type="submit" class="auth-btn-submit" id="btnSendOtp">
@@ -283,14 +283,14 @@
                 <form id="formVerifyOtp" onsubmit="handleVerifyOtp(event)">
                     <div class="auth-form-group">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <label class="auth-label">کد ۶ رقمی پیامک شده</label>
+                            <label class="auth-label">کد تایید پیامک شده</label>
                             <button type="button" onclick="backToStep1()" style="font-size: 0.78rem; color: var(--primary); background: none; border: none; font-weight: 700; cursor: pointer;">ویرایش شماره</button>
                         </div>
                         <div class="auth-input-wrap">
                             <span class="auth-input-icon">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                             </span>
-                            <input type="text" id="inputOtpCode" class="auth-input" placeholder="مثال: 123456" maxlength="6" style="letter-spacing: 6px; font-size: 1.25rem; font-weight: 800; text-align: center;" required>
+                            <input type="text" id="inputOtpCode" class="auth-input" placeholder="مثال: 12345" maxlength="6" style="letter-spacing: 6px; font-size: 1.25rem; font-weight: 800; text-align: center;" required>
                         </div>
                     </div>
 

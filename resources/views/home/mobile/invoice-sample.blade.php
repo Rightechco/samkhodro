@@ -1,6 +1,6 @@
 @extends('home.mobile.layout')
 
-@section('title', 'نرخ‌نامه و تعرفه مصوب اتحادیه دستگاه‌های مخابراتی (۱۴۰۵) و فاکتور رسمی | سام موبایل')
+@section('title', 'نرخ تعرفه خدمات غیر گارانتی و فاکتور رسمی | سام موبایل')
 
 @section('content')
 <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 20px 16px 80px;">
@@ -11,7 +11,7 @@
             ⚖️ شفافیت مالی و مصوبات قانونی وزارت صمت
         </span>
         <h1 style="font-size: 1.7rem; font-weight: 900; color: #0f172a; margin-bottom: 10px; line-height: 1.4;">
-            نرخ‌نامه مصوب اتحادیه دستگاه‌های مخابراتی و صورتحساب رسمی خدمات
+            نرخ تعرفه خدمات غیر گارانتی و صورتحساب رسمی خدمات
         </h1>
         <p style="font-size: 0.94rem; color: #64748b; max-width: 880px; margin: 0 auto 20px; line-height: 1.8;">
             مطابق با مصوبات کارگروه نرخ‌گذاری اتحادیه دستگاه‌های مخابراتی، ارتباطی و لوازم جانبی شهرستان تهران (مصوب سال ۱۴۰۵) و ماده ۱۶ ضوابط اجرایی خدمات پس از فروش تلفن همراه
@@ -21,7 +21,7 @@
         <div class="tariff-tab-switcher" style="display: inline-flex; background: #f1f5f9; padding: 5px; border-radius: 14px; gap: 6px; flex-wrap: wrap; justify-content: center;">
             <button type="button" class="tab-btn active" id="btnTabTariff" onclick="switchTariffView('tariff')">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                <span>نرخ‌نامه و تعرفه مصوب اتحادیه (۱۴۰۵)</span>
+                <span>نرخ تعرفه خدمات غیر گارانتی</span>
             </button>
             <button type="button" class="tab-btn" id="btnTabInvoice" onclick="switchTariffView('invoice')">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -53,7 +53,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
                 </div>
                 <div>
-                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">محاسبه‌گر آنلاین سقف تعرفه مجاز تعمیرات بر اساس ارزش گوشی</h3>
+                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">محاسبه‌گر آنلاین نرخ تعرفه خدمات غیر گارانتی بر اساس ارزش گوشی</h3>
                     <p style="font-size: 0.80rem; color: #64748b; margin: 2px 0 0;">قیمت گوشی و نوع خدمت مورد نظر را انتخاب کنید تا نرخ قطعی مصوب اتحادیه نمایش داده شود.</p>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                     خدمات تعمیرات گوشی تلفن همراه مستلزم داشتن پروانه کسب معتبر صادر شده از این اتحادیه در رسته مربوطه بوده و واحدهای صنفی که پروانه کسب آنان فاقد مضمون فوق‌الذکر در ستون رسته واحد صنفی می‌باشد مجاز به این امر نمی‌باشند.
                 </p>
                 <div style="margin-top: 8px; font-weight: 800; color: #0f172a; display: flex; justify-content: space-between; flex-wrap: wrap;">
-                    <span>لیست پیشنهادی قیمت و گزارش کارشناسی سال ۱۴۰۵ کارگروه نرخ‌گذاری اتحادیه دستگاه‌های مخابراتی و ارتباطی شهرستان تهران</span>
+                    <span>جدول رسمی نرخ تعرفه خدمات غیر گارانتی (بر اساس مصوبات کارگروه نرخ‌گذاری صنف مخابرات سال ۱۴۰۵)</span>
                     <span style="color: #2563eb;">(نرخ‌ها به تومان می‌باشد)</span>
                 </div>
             </div>

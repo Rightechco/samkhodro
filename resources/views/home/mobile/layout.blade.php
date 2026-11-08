@@ -1186,7 +1186,7 @@
                     <div class="nav-dropdown-menu">
                         <a href="{{ url('/invoice-sample') }}" class="nav-dropdown-item {{ request()->is('*invoice-sample*') || request()->is('*tariff*') ? 'active' : '' }}">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span>نرخ‌نامه و تعرفه مصوب اتحادیه (۱۴۰۵)</span>
+                            <span>نرخ تعرفه خدمات غیر گارانتی</span>
                             <span class="nav-mini-badge" style="background:#eff6ff; color:#2563eb; font-size:0.65rem;">ابلاغیه رسمی</span>
                         </a>
                         <a href="{{ url('/invoice-sample') }}?tab=invoice" class="nav-dropdown-item">
@@ -1412,7 +1412,7 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     </span>
                     <div style="display: flex; align-items: center; gap: 6px;">
-                        <span>نرخ‌نامه و تعرفه مصوب اتحادیه (۱۴۰۵)</span>
+                        <span>نرخ تعرفه خدمات غیر گارانتی</span>
                         <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.62rem; padding: 1px 6px; border-radius: 6px; font-weight: 800;">ابلاغیه رسمی</span>
                     </div>
                 </div>
