@@ -267,13 +267,14 @@
            --------------------------------------------------------------------- */
         .portal-wrapper {
             flex: 1;
-            max-width: 1720px; width: 100%;
+            max-width: 1720px;
             width: 100%;
             margin: 0 auto;
-            padding: 20px 24px 40px;
+            padding: 20px 20px 48px;
             display: flex;
-            gap: 24px;
+            flex-direction: column;
             position: relative;
+            box-sizing: border-box;
         }
 
         .portal-sidebar {

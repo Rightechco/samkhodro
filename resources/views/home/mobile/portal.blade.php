@@ -2047,6 +2047,15 @@
                     <span class="erp-nav-badge" style="background:#fee2e2; color:#b91c1c;">{{ isset($complaints) ? count($complaints) : 0 }}</span>
                 </a>
             </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=users" class="erp-nav-link {{ $activeTab === 'tab-users' ? 'active' : '' }}" data-tab="tab-users" onclick="switchErpTab('tab-users', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <span class="erp-nav-title">کاربران و نقش‌ها</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#eff6ff; color:#2563eb;">{{ isset($systemUsers) ? count($systemUsers) : 4 }}</span>
+                </a>
+            </li>
         </ul>
 
 
@@ -6462,6 +6471,280 @@
 </div>
 
 
+
+        <!-- ===================================================================
+             PAGE 12: USER & ROLE MANAGEMENT (tab-users)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-users' ? 'active' : '' }}" id="tab-users" data-title="مدیریت کاربران و نقش‌ها">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background: #eff6ff; color: #2563eb;">امنیت، کاربران و سطوح دسترسی RBAC</span>
+                    <h1 class="erp-page-title">مدیریت کاربران، نمایندگان و پرسنل</h1>
+                    <p class="erp-page-desc">کنترل سطوح دسترسی، ایجاد کاربر جدید با نقش معین، تغییر کلمه عبور و مدیریت وضعیت فعالیت در سامانه خدمات پس از فروش.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="erp-btn erp-btn-primary" onclick="openAddUserModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>افزودن کاربر جدید با تعیین نقش</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Role Summary KPI Cards -->
+            @php
+                $uList = isset($systemUsers) ? $systemUsers : collect();
+                $countAdmin = $uList->where('level', '>=', 3)->count();
+                $countAgent = $uList->where('level', 2)->count();
+                $countTech = $uList->where('level', 1)->count();
+                $countCustomer = $uList->where('level', '<=', 0)->count();
+            @endphp
+            <div class="erp-grid-4" style="margin-bottom: 24px;">
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('all')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
+                    <div>
+                        <div class="erp-kpi-label">کل کاربران سامانه</div>
+                        <div class="erp-kpi-val">{{ $uList->count() }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('3')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #fff1f2; color: #e11d48;">👑</div>
+                    <div>
+                        <div class="erp-kpi-label">مدیران ارشد</div>
+                        <div class="erp-kpi-val">{{ $countAdmin }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('2')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #1d4ed8;">🏢</div>
+                    <div>
+                        <div class="erp-kpi-label">مسئولان شعب و نمایندگان</div>
+                        <div class="erp-kpi-val">{{ $countAgent }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('1')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #f5f3ff; color: #7c3aed;">🔧</div>
+                    <div>
+                        <div class="erp-kpi-label">تکنسین‌های فنی کارگاه</div>
+                        <div class="erp-kpi-val">{{ $countTech }} نفر</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Toolbar -->
+            <div class="erp-card" style="margin-bottom: 20px;">
+                <div class="erp-card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="userRoleFilterButtons">
+                        <button type="button" class="btn-table-action primary" onclick="filterUserRole('all', this)">همه کاربران ({{ $uList->count() }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('3', this)">مدیران ارشد ({{ $countAdmin }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('2', this)">نمایندگان شعب ({{ $countAgent }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('1', this)">کارشناسان فنی ({{ $countTech }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('0', this)">مشتریان ({{ $countCustomer }})</button>
+                    </div>
+                    <div style="max-width: 320px; width: 100%;">
+                        <input type="text" id="searchUserTableInput" onkeyup="searchUserTable()" class="erp-input" placeholder="🔍 جستجو نام، شماره یا نقش..." style="height: 42px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="erp-card">
+                <div class="erp-card-body" style="padding: 0;">
+                    <div class="erp-table-wrap">
+                        <table class="erp-table" id="systemUsersTable">
+                            <thead>
+                                <tr>
+                                    <th>شناسه</th>
+                                    <th>مشخصات کاربر</th>
+                                    <th>شماره همراه</th>
+                                    <th>ایمیل</th>
+                                    <th>نقش و سطح دسترسی</th>
+                                    <th>شعبه / برند</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($uList as $su)
+                                    @php
+                                        $roleSlug = 'customer';
+                                        $roleBadgeText = 'مشتری';
+                                        $roleBadgeBg = '#ecfdf5';
+                                        $roleBadgeColor = '#059669';
+                                        if ($su->level >= 3) {
+                                            $roleSlug = 'admin';
+                                            $roleBadgeText = 'مدیر ارشد سامانه';
+                                            $roleBadgeBg = '#fff1f2';
+                                            $roleBadgeColor = '#e11d48';
+                                        } elseif ($su->level == 2) {
+                                            $roleSlug = 'agent';
+                                            $roleBadgeText = 'نماینده رسمی / پذیرش';
+                                            $roleBadgeBg = '#eff6ff';
+                                            $roleBadgeColor = '#2563eb';
+                                        } elseif ($su->level == 1) {
+                                            $roleSlug = 'technician';
+                                            $roleBadgeText = 'کارشناس ارشد فنی';
+                                            $roleBadgeBg = '#f5f3ff';
+                                            $roleBadgeColor = '#7c3aed';
+                                        }
+                                        $isActive = ($su->status ?? 'active') === 'active';
+                                    @endphp
+                                    <tr class="user-row" data-level="{{ $su->level }}" data-name="{{ $su->name }}" data-phone="{{ $su->number }}" data-email="{{ $su->email }}">
+                                        <td><code>#{{ $su->id }}</code></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <div style="width: 38px; height: 38px; border-radius: 10px; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }}; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1rem;">
+                                                    {{ mb_substr($su->name, 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight: 800; color: #0f172a;">{{ $su->name }}</div>
+                                                    @if(!empty($su->national_code))
+                                                        <div style="font-size: 0.72rem; color: #64748b;">کد ملی: {{ $su->national_code }}</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span style="font-family: monospace; font-weight: 800; color: #2563eb; direction: ltr; display: inline-block;">{{ $su->number }}</span></td>
+                                        <td><span style="font-size: 0.78rem; color: #475569; direction: ltr; display: inline-block;">{{ $su->email }}</span></td>
+                                        <td>
+                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }};">
+                                                {{ $roleBadgeText }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $su->branch_name ?? ($su->device_brand ?? '-') }}</td>
+                                        <td>
+                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $isActive ? '#ecfdf5' : '#fff1f2' }}; color: {{ $isActive ? '#059669' : '#e11d48' }};">
+                                                {{ $isActive ? 'فعال' : 'مسدود' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; gap: 6px;">
+                                                <button type="button" class="btn-table-action" style="padding: 6px 12px; font-size: 0.76rem; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;" onclick='openEditUserModal(@json($su))'>
+                                                    ویرایش / نقش
+                                                </button>
+                                                <button type="button" class="btn-table-action" style="padding: 6px 10px; font-size: 0.76rem; background: #f8fafc; color: #475569; border: 1px solid #cbd5e1;" onclick="toggleUserStatusAjax({{ $su->id }})">
+                                                    {{ $isActive ? 'مسدود' : 'فعال' }}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD USER MODAL -->
+        <div class="onboarding-modal-backdrop" id="addUserModal" style="display: none;">
+            <div class="onboarding-modal-card">
+                <div class="onboarding-header">
+                    <div class="onboarding-icon">👤</div>
+                    <div>
+                        <h3 class="onboarding-title">افزودن کاربر جدید و تعیین نقش سازمانی</h3>
+                        <p class="onboarding-subtitle">ایجاد حساب کاربری برای مدیران، تکنسین‌ها، شعب نمایندگی و مشتریان سامانه</p>
+                    </div>
+                </div>
+                <form id="addUserForm" onsubmit="handleAddUserSubmit(event)">
+                    @csrf
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">نام و نام خانوادگی *</label>
+                            <input type="text" name="name" class="erp-input" placeholder="مثال: مهندس رضوانی" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">شماره همراه (ورود) *</label>
+                            <input type="text" name="number" class="erp-input" placeholder="09121234567" style="direction: ltr;" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">آدرس ایمیل *</label>
+                            <input type="email" name="email" class="erp-input" placeholder="user@taminkanisam.co.ir" style="direction: ltr;" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">نقش و سطح دسترسی *</label>
+                            <select name="level" class="erp-select" required>
+                                <option value="0">مشتری حقیقی (Customer - Level 0)</option>
+                                <option value="1">کارشناس ارشد فنی کارگاه (Technician - Level 1)</option>
+                                <option value="2">مسئول شعبه / نماینده رسمی (Branch Agent - Level 2)</option>
+                                <option value="3">مدیر ارشد سامانه (Super Admin - Level 3)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">کلمه عبور اختصاصی *</label>
+                            <input type="password" name="password" class="erp-input" placeholder="حداقل ۴ کاراکتر" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">نام شعبه / نمایندگی (در صورت وجود)</label>
+                            <input type="text" name="branch_name" class="erp-input" placeholder="مثال: شعبه تبریز یا تهران">
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" class="btn-table-action outline" onclick="closeAddUserModal()">انصراف</button>
+                        <button type="submit" class="btn-table-action primary" id="btnSubmitAddUser">ثبت و ایجاد حساب کاربر</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- EDIT USER MODAL -->
+        <div class="onboarding-modal-backdrop" id="editUserModal" style="display: none;">
+            <div class="onboarding-modal-card">
+                <div class="onboarding-header">
+                    <div class="onboarding-icon">⚙️</div>
+                    <div>
+                        <h3 class="onboarding-title">ویرایش مشخصات و تغییر نقش کاربر</h3>
+                        <p class="onboarding-subtitle">تغییر سطح دسترسی، اطلاعات هویتی و بازنشانی رمز عبور</p>
+                    </div>
+                </div>
+                <form id="editUserForm" onsubmit="handleEditUserSubmit(event)">
+                    @csrf
+                    <input type="hidden" id="editUserId" name="user_id">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">نام و نام خانوادگی *</label>
+                            <input type="text" id="editUserName" name="name" class="erp-input" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">شماره همراه *</label>
+                            <input type="text" id="editUserNumber" name="number" class="erp-input" style="direction: ltr;" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">آدرس ایمیل *</label>
+                            <input type="email" id="editUserEmail" name="email" class="erp-input" style="direction: ltr;" required>
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">نقش سازمانی *</label>
+                            <select id="editUserLevel" name="level" class="erp-select" required>
+                                <option value="0">مشتری حقیقی (Level 0)</option>
+                                <option value="1">کارشناس ارشد فنی کارگاه (Level 1)</option>
+                                <option value="2">مسئول شعبه / نماینده رسمی (Level 2)</option>
+                                <option value="3">مدیر ارشد سامانه (Level 3)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">رمز عبور جدید (اختیاری جهت بازنشانی)</label>
+                            <input type="password" name="password" class="erp-input" placeholder="در صورت تغییر پر شود">
+                        </div>
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">شعبه / نمایندگی</label>
+                            <input type="text" id="editUserBranch" name="branch_name" class="erp-input">
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                        <button type="button" class="btn-table-action outline" onclick="closeEditUserModal()">انصراف</button>
+                        <button type="submit" class="btn-table-action primary" id="btnSubmitEditUser">ذخیره تغییرات کاربر</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 @endsection
 
 @push('scripts')
@@ -8357,6 +8640,306 @@
         quickIntakeForCustomer(name, phone);
     }
 
+
+
+    function openAddUserModal() {
+        document.getElementById('addUserForm').reset();
+        document.getElementById('addUserModal').style.display = 'flex';
+    }
+    function closeAddUserModal() {
+        document.getElementById('addUserModal').style.display = 'none';
+    }
+
+    function openEditUserModal(user) {
+        document.getElementById('editUserId').value = user.id;
+        document.getElementById('editUserName').value = user.name || '';
+        document.getElementById('editUserNumber').value = user.number || '';
+        document.getElementById('editUserEmail').value = user.email || '';
+        document.getElementById('editUserLevel').value = user.level !== undefined ? user.level : 0;
+        document.getElementById('editUserBranch').value = user.branch_name || user.device_brand || '';
+        document.getElementById('editUserModal').style.display = 'flex';
+    }
+    function closeEditUserModal() {
+        document.getElementById('editUserModal').style.display = 'none';
+    }
+
+    function filterUserRole(lvl, btn) {
+        if (btn) {
+            document.querySelectorAll('#userRoleFilterButtons button').forEach(b => {
+                b.classList.remove('primary');
+                b.classList.add('outline');
+            });
+            btn.classList.remove('outline');
+            btn.classList.add('primary');
+        }
+
+        const rows = document.querySelectorAll('#systemUsersTable tbody tr.user-row');
+        rows.forEach(r => {
+            const rLvl = r.getAttribute('data-level');
+            if (lvl === 'all' || rLvl === String(lvl)) {
+                r.style.display = '';
+            } else {
+                r.style.display = 'none';
+            }
+        });
+    }
+
+    function searchUserTable() {
+        const query = document.getElementById('searchUserTableInput').value.toLowerCase().trim();
+        const rows = document.querySelectorAll('#systemUsersTable tbody tr.user-row');
+        rows.forEach(r => {
+            const name = (r.getAttribute('data-name') || '').toLowerCase();
+            const phone = (r.getAttribute('data-phone') || '').toLowerCase();
+            const email = (r.getAttribute('data-email') || '').toLowerCase();
+            if (name.includes(query) || phone.includes(query) || email.includes(query)) {
+                r.style.display = '';
+            } else {
+                r.style.display = 'none';
+            }
+        });
+    }
+
+    async function handleAddUserSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitAddUser');
+        btn.disabled = true;
+        btn.innerText = 'در حال ایجاد...';
+
+        const form = document.getElementById('addUserForm');
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch("{{ route('mob.admin.users.store') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                closeAddUserModal();
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطایی در ثبت کاربر رخ داد.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ثبت و ایجاد حساب کاربر';
+        }
+    }
+
+    async function handleEditUserSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitEditUser');
+        btn.disabled = true;
+        btn.innerText = 'در حال ذخیره...';
+
+        const form = document.getElementById('editUserForm');
+        const formData = new FormData(form);
+        const userId = document.getElementById('editUserId').value;
+
+        try {
+            const res = await fetch("{{ url('/admin-portal/users') }}/" + userId + "/update", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                closeEditUserModal();
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطایی رخ داد.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ذخیره تغییرات کاربر';
+        }
+    }
+
+    async function toggleUserStatusAjax(userId) {
+        if (!confirm('آیا از تغییر وضعیت این کاربر اطمینان دارید؟')) return;
+
+        try {
+            const res = await fetch("{{ url('/admin-portal/users') }}/" + userId + "/toggle-status", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطا در تغییر وضعیت کاربر.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        }
+    }
+
+
+    function openAddUserModal() {
+        document.getElementById('addUserForm').reset();
+        document.getElementById('addUserModal').style.display = 'flex';
+    }
+    function closeAddUserModal() {
+        document.getElementById('addUserModal').style.display = 'none';
+    }
+
+    function openEditUserModal(user) {
+        document.getElementById('editUserId').value = user.id;
+        document.getElementById('editUserName').value = user.name || '';
+        document.getElementById('editUserNumber').value = user.number || '';
+        document.getElementById('editUserEmail').value = user.email || '';
+        document.getElementById('editUserLevel').value = user.level !== undefined ? user.level : 0;
+        document.getElementById('editUserBranch').value = user.branch_name || user.device_brand || '';
+        document.getElementById('editUserModal').style.display = 'flex';
+    }
+    function closeEditUserModal() {
+        document.getElementById('editUserModal').style.display = 'none';
+    }
+
+    function filterUserRole(lvl, btn) {
+        if (btn) {
+            document.querySelectorAll('#userRoleFilterButtons button').forEach(b => {
+                b.classList.remove('primary');
+                b.classList.add('outline');
+            });
+            btn.classList.remove('outline');
+            btn.classList.add('primary');
+        }
+
+        const rows = document.querySelectorAll('#systemUsersTable tbody tr.user-row');
+        rows.forEach(r => {
+            const rLvl = r.getAttribute('data-level');
+            if (lvl === 'all' || rLvl === String(lvl)) {
+                r.style.display = '';
+            } else {
+                r.style.display = 'none';
+            }
+        });
+    }
+
+    function searchUserTable() {
+        const query = document.getElementById('searchUserTableInput').value.toLowerCase().trim();
+        const rows = document.querySelectorAll('#systemUsersTable tbody tr.user-row');
+        rows.forEach(r => {
+            const name = (r.getAttribute('data-name') || '').toLowerCase();
+            const phone = (r.getAttribute('data-phone') || '').toLowerCase();
+            const email = (r.getAttribute('data-email') || '').toLowerCase();
+            if (name.includes(query) || phone.includes(query) || email.includes(query)) {
+                r.style.display = '';
+            } else {
+                r.style.display = 'none';
+            }
+        });
+    }
+
+    async function handleAddUserSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitAddUser');
+        btn.disabled = true;
+        btn.innerText = 'در حال ایجاد...';
+
+        const form = document.getElementById('addUserForm');
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch("{{ route('mob.admin.users.store') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                closeAddUserModal();
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطایی در ثبت کاربر رخ داد.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ثبت و ایجاد حساب کاربر';
+        }
+    }
+
+    async function handleEditUserSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnSubmitEditUser');
+        btn.disabled = true;
+        btn.innerText = 'در حال ذخیره...';
+
+        const form = document.getElementById('editUserForm');
+        const formData = new FormData(form);
+        const userId = document.getElementById('editUserId').value;
+
+        try {
+            const res = await fetch("{{ url('/admin-portal/users') }}/" + userId + "/update", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                closeEditUserModal();
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطایی رخ داد.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ذخیره تغییرات کاربر';
+        }
+    }
+
+    async function toggleUserStatusAjax(userId) {
+        if (!confirm('آیا از تغییر وضعیت این کاربر اطمینان دارید؟')) return;
+
+        try {
+            const res = await fetch("{{ url('/admin-portal/users') }}/" + userId + "/toggle-status", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                }
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                alert(data.message);
+                window.location.reload();
+            } else {
+                alert(data.message || 'خطا در تغییر وضعیت کاربر.');
+            }
+        } catch (err) {
+            alert('خطای ارتباط با سرور.');
+        }
+    }
 
 </script>
 @endpush

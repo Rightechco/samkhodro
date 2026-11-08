@@ -35,6 +35,8 @@ $registerMobileRoutes = function () {
     Route::post('/user-portal/order', [MobileServiceController::class, 'storeUserOrder'])->name('mob.user-order.store');
     Route::post('/user-portal/send-ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.user.send-ticket');
     Route::post('/user-portal/ticket', [MobileServiceController::class, 'storeUserTicket'])->name('mob.ticket.store');
+    Route::post('/user-portal/onboarding', [MobileServiceController::class, 'saveUserOnboarding'])->name('mob.user.onboarding');
+    Route::post('/user-portal/profile', [MobileServiceController::class, 'saveUserProfile'])->name('mob.user.profile.save');
 
     // عملیات کارشناسی و ماده ۱۳
     Route::post('/service-portal/send-sms', [MobileServiceController::class, 'sendManualSms'])->name('mob.portal.send-sms');
@@ -115,6 +117,10 @@ Route::post('/admin-portal/tickets/{id}/reply', [MobileServiceController::class,
 Route::post('/admin-portal/tickets/{id}/status', [MobileServiceController::class, 'updateTicketStatus']);
 
 Route::post('/admin-portal/complaints/{id}/status', [MobileServiceController::class, 'updateComplaintStatus']);
+    Route::post('/admin-portal/users/store', [MobileServiceController::class, 'storeUser'])->name('mob.admin.users.store');
+    Route::post('/admin-portal/users/{id}/update', [MobileServiceController::class, 'updateUser'])->name('mob.admin.users.update');
+    Route::post('/admin-portal/users/{id}/delete', [MobileServiceController::class, 'deleteUser'])->name('mob.admin.users.delete');
+    Route::post('/admin-portal/users/{id}/toggle-status', [MobileServiceController::class, 'toggleUserStatus'])->name('mob.admin.users.toggle-status');
 
 };
 

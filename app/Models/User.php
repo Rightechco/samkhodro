@@ -36,6 +36,13 @@ class User extends Authenticatable
         'postal',
         'password',
         'gender',
+        'national_code',
+        'phone_landline',
+        'device_brand',
+        'device_model',
+        'is_profile_completed',
+        'status',
+        'branch_name',
     ];
 
     /**
