@@ -733,13 +733,7 @@
         min-width: 0;
     }
     
-    @media (max-width: 991px) {
-        .erp-topbar {
-            display: none !important;
-        }
-    }
-    
-    .erp-topbar {
+    @media (max-width: 991px) { .erp-topbar, .user-topbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; } } @media (min-width: 992px) { .erp-topbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -1117,14 +1111,14 @@
             background: #ffffff !important;
             visibility: hidden !important;
             pointer-events: none !important;
-            transform: translateX(100%) !important;
+            right: -340px !important; left: auto !important; transform: none !important;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
         }
         .erp-sidebar.open {
             display: flex !important;
             visibility: visible !important;
             pointer-events: auto !important;
-            transform: translateX(0) !important;
+            right: 0 !important; left: auto !important; transform: none !important;
         }
         .erp-sidebar-mobile-close {
             display: flex !important;
@@ -1596,13 +1590,7 @@
             overflow-x: hidden !important;
         }
         
-    @media (max-width: 991px) {
-        .erp-topbar {
-            display: none !important;
-        }
-    }
-    
-    .erp-topbar {
+    @media (max-width: 991px) { .erp-topbar, .user-topbar { display: none !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important; border: none !important; } } @media (min-width: 992px) { .erp-topbar {
             padding: 10px 14px !important;
             border-radius: 14px !important;
             margin-bottom: 16px !important;
@@ -1764,14 +1752,14 @@
             background: #ffffff !important;
             visibility: hidden !important;
             pointer-events: none !important;
-            transform: translateX(110%) !important;
+            right: -340px !important; left: auto !important; transform: none !important;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
         }
         .erp-sidebar.open {
             display: flex !important;
             visibility: visible !important;
             pointer-events: auto !important;
-            transform: translateX(0) !important;
+            right: 0 !important; left: auto !important; transform: none !important;
             box-shadow: -15px 0 40px rgba(15, 23, 42, 0.3) !important;
         }
         .erp-sidebar-mobile-close {
@@ -1987,6 +1975,47 @@
                 </a>
             </li>
         </ul>
+
+        <span class="erp-nav-section-title">نمایندگی‌ها و ارتباطات</span>
+        <ul class="erp-nav-list">
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=agencies" class="erp-nav-link {{ $activeTab === 'tab-agencies' ? 'active' : '' }}" data-tab="tab-agencies" onclick="switchErpTab('tab-agencies', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                        <span class="erp-nav-title">مدیریت شعب و نمایندگان</span>
+                    </span>
+                    <span class="erp-nav-badge">{{ isset($agencies) ? count($agencies) : 6 }}</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=internal-chat" class="erp-nav-link {{ $activeTab === 'tab-internal-chat' ? 'active' : '' }}" data-tab="tab-internal-chat" onclick="switchErpTab('tab-internal-chat', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                        <span class="erp-nav-title">چت و گفتگوی داخلی</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#dcfce7; color:#166534;">زنده</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=tickets" class="erp-nav-link {{ $activeTab === 'tab-tickets' ? 'active' : '' }}" data-tab="tab-tickets" onclick="switchErpTab('tab-tickets', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                        <span class="erp-nav-title">تیکت‌های پشتیبانی</span>
+                    </span>
+                    <span class="erp-nav-badge">{{ isset($tickets) ? count($tickets) : 0 }}</span>
+                </a>
+            </li>
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=complaints" class="erp-nav-link {{ $activeTab === 'tab-complaints' ? 'active' : '' }}" data-tab="tab-complaints" onclick="switchErpTab('tab-complaints', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                        <span class="erp-nav-title">شکایات و بازرسی</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#fee2e2; color:#b91c1c;">{{ isset($complaints) ? count($complaints) : 0 }}</span>
+                </a>
+            </li>
+        </ul>
+
 
         <!-- Sidebar Bottom Footer -->
         <div class="erp-sidebar-footer">
@@ -4367,6 +4396,509 @@
         </div>
     </div>
 
+
+        <!-- ===================================================================
+             PAGE 13: AGENCIES & BRANCHES MANAGEMENT (tab-agencies)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-agencies' ? 'active' : '' }}" id="tab-agencies" data-title="مدیریت شعب و نمایندگان">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#ecfdf5; color:#059669;">شبکه خدمات سراسری تلفن همراه</span>
+                    <h1 class="erp-page-title">مدیریت شعب و نمایندگی‌های رسمی گارانتی و خدمات پس از فروش</h1>
+                    <p class="erp-page-desc">پیکربندی اطلاعات شعب تهران، تبریز، اصفهان، کرج، شیراز، مشهد، موقعیت نقشه Leaflet، صدور دسترسی و احراز صلاحیت ماده ۱۳.</p>
+                </div>
+                <button type="button" class="erp-btn erp-btn-primary" onclick="openAgencyModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>افزودن شعبه / نماینده جدید</span>
+                </button>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="erp-kpi-grid" style="margin-bottom: 24px;">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کل شعب ثبت‌شده</span>
+                        <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($agencies) ? count($agencies) : 6 }}</div>
+                    <div class="kpi-meta"><span style="color: #059669;">✓ ۶ شعبه استاندارد PDF</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">شعب فعال و پاسخگو</span>
+                        <div class="kpi-icon-wrap" style="background: #ecfdf5; color: #059669;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($agencies) ? $agencies->where('is_active', 1)->count() : 6 }}</div>
+                    <div class="kpi-meta"><span style="color: #059669;">۱۰۰٪ پوشش استانی</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">دسترسی پرتال نمایندگان</span>
+                        <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($agencies) ? $agencies->where('has_portal_access', 1)->count() : 6 }}</div>
+                    <div class="kpi-meta"><span>نقش کارشناس شعبه</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کلان‌شهرهای تحت پوشش</span>
+                        <div class="kpi-icon-wrap" style="background: #f3e8ff; color: #7c3aed;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($agencies) ? $agencies->unique('city')->count() : 6 }}</div>
+                    <div class="kpi-meta"><span>تهران، تبریز، اصفهان، کرج...</span></div>
+                </div>
+            </div>
+
+            <!-- Agencies Table Card -->
+            <div class="erp-card">
+                <div class="erp-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div class="erp-card-title">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: #ecfdf5; color: #059669;">🏢</span>
+                        <span>فهرست کامل شعب و نمایندگی‌های رسمی</span>
+                    </div>
+                    <a href="{{ url('/representatives') }}" target="_blank" class="erp-btn" style="background: #f1f5f9; color: #334155; font-size: 0.82rem; padding: 6px 14px; text-decoration: none;">
+                        <span>مشاهده صفحه نقشه مشتریان ↗</span>
+                    </a>
+                </div>
+
+                <div class="erp-table-responsive" style="overflow-x: auto;">
+                    <table class="erp-table" style="width: 100%; border-collapse: collapse; min-width: 850px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">کد شعبه</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">نام شعبه / نمایندگی</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">شهر / استان</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">مدیر و تلفن تماس</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">نشانی دقیق</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">مختصات نقشه</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">وضعیت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($agencies as $ag)
+                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 12px 14px; font-weight: 800; color: #2563eb; font-size: 0.84rem;">
+                                    <span style="background: #eff6ff; padding: 3px 8px; border-radius: 6px; border: 1px solid #dbeafe;">{{ $ag->agency_code }}</span>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.9rem;">{{ $ag->name }}</div>
+                                    <div style="font-size: 0.74rem; color: #64748b; margin-top: 2px;">{{ $ag->services_offered ?: 'پذیرش و تحویل گارانتی' }}</div>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <span style="display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: #334155; font-size: 0.84rem;">
+                                        📍 {{ $ag->city }} <span style="color: #94a3b8; font-size: 0.76rem;">({{ $ag->province }})</span>
+                                    </span>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem;">{{ $ag->manager_name ?: 'مدیریت شعبه' }}</div>
+                                    <div style="font-size: 0.78rem; color: #2563eb; direction: ltr; text-align: right; font-weight: 600;">{{ $ag->phone }}</div>
+                                </td>
+                                <td style="padding: 12px 14px; max-width: 240px; font-size: 0.78rem; color: #475569; line-height: 1.5;">
+                                    {{ $ag->address }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center; font-size: 0.76rem; color: #64748b;">
+                                    {{ round($ag->latitude, 4) }}, {{ round($ag->longitude, 4) }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    @if($ag->is_active)
+                                        <button type="button" onclick="toggleAgencyStatus({{ $ag->id }})" class="btn-table-action" style="color: #059669; border-color: #a7f3d0; background: #ecfdf5; font-size: 0.74rem; padding: 2px 8px; border-radius: 99px;">
+                                            ● فعال
+                                        </button>
+                                    @else
+                                        <button type="button" onclick="toggleAgencyStatus({{ $ag->id }})" class="btn-table-action" style="color: #dc2626; border-color: #fecaca; background: #fef2f2; font-size: 0.74rem; padding: 2px 8px; border-radius: 99px;">
+                                            ○ غیرفعال
+                                        </button>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                        <button type="button" class="btn-table-action" title="ویرایش" onclick='openAgencyModal({{ json_encode($ag) }})' style="padding: 5px 10px; font-size: 0.78rem; border-radius: 8px;">
+                                            ✏️ ویرایش
+                                        </button>
+                                        <button type="button" class="btn-table-action" title="حذف" onclick="deleteAgency({{ $ag->id }}, '{{ $ag->name }}')" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 8px; color: #ef4444; border-color: #fca5a5;">
+                                            🗑️
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" style="padding: 40px; text-align: center; color: #94a3b8;">هیچ شعبه‌ای تعریف نشده است.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ===================================================================
+             PAGE 14: INTERNAL CHAT & COLLABORATION (tab-internal-chat)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-internal-chat' ? 'active' : '' }}" id="tab-internal-chat" data-title="چت و گفتگوی داخلی">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#eff6ff; color:#2563eb;">شبکه پیام‌رسانی بلادرنگ داخلی</span>
+                    <h1 class="erp-page-title">تالار گفتگو و هماهنگی درون‌سازمانی سام موبایل</h1>
+                    <p class="erp-page-desc">ارتباط برخط کارشناسان دفتر مرکزی، پذیرش، تکنسین‌های فنی و انبار قطعات با مدیران شعب استانی.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="erp-btn" style="background:#f1f5f9; color:#334155;" onclick="loadChatMessages()">
+                        🔄 بروزرسانی پیام‌ها
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Channel Pills -->
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 6px;">
+                <button type="button" class="erp-btn chat-channel-btn active" data-channel="general" onclick="switchChatChannel('general', this)" style="font-size: 0.82rem; padding: 7px 16px; border-radius: 99px;">
+                    📢 عمومی و اطلاعیه‌ها
+                </button>
+                <button type="button" class="erp-btn chat-channel-btn" data-channel="intake" onclick="switchChatChannel('intake', this)" style="font-size: 0.82rem; padding: 7px 16px; border-radius: 99px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0;">
+                    📥 پذیرش و تحویل کالا
+                </button>
+                <button type="button" class="erp-btn chat-channel-btn" data-channel="technical" onclick="switchChatChannel('technical', this)" style="font-size: 0.82rem; padding: 7px 16px; border-radius: 99px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0;">
+                    🔧 کارگاه فنی و تعمیرات
+                </button>
+                <button type="button" class="erp-btn chat-channel-btn" data-channel="logistics" onclick="switchChatChannel('logistics', this)" style="font-size: 0.82rem; padding: 7px 16px; border-radius: 99px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0;">
+                    📦 انبار و تامین قطعات
+                </button>
+            </div>
+
+            <!-- Chat Container Box -->
+            <div class="erp-card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 580px;">
+                <!-- Chat Stream Window -->
+                <div id="chatMessagesStream" style="flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc;">
+                    @forelse($chatMessages ?? [] as $msg)
+                        @php
+                            $isMe = (Auth::check() && Auth::id() == $msg->user_id) || (session('mob_user_name') == $msg->sender_name);
+                        @endphp
+                        <div class="chat-msg-row {{ $isMe ? 'chat-msg-me' : 'chat-msg-other' }}" data-channel="{{ $msg->channel ?? 'general' }}" style="display: flex; flex-direction: column; align-items: {{ $isMe ? 'flex-start' : 'flex-end' }}; max-width: 82%; align-self: {{ $isMe ? 'flex-start' : 'flex-end' }};">
+                            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 0.74rem; color: #64748b;">
+                                <span style="font-weight: 800; color: #0f172a;">{{ $msg->sender_name }}</span>
+                                <span style="background: #e2e8f0; padding: 1px 6px; border-radius: 6px; font-size: 0.68rem;">{{ $msg->sender_role }}</span>
+                                <span>•</span>
+                                <span>{{ shamsi($msg->created_at, 'H:i - Y/m/d') }}</span>
+                            </div>
+                            <div style="background: {{ $isMe ? '#2563eb' : '#ffffff' }}; color: {{ $isMe ? '#ffffff' : '#0f172a' }}; padding: 12px 16px; border-radius: 16px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05); border: {{ $isMe ? 'none' : '1px solid #e2e8f0' }}; line-height: 1.6; font-size: 0.88rem; word-break: break-word;">
+                                {{ $msg->message }}
+                            </div>
+                        </div>
+                    @empty
+                        <div id="noChatNotice" style="text-align: center; color: #94a3b8; padding: 60px 20px;">
+                            <div style="font-size: 2.2rem; margin-bottom: 8px;">💬</div>
+                            <div style="font-weight: 700;">هنوز پیامی در این کانال ثبت نشده است.</div>
+                            <div style="font-size: 0.8rem; margin-top: 4px;">اولین پیام این گفتگو را ارسال نمایید.</div>
+                        </div>
+                    @endforelse
+                </div>
+
+                <!-- Chat Input Box -->
+                <div style="padding: 14px 18px; background: #ffffff; border-top: 1px solid #e2e8f0;">
+                    <form id="internalChatForm" onsubmit="sendInternalChatMessage(event)" style="display: flex; gap: 10px; align-items: center; margin: 0;">
+                        @csrf
+                        <input type="hidden" name="channel" id="chatCurrentChannel" value="general">
+                        <input type="text" name="message" id="chatMessageInput" class="erp-input" placeholder="پیام خود را تایپ کنید..." required style="flex: 1; border-radius: 12px; height: 46px; font-size: 0.9rem;">
+                        <button type="submit" id="chatSendBtn" class="erp-btn erp-btn-primary" style="height: 46px; border-radius: 12px; padding: 0 20px;">
+                            <span>ارسال</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ===================================================================
+             PAGE 15: SUPPORT TICKETS MANAGEMENT (tab-tickets)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-tickets' ? 'active' : '' }}" id="tab-tickets" data-title="تیکت‌های پشتیبانی">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#eff6ff; color:#2563eb;">میز خدمات الکترونیک مشتریان</span>
+                    <h1 class="erp-page-title">مدیریت تیکت‌های پشتیبانی آنلاین ۲۴ ساعته</h1>
+                    <p class="erp-page-desc">پاسخگویی به درخواست‌های فنی، استعلام گارانتی و پیگیری‌های واصله از فرم تیکت وب‌سایت.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ url('/tickets') }}" target="_blank" class="erp-btn" style="background: #f1f5f9; color: #334155; font-size: 0.82rem; padding: 8px 14px; text-decoration: none;">
+                        <span>مشاهده صفحه عمومی تیکت‌ها ↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="erp-kpi-grid" style="margin-bottom: 24px;">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کل تیکت‌های دریافتی</span>
+                        <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($tickets) ? count($tickets) : 0 }}</div>
+                    <div class="kpi-meta"><span>سامانه پشتیبانی برخط</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">در انتظار پاسخ</span>
+                        <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="color: #d97706;">{{ isset($tickets) ? $tickets->where('status', 'new')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #d97706;">نیازمند رسیدگی فوری</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">پاسخ داده شده</span>
+                        <div class="kpi-icon-wrap" style="background: #ecfdf5; color: #059669;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($tickets) ? $tickets->where('status', 'answered')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #059669;">ارسال پیامک اطلاع‌رسانی</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">میانگین زمان پاسخ</span>
+                        <div class="kpi-icon-wrap" style="background: #f3e8ff; color: #7c3aed;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="font-size: 1.25rem;">کمتر از ۱ ساعت</div>
+                    <div class="kpi-meta"><span>انطباق با ماده ۱۳</span></div>
+                </div>
+            </div>
+
+            <!-- Tickets Table Card -->
+            <div class="erp-card">
+                <div class="erp-table-responsive" style="overflow-x: auto;">
+                    <table class="erp-table" style="width: 100%; border-collapse: collapse; min-width: 900px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">شماره تیکت</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">کاربر / مشتری</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">دپارتمان</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">موضوع و خلاصه</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">اولویت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">تاریخ ثبت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">وضعیت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($tickets as $tk)
+                            <tr style="border-bottom: 1px solid #f1f5f9;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 12px 14px; font-weight: 800; color: #2563eb; font-size: 0.84rem;">
+                                    <span style="background: #eff6ff; padding: 3px 8px; border-radius: 6px; border: 1px solid #dbeafe;">{{ $tk->ticket_number }}</span>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem;">{{ $tk->customer_name }}</div>
+                                    <div style="font-size: 0.78rem; color: #64748b; direction: ltr; text-align: right;">{{ $tk->customer_phone }}</div>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <span style="font-size: 0.82rem; color: #334155; font-weight: 700;">
+                                        @if($tk->department === 'warranty') گارانتی و اصالت
+                                        @elseif($tk->department === 'technical') تعمیرات و کارگاه
+                                        @elseif($tk->department === 'tracking') رهگیری کالا
+                                        @elseif($tk->department === 'agencies') امور نمایندگان
+                                        @else عمومی @endif
+                                    </span>
+                                </td>
+                                <td style="padding: 12px 14px; max-width: 260px;">
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem;">{{ $tk->subject }}</div>
+                                    <div style="font-size: 0.76rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $tk->message }}</div>
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    @if($tk->priority === 'urgent')
+                                        <span style="background:#fee2e2; color:#b91c1c; font-size:0.72rem; padding:2px 8px; border-radius:99px; font-weight:800;">فوری</span>
+                                    @elseif($tk->priority === 'high')
+                                        <span style="background:#fef3c7; color:#d97706; font-size:0.72rem; padding:2px 8px; border-radius:99px; font-weight:800;">بالا</span>
+                                    @else
+                                        <span style="background:#f1f5f9; color:#475569; font-size:0.72rem; padding:2px 8px; border-radius:99px; font-weight:700;">عادی</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center; font-size: 0.78rem; color: #64748b;">
+                                    {{ shamsi($tk->created_at, 'Y/m/d') }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    @if($tk->status === 'new')
+                                        <span style="background: #dbeafe; color: #1d4ed8; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">جدید</span>
+                                    @elseif($tk->status === 'in_progress')
+                                        <span style="background: #fef3c7; color: #b45309; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">در حال بررسی</span>
+                                    @elseif($tk->status === 'answered')
+                                        <span style="background: #dcfce7; color: #15803d; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">پاسخ داده شده</span>
+                                    @else
+                                        <span style="background: #f1f5f9; color: #64748b; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 700;">بسته شده</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    <button type="button" class="btn-table-action" onclick='openTicketReplyModal({{ json_encode($tk) }})' style="padding: 5px 12px; font-size: 0.8rem; border-radius: 8px; background: #eff6ff; color: #2563eb; border-color: #bfdbfe;">
+                                        💬 مشاهده و پاسخ
+                                    </button>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" style="padding: 40px; text-align: center; color: #94a3b8;">هیچ تیکت پشتیبانی در سامانه ثبت نشده است.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ===================================================================
+             PAGE 16: MOBILE COMPLAINTS & INSPECTION (tab-complaints)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-complaints' ? 'active' : '' }}" id="tab-complaints" data-title="شکایات و بازرسی">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#fee2e2; color:#b91c1c;">سامانه نظارت ماده ۱۳ صمت</span>
+                    <h1 class="erp-page-title">واحد رسیدگی به شکایات تلفن همراه و بازرسی گارانتی</h1>
+                    <p class="erp-page-desc">رسیدگی رسمی به شکایات عدم تطابق، دیرکرد تعمیر، کیفیت قطعات و صدور احکام استرداد یا تعویض طبق تبصره ۵ ماده ۲۸.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ url('/complaints') }}" target="_blank" class="erp-btn" style="background: #f1f5f9; color: #334155; font-size: 0.82rem; padding: 8px 14px; text-decoration: none;">
+                        <span>مشاهده فرم شکایت وب‌سایت ↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Row -->
+            <div class="erp-kpi-grid" style="margin-bottom: 24px;">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کل شکایات واصله</span>
+                        <div class="kpi-icon-wrap" style="background: #fee2e2; color: #b91c1c;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($complaints) ? count($complaints) : 0 }}</div>
+                    <div class="kpi-meta"><span>پرونده‌های نظارتی صمت</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">در انتظار بازرسی اولیه</span>
+                        <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="color: #d97706;">{{ isset($complaints) ? $complaints->where('status', 'pending')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #d97706;">مهلت بررسی: ۲۴ ساعت کاری</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">در حال رسیدگی کارشناسی</span>
+                        <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($complaints) ? $complaints->where('status', 'investigating')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span>ارجاع به کارگاه مرکزی</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">مختومه و جلب رضایت</span>
+                        <div class="kpi-icon-wrap" style="background: #ecfdf5; color: #059669;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="color: #059669;">{{ isset($complaints) ? $complaints->where('status', 'resolved')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #059669;">حل مسالمت‌آمیز اختلاف</span></div>
+                </div>
+            </div>
+
+            <!-- Complaints Table Card -->
+            <div class="erp-card">
+                <div class="erp-table-responsive" style="overflow-x: auto;">
+                    <table class="erp-table" style="width: 100%; border-collapse: collapse; min-width: 950px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">کد شکایت</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">شاکی و تماس</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">شناسه دستگاه و IMEI</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">موضوع شکایت</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">شعبه طرف شکایت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">تاریخ ثبت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">وضعیت</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($complaints as $cmp)
+                            <tr style="border-bottom: 1px solid #f1f5f9;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 12px 14px; font-weight: 800; color: #b91c1c; font-size: 0.84rem;">
+                                    <span style="background: #fee2e2; padding: 3px 8px; border-radius: 6px; border: 1px solid #fecaca;">{{ $cmp->tracking_code }}</span>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.88rem;">{{ $cmp->name }}</div>
+                                    <div style="font-size: 0.78rem; color: #64748b; direction: ltr; text-align: right;">{{ $cmp->phone }}</div>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem;">{{ $cmp->device_model ?: 'گوشی هوشمند' }}</div>
+                                    <div style="font-size: 0.74rem; color: #2563eb; font-family: monospace;">{{ $cmp->imei }}</div>
+                                </td>
+                                <td style="padding: 12px 14px; max-width: 240px;">
+                                    <div style="font-weight: 700; color: #0f172a; font-size: 0.84rem;">{{ $cmp->subject }}</div>
+                                    <div style="font-size: 0.76rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $cmp->description }}</div>
+                                </td>
+                                <td style="padding: 12px 14px; font-size: 0.82rem; color: #475569;">
+                                    {{ $cmp->agency_name ?: 'دفتر مرکزی' }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center; font-size: 0.78rem; color: #64748b;">
+                                    {{ shamsi($cmp->created_at, 'Y/m/d') }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    @if($cmp->status === 'pending')
+                                        <span style="background: #fee2e2; color: #b91c1c; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">در انتظار بازرسی</span>
+                                    @elseif($cmp->status === 'investigating')
+                                        <span style="background: #fef3c7; color: #b45309; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">در حال رسیدگی</span>
+                                    @elseif($cmp->status === 'resolved')
+                                        <span style="background: #dcfce7; color: #15803d; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 800;">مختومه و رضایت</span>
+                                    @else
+                                        <span style="background: #f1f5f9; color: #64748b; font-size: 0.74rem; padding: 3px 10px; border-radius: 99px; font-weight: 700;">رد شکایت</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    <button type="button" class="btn-table-action" onclick='openComplaintReviewModal({{ json_encode($cmp) }})' style="padding: 5px 12px; font-size: 0.8rem; border-radius: 8px; background: #fff1f2; color: #e11d48; border-color: #fecdd3;">
+                                        ⚖️ صدور رای و بازرسی
+                                    </button>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" style="padding: 40px; text-align: center; color: #94a3b8;">هیچ شکایتی در سامانه بازرسی ثبت نشده است.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 </div>
 
@@ -5236,6 +5768,219 @@
         <span>منوی کامل</span>
     </button>
 </nav>
+
+
+<!-- =========================================================================
+     MODAL 1: ADD / EDIT AGENCY MODAL
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="agencyModalBackdrop" style="display: none; align-items: center; justify-content: center; z-index: 100005;">
+    <div class="warranty-modal-box" style="max-width: 650px; width: 92%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeAgencyModal()">&times;</button>
+        <div style="padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; background: #ecfdf5; color: #059669; font-size: 1.2rem;">🏢</span>
+                <div>
+                    <h3 id="agencyModalTitle" style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;">افزودن شعبه / نماینده جدید</h3>
+                    <p style="margin: 4px 0 0; font-size: 0.78rem; color: #64748b;">اطلاعات تماس، نشانی و مختصات نقشه شعبه را وارد نمایید.</p>
+                </div>
+            </div>
+
+            <form id="agencyForm" onsubmit="saveAgency(event)">
+                @csrf
+                <input type="hidden" name="agency_id" id="agId" value="">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">نام شعبه / نمایندگی *</label>
+                        <input type="text" name="name" id="agName" class="erp-input" required placeholder="مثال: شعبه اصفهان (شهر همراه)">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">کد یکتای شعبه *</label>
+                        <input type="text" name="agency_code" id="agCode" class="erp-input" required placeholder="مثال: AGY-ESF-02">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">شهر *</label>
+                        <input type="text" name="city" id="agCity" class="erp-input" required placeholder="مثال: اصفهان">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">استان *</label>
+                        <input type="text" name="province" id="agProvince" class="erp-input" required placeholder="مثال: اصفهان">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">نام مدیر شعبه</label>
+                        <input type="text" name="manager_name" id="agManager" class="erp-input" placeholder="نام و نام خانوادگی مسئول">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">تلفن تماس *</label>
+                        <input type="text" name="phone" id="agPhone" class="erp-input" required placeholder="۰۲۱-۹۱۰۷۱۰۱">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <label class="erp-form-label">نشانی کامل پستی *</label>
+                    <textarea name="address" id="agAddress" class="erp-input" rows="2" required placeholder="نشانی دقیق، پلاک، طبقه و واحد"></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">عرض جغرافیایی (Latitude) *</label>
+                        <input type="text" name="latitude" id="agLat" class="erp-input" required placeholder="32.6572">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">طول جغرافیایی (Longitude) *</label>
+                        <input type="text" name="longitude" id="agLng" class="erp-input" required placeholder="51.6883">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                    <label class="erp-form-label">خدمات ارائه‌شده</label>
+                    <input type="text" name="services_offered" id="agServices" class="erp-input" placeholder="پذیرش گارانتی، تست مدار، تعویض قطعات">
+                </div>
+
+                <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 20px;">
+                    <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 700;">
+                        <input type="checkbox" name="is_active" id="agActive" value="1" checked>
+                        <span>شعبه فعال باشد</span>
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 700;">
+                        <input type="checkbox" name="has_portal_access" id="agPortal" value="1" checked>
+                        <span>دسترسی به پرتال نمایندگان</span>
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <button type="button" class="erp-btn" onclick="closeAgencyModal()" style="background: #f1f5f9; color: #475569;">انصراف</button>
+                    <button type="submit" id="saveAgencyBtn" class="erp-btn erp-btn-primary">ذخیره شعبه</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 2: TICKET REPLY MODAL
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="ticketReplyModalBackdrop" style="display: none; align-items: center; justify-content: center; z-index: 100005;">
+    <div class="warranty-modal-box" style="max-width: 620px; width: 92%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeTicketReplyModal()">&times;</button>
+        <div style="padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; font-size: 1.2rem;">🎫</span>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;">مشاهده و پاسخ تیکت پشتیبانی</h3>
+                    <p id="tkModalSubtitle" style="margin: 4px 0 0; font-size: 0.78rem; color: #64748b;"></p>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-bottom: 6px;">
+                    <strong id="tkCustomerName" style="color: #0f172a;"></strong>
+                    <span id="tkPhone" style="direction: ltr;"></span>
+                </div>
+                <div id="tkSubject" style="font-weight: 800; color: #1e40af; margin-bottom: 8px; font-size: 0.88rem;"></div>
+                <div id="tkMessage" style="font-size: 0.84rem; color: #334155; line-height: 1.6; white-space: pre-wrap;"></div>
+            </div>
+
+            <div id="tkExistingReplyBox" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                <div style="font-size: 0.78rem; font-weight: 800; color: #065f46; margin-bottom: 4px;">پاسخ ثبت‌شده قبلی:</div>
+                <div id="tkExistingReplyText" style="font-size: 0.84rem; color: #064e3b; line-height: 1.6;"></div>
+            </div>
+
+            <form id="ticketReplyForm" onsubmit="submitTicketReply(event)">
+                @csrf
+                <input type="hidden" name="ticket_id" id="tkId" value="">
+
+                <div style="margin-bottom: 14px;">
+                    <label class="erp-form-label">متن پاسخ رسمی کارشناس *</label>
+                    <textarea name="reply_text" id="tkReplyText" class="erp-input" rows="4" required placeholder="پاسخ کامل و راهنمایی لازم را برای مشتری بنویسید..."></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+                    <div>
+                        <label class="erp-form-label">وضعیت جدید تیکت</label>
+                        <select name="status" id="tkStatusSelect" class="erp-select">
+                            <option value="answered">پاسخ داده شده (Answered)</option>
+                            <option value="in_progress">در حال بررسی (In Progress)</option>
+                            <option value="closed">بسته شده (Closed)</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: flex-end; padding-bottom: 8px;">
+                        <span style="font-size: 0.76rem; color: #059669; font-weight: 700;">✓ پس از ثبت پاسخ، پیامک به کاربر ارسال می‌گردد.</span>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <button type="button" class="erp-btn" onclick="closeTicketReplyModal()" style="background: #f1f5f9; color: #475569;">بستن</button>
+                    <button type="submit" id="tkSubmitBtn" class="erp-btn erp-btn-primary">ثبت و ارسال پاسخ به مشتری</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL 3: COMPLAINT REVIEW & RESOLUTION MODAL
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="complaintReviewModalBackdrop" style="display: none; align-items: center; justify-content: center; z-index: 100005;">
+    <div class="warranty-modal-box" style="max-width: 650px; width: 92%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeComplaintReviewModal()">&times;</button>
+        <div style="padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; background: #fff1f2; color: #e11d48; font-size: 1.2rem;">⚖️</span>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;">بررسی شکایت و صدور نظریه بازرسی</h3>
+                    <p id="cmpModalSubtitle" style="margin: 4px 0 0; font-size: 0.78rem; color: #64748b;"></p>
+                </div>
+            </div>
+
+            <!-- Complaint Details Card -->
+            <div style="background: #fff8f8; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 8px;">
+                    <strong id="cmpCustomer" style="color: #9f1239;"></strong>
+                    <span id="cmpPhone" style="direction: ltr; font-weight: 600;"></span>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.78rem; color: #64748b; margin-bottom: 10px;">
+                    <div>📱 مدل: <strong id="cmpModel" style="color: #0f172a;"></strong></div>
+                    <div>🔢 IMEI: <span id="cmpImei" style="font-family: monospace; color: #2563eb;"></span></div>
+                </div>
+                <div id="cmpSubject" style="font-weight: 800; color: #9f1239; margin-bottom: 6px; font-size: 0.88rem;"></div>
+                <div id="cmpDesc" style="font-size: 0.84rem; color: #334155; line-height: 1.6; white-space: pre-wrap;"></div>
+                <div id="cmpFileArea" style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed #fecdd3; font-size: 0.78rem;"></div>
+            </div>
+
+            <form id="complaintResolutionForm" onsubmit="submitComplaintResolution(event)">
+                @csrf
+                <input type="hidden" name="complaint_id" id="cmpId" value="">
+
+                <div style="margin-bottom: 14px;">
+                    <label class="erp-form-label">نظریه کارشناسی و حکم بازرسی *</label>
+                    <textarea name="resolution_notes" id="cmpNotes" class="erp-input" rows="4" required placeholder="نتیجه بررسی کارشناسی، دستور تعویض یا استرداد یا دلایل فنی را شرح دهید..."></textarea>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label class="erp-form-label">وضعیت نهایی پرونده شکایت</label>
+                    <select name="status" id="cmpStatusSelect" class="erp-select">
+                        <option value="resolved">مختومه و جلب رضایت مشتری (Resolved)</option>
+                        <option value="investigating">در حال بررسی و ارجاع به کارگاه (Investigating)</option>
+                        <option value="rejected">رد شکایت بر اساس ضوابط گارانتی (Rejected)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <button type="button" class="erp-btn" onclick="closeComplaintReviewModal()" style="background: #f1f5f9; color: #475569;">بستن</button>
+                    <button type="submit" id="cmpSubmitBtn" class="erp-btn" style="background: #e11d48; color: #ffffff; font-weight: 800;">ثبت رای و مختومه نمودن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -6681,6 +7426,337 @@
             if (btn) btn.disabled = false;
         }
     }
+
+
+    // =========================================================================
+    // AGENCIES MANAGEMENT JS
+    // =========================================================================
+    function openAgencyModal(ag) {
+        const titleEl = document.getElementById('agencyModalTitle');
+        const form = document.getElementById('agencyForm');
+        form.reset();
+
+        if (ag && ag.id) {
+            titleEl.innerText = 'ویرایش اطلاعات شعبه: ' + ag.name;
+            document.getElementById('agId').value = ag.id;
+            document.getElementById('agName').value = ag.name || '';
+            document.getElementById('agCode').value = ag.agency_code || '';
+            document.getElementById('agCity').value = ag.city || '';
+            document.getElementById('agProvince').value = ag.province || '';
+            document.getElementById('agManager').value = ag.manager_name || '';
+            document.getElementById('agPhone').value = ag.phone || '';
+            document.getElementById('agAddress').value = ag.address || '';
+            document.getElementById('agLat').value = ag.latitude || '';
+            document.getElementById('agLng').value = ag.longitude || '';
+            document.getElementById('agServices').value = ag.services_offered || '';
+            document.getElementById('agActive').checked = ag.is_active == 1;
+            document.getElementById('agPortal').checked = ag.has_portal_access == 1;
+        } else {
+            titleEl.innerText = 'افزودن شعبه / نماینده جدید';
+            document.getElementById('agId').value = '';
+            document.getElementById('agActive').checked = true;
+            document.getElementById('agPortal').checked = true;
+        }
+
+        document.getElementById('agencyModalBackdrop').style.display = 'flex';
+    }
+
+    function closeAgencyModal() {
+        document.getElementById('agencyModalBackdrop').style.display = 'none';
+    }
+
+    async function saveAgency(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = document.getElementById('saveAgencyBtn');
+        btn.disabled = true;
+        btn.innerText = 'در حال ذخیره...';
+
+        const id = document.getElementById('agId').value;
+        const url = id ? `/admin-portal/agencies/${id}/update` : '/admin-portal/agencies/save';
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: formData
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                alert('شعبه با موفقیت ذخیره گردید.');
+                location.reload();
+            } else {
+                alert('خطا: ' + (data.message || 'ذخیره ناموفق بود.'));
+            }
+        } catch (err) {
+            alert('خطای ارتباط: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ذخیره شعبه';
+        }
+    }
+
+    async function deleteAgency(id, name) {
+        if (!confirm(`آیا از حذف شعبه «${name}» اطمینان دارید؟`)) return;
+        try {
+            const token = document.querySelector('input[name="_token"]')?.value || '';
+            const res = await fetch(`/admin-portal/agencies/${id}/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                alert('شعبه حذف گردید.');
+                location.reload();
+            } else {
+                alert('خطا در حذف شعبه: ' + (data.message || 'ناموفق'));
+            }
+        } catch (err) {
+            alert('خطای ارتباط: ' + err.message);
+        }
+    }
+
+    async function toggleAgencyStatus(id) {
+        try {
+            const token = document.querySelector('input[name="_token"]')?.value || '';
+            const res = await fetch(`/admin-portal/agencies/${id}/toggle-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                location.reload();
+            } else {
+                alert('خطا در تغییر وضعیت: ' + (data.message || 'ناموفق'));
+            }
+        } catch (err) {
+            alert('خطای ارتباط: ' + err.message);
+        }
+    }
+
+    // =========================================================================
+    // INTERNAL CHAT JS
+    // =========================================================================
+    function switchChatChannel(channel, btn) {
+        document.getElementById('chatCurrentChannel').value = channel;
+        document.querySelectorAll('.chat-channel-btn').forEach(b => {
+            b.classList.remove('active');
+            b.style.background = '#f8fafc';
+            b.style.color = '#475569';
+            b.style.border = '1px solid #e2e8f0';
+        });
+        if (btn) {
+            btn.classList.add('active');
+            btn.style.background = '#2563eb';
+            btn.style.color = '#ffffff';
+            btn.style.border = 'none';
+        }
+        loadChatMessages();
+    }
+
+    async function loadChatMessages() {
+        const channel = document.getElementById('chatCurrentChannel').value || 'general';
+        const stream = document.getElementById('chatMessagesStream');
+        try {
+            const res = await fetch(`/internal-chat/messages?channel=${channel}`);
+            const data = await res.json();
+            if (data.messages && data.messages.length > 0) {
+                stream.innerHTML = '';
+                data.messages.forEach(msg => {
+                    const row = document.createElement('div');
+                    row.className = 'chat-msg-row';
+                    row.style.cssText = 'display: flex; flex-direction: column; align-items: flex-start; max-width: 82%; align-self: flex-start;';
+                    row.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 0.74rem; color: #64748b;">
+                            <span style="font-weight: 800; color: #0f172a;">${msg.sender_name}</span>
+                            <span style="background: #e2e8f0; padding: 1px 6px; border-radius: 6px; font-size: 0.68rem;">${msg.sender_role}</span>
+                            <span>•</span>
+                            <span>${msg.jalali_time || ''}</span>
+                        </div>
+                        <div style="background: #ffffff; color: #0f172a; padding: 12px 16px; border-radius: 16px; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05); border: 1px solid #e2e8f0; line-height: 1.6; font-size: 0.88rem; word-break: break-word;">
+                            ${msg.message}
+                        </div>
+                    `;
+                    stream.appendChild(row);
+                });
+                stream.scrollTop = stream.scrollHeight;
+            }
+        } catch (e) {
+            console.error('Chat refresh err:', e);
+        }
+    }
+
+    async function sendInternalChatMessage(e) {
+        e.preventDefault();
+        const input = document.getElementById('chatMessageInput');
+        const channel = document.getElementById('chatCurrentChannel').value || 'general';
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        const btn = document.getElementById('chatSendBtn');
+        btn.disabled = true;
+
+        try {
+            const token = document.querySelector('input[name="_token"]')?.value || '';
+            const res = await fetch('/internal-chat/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ message: msg, channel: channel })
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                input.value = '';
+                loadChatMessages();
+            } else {
+                alert('خطا در ارسال پیام: ' + (data.message || 'ناموفق'));
+            }
+        } catch (err) {
+            alert('خطای اتصال: ' + err.message);
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+    // =========================================================================
+    // TICKETS MANAGEMENT JS
+    // =========================================================================
+    function openTicketReplyModal(tk) {
+        document.getElementById('tkId').value = tk.id;
+        document.getElementById('tkModalSubtitle').innerText = 'تیکت شماره: ' + tk.ticket_number;
+        document.getElementById('tkCustomerName').innerText = tk.customer_name;
+        document.getElementById('tkPhone').innerText = tk.customer_phone;
+        document.getElementById('tkSubject').innerText = 'موضوع: ' + tk.subject;
+        document.getElementById('tkMessage').innerText = tk.message;
+        document.getElementById('tkStatusSelect').value = tk.status === 'new' ? 'answered' : tk.status;
+
+        const existingBox = document.getElementById('tkExistingReplyBox');
+        if (tk.reply) {
+            existingBox.style.display = 'block';
+            document.getElementById('tkExistingReplyText').innerText = tk.reply;
+        } else {
+            existingBox.style.display = 'none';
+        }
+
+        document.getElementById('ticketReplyModalBackdrop').style.display = 'flex';
+    }
+
+    function closeTicketReplyModal() {
+        document.getElementById('ticketReplyModalBackdrop').style.display = 'none';
+    }
+
+    async function submitTicketReply(e) {
+        e.preventDefault();
+        const id = document.getElementById('tkId').value;
+        const replyText = document.getElementById('tkReplyText').value;
+        const status = document.getElementById('tkStatusSelect').value;
+        const btn = document.getElementById('tkSubmitBtn');
+        btn.disabled = true;
+        btn.innerText = 'در حال ارسال پاسخ...';
+
+        try {
+            const token = document.querySelector('input[name="_token"]')?.value || '';
+            const res = await fetch(`/admin-portal/tickets/${id}/reply`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ reply: replyText, status: status })
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                alert('پاسخ رسمی با موفقیت ثبت و برای کاربر ارسال گردید.');
+                location.reload();
+            } else {
+                alert('خطا: ' + (data.message || 'عملیات ناموفق'));
+            }
+        } catch (err) {
+            alert('خطای ارتباط: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ثبت و ارسال پاسخ به مشتری';
+        }
+    }
+
+    // =========================================================================
+    // COMPLAINTS MANAGEMENT JS
+    // =========================================================================
+    function openComplaintReviewModal(cmp) {
+        document.getElementById('cmpId').value = cmp.id;
+        document.getElementById('cmpModalSubtitle').innerText = 'کد پیگیری شکایت: ' + cmp.tracking_code;
+        document.getElementById('cmpCustomer').innerText = cmp.name;
+        document.getElementById('cmpPhone').innerText = cmp.phone;
+        document.getElementById('cmpModel').innerText = cmp.device_model || '-';
+        document.getElementById('cmpImei').innerText = cmp.imei || '-';
+        document.getElementById('cmpSubject').innerText = cmp.subject;
+        document.getElementById('cmpDesc').innerText = cmp.description;
+        document.getElementById('cmpStatusSelect').value = cmp.status;
+        document.getElementById('cmpNotes').value = cmp.admin_notes || '';
+
+        const fileArea = document.getElementById('cmpFileArea');
+        if (cmp.evidence_file) {
+            fileArea.innerHTML = `📎 فایل ضمیمه: <a href="${cmp.evidence_file}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: 700;">مشاهده و دانلود مستندات ↗</a>`;
+        } else {
+            fileArea.innerHTML = `<span style="color: #94a3b8;">فایل ضمیمه‌ای بارگذاری نشده است.</span>`;
+        }
+
+        document.getElementById('complaintReviewModalBackdrop').style.display = 'flex';
+    }
+
+    function closeComplaintReviewModal() {
+        document.getElementById('complaintReviewModalBackdrop').style.display = 'none';
+    }
+
+    async function submitComplaintResolution(e) {
+        e.preventDefault();
+        const id = document.getElementById('cmpId').value;
+        const notes = document.getElementById('cmpNotes').value;
+        const status = document.getElementById('cmpStatusSelect').value;
+        const btn = document.getElementById('cmpSubmitBtn');
+        btn.disabled = true;
+        btn.innerText = 'در حال ثبت...';
+
+        try {
+            const token = document.querySelector('input[name="_token"]')?.value || '';
+            const res = await fetch(`/admin-portal/complaints/${id}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ status: status, admin_notes: notes })
+            });
+            const data = await res.json();
+            if (data.status === 'success' || res.ok) {
+                alert('نظریه بازرسی و وضعیت شکایت با موفقیت به روز گردید.');
+                location.reload();
+            } else {
+                alert('خطا: ' + (data.message || 'عملیات ناموفق'));
+            }
+        } catch (err) {
+            alert('خطای ارتباط: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ثبت رای و مختومه نمودن';
+        }
+    }
+
+
 
 </script>
 @endpush

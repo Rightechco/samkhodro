@@ -1189,6 +1189,11 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                             <span>راهنمای پذیرش و ارسال کالا</span>
                         </a>
+                        <a href="{{ url('/representatives') }}" class="nav-dropdown-item {{ request()->is('*representatives*') || request()->is('*agencies*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                            <span>لیست نمایندگان رسمی تلفن همراه</span>
+                            <span class="nav-mini-badge" style="background:#ecfdf5; color:#059669; font-size:0.65rem;">۶ شعبه</span>
+                        </a>
                     </div>
                 </div>
 
@@ -1225,6 +1230,11 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             <span>نظرسنجی رضایت مشتری</span>
                         </a>
+                        <a href="{{ url('/tickets') }}" class="nav-dropdown-item {{ request()->is('*tickets*') ? 'active' : '' }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span>ثبت و پیگیری تیکت پشتیبانی</span>
+                            <span class="nav-mini-badge" style="background:#eff6ff; color:#2563eb; font-size:0.65rem;">۲۴ ساعته</span>
+                        </a>
                     </div>
                 </div>
 
@@ -1240,14 +1250,22 @@
 
                 {{-- آیتم‌های داینامیک سفارشی جدید (جلوگیری از تکرار منوهای پیش‌فرض سیستم) --}}
                 @php
-                    $builtInUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track'];
+                    $builtInUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track', '/representatives', 'representatives', '/agencies', 'agencies', '/tickets', 'tickets'];
+                    $builtInTitles = ['صفحه اصلی', 'استعلام اصالت', 'پیگیری پرونده', 'شرایط گارانتی', 'منشور حقوق مشتریان', 'راهنمای ارسال کالا', 'فاکتور رسمی', 'وبلاگ تخصصی', 'نظرسنجی خدمات', 'شکایات و بازرسی', 'درباره ما', 'تماس با ما', 'نمایندگان', 'تیکت'];
                 @endphp
                 @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
                     @foreach($headerMenuItems as $navItem)
                         @php
                             $cleanNavUrl = '/' . ltrim($navItem->url, '/');
+                            $isBuiltInTitle = false;
+                            foreach ($builtInTitles as $bt) {
+                                if (mb_strpos($navItem->title, $bt) !== false) {
+                                    $isBuiltInTitle = true;
+                                    break;
+                                }
+                            }
                         @endphp
-                        @if(!in_array($cleanNavUrl, $builtInUrls) && !in_array($navItem->url, $builtInUrls))
+                        @if(!in_array($cleanNavUrl, $builtInUrls) && !in_array($navItem->url, $builtInUrls) && !$isBuiltInTitle)
                             <a href="{{ url($navItem->url) }}" class="nav-item-link" target="{{ $navItem->target ?? '_self' }}">
                                 <span>{{ $navItem->title }}</span>
                                 @if(!empty($navItem->badge))

@@ -90,6 +90,31 @@ Route::post('/admin-portal/orders/{code}/photos/add', [MobileServiceController::
 Route::post('/admin-portal/orders/{code}/task/timer', [MobileServiceController::class, 'toggleTechnicianTaskTimer'])->name('mob.admin.orders.task.timer');
 Route::post('/admin-portal/orders/{code}/update-status', [MobileServiceController::class, 'updatePortalOrderStatus'])->name('mob.admin.orders.update-status');
 Route::post('/admin-portal/sms/send-quick', [MobileServiceController::class, 'sendQuickSms'])->name('mob.admin.sms.send-quick');
+
+// =========================================================================
+// REPRESENTATIVES, INTERNAL CHAT, TICKETS & AGENCY MANAGEMENT (ماده ۱۳)
+// =========================================================================
+Route::get('/representatives', [MobileServiceController::class, 'representatives'])->name('mob.representatives');
+Route::get('/agencies', [MobileServiceController::class, 'representatives']);
+Route::get('/api/agencies', [MobileServiceController::class, 'agenciesApi']);
+
+Route::get('/tickets', [MobileServiceController::class, 'publicTickets'])->name('mob.tickets');
+Route::post('/tickets/store', [MobileServiceController::class, 'storePublicTicket'])->name('mob.tickets.store');
+Route::post('/tickets/track', [MobileServiceController::class, 'trackPublicTicket'])->name('mob.tickets.track');
+
+Route::get('/internal-chat/messages', [MobileServiceController::class, 'getChatMessages']);
+Route::post('/internal-chat/send', [MobileServiceController::class, 'sendChatMessage']);
+
+Route::post('/admin-portal/agencies/save', [MobileServiceController::class, 'storeAgency']);
+Route::post('/admin-portal/agencies/{id}/update', [MobileServiceController::class, 'updateAgency']);
+Route::post('/admin-portal/agencies/{id}/delete', [MobileServiceController::class, 'deleteAgency']);
+Route::post('/admin-portal/agencies/{id}/toggle-status', [MobileServiceController::class, 'toggleAgencyStatus']);
+
+Route::post('/admin-portal/tickets/{id}/reply', [MobileServiceController::class, 'replyTicket']);
+Route::post('/admin-portal/tickets/{id}/status', [MobileServiceController::class, 'updateTicketStatus']);
+
+Route::post('/admin-portal/complaints/{id}/status', [MobileServiceController::class, 'updateComplaintStatus']);
+
 };
 
 // شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های سام موبایل در ریشه لود می‌شوند

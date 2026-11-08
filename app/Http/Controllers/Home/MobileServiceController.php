@@ -312,6 +312,81 @@ class MobileServiceController extends Controller
                 }
             }
 
+            
+            // ۱۰. جدول شعب و نمایندگان رسمی خدمات پس از فروش
+            if (!Schema::hasTable('mobile_agencies')) {
+                Schema::create('mobile_agencies', function ($table) {
+                    $table->id();
+                    $table->string('name', 150);
+                    $table->string('province', 80);
+                    $table->string('city', 80);
+                    $table->string('phone', 50)->default('021-9107101');
+                    $table->text('address');
+                    $table->string('postal_code', 30)->nullable();
+                    $table->string('manager_name', 100)->nullable();
+                    $table->decimal('latitude', 10, 7)->default(35.7208);
+                    $table->decimal('longitude', 10, 7)->default(51.4332);
+                    $table->string('working_hours', 150)->default('شنبه تا چهارشنبه: ۹ الی ۱۸ | پنجشنبه: ۹ الی ۱۴');
+                    $table->string('services', 255)->default('پذیرش حضوری، تعمیرات تخصصی تلفن همراه، تعویض قطعات اصلی، گارانتی ۱۸ ماهه');
+                    $table->boolean('is_active')->default(true);
+                    $table->integer('sort_order')->default(0);
+                    $table->timestamps();
+                });
+                $this->seedInitialAgencies();
+            }
+
+            // ۱۱. جدول پیام‌های چت و گفتگوی داخلی اعضای سیستم
+            if (!Schema::hasTable('mobile_internal_chat')) {
+                Schema::create('mobile_internal_chat', function ($table) {
+                    $table->id();
+                    $table->unsignedBigInteger('sender_id')->nullable();
+                    $table->string('sender_name', 100);
+                    $table->string('sender_role', 80);
+                    $table->string('channel', 50)->default('general');
+                    $table->text('message');
+                    $table->string('attachment_url', 255)->nullable();
+                    $table->timestamps();
+                });
+                $this->seedInitialChat();
+            }
+
+            // بررسی ستون‌های تکمیلی تیکت‌ها
+            if (Schema::hasTable('mobile_tickets')) {
+                if (!Schema::hasColumn('mobile_tickets', 'customer_name')) {
+                    Schema::table('mobile_tickets', function ($table) {
+                        $table->string('customer_name', 150)->nullable();
+                        $table->string('department', 80)->default('پذیرش');
+                        $table->string('priority', 30)->default('عادی');
+                        $table->string('imei', 30)->nullable();
+                        $table->string('attachment_url', 255)->nullable();
+                    });
+                }
+            }
+
+            // بررسی ستون‌های تکمیلی شکایات تلفن همراه
+            if (Schema::hasTable('mobile_complaints')) {
+                if (!Schema::hasColumn('mobile_complaints', 'imei')) {
+                    Schema::table('mobile_complaints', function ($table) {
+                        $table->string('imei', 30)->nullable();
+                        $table->string('device_model', 100)->nullable();
+                        $table->string('branch_name', 100)->nullable();
+                        $table->string('attachment_url', 255)->nullable();
+                    });
+                }
+            }
+
+            // بررسی ستون‌های تکمیلی نظرسنجی تلفن همراه
+            if (Schema::hasTable('mobile_surveys')) {
+                if (!Schema::hasColumn('mobile_surveys', 'imei')) {
+                    Schema::table('mobile_surveys', function ($table) {
+                        $table->string('imei', 30)->nullable();
+                        $table->string('device_model', 100)->nullable();
+                        $table->string('branch_name', 100)->nullable();
+                        $table->text('feedback')->nullable();
+                    });
+                }
+            }
+
             // تضمین وجود و به‌روزرسانی کاربران ۴ نقش اصلی
             $this->seedDefaultRolesAndUsers();
         } catch (\Exception $e) {
@@ -356,6 +431,30 @@ class MobileServiceController extends Controller
                     'email' => 'customer@taminkanisam.co.ir',
                     'password' => 'SamUser@2026!',
                     'level' => 0, // Customer
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'نمایندگی تهران (تجارت گستر فخیم)',
+                    'number' => '09148874626',
+                    'email' => 'agency-tehran@taminkanisam.co.ir',
+                    'password' => 'SamAgency@2026!',
+                    'level' => 2, // Agency Representative
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'نمایندگی تبریز (مرکز ارگ)',
+                    'number' => '09148874627',
+                    'email' => 'agency-tabriz@taminkanisam.co.ir',
+                    'password' => 'SamAgency@2026!',
+                    'level' => 2,
+                    'contact' => 0,
+                ],
+                [
+                    'name' => 'نمایندگی اصفهان (شهر همراه)',
+                    'number' => '09148874628',
+                    'email' => 'agency-isfahan@taminkanisam.co.ir',
+                    'password' => 'SamAgency@2026!',
+                    'level' => 2,
                     'contact' => 0,
                 ],
             ];
@@ -1056,6 +1155,30 @@ class MobileServiceController extends Controller
             $headerMenuItems = DB::table('mobile_header_menu')->orderBy('sort_order', 'asc')->get();
         }
 
+                // Agencies & Branches
+        $agencies = collect();
+        if (Schema::hasTable('mobile_agencies')) {
+            $agencies = DB::table('mobile_agencies')->orderBy('sort_order', 'asc')->get();
+        }
+
+        // Tickets
+        $tickets = collect();
+        if (Schema::hasTable('mobile_tickets')) {
+            $tickets = DB::table('mobile_tickets')->orderBy('id', 'desc')->get();
+        }
+
+        // Complaints
+        $complaints = collect();
+        if (Schema::hasTable('mobile_complaints')) {
+            $complaints = DB::table('mobile_complaints')->orderBy('id', 'desc')->get();
+        }
+
+        // Internal Chat Recent Messages
+        $chatMessages = collect();
+        if (Schema::hasTable('mobile_internal_chat')) {
+            $chatMessages = DB::table('mobile_internal_chat')->orderBy('id', 'desc')->limit(60)->get();
+        }
+
         // Dynamic CMS Pages
         $cmsPages = collect();
         if (Schema::hasTable('mobile_pages')) {
@@ -1116,7 +1239,7 @@ class MobileServiceController extends Controller
 
         return view('home.mobile.portal', compact(
             'orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user',
-            'siteSettings', 'headerMenuItems', 'cmsPages', 'blogPosts', 'surveyCampaigns', 'surveysList', 'surveyStats'
+            'siteSettings', 'headerMenuItems', 'cmsPages', 'blogPosts', 'surveyCampaigns', 'surveysList', 'surveyStats', 'agencies', 'tickets', 'complaints', 'chatMessages'
         ));
         } catch (\Throwable $e) {
             return response('ADMIN PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 500);
@@ -2887,6 +3010,383 @@ class MobileServiceController extends Controller
                 ]
             ]);
         }
+    }
+
+
+    /**
+     * صفحه عمومی و اختصاصی لیست نمایندگان رسمی خدمات پس از فروش با نقشه و فیلتر استانی
+     */
+    public function representatives()
+    {
+        $this->ensureTablesExist();
+        $agencies = DB::table('mobile_agencies')
+            ->where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+
+        $siteSettings = [];
+        if (Schema::hasTable('mobile_site_settings')) {
+            $siteSettings = DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray();
+        }
+
+        return view('home.mobile.representatives', compact('agencies', 'siteSettings'));
+    }
+
+    /**
+     * دریافت لیست نمایندگان به صورت JSON جهت رندر داینامیک نقشه و فیلترها
+     */
+    public function agenciesApi()
+    {
+        $this->ensureTablesExist();
+        $agencies = DB::table('mobile_agencies')->where('is_active', true)->orderBy('sort_order', 'asc')->get();
+        return response()->json(['status' => 'success', 'data' => $agencies]);
+    }
+
+    /**
+     * ثبت نمایندگی جدید از پنل ادمین CRM
+     */
+    public function storeAgency(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:150',
+            'province' => 'required|string|max:80',
+            'city' => 'required|string|max:80',
+            'phone' => 'required|string|max:50',
+            'address' => 'required|string',
+        ]);
+
+        $id = DB::table('mobile_agencies')->insertGetId([
+            'name' => $request->input('name'),
+            'province' => $request->input('province'),
+            'city' => $request->input('city'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+            'postal_code' => $request->input('postal_code'),
+            'manager_name' => $request->input('manager_name'),
+            'latitude' => $request->input('latitude', 35.7208),
+            'longitude' => $request->input('longitude', 51.4332),
+            'working_hours' => $request->input('working_hours', 'شنبه تا چهارشنبه: ۹ الی ۱۸ | پنجشنبه: ۹ الی ۱۴'),
+            'services' => $request->input('services', 'پذیرش، تعمیرات تخصصی تلفن همراه، گارانتی ۱۸ ماهه'),
+            'is_active' => $request->has('is_active') ? (bool)$request->input('is_active') : true,
+            'sort_order' => (int)$request->input('sort_order', 0),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'شعبه نمایندگی با موفقیت ثبت گردید.', 'id' => $id]);
+    }
+
+    /**
+     * ویرایش شعبه نمایندگی از پنل ادمین CRM
+     */
+    public function updateAgency(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:150',
+            'province' => 'required|string|max:80',
+            'city' => 'required|string|max:80',
+            'phone' => 'required|string|max:50',
+            'address' => 'required|string',
+        ]);
+
+        DB::table('mobile_agencies')->where('id', $id)->update([
+            'name' => $request->input('name'),
+            'province' => $request->input('province'),
+            'city' => $request->input('city'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+            'postal_code' => $request->input('postal_code'),
+            'manager_name' => $request->input('manager_name'),
+            'latitude' => $request->input('latitude', 35.7208),
+            'longitude' => $request->input('longitude', 51.4332),
+            'working_hours' => $request->input('working_hours'),
+            'services' => $request->input('services'),
+            'is_active' => $request->has('is_active') ? (bool)$request->input('is_active') : true,
+            'sort_order' => (int)$request->input('sort_order', 0),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'مشخصات شعبه با موفقیت به‌روزرسانی شد.']);
+    }
+
+    /**
+     * حذف شعبه نمایندگی
+     */
+    public function deleteAgency($id)
+    {
+        DB::table('mobile_agencies')->where('id', $id)->delete();
+        return response()->json(['status' => 'success', 'message' => 'شعبه با موفقیت حذف گردید.']);
+    }
+
+    /**
+     * فعال/غیرفعال‌سازی وضعیت شعبه نمایندگی
+     */
+    public function toggleAgencyStatus($id)
+    {
+        $agency = DB::table('mobile_agencies')->where('id', $id)->first();
+        if ($agency) {
+            $newStatus = !$agency->is_active;
+            DB::table('mobile_agencies')->where('id', $id)->update(['is_active' => $newStatus, 'updated_at' => now()]);
+            return response()->json(['status' => 'success', 'is_active' => $newStatus, 'message' => 'وضعیت شعبه تغییر یافت.']);
+        }
+        return response()->json(['status' => 'error', 'message' => 'شعبه یافت نشد.'], 404);
+    }
+
+    /**
+     * دریافت پیام‌های چت داخلی سیستم
+     */
+    public function getChatMessages(Request $request)
+    {
+        $channel = $request->query('channel', 'general');
+        $messages = DB::table('mobile_internal_chat')
+            ->where('channel', $channel)
+            ->orderBy('id', 'asc')
+            ->limit(100)
+            ->get();
+
+        $formatted = $messages->map(function ($msg) {
+            return [
+                'id' => $msg->id,
+                'sender_name' => $msg->sender_name,
+                'sender_role' => $msg->sender_role,
+                'channel' => $msg->channel,
+                'message' => $msg->message,
+                'attachment_url' => $msg->attachment_url,
+                'created_at' => $msg->created_at,
+                'shamsi_time' => self::toJalali($msg->created_at, 'H:i'),
+                'shamsi_date' => self::toJalali($msg->created_at, 'Y/m/d'),
+            ];
+        });
+
+        return response()->json(['status' => 'success', 'data' => $formatted]);
+    }
+
+    /**
+     * ارسال پیام در چت داخلی
+     */
+    public function sendChatMessage(Request $request)
+    {
+        $request->validate([
+            'message' => 'required|string|max:2000',
+        ]);
+
+        $u = Auth::check() ? Auth::user() : null;
+        $userName = $u ? $u->name : (session('mob_user_name') ?: 'همکار گرامی');
+        $userLevel = $u ? (int)$u->level : (session('mob_level') !== null ? (int)session('mob_level') : 1);
+        $roleTitle = 'تکنسین فنی';
+        if ($userLevel >= 3) {
+            $roleTitle = 'مدیر ارشد سامانه';
+        } elseif ($userLevel == 2) {
+            $roleTitle = 'کارشناس پذیرش / مدیر شعبه';
+        } elseif ($userLevel == 0) {
+            $roleTitle = 'کاربر سامانه';
+        }
+
+        $channel = $request->input('channel', 'general');
+
+        $attachmentUrl = null;
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $filename = 'chat_' . time() . '_' . rand(1000, 9999) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/chat_files'), $filename);
+            $attachmentUrl = asset('uploads/chat_files/' . $filename);
+        }
+
+        $id = DB::table('mobile_internal_chat')->insertGetId([
+            'sender_id' => $u ? $u->id : null,
+            'sender_name' => $userName,
+            'sender_role' => $roleTitle,
+            'channel' => $channel,
+            'message' => $request->input('message'),
+            'attachment_url' => $attachmentUrl,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'پیام با موفقیت ارسال شد.',
+            'data' => [
+                'id' => $id,
+                'sender_name' => $userName,
+                'sender_role' => $roleTitle,
+                'channel' => $channel,
+                'message' => $request->input('message'),
+                'attachment_url' => $attachmentUrl,
+                'shamsi_time' => self::toJalali(now(), 'H:i'),
+                'shamsi_date' => self::toJalali(now(), 'Y/m/d'),
+            ]
+        ]);
+    }
+
+    /**
+     * صفحه اختصاصی ثبت و پیگیری تیکت پشتیبانی آنلاین
+     */
+    public function publicTickets()
+    {
+        $this->ensureTablesExist();
+        $siteSettings = [];
+        if (Schema::hasTable('mobile_site_settings')) {
+            $siteSettings = DB::table('mobile_site_settings')->pluck('setting_value', 'setting_key')->toArray();
+        }
+        return view('home.mobile.tickets', compact('siteSettings'));
+    }
+
+    /**
+     * ثبت عمومی تیکت از طریق وب‌سایت
+     */
+    public function storePublicTicket(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required|string|max:150',
+            'customer_phone' => 'required|string|max:20',
+            'subject' => 'required|string|max:200',
+            'message' => 'required|string',
+        ]);
+
+        $trackingCode = 'TK-' . rand(10000, 99999);
+
+        $attachmentUrl = null;
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $filename = 'ticket_' . time() . '_' . rand(100, 999) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/ticket_files'), $filename);
+            $attachmentUrl = asset('uploads/ticket_files/' . $filename);
+        }
+
+        $ticketId = DB::table('mobile_tickets')->insertGetId([
+            'tracking_code' => $trackingCode,
+            'customer_name' => $request->input('customer_name'),
+            'customer_phone' => $request->input('customer_phone'),
+            'department' => $request->input('department', 'پذیرش و گارانتی'),
+            'priority' => $request->input('priority', 'عادی'),
+            'imei' => $request->input('imei'),
+            'subject' => $request->input('subject'),
+            'message' => $request->input('message'),
+            'attachment_url' => $attachmentUrl,
+            'status' => 'open',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // ارسال پیامک ثبت تیکت به مشتری
+        try {
+            $smsMsg = "مشتری گرامی سام موبایل، تیکت پشتیبانی شما با کد رهگیری {$trackingCode} ثبت گردید. پاسخ واحد مربوطه متعاقباً اعلام خواهد شد. پیگیری: mob.taminkanisam.co.ir/tickets";
+            $this->logSms($request->input('customer_name'), $request->input('customer_phone'), $trackingCode, $smsMsg, 'sent');
+        } catch (\Throwable $e) {}
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'تیکت پشتیبانی شما با موفقیت ثبت شد.',
+            'tracking_code' => $trackingCode,
+            'ticket_id' => $ticketId
+        ]);
+    }
+
+    /**
+     * پیگیری آنلاین تیکت بر اساس کد رهگیری و شماره همراه
+     */
+    public function trackPublicTicket(Request $request)
+    {
+        $code = trim($request->input('tracking_code', ''));
+        $phone = trim($request->input('phone', ''));
+
+        if (!$code) {
+            return response()->json(['status' => 'error', 'message' => 'لطفا کد رهگیری تیکت را وارد نمایید.'], 400);
+        }
+
+        $query = DB::table('mobile_tickets')->where('tracking_code', $code);
+        if ($phone) {
+            $query->where('customer_phone', 'like', "%{$phone}%");
+        }
+
+        $ticket = $query->first();
+
+        if (!$ticket) {
+            return response()->json(['status' => 'error', 'message' => 'تیکتی با این مشخصات یافت نشد.'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'ticket' => [
+                'tracking_code' => $ticket->tracking_code,
+                'customer_name' => $ticket->customer_name ?? 'مشتری گرامی',
+                'subject' => $ticket->subject,
+                'department' => $ticket->department ?? 'پذیرش',
+                'priority' => $ticket->priority ?? 'عادی',
+                'status' => $ticket->status,
+                'message' => $ticket->message,
+                'reply' => $ticket->reply,
+                'attachment_url' => $ticket->attachment_url,
+                'shamsi_date' => self::toJalali($ticket->created_at, 'Y/m/d - H:i'),
+                'shamsi_reply_date' => $ticket->reply ? self::toJalali($ticket->updated_at, 'Y/m/d - H:i') : null,
+            ]
+        ]);
+    }
+
+    /**
+     * پاسخ ادمین به تیکت از پنل CRM
+     */
+    public function replyTicket(Request $request, $id)
+    {
+        $request->validate(['reply' => 'required|string']);
+
+        $ticket = DB::table('mobile_tickets')->where('id', $id)->first();
+        if (!$ticket) {
+            return response()->json(['status' => 'error', 'message' => 'تیکت یافت نشد.'], 404);
+        }
+
+        DB::table('mobile_tickets')->where('id', $id)->update([
+            'reply' => $request->input('reply'),
+            'status' => 'answered',
+            'updated_at' => now(),
+        ]);
+
+        // ارسال پیامک به مشتری در صورت انتخاب
+        if ($request->input('send_sms') && !empty($ticket->customer_phone)) {
+            $sms = "مشتری گرامی سام موبایل، پاسخ تیکت شما ({$ticket->tracking_code}) ثبت گردید. مشاهده پاسخ: mob.taminkanisam.co.ir/tickets";
+            $this->logSms($ticket->customer_name ?? 'مشتری', $ticket->customer_phone, $ticket->tracking_code, $sms, 'sent');
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'پاسخ تیکت با موفقیت ثبت و ارسال شد.']);
+    }
+
+    /**
+     * تغییر وضعیت تیکت از CRM
+     */
+    public function updateTicketStatus(Request $request, $id)
+    {
+        $status = $request->input('status', 'closed');
+        DB::table('mobile_tickets')->where('id', $id)->update(['status' => $status, 'updated_at' => now()]);
+        return response()->json(['status' => 'success', 'message' => 'وضعیت تیکت تغییر یافت.']);
+    }
+
+    /**
+     * بررسی و تغییر وضعیت شکایت تلفن همراه از پنل بازرسی CRM
+     */
+    public function updateComplaintStatus(Request $request, $id)
+    {
+        $status = $request->input('status', 'under_review');
+        $reply = $request->input('admin_reply');
+
+        $cmp = DB::table('mobile_complaints')->where('id', $id)->first();
+        if (!$cmp) {
+            return response()->json(['status' => 'error', 'message' => 'شکایت یافت نشد.'], 404);
+        }
+
+        DB::table('mobile_complaints')->where('id', $id)->update([
+            'status' => $status,
+            'admin_reply' => $reply,
+            'updated_at' => now(),
+        ]);
+
+        // پیامک اطلاع‌رسانی بازرسی به شاکی
+        if ($request->input('send_sms') && !empty($cmp->phone)) {
+            $sms = "مشتری گرامی، روند رسیدگی بازرسی به شکایت شما (کد: {$cmp->tracking_code}) در سام موبایل به‌روزرسانی شد. پیگیری: mob.taminkanisam.co.ir/complaints";
+            $this->logSms($cmp->full_name, $cmp->phone, $cmp->tracking_code, $sms, 'sent');
+        }
+
+        return response()->json(['status' => 'success', 'message' => 'وضعیت پرونده بازرسی شکایت با موفقیت به‌روزرسانی شد.']);
     }
 
 }

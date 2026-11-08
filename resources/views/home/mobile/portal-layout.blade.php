@@ -569,14 +569,14 @@
                 background: #ffffff !important;
                 visibility: hidden !important;
                 pointer-events: none !important;
-                transform: translateX(100%) !important;
+                right: -340px !important; left: auto !important; transform: none !important;
                 transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
             }
             .portal-sidebar.open, .erp-sidebar.open, .user-sidebar.open {
                 display: flex !important;
                 visibility: visible !important;
                 pointer-events: auto !important;
-                transform: translateX(0) !important;
+                right: 0 !important; left: auto !important; transform: none !important;
             }
             .portal-backdrop {
                 position: fixed;
