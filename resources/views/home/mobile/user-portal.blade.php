@@ -1503,7 +1503,7 @@
     }
 
     // Ajax Profile Update
-    async function handleProfileUpdate(e) {
+    async async function handleProfileSubmit(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSaveProfile');
         btn.disabled = true;
@@ -1521,15 +1521,30 @@
                 },
                 body: formData
             });
-            const data = await res.json();
+            let data = null;
+            try {
+                data = await res.json();
+            } catch (err) {
+                const raw = await res.text();
+                alert('خطای سرور: ' + (raw.substring(0, 150) || 'پاسخ نامعتبر دریافت شد.'));
+                return;
+            }
+
             if (res.ok && data.status === 'success') {
                 alert(data.message || 'اطلاعات با موفقیت ذخیره شد.');
                 window.location.reload();
             } else {
-                alert(data.message || 'خطایی در ذخیره‌سازی رخ داد.');
+                let msg = data.message || 'خطایی در ذخیره‌سازی رخ داد.';
+                if (data.errors && typeof data.errors === 'object') {
+                    const keys = Object.keys(data.errors);
+                    if (keys.length > 0 && Array.isArray(data.errors[keys[0]]) && data.errors[keys[0]][0]) {
+                        msg = data.errors[keys[0]][0];
+                    }
+                }
+                alert(msg);
             }
         } catch (err) {
-            alert('خطای ارتباط با سرور.');
+            alert('خطای ارتباط با سرور: ' + (err.message || err));
         } finally {
             btn.disabled = false;
             btn.innerText = 'ذخیره و به‌روزرسانی اطلاعات حساب';
@@ -1555,21 +1570,35 @@
                 },
                 body: formData
             });
-            const data = await res.json();
+            let data = null;
+            try {
+                data = await res.json();
+            } catch (err) {
+                const raw = await res.text();
+                alert('خطای سرور: ' + (raw.substring(0, 150) || 'پاسخ نامعتبر دریافت شد.'));
+                return;
+            }
+
             if (res.ok && data.status === 'success') {
                 alert(data.message || 'ثبت‌نام با موفقیت تکمیل شد!');
                 const modal = document.getElementById('onboardingModal');
                 if (modal) modal.style.display = 'none';
                 window.location.reload();
             } else {
-                alert(data.message || 'خطایی در ثبت اطلاعات اولیه رخ داد.');
+                let msg = data.message || 'خطایی در ثبت اطلاعات اولیه رخ داد.';
+                if (data.errors && typeof data.errors === 'object') {
+                    const keys = Object.keys(data.errors);
+                    if (keys.length > 0 && Array.isArray(data.errors[keys[0]]) && data.errors[keys[0]][0]) {
+                        msg = data.errors[keys[0]][0];
+                    }
+                }
+                alert(msg);
             }
         } catch (err) {
-            alert('خطای ارتباط با سرور.');
+            alert('خطای ارتباط با سرور: ' + (err.message || err));
         } finally {
             btn.disabled = false;
             btn.innerText = 'تایید و شروع استفاده از سامانه';
         }
-    }
-</script>
+    }</script>
 @endpush
