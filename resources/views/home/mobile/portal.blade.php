@@ -2268,6 +2268,9 @@
                                                 <button type="button" class="btn-table-action" onclick="openPosSlipModal('{{ $recent->tracking_code }}', '{{ $recent->customer_name }}', '{{ $recent->customer_phone }}', '{{ $recent->device_brand }} {{ $recent->device_model }}', '{{ $recent->imei }}', '{{ addslashes($recent->reported_issues ?? "بررسی اولیه") }}', '{{ (!empty($recent->is_under_warranty)) ? "تحت پوشش گارانتی ۱۸ ماهه" : "تعمیر آزاد" }}')" title="فیش ۸۰ میلی‌متری">
                                                     <span>🧾 فیش</span>
                                                 </button>
+                                                <a href="{{ url('/invoice') }}/{{ $recent->tracking_code }}" target="_blank" class="btn-table-action" style="color: #2563eb; text-decoration: none;" title="صورتحساب رسمی فروش کالا و خدمات (ماده ۱۶)">
+                                                    <span>📄 فاکتور ۱۶</span>
+                                                </a>
                                                 <button type="button" class="btn-table-action" onclick="openThermalLabelModal('{{ $recent->tracking_code }}', '{{ $recent->customer_name }}', '{{ $recent->customer_phone }}', '{{ $recent->device_brand }} {{ $recent->device_model }}', '{{ $recent->imei }}')" title="چاپ برچسب حرارتی">
                                                     <span style="color:#d97706;">🏷️ لیبل</span>
                                                 </button>
@@ -2380,6 +2383,9 @@
                                             <button type="button" class="btn-table-action" onclick="openPosSlipModal('{{ $item->tracking_code }}', '{{ $item->customer_name }}', '{{ $item->customer_phone }}', '{{ $item->device_brand }} {{ $item->device_model }}', '{{ $item->imei }}', '{{ addslashes($item->reported_issues ?? "بررسی اولیه") }}', '{{ (!empty($item->is_under_warranty)) ? "تحت پوشش گارانتی ۱۸ ماهه" : "تعمیر آزاد" }}')" title="فیش ۸۰ میلی‌متری مشتری">
                                                 <span>🧾 فیش</span>
                                             </button>
+                                            <a href="{{ url('/invoice') }}/{{ $item->tracking_code }}" target="_blank" class="btn-table-action" style="color: #2563eb; text-decoration: none;" title="صورتحساب رسمی فروش کالا و خدمات (ماده ۱۶)">
+                                                <span>📄 فاکتور ۱۶</span>
+                                            </a>
                                             <button type="button" class="btn-table-action" onclick="openPhotosModal('{{ $item->tracking_code }}')" title="مستندات تصویری فیزیکی">
                                                 <span>📷 عکس</span>
                                             </button>
@@ -5926,8 +5932,11 @@
             </div>
         </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
             <button type="button" class="btn-table-action" onclick="closeSlipModal()">بستن</button>
+            <a href="#" id="btnOpenOfficialInvoiceFromSlip" target="_blank" class="erp-btn" style="background: #0284c7; color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <span>📄 صورتحساب رسمی (ماده ۱۶)</span>
+            </a>
             <button type="button" class="erp-btn erp-btn-primary" onclick="printPosSlipDirect()">
                 🖨️ چاپ فیش صندوق (۸۰ م‌م)
             </button>
@@ -7861,6 +7870,8 @@
     // 4. POS Slip (80mm)
     function openPosSlipModal(code, customer, phone, device, imei, issues, warranty) {
         document.getElementById('slipTrack').innerText = code;
+        const invLink = document.getElementById('btnOpenOfficialInvoiceFromSlip');
+        if (invLink) invLink.href = '{{ url("/invoice") }}/' + code;
         document.getElementById('slipCust').innerText = customer;
         document.getElementById('slipPhone').innerText = phone;
         document.getElementById('slipModel').innerText = device;

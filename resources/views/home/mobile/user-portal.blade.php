@@ -865,6 +865,16 @@
                                 {{ ($order->warranty_status == 'under_warranty' || !empty($order->is_under_warranty)) ? 'تحت پوشش گارانتی ۱۸ ماهه رسمی سام موبایل' : 'خدمات آزاد مطابق نرخ تعرفه خدمات غیر گارانتی' }}
                             </span>
                         </div>
+
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #e2e8f0;">
+                            <a href="{{ route('mob.invoice.show', $order->tracking_code) }}" target="_blank" class="btn-table-action primary" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; font-weight: 800; font-size: 0.80rem; text-decoration: none;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                <span>صورتحساب رسمی خدمات (ماده ۱۶)</span>
+                            </a>
+                            <a href="{{ url('/tariff') }}" target="_blank" class="btn-table-action outline" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; font-weight: 700; font-size: 0.80rem; text-decoration: none;">
+                                <span>نرخ تعرفه خدمات غیر گارانتی</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             @empty
@@ -1089,8 +1099,9 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ url('/invoice-sample') }}" target="_blank" class="btn-table-action outline" style="padding: 6px 12px; font-size: 0.78rem;">
-                                            مشاهده فاکتور
+                                        <a href="{{ route('mob.invoice.show', $invOrder->tracking_code) }}" target="_blank" class="btn-table-action primary" style="padding: 7px 14px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; text-decoration: none;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                                            <span>مشاهده و چاپ فاکتور ماده ۱۶</span>
                                         </a>
                                     </td>
                                 </tr>

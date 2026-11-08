@@ -122,8 +122,9 @@
                         تلفن پشتیبانی کارگاه تبریز: <strong>۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</strong>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <a href="{{ url('/invoice-sample') }}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: #ffffff; color: #334155; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; text-decoration: none;">
-                            مشاهده فاکتور رسمی
+                        <a href="{{ route('mob.invoice.show', $order->tracking_code) }}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; text-decoration: none;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>مشاهده و چاپ صورتحساب رسمی (ماده ۱۶)</span>
                         </a>
                         <a href="{{ url('/warranty-terms') }}" style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; text-decoration: none;">
                             شرایط گارانتی ۱۸ ماهه

@@ -2034,6 +2034,321 @@ class MobileServiceController extends Controller
     /**
      * نمونه فاکتور رسمی اتحادیه
      */
+    /**
+     * صدور و نمایش صورتحساب رسمی فروش کالا و خدمات (ماده ۱۶)
+     */
+    public function showOfficialInvoice(Request $request, $code = null)
+    {
+        try {
+            $code = $code ?: $request->query('code');
+            $order = null;
+
+            if ($code) {
+                $order = DB::table('mobile_service_orders')
+                    ->where('tracking_code', $code)
+                    ->orWhere('id', $code)
+                    ->orWhere('imei', $code)
+                    ->first();
+            }
+
+            if (!$order) {
+                $user = $this->getCurrentAuthUser();
+                if ($user) {
+                    $userPhone = $user->number ?? session('mob_user_phone');
+                    $order = DB::table('mobile_service_orders')
+                        ->where('customer_phone', $userPhone)
+                        ->orWhere('user_id', $user->id)
+                        ->orderBy('id', 'desc')
+                        ->first();
+                }
+            }
+
+            if (!$order) {
+                $order = DB::table('mobile_service_orders')->orderBy('id', 'desc')->first();
+            }
+
+            if (!$order) {
+                $order = (object)[
+                    'id' => 1,
+                    'tracking_code' => 'SAM-1403-9102',
+                    'customer_name' => 'علیرضا اسماعیلی',
+                    'customer_phone' => '09123456789',
+                    'customer_national_code' => '0012345678',
+                    'customer_province' => 'تهران',
+                    'customer_city' => 'تهران',
+                    'customer_address' => 'خیابان جمهوری، بعد از تقاطع حافظ، مجتمع تجاری چارسو، طبقه ۲، واحد ۳۴',
+                    'device_brand' => 'سامسونگ (Samsung)',
+                    'device_model' => 'Galaxy S24 Ultra 512GB',
+                    'imei' => '359483110294812',
+                    'reported_issues' => 'شکستگی تاچ و ال‌سی‌دی بر اثر سقوط از ارتفاع و ضربه شدید',
+                    'is_under_warranty' => false,
+                    'warranty_status' => 'out_of_warranty',
+                    'parts_cost' => 185000000,
+                    'labor_cost' => 70000000,
+                    'total_cost' => 280000000,
+                    'invoice_number' => 'INV-SAM-1403-9102',
+                    'invoice_date' => date('Y-m-d'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'assigned_technician' => 'مهندس کاظمی (ارشد سخت‌افزار)',
+                ];
+            }
+
+            $invData = $this->buildOfficialInvoiceData($order);
+
+            return view('home.mobile.invoice-official', compact('order', 'invData'));
+        } catch (\Throwable $e) {
+            return response('INVOICE ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 200);
+        }
+    }
+
+    /**
+     * محاسبه داده‌های فاکتور رسمی ماده ۱۶ و نرخ تعرفه مصوب اتحادیه
+     */
+    public function buildOfficialInvoiceData($order)
+    {
+        $tracking = (!empty($order->tracking_code)) ? $order->tracking_code : ('SAM-1403-' . ($order->id ?? 9102));
+        $brand = (!empty($order->device_brand)) ? $order->device_brand : 'سامسونگ';
+        $model = (!empty($order->device_model)) ? $order->device_model : 'Galaxy S24';
+        $issues = (!empty($order->reported_issues)) ? $order->reported_issues : 'تعمیر و تعویض قطعات سخت‌افزاری';
+        $isUnderWarranty = (!empty($order->is_under_warranty) || (($order->warranty_status ?? '') === 'under_warranty'));
+
+        // Bracket analysis based on model
+        $bracket = $this->getDevicePriceBracket($brand, $model);
+
+        // Detect Service & Part Category from reported issues
+        $srvKey = 'lcd_case';
+        $partName = 'تاچ و ال‌سی‌دی اورجینال فابریک کارخانه (Service Pack 100% Original)';
+        $partCode = 'PRT-LCD-01';
+        $srvCode = 'SRV-LCD-05';
+        $srvTitle = 'تعویض تاچ و ال‌سی‌دی و تعویض قاب شرکتی';
+        $partBaseCost = 185000000;
+
+        $loweredIssues = mb_strtolower($issues, 'UTF-8');
+        if (str_contains($loweredIssues, 'باتری') || str_contains($loweredIssues, 'باطری') || str_contains($loweredIssues, 'شارژ') || str_contains($loweredIssues, 'battery')) {
+            $srvKey = 'hw_board_battery';
+            $partName = 'باتری اورجینال شرکتی با گواهی سلامت ۱۰۰٪ و چیپست فابریک';
+            $partCode = 'PRT-BAT-02';
+            $srvCode = 'SRV-BAT-04';
+            $srvTitle = 'تعویض باطری، کانکتور و سرویس کامل سخت‌افزاری';
+            $partBaseCost = 35000000;
+        } elseif (str_contains($loweredIssues, 'دوربین') || str_contains($loweredIssues, 'میکروفن') || str_contains($loweredIssues, 'اسپیکر') || str_contains($loweredIssues, 'فلت')) {
+            $srvKey = 'hw_level1';
+            $partName = 'ماژول سخت‌افزاری فلت / دوربین اورجینال شرکتی';
+            $partCode = 'PRT-HW1-03';
+            $srvCode = 'SRV-HW1-03';
+            $srvTitle = 'تعمیرات سخت‌افزاری سطح یک قطعات (دوربین، کپسول، میکروفن، فلت)';
+            $partBaseCost = 25000000;
+        } elseif (str_contains($loweredIssues, 'روشن') || str_contains($loweredIssues, 'خاموش') || str_contains($loweredIssues, 'آب') || str_contains($loweredIssues, 'برد') || str_contains($loweredIssues, 'آی‌سی')) {
+            $srvKey = 'hw_level2';
+            $partName = 'آی‌سی پاور / مدار تغذیه و قطعات SMD فابریک کارخانه';
+            $partCode = 'PRT-IC-04';
+            $srvCode = 'SRV-HW2-06';
+            $srvTitle = 'تعمیرات سخت‌افزاری سطح دو (قطعات الکترونیک و آی‌سی)';
+            $partBaseCost = 42000000;
+        }
+
+        if (!empty($order->parts_cost) && $order->parts_cost > 0) {
+            $partBaseCost = (int)$order->parts_cost;
+        }
+
+        // Union Tariff Wage Matrix (in Rial)
+        $tariffRates = [
+            'os_install' => ['0-10' => 3000000, '10-30' => 4500000, '30-60' => 6000000, '60-100' => 9000000, '100-200' => 12000000, '200-300' => 18000000, '300-350' => 25000000, '350-500' => 35000000, '500+' => 60000000],
+            'sw_special' => ['0-10' => 5000000, '10-30' => 6000000, '30-60' => 10000000, '60-100' => 12000000, '100-200' => 18000000, '200-300' => 25000000, '300-350' => 35000000, '350-500' => 50000000, '500+' => 70000000],
+            'hw_level1' => ['0-10' => 5000000, '10-30' => 10000000, '30-60' => 13000000, '60-100' => 18000000, '100-200' => 25000000, '200-300' => 35000000, '300-350' => 60000000, '350-500' => 70000000, '500+' => 90000000],
+            'hw_board_battery' => ['0-10' => 8000000, '10-30' => 12000000, '30-60' => 18000000, '60-100' => 25000000, '100-200' => 30000000, '200-300' => 50000000, '300-350' => 70000000, '350-500' => 90000000, '500+' => 200000000],
+            'lcd_case' => ['0-10' => 12000000, '10-30' => 20000000, '30-60' => 30000000, '60-100' => 40000000, '100-200' => 70000000, '200-300' => 140000000, '300-350' => 160000000, '350-500' => 200000000, '500+' => 400000000],
+            'hw_level2' => ['0-10' => 20000000, '10-30' => 35000000, '30-60' => 45000000, '60-100' => 50000000, '100-200' => 100000000, '200-300' => 150000000, '300-350' => 220000000, '350-500' => 250000000, '500+' => 500000000],
+            'ic_cpu_storage' => ['0-10' => 20000000, '10-30' => 35000000, '30-60' => 50000000, '60-100' => 75000000, '100-200' => 100000000, '200-300' => 160000000, '300-350' => 250000000, '350-500' => 350000000, '500+' => 700000000],
+            'swap_board' => ['0-10' => 30000000, '10-30' => 50000000, '30-60' => 80000000, '60-100' => 120000000, '100-200' => 160000000, '200-300' => 250000000, '300-350' => 300000000, '350-500' => 450000000, '500+' => 900000000],
+        ];
+
+        $laborWage = $tariffRates[$srvKey][$bracket] ?? 40000000;
+        if (!empty($order->labor_cost) && $order->labor_cost > 0) {
+            $laborWage = (int)$order->labor_cost;
+        }
+
+        // Apple Error Code Surcharge (تبصره ۷: ۱۰ درصد اضافه اجرت برای اپل)
+        $isApple = (stripos($brand, 'apple') !== false || stripos($model, 'iphone') !== false);
+        if ($isApple) {
+            $laborWage = (int)round($laborWage * 1.10);
+        }
+
+        // Part Sales Profit (تبصره ۶: سود فروش قطعه ۹ درصد)
+        $partProfit = (int)round($partBaseCost * 0.09);
+
+        // Consumables (کیت عایق ضدآب IP68 و چسب فابریک)
+        $consumableCost = 12000000;
+
+        // VAT (۱۰٪ مالیات و عوارض ارزش افزوده قانونی)
+        $vatBase = $laborWage + $partProfit + $consumableCost;
+        $vatAmount = (int)round($vatBase * 0.10);
+
+        // Gross total
+        $grossTotal = $partBaseCost + $partProfit + $laborWage + $consumableCost + $vatAmount;
+
+        // Warranty check
+        if ($isUnderWarranty) {
+            $totalDiscount = $grossTotal;
+            $finalPayable = 0;
+            $payableWords = 'صفر ریال (مشمول پوشش ۱۰۰٪ گارانتی ۱۸ ماهه رسمی)';
+        } else {
+            $totalDiscount = 0;
+            $finalPayable = $grossTotal;
+            $payableToman = (int)round($finalPayable / 10);
+            $payableWords = $this->numberToPersianWords($payableToman) . ' تومان';
+        }
+
+        // Build item rows
+        $items = [
+            [
+                'code' => $partCode,
+                'title' => $partName,
+                'description' => 'قطعه فابریک استاندارد کارخانه دارای ۶ ماه گارانتی تعویض کتبی (ماده ۱۶)',
+                'qty' => 1,
+                'unit' => 'عدد',
+                'unit_price' => $partBaseCost,
+                'total_price' => $partBaseCost,
+                'discount' => $isUnderWarranty ? $partBaseCost : 0,
+                'vat' => 0,
+                'final_price' => $isUnderWarranty ? 0 : $partBaseCost,
+            ],
+            [
+                'code' => 'PRF-RULE-06',
+                'title' => 'سود قانونی فروش قطعه (۹٪ طبق تبصره ۶ مصوبه اتحادیه)',
+                'description' => 'سود مصوب فروش قطعات مصرفی بر اساس نرخ‌نامه کارگروه تخصصی اتحادیه',
+                'qty' => 1,
+                'unit' => 'مورد',
+                'unit_price' => $partProfit,
+                'total_price' => $partProfit,
+                'discount' => $isUnderWarranty ? $partProfit : 0,
+                'vat' => $isUnderWarranty ? 0 : (int)round($partProfit * 0.10),
+                'final_price' => $isUnderWarranty ? 0 : ($partProfit + (int)round($partProfit * 0.10)),
+            ],
+            [
+                'code' => $srvCode,
+                'title' => $srvTitle . ($isApple ? ' (با احتساب ۱۰٪ اجرت رفع ارور اپل طبق تبصره ۷)' : ''),
+                'description' => 'اجرت عیب‌یابی و تعمیرات تخصصی مطابق با جدول رسمی نرخ تعرفه خدمات غیر گارانتی سال ۱۴۰۵',
+                'qty' => 1,
+                'unit' => 'خدمت',
+                'unit_price' => $laborWage,
+                'total_price' => $laborWage,
+                'discount' => $isUnderWarranty ? $laborWage : 0,
+                'vat' => $isUnderWarranty ? 0 : (int)round($laborWage * 0.10),
+                'final_price' => $isUnderWarranty ? 0 : ($laborWage + (int)round($laborWage * 0.10)),
+            ],
+            [
+                'code' => 'PRT-SL-03',
+                'title' => 'کیت عایق ضدآب فابریک استاندارد IP68 و پک چسب حرارتی',
+                'description' => 'آب‌بندی استاندارد دستگاه پس از باز و بست مطابق الزامات تضمین کیفیت',
+                'qty' => 1,
+                'unit' => 'دست',
+                'unit_price' => $consumableCost,
+                'total_price' => $consumableCost,
+                'discount' => $isUnderWarranty ? $consumableCost : 0,
+                'vat' => $isUnderWarranty ? 0 : (int)round($consumableCost * 0.10),
+                'final_price' => $isUnderWarranty ? 0 : ($consumableCost + (int)round($consumableCost * 0.10)),
+            ],
+        ];
+
+        $sumTotalPrice = $partBaseCost + $partProfit + $laborWage + $consumableCost;
+
+        $invNum = (!empty($order->invoice_number)) ? $order->invoice_number : ('INV-' . $tracking);
+        $orderDate = (!empty($order->invoice_date)) ? $order->invoice_date : ((!empty($order->created_at)) ? $order->created_at : now());
+        $invDateFa = function_exists('shamsi') ? shamsi($orderDate, 'Y/m/d') : '۱۴۰۳/۰۸/۱۸';
+        $taxId = 'A' . abs(crc32($tracking)) . '-TK77-9821';
+
+        return [
+            'tracking_code' => $tracking,
+            'invoice_number' => $invNum,
+            'invoice_date_fa' => $invDateFa,
+            'tax_id' => $taxId,
+            'customer_name' => (!empty($order->customer_name)) ? $order->customer_name : 'مشتری گرامی',
+            'customer_phone' => (!empty($order->customer_phone)) ? $order->customer_phone : '۰۹۱۲۰۰۰۰۰۰۰',
+            'customer_national_code' => (!empty($order->customer_national_code)) ? $order->customer_national_code : '۰۰۱۲۳۴۵۶۷۸',
+            'customer_province' => (!empty($order->customer_province)) ? $order->customer_province : 'تهران',
+            'customer_city' => (!empty($order->customer_city)) ? $order->customer_city : 'تهران',
+            'customer_address' => (!empty($order->customer_address)) ? $order->customer_address : 'تهران، خیابان جمهوری، تقاطع حافظ، ساختمان شماره ۱۲',
+            'customer_postal_code' => '۱۱۳۴۸۱۴۹۸۲',
+            'device_brand' => $brand,
+            'device_model' => $model,
+            'imei' => (!empty($order->imei)) ? $order->imei : '۳۵۹۴۸۳۱۱۰۲۹۴۸۱۲',
+            'assigned_technician' => (!empty($order->assigned_technician)) ? $order->assigned_technician : 'مهندس کاظمی (ارشد سخت‌افزار)',
+            'is_under_warranty' => $isUnderWarranty,
+            'items' => $items,
+            'sum_total_price' => $sumTotalPrice,
+            'gross_total' => $grossTotal,
+            'total_discount' => $totalDiscount,
+            'vat_amount' => $vatAmount,
+            'final_payable' => $finalPayable,
+            'payable_words' => $payableWords,
+            'bracket' => $bracket,
+            'warranty_text' => $isUnderWarranty ? 'مشمول گارانتی ۱۸ ماهه رسمی سام موبایل' : 'تعمیر آزاد طبق نرخ تعرفه خدمات غیر گارانتی سال ۱۴۰۵',
+        ];
+    }
+
+    /**
+     * تعیین رده قیمتی گوشی طبق جدول اتحادیه
+     */
+    private function getDevicePriceBracket($brand, $model)
+    {
+        $m = mb_strtolower($brand . ' ' . $model, 'UTF-8');
+        if (str_contains($m, '15 pro') || str_contains($m, '16 pro') || str_contains($m, 's24 ultra') || str_contains($m, 'fold') || str_contains($m, '14 pro max')) {
+            return '100-200';
+        } elseif (str_contains($m, 'iphone 13') || str_contains($m, 'iphone 14') || str_contains($m, 'iphone 15') || str_contains($m, 's23') || str_contains($m, 's24') || str_contains($m, 'xiaomi 14')) {
+            return '60-100';
+        } elseif (str_contains($m, 'note 13 pro') || str_contains($m, 'a55') || str_contains($m, 'poco f6') || str_contains($m, '12t')) {
+            return '30-60';
+        } elseif (str_contains($m, 'a35') || str_contains($m, 'a25') || str_contains($m, 'note 13') || str_contains($m, 'poco x6')) {
+            return '10-30';
+        } elseif (str_contains($m, 'a15') || str_contains($m, 'a05') || str_contains($m, '13c')) {
+            return '0-10';
+        }
+        return '30-60';
+    }
+
+    /**
+     * تبدیل ارقام به حروف فارسی (تومان)
+     */
+    private function numberToPersianWords($n)
+    {
+        $n = (int)$n;
+        if ($n === 0) return 'صفر';
+        $ones = ['', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه'];
+        $teens = ['ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده'];
+        $tens = ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
+        $hundreds = ['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
+        $scales = ['', 'هزار', 'میلیون', 'میلیارد'];
+
+        $parts = [];
+        $scaleIdx = 0;
+        while ($n > 0) {
+            $c = $n % 1000;
+            if ($c > 0) {
+                $cw = [];
+                $h = (int)($c / 100);
+                $rem = $c % 100;
+                if ($h > 0) $cw[] = $hundreds[$h];
+                if ($rem >= 10 && $rem <= 19) {
+                    $cw[] = $teens[$rem - 10];
+                } else {
+                    $t = (int)($rem / 10);
+                    $o = $rem % 10;
+                    if ($t > 0) $cw[] = $tens[$t];
+                    if ($o > 0) $cw[] = $ones[$o];
+                }
+                $chunkStr = implode(' و ', $cw);
+                if (!empty($scales[$scaleIdx])) {
+                    $chunkStr .= ' ' . $scales[$scaleIdx];
+                }
+                array_unshift($parts, $chunkStr);
+            }
+            $n = (int)($n / 1000);
+            $scaleIdx++;
+        }
+        return implode(' و ', $parts);
+    }
+    
     public function invoiceSample()
     {
         return view('home.mobile.invoice-sample');
