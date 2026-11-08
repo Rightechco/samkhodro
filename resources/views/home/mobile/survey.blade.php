@@ -11,20 +11,42 @@
     </div>
 
     <div class="glass-card survey-card">
+        @if(!empty($prefill['tracking_code']))
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #93c5fd; border-radius: 14px; padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.9rem; color: #1e3a8a;">اطلاعات پرونده خدمات شما با موفقیت بارگذاری شد</div>
+                    <div style="font-size: 0.8rem; color: #3b82f6; margin-top: 2px;">
+                        کد پذیرش: <strong style="font-family: monospace; direction: ltr; display: inline-block;">{{ $prefill['tracking_code'] }}</strong>
+                        @if(!empty($prefill['device_model'])) | دستگاه: <strong>{{ $prefill['device_model'] }}</strong> @endif
+                        @if(!empty($prefill['customer_name'])) | مشتری: <strong>{{ $prefill['customer_name'] }}</strong> @endif
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url('/invoice/' . $prefill['tracking_code']) }}" target="_blank" style="font-size: 0.78rem; font-weight: 800; color: #1d4ed8; background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #bfdbfe; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                <span>مشاهده صورتحساب رسمی</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+        </div>
+        @endif
+
         <form id="surveyForm" onsubmit="submitSurvey(event)">
-            <div class="survey-section-title">۱. اطلاعات شناسایی (اختیاری)</div>
+            <div class="survey-section-title">۱. اطلاعات شناسایی (واکشی‌شده از پرونده / اختیاری)</div>
             <div class="form-grid-3">
                 <div class="form-group">
                     <label>نام و نام خانوادگی</label>
-                    <input type="text" name="customer_name" placeholder="اختیاری">
+                    <input type="text" name="customer_name" value="{{ old('customer_name', $prefill['customer_name'] ?? '') }}" placeholder="اختیاری">
                 </div>
                 <div class="form-group">
                     <label>شماره تماس همراه</label>
-                    <input type="tel" name="customer_phone" placeholder="اختیاری (جهت پیگیری)" style="direction:ltr; text-align:right;">
+                    <input type="tel" name="customer_phone" value="{{ old('customer_phone', $prefill['customer_phone'] ?? '') }}" placeholder="اختیاری (جهت پیگیری)" style="direction:ltr; text-align:right;">
                 </div>
                 <div class="form-group">
                     <label>کد رهگیری پذیرش</label>
-                    <input type="text" name="tracking_code" placeholder="مثال: SAM-1403-9102" style="direction:ltr; text-align:right;">
+                    <input type="text" name="tracking_code" value="{{ old('tracking_code', $prefill['tracking_code'] ?? '') }}" placeholder="مثال: SAM-1403-9102" style="direction:ltr; text-align:right;">
                 </div>
             </div>
 

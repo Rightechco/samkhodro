@@ -774,6 +774,28 @@
                 </a>
             </li>
             <li>
+                <a href="{{ url('/user-portal') }}?tab=my-complaints" class="user-nav-btn {{ $activeTab === 'tab-my-complaints' ? 'active' : '' }}" data-tab="tab-my-complaints" onclick="switchUserTab('tab-my-complaints', this, event)">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon" style="color: #e11d48;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+                        <span class="user-nav-title">پیگیری شکایات و بازرسی</span>
+                    </span>
+                    @if(!empty($stats['complaints']))
+                        <span class="user-nav-badge" style="background:#ffe4e6; color:#e11d48;">{{ $stats['complaints'] }}</span>
+                    @endif
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('/user-portal') }}?tab=my-surveys" class="user-nav-btn {{ $activeTab === 'tab-my-surveys' ? 'active' : '' }}" data-tab="tab-my-surveys" onclick="switchUserTab('tab-my-surveys', this, event)">
+                    <span class="user-nav-left">
+                        <span class="user-nav-icon" style="color: #f59e0b;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                        <span class="user-nav-title">نظرسنجی و ارزیابی کیفیت</span>
+                    </span>
+                    @if(!empty($stats['surveys']))
+                        <span class="user-nav-badge" style="background:#fef3c7; color:#92400e;">{{ $stats['surveys'] }}</span>
+                    @endif
+                </a>
+            </li>
+            <li>
                 <a href="{{ url('/user-portal') }}?tab=my-tickets" class="user-nav-btn {{ $activeTab === 'tab-my-tickets' ? 'active' : '' }}" data-tab="tab-my-tickets" onclick="switchUserTab('tab-my-tickets', this, event)">
                     <span class="user-nav-left">
                         <span class="user-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
@@ -1099,10 +1121,18 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('mob.invoice.show', $invOrder->tracking_code) }}" target="_blank" class="btn-table-action primary" style="padding: 7px 14px; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; text-decoration: none;">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
-                                            <span>مشاهده و چاپ فاکتور ماده ۱۶</span>
-                                        </a>
+                                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                            <a href="{{ route('mob.invoice.show', $invOrder->tracking_code) }}" target="_blank" class="btn-table-action primary" style="padding: 7px 12px; font-size: 0.76rem; display: inline-flex; align-items: center; gap: 5px; font-weight: 800; text-decoration: none;" title="مشاهده صورتحساب رسمی">
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                                                <span>فاکتور ماده ۱۶</span>
+                                            </a>
+                                            <a href="{{ url('/survey') }}?tracking_code={{ $invOrder->tracking_code }}" target="_blank" class="btn-table-action" style="padding: 7px 10px; font-size: 0.76rem; display: inline-flex; align-items: center; gap: 4px; font-weight: 800; text-decoration: none; background: #fef3c7; color: #92400e; border: 1px solid #fde68a;" title="ثبت نظرسنجی و امتیاز به کیفیت این خدمت">
+                                                <span>⭐ نظر</span>
+                                            </a>
+                                            <a href="{{ url('/complaints') }}?tracking_code={{ $invOrder->tracking_code }}" target="_blank" class="btn-table-action" style="padding: 7px 10px; font-size: 0.76rem; display: inline-flex; align-items: center; gap: 4px; font-weight: 800; text-decoration: none; background: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3;" title="ثبت شکایت یا مغایرت صورتحساب">
+                                                <span>⚖️ شکایت</span>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
@@ -1192,6 +1222,194 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             PAGE: MY COMPLAINTS (tab-my-complaints)
+             =================================================================== -->
+        <div class="user-view {{ $activeTab === 'tab-my-complaints' ? 'active' : '' }}" id="tab-my-complaints" data-title="پیگیری شکایات و بازرسی">
+            <div class="user-panel">
+                <div class="user-panel-header">
+                    <div class="user-panel-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>پیگیری آنلاین شکایات و اعتراضات گارانتی (مواد ۱۴ و ۳۸ ضوابط صمت)</span>
+                    </div>
+                    <div>
+                        <a href="{{ url('/complaints') }}" target="_blank" class="btn-table-action" style="background: #e11d48; color: #ffffff; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; text-decoration: none;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <span>ثبت شکایت جدید</span>
+                        </a>
+                    </div>
+                </div>
+
+                @if(isset($myComplaints) && $myComplaints->isNotEmpty())
+                    <div style="display: grid; gap: 16px;">
+                        @foreach($myComplaints as $cmp)
+                            <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                            <span style="font-weight: 900; color: #0f172a; font-size: 1rem;">{{ $cmp->subject ?? 'شکایت و بازرسی تلفن همراه' }}</span>
+                                            <span style="font-family: monospace; font-size: 0.85rem; background: #ffe4e6; color: #e11d48; padding: 2px 8px; border-radius: 6px; font-weight: 700;">{{ $cmp->tracking_code }}</span>
+                                        </div>
+                                        <div style="font-size: 0.78rem; color: #64748b;">
+                                            <span>ثبت شده در: {{ shamsi($cmp->created_at, 'Y/m/d H:i') }}</span>
+                                            @if(!empty($cmp->service_tracking_code))
+                                                <span style="margin-right: 12px;">| پرونده خدمات: <strong style="font-family: monospace;">{{ $cmp->service_tracking_code }}</strong></span>
+                                            @endif
+                                            @if(!empty($cmp->device_model))
+                                                <span style="margin-right: 12px;">| دستگاه: <strong>{{ $cmp->device_model }}</strong></span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div>
+                                        @php
+                                            $st = $cmp->status ?? 'pending';
+                                            $badgeText = 'در انتظار بررسی بازرس';
+                                            $badgeBg = '#fef3c7'; $badgeColor = '#92400e';
+                                            if (in_array($st, ['investigating', 'under_review'])) {
+                                                $badgeText = 'در حال کارشناسی فنی بازرسی';
+                                                $badgeBg = '#e0f2fe'; $badgeColor = '#0369a1';
+                                            } elseif (in_array($st, ['resolved', 'closed', 'approved'])) {
+                                                $badgeText = 'پاسخ داده شد و مختومه';
+                                                $badgeBg = '#dcfce7'; $badgeColor = '#15803d';
+                                            } elseif ($st === 'rejected') {
+                                                $badgeText = 'رد شکایت';
+                                                $badgeBg = '#fee2e2'; $badgeColor = '#991b1b';
+                                            }
+                                        @endphp
+                                        <span style="display: inline-block; padding: 6px 14px; border-radius: 99px; font-size: 0.78rem; font-weight: 800; background: {{ $badgeBg }}; color: {{ $badgeColor }};">
+                                            {{ $badgeText }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 14px;">
+                                    <div style="font-size: 0.78rem; color: #64748b; font-weight: 700; margin-bottom: 4px;">شرح شکایت شما:</div>
+                                    <div style="font-size: 0.85rem; color: #334155; line-height: 1.7; background: #f8fafc; border-radius: 10px; padding: 12px 14px; border: 1px solid #f1f5f9;">
+                                        {{ $cmp->description ?? ($cmp->message ?? 'بدون توضیحات') }}
+                                    </div>
+                                </div>
+
+                                @if(!empty($cmp->admin_reply) || !empty($cmp->investigation_result))
+                                    <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 14px 16px; margin-top: 10px;">
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                            <span style="font-size: 1.1rem;">⚖️</span>
+                                            <strong style="color: #065f46; font-size: 0.85rem;">پاسخ رسمی و نتیجه کارشناسی واحد بازرسی و خدمات پس از فروش:</strong>
+                                        </div>
+                                        <div style="color: #047857; font-size: 0.84rem; line-height: 1.7; margin-top: 4px;">
+                                            {{ $cmp->admin_reply ?: $cmp->investigation_result }}
+                                        </div>
+                                    </div>
+                                @else
+                                    <div style="font-size: 0.76rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; margin-top: 8px;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        <span>کارشناس بازرسی در حال انطباق پرونده با ماده ۱۳ و تماس با واحد مربوطه می‌باشد (حداکثر مهلت ۲ روز کاری).</span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div style="text-align: center; padding: 50px 20px; background: #f8fafc; border-radius: 16px; border: 2px dashed #e2e8f0;">
+                        <div style="width: 64px; height: 64px; border-radius: 50%; background: #ffe4e6; color: #e11d48; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">هیچ شکایتی از طرف شما ثبت نشده است</h4>
+                        <p style="font-size: 0.84rem; color: #64748b; max-width: 480px; margin: 0 auto 20px; line-height: 1.6;">
+                            چنانچه در فرآیند تعمیرات، تاخیر، رفتار پرسنل یا مبالغ صورتحساب هرگونه مغایرتی مشاهده نمودید، مستقیماً از طریق سامانه بازرسی مطرح فرمایید.
+                        </p>
+                        <a href="{{ url('/complaints') }}" target="_blank" class="btn-table-action" style="background: #e11d48; color: #ffffff; border: none; font-weight: 800; padding: 10px 24px; border-radius: 10px; text-decoration: none;">
+                            ثبت شکایت جدید
+                        </a>
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- ===================================================================
+             PAGE: MY SURVEYS (tab-my-surveys)
+             =================================================================== -->
+        <div class="user-view {{ $activeTab === 'tab-my-surveys' ? 'active' : '' }}" id="tab-my-surveys" data-title="نظرسنجی و ارزیابی کیفیت">
+            <div class="user-panel">
+                <div class="user-panel-header">
+                    <div class="user-panel-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span>نظرسنجی‌ها و ارزیابی‌های ثبت‌شده شما</span>
+                    </div>
+                    <div>
+                        <a href="{{ url('/survey') }}" target="_blank" class="btn-table-action" style="background: #f59e0b; color: #ffffff; border: none; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; text-decoration: none;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <span>ثبت نظرسنجی جدید</span>
+                        </a>
+                    </div>
+                </div>
+
+                @if(isset($mySurveys) && $mySurveys->isNotEmpty())
+                    <div style="display: grid; gap: 16px;">
+                        @foreach($mySurveys as $srv)
+                            <div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                                    <div>
+                                        <span style="font-weight: 800; color: #0f172a; font-size: 0.95rem;">
+                                            ارزیابی پرونده: <strong style="font-family: monospace; color: #2563eb;">{{ $srv->service_tracking_code ?? ($srv->tracking_code ?? 'خدمات عمومی') }}</strong>
+                                        </span>
+                                        <span style="font-size: 0.78rem; color: #64748b; margin-right: 10px;">
+                                            ({{ shamsi($srv->created_at, 'Y/m/d') }})
+                                        </span>
+                                    </div>
+                                    <div style="background: #fef3c7; color: #92400e; padding: 4px 12px; border-radius: 99px; font-size: 0.78rem; font-weight: 800;">
+                                        ثبت شده در سامانه پایش
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 12px;">
+                                    <div style="background: #f8fafc; border-radius: 8px; padding: 8px 10px; text-align: center;">
+                                        <div style="font-size: 0.72rem; color: #64748b;">سرعت خدمات</div>
+                                        <div style="color: #f59e0b; font-size: 0.9rem; font-weight: 800; margin-top: 2px;">{{ str_repeat('★', (int)($srv->speed_score ?? ($srv->rating_speed ?? 5))) }}</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border-radius: 8px; padding: 8px 10px; text-align: center;">
+                                        <div style="font-size: 0.72rem; color: #64748b;">کیفیت تعمیر</div>
+                                        <div style="color: #f59e0b; font-size: 0.9rem; font-weight: 800; margin-top: 2px;">{{ str_repeat('★', (int)($srv->quality_score ?? ($srv->rating_quality ?? 5))) }}</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border-radius: 8px; padding: 8px 10px; text-align: center;">
+                                        <div style="font-size: 0.72rem; color: #64748b;">شفافیت هزینه</div>
+                                        <div style="color: #f59e0b; font-size: 0.9rem; font-weight: 800; margin-top: 2px;">{{ str_repeat('★', (int)($srv->cost_score ?? ($srv->rating_cost ?? 5))) }}</div>
+                                    </div>
+                                    <div style="background: #f8fafc; border-radius: 8px; padding: 8px 10px; text-align: center;">
+                                        <div style="font-size: 0.72rem; color: #64748b;">برخورد پرسنل</div>
+                                        <div style="color: #f59e0b; font-size: 0.9rem; font-weight: 800; margin-top: 2px;">{{ str_repeat('★', (int)($srv->behavior_score ?? ($srv->rating_behavior ?? 5))) }}</div>
+                                    </div>
+                                    <div style="background: #eff6ff; border-radius: 8px; padding: 8px 10px; text-align: center;">
+                                        <div style="font-size: 0.72rem; color: #1e40af; font-weight: 700;">رضایت کلی</div>
+                                        <div style="color: #2563eb; font-size: 0.9rem; font-weight: 800; margin-top: 2px;">{{ str_repeat('★', (int)($srv->overall_score ?? ($srv->rating_overall ?? 5))) }}</div>
+                                    </div>
+                                </div>
+
+                                @if(!empty($srv->suggestions) || !empty($srv->feedback))
+                                    <div style="font-size: 0.82rem; color: #475569; background: #fafafa; border-radius: 8px; padding: 10px 12px; border: 1px solid #f1f5f9;">
+                                        <strong style="color: #0f172a;">دیدگاه / پیشنهاد شما:</strong>
+                                        {{ $srv->suggestions ?: $srv->feedback }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div style="text-align: center; padding: 50px 20px; background: #f8fafc; border-radius: 16px; border: 2px dashed #e2e8f0;">
+                        <div style="width: 64px; height: 64px; border-radius: 50%; background: #fef3c7; color: #f59e0b; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <h4 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">شما تاکنون در نظرسنجی شرکت نکرده‌اید</h4>
+                        <p style="font-size: 0.84rem; color: #64748b; max-width: 480px; margin: 0 auto 20px; line-height: 1.6;">
+                            دیدگاه‌های شما در ارتقای کیفیت تعمیرات و سنجش عملکرد شعب تامین کانی سام بسیار موثر خواهد بود.
+                        </p>
+                        <a href="{{ url('/survey') }}" target="_blank" class="btn-table-action" style="background: #f59e0b; color: #ffffff; border: none; font-weight: 800; padding: 10px 24px; border-radius: 10px; text-decoration: none;">
+                            شرکت در نظرسنجی
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
 

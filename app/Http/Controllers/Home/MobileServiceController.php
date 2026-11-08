@@ -1122,15 +1122,51 @@ class MobileServiceController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+        $myComplaints = collect();
+        try {
+            $myComplaints = DB::table('mobile_complaints')
+                ->where(function ($q) use ($userPhone, $cleanPhone, $shortPhone, $fullPhone) {
+                    $q->where('phone', $userPhone)
+                      ->orWhere('phone', $cleanPhone)
+                      ->orWhere('phone', $shortPhone)
+                      ->orWhere('phone', $fullPhone);
+                    if (Schema::hasColumn('mobile_complaints', 'customer_phone')) {
+                        $q->orWhere('customer_phone', $userPhone)
+                          ->orWhere('customer_phone', $cleanPhone)
+                          ->orWhere('customer_phone', $shortPhone)
+                          ->orWhere('customer_phone', $fullPhone);
+                    }
+                })
+                ->orderBy('id', 'desc')
+                ->get();
+        } catch (\Throwable $e) {}
+
+        $mySurveys = collect();
+        try {
+            $mySurveys = DB::table('mobile_surveys')
+                ->where(function ($q) use ($userPhone, $cleanPhone, $shortPhone, $fullPhone) {
+                    if (Schema::hasColumn('mobile_surveys', 'customer_phone')) {
+                        $q->where('customer_phone', $userPhone)
+                          ->orWhere('customer_phone', $cleanPhone)
+                          ->orWhere('customer_phone', $shortPhone)
+                          ->orWhere('customer_phone', $fullPhone);
+                    }
+                })
+                ->orderBy('id', 'desc')
+                ->get();
+        } catch (\Throwable $e) {}
+
         $stats = [
             'total' => $myOrders->count(),
             'repairing' => $myOrders->whereIn('status', ['received', 'inspecting', 'repairing', 'waiting_parts'])->count(),
             'ready' => $myOrders->where('status', 'ready_for_delivery')->count(),
             'delivered' => $myOrders->where('status', 'delivered')->count(),
+            'complaints' => $myComplaints->count(),
+            'surveys' => $mySurveys->count(),
         ];
 
         $isFirstLogin = ($user && empty($user->is_profile_completed));
-        $html = view('home.mobile.user-portal', compact('user', 'myOrders', 'myTickets', 'stats', 'userPhone', 'isFirstLogin'))->render(); return response($html);
+        $html = view('home.mobile.user-portal', compact('user', 'myOrders', 'myTickets', 'myComplaints', 'mySurveys', 'stats', 'userPhone', 'isFirstLogin'))->render(); return response($html);
         } catch (\Throwable $e) {
             return response('USER PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 200);
         }
@@ -1825,11 +1861,42 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * فرم نظرسنجی
+     * فرم نظرسنجی با واکشی خودکار اطلاعات پرونده
      */
-    public function survey()
+    public function survey(Request $request)
     {
-        return view('home.mobile.survey');
+        $trackingCode = $request->query('tracking_code') ?: $request->query('code');
+        $prefill = [
+            'tracking_code' => $trackingCode ?: '',
+            'customer_name' => '',
+            'customer_phone' => '',
+            'device_model' => '',
+        ];
+
+        if ($trackingCode) {
+            $order = DB::table('mobile_service_orders')
+                ->where('tracking_code', $trackingCode)
+                ->orWhere('id', $trackingCode)
+                ->orWhere('imei', $trackingCode)
+                ->first();
+
+            if ($order) {
+                $prefill['tracking_code'] = $order->tracking_code ?? $trackingCode;
+                $prefill['customer_name'] = $order->customer_name ?? '';
+                $prefill['customer_phone'] = $order->customer_phone ?? '';
+                $prefill['device_model'] = trim(($order->device_brand ?? '') . ' ' . ($order->device_model ?? ''));
+            }
+        }
+
+        if (empty($prefill['customer_phone'])) {
+            $user = $this->getCurrentAuthUser();
+            if ($user) {
+                $prefill['customer_phone'] = $user->number ?? '';
+                $prefill['customer_name'] = $prefill['customer_name'] ?: ($user->name ?? '');
+            }
+        }
+
+        return view('home.mobile.survey', compact('prefill'));
     }
 
     /**
@@ -1887,11 +1954,47 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * صفحه ثبت شکایات
+     * صفحه ثبت شکایات با واکشی خودکار اطلاعات پرونده
      */
-    public function complaints()
+    public function complaints(Request $request)
     {
-        return view('home.mobile.complaints');
+        $trackingCode = $request->query('tracking_code') ?: $request->query('code');
+        $prefill = [
+            'service_tracking_code' => $trackingCode ?: '',
+            'full_name' => '',
+            'phone' => '',
+            'national_code' => '',
+            'device_model' => '',
+            'imei' => '',
+        ];
+
+        if ($trackingCode) {
+            $order = DB::table('mobile_service_orders')
+                ->where('tracking_code', $trackingCode)
+                ->orWhere('id', $trackingCode)
+                ->orWhere('imei', $trackingCode)
+                ->first();
+
+            if ($order) {
+                $prefill['service_tracking_code'] = $order->tracking_code ?? $trackingCode;
+                $prefill['full_name'] = $order->customer_name ?? '';
+                $prefill['phone'] = $order->customer_phone ?? '';
+                $prefill['national_code'] = $order->customer_national_code ?? '';
+                $prefill['device_model'] = trim(($order->device_brand ?? '') . ' ' . ($order->device_model ?? ''));
+                $prefill['imei'] = $order->imei ?? '';
+            }
+        }
+
+        if (empty($prefill['phone'])) {
+            $user = $this->getCurrentAuthUser();
+            if ($user) {
+                $prefill['phone'] = $user->number ?? '';
+                $prefill['full_name'] = $prefill['full_name'] ?: ($user->name ?? '');
+                $prefill['national_code'] = $prefill['national_code'] ?: ($user->national_code ?? '');
+            }
+        }
+
+        return view('home.mobile.complaints', compact('prefill'));
     }
 
     /**

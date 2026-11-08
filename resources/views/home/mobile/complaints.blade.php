@@ -144,6 +144,28 @@
 
     <!-- 1. NEW COMPLAINT FORM -->
     <div id="sectionNewCmp" class="cmp-form-card">
+        @if(!empty($prefill['service_tracking_code']))
+        <div style="background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%); border: 1px solid #fecdd3; border-radius: 14px; padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: #e11d48; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.9rem; color: #9f1239;">اطلاعات پرونده خدمات و فاکتور شما واکشی گردید</div>
+                    <div style="font-size: 0.8rem; color: #be123c; margin-top: 2px;">
+                        کد پرونده: <strong style="font-family: monospace; direction: ltr; display: inline-block;">{{ $prefill['service_tracking_code'] }}</strong>
+                        @if(!empty($prefill['device_model'])) | دستگاه: <strong>{{ $prefill['device_model'] }}</strong> @endif
+                        @if(!empty($prefill['imei'])) | سریال: <span style="font-family: monospace;">{{ $prefill['imei'] }}</span> @endif
+                    </div>
+                </div>
+            </div>
+            <a href="{{ url('/invoice/' . $prefill['service_tracking_code']) }}" target="_blank" style="font-size: 0.78rem; font-weight: 800; color: #be123c; background: #ffffff; padding: 6px 14px; border-radius: 8px; border: 1px solid #fecdd3; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                <span>مشاهده صورتحساب رسمی</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </a>
+        </div>
+        @endif
+
         <form id="newComplaintForm" onsubmit="submitComplaint(event);" enctype="multipart/form-data">
             @csrf
 
@@ -155,17 +177,17 @@
             <div class="cmp-grid-2">
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">نام و نام خانوادگی شاکی *</label>
-                    <input type="text" name="full_name" required placeholder="مثال: محمد امینی" class="cmp-input">
+                    <input type="text" name="full_name" value="{{ old('full_name', $prefill['full_name'] ?? '') }}" required placeholder="مثال: محمد امینی" class="cmp-input">
                 </div>
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">شماره تلفن همراه (جهت دریافت پیامک بازرسی) *</label>
-                    <input type="tel" name="phone" required placeholder="09123456789" class="cmp-input" style="font-family: monospace; direction: ltr; text-align: left;">
+                    <input type="tel" name="phone" value="{{ old('phone', $prefill['phone'] ?? '') }}" required placeholder="09123456789" class="cmp-input" style="font-family: monospace; direction: ltr; text-align: left;">
                 </div>
             </div>
             <div class="cmp-grid-2">
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">کد ملی (جهت انطباق با ضوابط سازمان حمایت)</label>
-                    <input type="text" name="national_code" placeholder="۱۰ رقم کد ملی" class="cmp-input" style="font-family: monospace;">
+                    <input type="text" name="national_code" value="{{ old('national_code', $prefill['national_code'] ?? '') }}" placeholder="۱۰ رقم کد ملی" class="cmp-input" style="font-family: monospace;">
                 </div>
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">شعبه یا نمایندگی مورد شکایت *</label>
@@ -190,18 +212,18 @@
             <div class="cmp-grid-2">
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">شماره سریال ۱۵ رقمی IMEI *</label>
-                    <input type="text" name="imei" required placeholder="۳۵۸۹۴۲۱..." class="cmp-input" style="font-family: monospace; letter-spacing: 1px;">
+                    <input type="text" name="imei" value="{{ old('imei', $prefill['imei'] ?? '') }}" required placeholder="۳۵۸۹۴۲۱..." class="cmp-input" style="font-family: monospace; letter-spacing: 1px;">
                     <div style="font-size: 0.72rem; color: #64748b; margin-top: 3px;">با شماره‌گیری کد دستوری #06#* در گوشی قابل مشاهده است.</div>
                 </div>
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">برند و مدل دقیق تلفن همراه *</label>
-                    <input type="text" name="device_model" required placeholder="مثال: Samsung Galaxy A55 5G یا Xiaomi Note 13" class="cmp-input">
+                    <input type="text" name="device_model" value="{{ old('device_model', $prefill['device_model'] ?? '') }}" required placeholder="مثال: Samsung Galaxy A55 5G یا Xiaomi Note 13" class="cmp-input">
                 </div>
             </div>
             <div class="cmp-grid-2">
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">کد پرونده پذیرش / شماره فاکتور (در صورت وجود)</label>
-                    <input type="text" name="service_tracking_code" placeholder="مثال: SA-140308-001" class="cmp-input" style="font-family: monospace;">
+                    <input type="text" name="service_tracking_code" value="{{ old('service_tracking_code', $prefill['service_tracking_code'] ?? '') }}" placeholder="مثال: SA-140308-001" class="cmp-input" style="font-family: monospace;">
                 </div>
                 <div>
                     <label style="display: block; font-weight: 800; font-size: 0.85rem; color: #0f172a; margin-bottom: 6px;">موضوع شکایت طبق ضوابط ماده ۱۳ *</label>

@@ -22,12 +22,20 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
                     <span>چاپ صورتحساب رسمی (A4) / PDF</span>
                 </button>
+                <a href="{{ url('/survey') }}?tracking_code={{ $invData['tracking_code'] }}" target="_blank" class="btn-action survey-btn" style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    <span>ثبت نظرسنجی و امتیاز</span>
+                </a>
+                <a href="{{ url('/complaints') }}?tracking_code={{ $invData['tracking_code'] }}" target="_blank" class="btn-action complaint-btn" style="background: #ffe4e6; color: #9f1239; border: 1px solid #fecdd3;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>ثبت شکایت / مغایرت</span>
+                </a>
                 <a href="{{ url('/tariff') }}" target="_blank" class="btn-action tariff-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-                    <span>جدول نرخ تعرفه مصوب اتحادیه</span>
+                    <span>نرخ تعرفه اتحادیه</span>
                 </a>
                 <a href="{{ url('/user-portal') }}?tab=my-invoices" class="btn-action back-btn">
-                    <span>بازگشت به پنل کاربری</span>
+                    <span>بازگشت به پنل</span>
                 </a>
             </div>
         </div>
@@ -197,6 +205,30 @@
                         🛡️ تحت پوشش ۱۰۰٪ گارانتی ۱۸ ماهه رسمی سام سرویس - هزینه پرداختی مشتری: صفر ریال
                     </div>
                 @endif
+            </div>
+        </div>
+
+        <!-- Section: Customer Care & Complaint Channels (Articles 14 & 38) -->
+        <div class="inv-feedback-card no-print">
+            <div class="feedback-card-inner">
+                <div class="feedback-card-text">
+                    <div class="feedback-card-title">
+                        <span>⚖️ سامانه تکریم ارباب‌رجوع و رسیدگی به شکایات مشتریان (مواد ۱۴ و ۳۸ ضوابط اجرایی):</span>
+                    </div>
+                    <div class="feedback-card-desc">
+                        چنانچه در خصوص کیفیت خدمات، قطعات تعویضی، رفتار پرسنل یا مبالغ صورتحساب، نظر، پیشنهاد یا اعتراضی دارید، از طریق پیوندهای زیر ثبت فرمایید. اطلاعات پرونده <strong>{{ $invData['tracking_code'] }}</strong> به طور خودکار واکشی می‌شود.
+                    </div>
+                </div>
+                <div class="feedback-card-actions">
+                    <a href="{{ url('/survey') }}?tracking_code={{ $invData['tracking_code'] }}" target="_blank" class="btn-sheet-survey">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span>ثبت نظرسنجی و امتیاز به خدمت</span>
+                    </a>
+                    <a href="{{ url('/complaints') }}?tracking_code={{ $invData['tracking_code'] }}" target="_blank" class="btn-sheet-complaint">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>ثبت شکایت / مغایرت در صورتحساب</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -615,6 +647,69 @@
         align-items: center;
         gap: 2px;
     }
+
+    /* In-Sheet Feedback & Complaints Banner */
+    .inv-feedback-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+    }
+    .feedback-card-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .feedback-card-title {
+        font-weight: 800;
+        font-size: 0.82rem;
+        color: #0f172a;
+        margin-bottom: 3px;
+    }
+    .feedback-card-desc {
+        font-size: 0.74rem;
+        color: #475569;
+        line-height: 1.6;
+        max-width: 620px;
+    }
+    .feedback-card-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .btn-sheet-survey {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.78rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .btn-sheet-survey:hover { background: #fde68a; }
+    .btn-sheet-complaint {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        background: #ffe4e6;
+        color: #9f1239;
+        border: 1px solid #fecdd3;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.78rem;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .btn-sheet-complaint:hover { background: #fecdd3; }
 
     /* Legal Footer */
     .inv-bottom-legal {
