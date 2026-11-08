@@ -683,19 +683,30 @@ class MobileServiceController extends Controller
      */
     public function sendOtp(Request $request)
     {
-        $request->validate([
-            'phone' => 'required|regex:/^09[0-9]{9}$/',
-        ], [
-            'phone.required' => 'شماره تلفن همراه الزامی است.',
-            'phone.regex' => 'شماره تلفن همراه باید ۱۱ رقمی و با 09 آغاز شود.',
-        ]);
+        $rawPhone = (string)$request->phone;
+        $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹','٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+        $english = ['0','1','2','3','4','5','6','7','8','9','0','1','2','3','4','5','6','7','8','9'];
+        $phone = str_replace($persian, $english, $rawPhone);
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+        if (str_starts_with($phone, '989')) {
+            $phone = '0' . substr($phone, 2);
+        } elseif (str_starts_with($phone, '9') && strlen($phone) === 10) {
+            $phone = '0' . $phone;
+        }
 
-        $phone = $request->phone;
+        if (!preg_match('/^09[0-9]{9}$/', $phone)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'شماره تلفن همراه نامعتبر است. لطفاً یک شماره ۱۱ رقمی معتبر با فرمت 09xxxxxxxxx وارد نمایید.',
+            ], 422);
+        }
 
-        // پاکسازی کدهای منقضی
-        DB::table('active_sms')->where('expire', '<=', Carbon::now()->timestamp)->delete();
+        // پاکسازی کدهای منقضی یا کدهای قبلی این شماره
+        DB::table('active_sms')->where('expire', '<=', Carbon::now()->timestamp)
+            ->orWhere('phone', $phone)
+            ->delete();
 
-        // تولید کد تایید ۵ رقمی
+        // تولید کد تایید ۵ رقمی اختصاصی
         $code = rand(10000, 99999);
 
         // ثبت در جدول active_sms
@@ -705,28 +716,26 @@ class MobileServiceController extends Controller
             'phone' => $phone,
         ]);
 
-        // ارسال پیامک از طریق کنسول ملی‌پیامک با پترن 581498 (مستندات کنسول ملی‌پیامک)
-        $smsSent = false;
-        $smsResponse = null;
-        try {
-            $smsResult = $this->sendMeliPayamakOtp($phone, $code);
-            $smsSent = !empty($smsResult['success']);
-            $smsResponse = $smsResult;
-        } catch (\Exception $e) {
-            \Log::error('OTP MeliPayamak Error: ' . $e->getMessage());
+        // ارسال پیامک واقعی از طریق کنسول ملی‌پيامک با پترن 581498 و DNS Resolve مستقیم
+        $smsResult = $this->sendMeliPayamakOtp($phone, $code);
+
+        if (!empty($smsResult['success'])) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'کد تایید ۵ رقمی از طریق پیامک به شماره ' . $phone . ' ارسال شد. لطفاً کد دریافتی را وارد نمایید.',
+                'phone' => $phone,
+            ]);
         }
 
+        $errMsg = $smsResult['error'] ?? 'خطا در ارسال پیامک تایید. لطفاً دقایقی دیگر تلاش کنید یا از ورود با رمز عبور استفاده فرمایید.';
         return response()->json([
-            'status' => 'success',
-            'message' => 'کد تایید با پیامک به شماره ' . $phone . ' ارسال شد.',
-            'phone' => $phone,
-            'sms_sent' => $smsSent,
-            'debug_code' => $code, // جهت تست و ورود سریع در صورت تاخیر مخابرات
-        ]);
+            'status' => 'error',
+            'message' => $errMsg,
+        ], 500);
     }
 
     /**
-     * ارسال پیامک یکبار مصرف (OTP) از طریق کنسول ملی‌پیامک
+     * ارسال پیامک یکبار مصرف (OTP) از طریق کنسول ملی‌پيامک
      * مستندات کاربر: وب‌سرویس پترن با کد 581498 و توکن 00d38439ce134769a29f7a3a444ceba9
      */
     protected function sendMeliPayamakOtp($phone, $code)
@@ -734,7 +743,6 @@ class MobileServiceController extends Controller
         $token = '00d38439ce134769a29f7a3a444ceba9';
         $patternCode = 581498;
 
-        // روش اول: متد اشتراکی پترن (تایید شده با سرعت تحویل آنی و دارای تاییدیه مدیر)
         $urlShared = 'https://console.melipayamak.com/api/send/shared/' . $token;
         $dataShared = json_encode([
             'to' => $phone,
@@ -746,37 +754,42 @@ class MobileServiceController extends Controller
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataShared);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 12);
+        // حل مشکل DNS Timeout در سرور با مقداردهی مستقیم IP ملی‌پیامک
+        curl_setopt($ch, CURLOPT_RESOLVE, ['console.melipayamak.com:443:85.198.11.3']);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($dataShared),
         ]);
         $result = curl_exec($ch);
+        $err = curl_error($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
         $jsonShared = json_decode($result, true);
-        if (isset($jsonShared['recId']) || (isset($jsonShared['status']) && str_contains($jsonShared['status'], 'موفق'))) {
+        if ($httpCode === 200 && (isset($jsonShared['recId']) || (isset($jsonShared['status']) && str_contains($jsonShared['status'], 'موفق')))) {
+            \Log::info("OTP SMS successfully dispatched to {$phone}: recId=" . ($jsonShared['recId'] ?? 'OK'));
             return ['success' => true, 'data' => $jsonShared, 'method' => 'shared'];
         }
 
-        // روش دوم: متد اختصاصی send/otp طبق مستندات کاربر
-        $urlOtp = 'https://console.melipayamak.com/api/send/otp/' . $token;
-        $dataOtp = json_encode(['to' => $phone]);
-        $ch2 = curl_init($urlOtp);
-        curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($ch2, CURLOPT_POSTFIELDS, $dataOtp);
-        curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch2, CURLOPT_TIMEOUT, 10);
-        curl_setopt($ch2, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($dataOtp),
-        ]);
-        $resultOtp = curl_exec($ch2);
-        curl_close($ch2);
+        \Log::error("OTP SMS Failed for {$phone}: HTTP={$httpCode}, Response={$result}, CurlErr={$err}");
 
-        return ['success' => true, 'data' => json_decode($resultOtp, true), 'method' => 'otp'];
+        // پشتیبان در صورت خطای اتصال
+        try {
+            if (method_exists($this, 'sendSms')) {
+                $this->sendSms($phone, [$code], $patternCode);
+                return ['success' => true, 'method' => 'fallback'];
+            }
+        } catch (\Throwable $e) {
+            \Log::error("OTP fallback error: " . $e->getMessage());
+        }
+
+        return [
+            'success' => false,
+            'error' => !empty($jsonShared['status']) ? $jsonShared['status'] : ($err ?: 'خطا در ارسال پیامک')
+        ];
     }
 
     /**
@@ -784,13 +797,27 @@ class MobileServiceController extends Controller
      */
     public function verifyOtp(Request $request)
     {
-        $request->validate([
-            'phone' => 'required|regex:/^09[0-9]{9}$/',
-            'code' => 'required|numeric',
-        ]);
+        $rawPhone = (string)$request->phone;
+        $rawCode = (string)$request->code;
+        $persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹','٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+        $english = ['0','1','2','3','4','5','6','7','8','9','0','1','2','3','4','5','6','7','8','9'];
+        $phone = str_replace($persian, $english, $rawPhone);
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+        if (str_starts_with($phone, '989')) {
+            $phone = '0' . substr($phone, 2);
+        } elseif (str_starts_with($phone, '9') && strlen($phone) === 10) {
+            $phone = '0' . $phone;
+        }
 
-        $phone = $request->phone;
-        $code = $request->code;
+        $code = str_replace($persian, $english, $rawCode);
+        $code = preg_replace('/[^0-9]/', '', $code);
+
+        if (!preg_match('/^09[0-9]{9}$/', $phone) || empty($code)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'شماره همراه یا کد تایید نامعتبر است.',
+            ], 422);
+        }
 
         $smsRecord = ActiveSms::where('phone', $phone)
             ->where('code', $code)
@@ -800,7 +827,7 @@ class MobileServiceController extends Controller
         if (!$smsRecord) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'کد تایید وارد شده نادرست یا منقضی شده است.',
+                'message' => 'کد تایید وارد شده اشتباه یا منقضی شده است.',
             ], 422);
         }
 
@@ -808,7 +835,7 @@ class MobileServiceController extends Controller
         $smsRecord->delete();
 
         // یافتن یا ایجاد کاربر در جدول users
-        $user = User::where('number', $phone)->first();
+        $user = User::where('number', $phone)->orWhere('number', ltrim($phone, '0'))->first();
         if (!$user) {
             $user = User::create([
                 'name' => 'کاربر سام موبایل',
@@ -817,13 +844,17 @@ class MobileServiceController extends Controller
                 'password' => Hash::make(Str::random(16)),
                 'level' => 0,
                 'contact' => 0,
+                'profile' => 'default.png',
+                'gender' => 1,
+                'status' => 'active',
+                'is_profile_completed' => false,
             ]);
         }
 
-        // لاگین سیستم لاراول
+        // احراز هویت کاربر
         Auth::login($user);
 
-        // ذخیره در سشن
+        // تعیین سطح دسترسی
         $userRole = 'customer';
         if ($user->level >= 3) {
             $userRole = 'super_admin';
@@ -852,9 +883,6 @@ class MobileServiceController extends Controller
         ]);
     }
 
-    /**
-     * ورود با رمز عبور (ویژه مدیران و کارشناسان)
-     */
     public function loginPassword(Request $request)
     {
         try {

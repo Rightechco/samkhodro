@@ -415,10 +415,19 @@
         clearInterval(timerInterval);
     }
 
+    // Utility: Convert Persian / Arabic digits to English
+    function toEnDigits(str) {
+        return (str || '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                          .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+    }
+
     // Step 1: Send OTP
     async function handleSendOtp(e) {
         e.preventDefault();
-        const phone = document.getElementById('inputPhone').value.trim();
+        let phone = toEnDigits(document.getElementById('inputPhone').value.trim()).replace(/[^0-9]/g, '');
+        if (phone.startsWith('989')) phone = '0' + phone.substring(2);
+        else if (phone.startsWith('9') && phone.length === 10) phone = '0' + phone;
+
         if (!phone.startsWith('09') || phone.length !== 11) {
             showAlert('شماره تلفن همراه باید ۱۱ رقم و با 09 آغاز شود.');
             return;
@@ -441,12 +450,12 @@
             });
             const data = await res.json();
             if (res.ok && data.status === 'success') {
-                showAlert(data.message + (data.debug_code ? ' (کد تستی: ' + data.debug_code + ')' : ''), true);
+                showAlert(data.message || 'کد تایید با موفقیت پیامک شد. لطفاً کد دریافتی را وارد نمایید.', true);
                 document.getElementById('otpStep1').style.display = 'none';
                 document.getElementById('otpStep2').style.display = 'block';
-                if (data.debug_code) {
-                    document.getElementById('inputOtpCode').value = data.debug_code;
-                }
+                const otpInput = document.getElementById('inputOtpCode');
+                otpInput.value = '';
+                otpInput.focus();
                 startTimer();
             } else {
                 showAlert(data.message || 'خطا در ارسال پیامک.');
@@ -462,9 +471,9 @@
     // Step 2: Verify OTP
     async function handleVerifyOtp(e) {
         e.preventDefault();
-        const code = document.getElementById('inputOtpCode').value.trim();
+        let code = toEnDigits(document.getElementById('inputOtpCode').value.trim()).replace(/[^0-9]/g, '');
         if (!code || code.length < 5) {
-            showAlert('لطفاً کد تایید را کامل وارد نمایید.');
+            showAlert('لطفاً کد تایید ۵ رقمی دریافتی از پیامک را به طور کامل وارد نمایید.');
             return;
         }
 
@@ -484,63 +493,25 @@
             });
             const data = await res.json();
             if (res.ok && data.status === 'success') {
-                showAlert(data.message, true);
-                setTimeout(() => {
-                    window.location.href = data.redirect;
-                }, 400);
+                showAlert('ورود موفقیت‌آمیز بود! در حال انتقال...', true);
+                window.location.href = data.redirect || "{{ route('mob.user-portal') }}";
             } else {
-                showAlert(data.message || 'کد تایید اشتباه است.');
+                showAlert(data.message || 'کد وارد شده اشتباه یا منقضی شده است.');
                 btn.disabled = false;
-                btn.innerHTML = '<span>ورود به سامانه</span>';
+                btn.innerHTML = '<span>تایید و ورود به سامانه</span>';
             }
         } catch (err) {
             showAlert('خطای ارتباط با سرور.');
             btn.disabled = false;
-            btn.innerHTML = '<span>ورود به سامانه</span>';
+            btn.innerHTML = '<span>تایید و ورود به سامانه</span>';
         }
     }
 
-    function handleResendOtp() {
-        document.getElementById('inputPhone').value = currentPhone;
-        handleSendOtp(new Event('submit'));
+    function backToStep1() {
+        document.getElementById('otpStep2').style.display = 'none';
+        document.getElementById('otpStep1').style.display = 'block';
+        document.getElementById('inputOtpCode').value = '';
+        if (timerInterval) clearInterval(timerInterval);
     }
 
-    // Password Login
-    async function handlePasswordLogin(e) {
-        e.preventDefault();
-        const u = document.getElementById('inputUsername').value.trim();
-        const p = document.getElementById('inputPassword').value;
-
-        const btn = document.getElementById('btnPassLogin');
-        btn.disabled = true;
-        btn.innerHTML = '<span>در حال بررسی...</span>';
-
-        try {
-            const res = await fetch("{{ route('mob.login.password') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ username: u, password: p })
-            });
-            const data = await res.json();
-            if (res.ok && data.status === 'success') {
-                showAlert('ورود موفقیت‌آمیز بود.', true);
-                window.location.href = data.redirect;
-            } else {
-                showAlert(data.message || 'اطلاعات ورود نادرست است.');
-                btn.disabled = false;
-                btn.innerHTML = '<span>ورود به پنل مدیریت</span>';
-            }
-        } catch (err) {
-            showAlert('خطای برقراری ارتباط.');
-            btn.disabled = false;
-            btn.innerHTML = '<span>ورود به پنل مدیریت</span>';
-        }
-    }
-
-
-</script>
-@endpush
+    
