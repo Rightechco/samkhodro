@@ -2074,6 +2074,47 @@
     <!-- 2. MAIN WORKSPACE -->
     <main class="erp-main">
         <!-- Top Bar -->
+        <!-- Executive Role Switcher & System Simulator Bar -->
+        <div class="role-simulator-bar" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; border-radius: 14px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 20px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.2);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 34px; height: 34px; border-radius: 10px; background: rgba(59, 130, 246, 0.25); border: 1px solid rgba(96, 165, 250, 0.4); color: #60a5fa; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    👑
+                </span>
+                <div>
+                    <div style="font-size: 0.82rem; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px;">
+                        <span>پیش‌نمایش و سوییچ سریع نقش‌ها (RBAC):</span>
+                        <span style="background: #2563eb; color: #fff; font-size: 0.70rem; padding: 2px 8px; border-radius: 6px;">
+                            {{ $user ? $user->name : 'مدیر ارشد' }}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 2px;">
+                        تست مستقیم دسترسی‌ها و نمای اختصاصی هر نقش در سامانه خدمات پس از فروش
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                <button type="button" class="role-pill-btn active" onclick="switchErpTab('tab-overview')" style="background: rgba(37, 99, 235, 0.3); border: 1px solid #3b82f6; color: #93c5fd; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>👑 مدیر ارشد</span>
+                </button>
+                <button type="button" class="role-pill-btn" onclick="switchErpTab('tab-technicians')" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>🔧 تکنسین فنی</span>
+                </button>
+                <button type="button" class="role-pill-btn" onclick="switchErpTab('tab-new-intake')" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>📋 کارشناس پذیرش</span>
+                </button>
+                <button type="button" class="role-pill-btn" onclick="switchErpTab('tab-parts')" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>📦 انبارداری</span>
+                </button>
+                <button type="button" class="role-pill-btn" onclick="switchErpTab('tab-complaints')" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>⚖️ واحد بازرسی</span>
+                </button>
+                <a href="{{ url('/user-portal') }}" target="_blank" style="background: linear-gradient(135deg, #10b981, #059669); color: #ffffff; padding: 6px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                    <span>👤 میز کاربری مشتریان</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                </a>
+            </div>
+        </div>
+
         <header class="erp-topbar">
             <div class="erp-topbar-right">
                 <button type="button" class="erp-toggle-sidebar" onclick="toggleErpSidebar()" title="باز کردن منو">
@@ -5264,6 +5305,83 @@
         </div>
 
 
+        <!-- ===================================================================
+             PAGE: ADMIN & STAFF PROFILE (tab-profile)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-profile' ? 'active' : '' }}" id="tab-profile" data-title="مشخصات و پروفایل من">
+            <!-- Staff Hero Card -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f172a 100%); border-radius: 20px; padding: 28px 24px; color: #ffffff; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15); border: 1px solid rgba(148, 163, 184, 0.2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; align-items: center; gap: 18px;">
+                    <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; font-size: 2rem; font-weight: 900; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4); border: 3px solid rgba(255, 255, 255, 0.2);">
+                        {{ mb_substr($user ? $user->name : 'م', 0, 1) }}
+                    </div>
+                    <div>
+                        <div style="font-size: 1.35rem; font-weight: 900; margin-bottom: 6px;">
+                            {{ $user ? $user->name : 'مدیر ارشد سامانه خدمات سام موبایل' }}
+                        </div>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.80rem;">
+                            <span style="background: rgba(37, 99, 235, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 99px; border: 1px solid rgba(96, 165, 250, 0.3);">
+                                👑 سمت: {{ $user && $user->level >= 3 ? 'مدیر ارشد سامانه' : ($user && $user->level == 2 ? 'مسئول پذیرش و ترخیص' : 'کارشناس ارشد فنی') }}
+                            </span>
+                            <span style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; padding: 4px 12px; border-radius: 99px; border: 1px solid rgba(52, 211, 153, 0.3);">
+                                📱 شماره: {{ $user ? $user->number : '09120000000' }}
+                            </span>
+                            <span style="background: rgba(245, 158, 11, 0.2); color: #fde68a; padding: 4px 12px; border-radius: 99px;">
+                                🏢 دفتر مرکزی: تبریز (فرشته شمالی)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 14px 20px; text-align: center; min-width: 170px;">
+                    <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 4px;">کد پرسنلی / شناسه سازمانی:</div>
+                    <strong style="font-family: monospace; font-size: 1.25rem; color: #60a5fa; letter-spacing: 1px;">STAFF-1403-{{ $user ? str_pad($user->id, 3, '0', STR_PAD_LEFT) : '001' }}</strong>
+                </div>
+            </div>
+
+            <!-- Profile Edit Form -->
+            <div class="erp-card">
+                <div class="erp-card-header" style="border-bottom: 1px solid #f1f5f9; padding: 18px 24px;">
+                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>ویرایش مشخصات فردی و کلمه عبور اختصاصی</span>
+                    </h3>
+                </div>
+                <div class="erp-card-body" style="padding: 24px;">
+                    <form id="adminProfileForm" onsubmit="handleAdminProfileSubmit(event)">
+                        @csrf
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 18px;">
+                            <div>
+                                <label style="display: block; font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">نام و نام خانوادگی کامل *</label>
+                                <input type="text" name="name" class="erp-input" value="{{ $user ? $user->name : '' }}" required placeholder="نام کامل">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">شماره همراه سازمانی (ورود به سامانه)</label>
+                                <input type="text" class="erp-input" value="{{ $user ? $user->number : '' }}" readonly style="background: #f1f5f9; color: #64748b; direction: ltr;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">پست الکترونیکی (ایمیل) *</label>
+                                <input type="email" name="email" class="erp-input" value="{{ $user ? $user->email : '' }}" required placeholder="email@taminkanisam.co.ir" style="direction: ltr;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 0.84rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">کلمه عبور جدید (جهت تغییر)</label>
+                                <input type="password" name="new_password" class="erp-input" placeholder="حداقل ۴ کاراکتر (در صورت نیاز به تغییر)">
+                            </div>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                            <div style="font-size: 0.82rem; color: #475569;">
+                                🔒 وضعیت ورود دو مرحله‌ای و رمز عبور مستقیم: <strong style="color: #059669;">فعال و ایمن</strong>
+                            </div>
+                            <button type="submit" id="btnSaveAdminProfile" class="erp-btn erp-btn-primary" style="padding: 10px 28px; font-weight: 800;">
+                                ذخیره تغییرات پروفایل
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 
@@ -6496,6 +6614,49 @@
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         <span>افزودن کاربر جدید با تعیین نقش</span>
                     </button>
+                </div>
+            </div>
+
+            <!-- Role Demo Credentials Showcase Bar -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1.5px solid #bfdbfe; border-radius: 16px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #dbeafe; padding-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.2rem;">🔑</span>
+                        <strong style="color: #1e3a8a; font-size: 0.92rem;">نام‌های کاربری و کلمات عبور پیش‌فرض نقش‌های سامانه جهت ورود و تست سریع:</strong>
+                    </div>
+                    <span style="font-size: 0.74rem; background: #dbeafe; color: #1e40af; padding: 3px 12px; border-radius: 99px; font-weight: 800;">
+                        احراز هویت دوگانه: رمز عبور + OTP پیامک ملی‌پيامک
+                    </span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px;">
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #e11d48;">👑 مدیر ارشد سامانه</span>
+                            <span style="font-size: 0.70rem; background: #ffe4e6; color: #be123c; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۳+</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">admin</strong> | کلمه عبور: <strong style="color:#0f172a;">admin</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #7c3aed;">🔧 تکنسین فنی کارگاه</span>
+                            <span style="font-size: 0.70rem; background: #f5f3ff; color: #6d28d9; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۱</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">technician</strong> | کلمه عبور: <strong style="color:#0f172a;">technician</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #2563eb;">📋 پذیرش و نماینده شعب</span>
+                            <span style="font-size: 0.70rem; background: #eff6ff; color: #1d4ed8; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۲</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">agent</strong> | کلمه عبور: <strong style="color:#0f172a;">agent</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #059669;">👤 مشتری گرامی سامانه</span>
+                            <span style="font-size: 0.70rem; background: #ecfdf5; color: #047857; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۰</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">customer</strong> | کلمه عبور: <strong style="color:#0f172a;">customer</strong></div>
+                    </div>
                 </div>
             </div>
 

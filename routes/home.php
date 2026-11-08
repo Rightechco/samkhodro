@@ -124,6 +124,7 @@ Route::post('/admin-portal/complaints/{id}/status', [MobileServiceController::cl
     Route::post('/admin-portal/users/{id}/update', [MobileServiceController::class, 'updateUser'])->name('mob.admin.users.update');
     Route::post('/admin-portal/users/{id}/delete', [MobileServiceController::class, 'deleteUser'])->name('mob.admin.users.delete');
     Route::post('/admin-portal/users/{id}/toggle-status', [MobileServiceController::class, 'toggleUserStatus'])->name('mob.admin.users.toggle-status');
+Route::post('/admin-portal/profile', [MobileServiceController::class, 'saveUserProfile'])->name('mob.admin.profile.save');
 
 };
 

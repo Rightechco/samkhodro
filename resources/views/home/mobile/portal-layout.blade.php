@@ -1270,7 +1270,7 @@
                         $roleClass = 'role-tech';
                     }
                 @endphp
-                <div class="portal-user-chip">
+                <a href="{{ request()->is('*user-portal*') ? url('/user-portal?tab=profile') : url('/admin-portal?tab=profile') }}" class="portal-user-chip" style="text-decoration: none; cursor: pointer;" title="مشاهده و ویرایش مشخصات پروفایل من">
                     <div class="portal-avatar-small" title="{{ $userName }} ({{ $roleTitle }})">
                         <span>{{ mb_substr($userName, 0, 1) }}</span>
                         <span class="portal-avatar-pulse"></span>
@@ -1282,7 +1282,7 @@
                             {{ $roleTitle }}
                         </span>
                     </div>
-                </div>
+                </a>
 
                 <a href="{{ url('/logout') }}" class="btn-topbar-logout" title="خروج از سامانه">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>

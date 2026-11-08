@@ -71,18 +71,25 @@
         font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    /* Container & Layout Architecture */
+    /* Container & Layout Architecture (Rock-Solid Grid on Desktop) */
     .user-container {
-        display: flex !important;
-        flex-direction: row !important;
+        display: grid !important;
+        grid-template-columns: 290px minmax(0, 1fr) !important;
         align-items: flex-start !important;
         gap: 24px !important;
         width: 100% !important;
-        max-width: 100% !important;
+        max-width: 1600px !important;
         margin: 0 auto !important;
         position: relative !important;
         box-sizing: border-box !important;
         min-height: calc(100vh - 160px);
+    }
+    @media (max-width: 1024px) {
+        .user-container {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+        }
     }
 
     /* 1. SIDEBAR (DESKTOP) */
@@ -1732,11 +1739,17 @@
     }
 
     // Ajax Profile Update
-    async async function handleProfileSubmit(e) {
-        e.preventDefault();
+    async function handleProfileUpdate(e) {
+        return handleProfileSubmit(e);
+    }
+
+    async function handleProfileSubmit(e) {
+        if (e && e.preventDefault) e.preventDefault();
         const btn = document.getElementById('btnSaveProfile');
-        btn.disabled = true;
-        btn.innerText = 'در حال ذخیره‌سازی...';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'در حال ذخیره‌سازی...';
+        }
 
         const form = document.getElementById('userProfileForm');
         const formData = new FormData(form);
