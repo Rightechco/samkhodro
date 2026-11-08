@@ -1362,15 +1362,14 @@
                         </div>
                         <div>
                             <div style="font-size: 0.88rem; font-weight: 800; color: #1e3a8a;">ورود یا ثبت‌نام پیامکی</div>
-                            <div style="font-size: 0.72rem; color: #64748b;">فعال‌سازی گارانتی و پیگیری تعمیر</div>
+                            <div style="font-size: 0.72rem; color: #64748b;">فعال‌سازی گارانتی و پیگیری آنلاین</div>
                         </div>
                     </div>
                     <span style="font-size: 0.78rem; font-weight: 700; color: #2563eb;">ورود ›</span>
                 </a>
             @endif
 
-            <!-- Section 1: Services -->
-            <div class="drawer-section-heading">سامانه‌ها و خدمات</div>
+            <!-- 1. Primary Direct Links (همانند دسکتاپ) -->
             <a href="{{ url('/') }}" class="drawer-nav-link {{ request()->is('/') || request()->is('mob') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon">
@@ -1386,23 +1385,50 @@
                     <span class="drawer-link-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                     </span>
-                    <span>استعلام اصالت و گارانتی (IMEI)</span>
+                    <span>استعلام اصالت (IMEI)</span>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
-            <a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') ? 'active' : '' }}">
+            <a href="{{ url('/service-portal') }}" class="drawer-nav-link {{ request()->is('*service-portal*') || request()->is('*user-portal*') || request()->is('*admin-portal*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon" style="background: #eff6ff; color: #2563eb;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                     </span>
-                    <span>سامانه مدیریت خدمات (ماده ۱۳)</span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>سامانه مدیریت خدمات</span>
+                        <span class="nav-mini-badge" style="background: #dbeafe; color: #1d4ed8; font-size: 0.65rem; padding: 1px 6px; border-radius: 6px; font-weight: 800;">ماده ۱۳</span>
+                    </div>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
-            <!-- Section 2: Warranty & Regulations -->
-            <div class="drawer-section-heading">قوانین و شفافیت</div>
+            <!-- Dropdown 1 in Mobile: خدمات و تعرفه‌ها (عیناً مانند دسکتاپ) -->
+            <div class="drawer-section-heading">خدمات و تعرفه‌ها</div>
+
+            <a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') || request()->is('*tariff*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon" style="color: #2563eb;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>نرخ‌نامه و تعرفه مصوب اتحادیه (۱۴۰۵)</span>
+                        <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.62rem; padding: 1px 6px; border-radius: 6px; font-weight: 800;">ابلاغیه رسمی</span>
+                    </div>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/invoice-sample') }}?tab=invoice" class="drawer-nav-link">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    </span>
+                    <span>نمونه صورتحساب رسمی (ماده ۱۶)</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
             <a href="{{ url('/warranty-terms') }}" class="drawer-nav-link {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon">
@@ -1413,54 +1439,38 @@
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
-            <a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}">
-                <div class="drawer-link-inner">
-                    <span class="drawer-link-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-                    </span>
-                    <span>منشور حقوق مشتریان</span>
-                </div>
-                <span class="drawer-link-arrow">‹</span>
-            </a>
-
             <a href="{{ url('/shipping-guide') }}" class="drawer-nav-link {{ request()->is('*shipping-guide*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
                     </span>
-                    <span>راهنمای پذیرش و ارسال پستی</span>
+                    <span>راهنمای پذیرش و ارسال کالا</span>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
-            <a href="{{ url('/invoice-sample') }}" class="drawer-nav-link {{ request()->is('*invoice-sample*') ? 'active' : '' }}">
+            <a href="{{ url('/representatives') }}" class="drawer-nav-link {{ request()->is('*representatives*') || request()->is('*agencies*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
-                    <span class="drawer-link-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <span class="drawer-link-icon" style="color: #059669;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
                     </span>
-                    <span>نمونه فاکتور رسمی اتحادیه</span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>لیست نمایندگان رسمی تلفن همراه</span>
+                        <span class="nav-mini-badge" style="background:#ecfdf5; color:#059669; font-size:0.65rem; padding: 1px 6px; border-radius: 6px; font-weight: 800;">۶ شعبه</span>
+                    </div>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
-            <!-- Section 3: Feedback & Support -->
-            <div class="drawer-section-heading">پشتیبانی و نظارت</div>
-            <a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}">
-                <div class="drawer-link-inner">
-                    <span class="drawer-link-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    </span>
-                    <span>ثبت و پیگیری شکایات</span>
-                </div>
-                <span class="drawer-link-arrow">‹</span>
-            </a>
+            <!-- Dropdown 2 in Mobile: منشور و ضوابط (عیناً مانند دسکتاپ) -->
+            <div class="drawer-section-heading">منشور و ضوابط</div>
 
-            <a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}">
+            <a href="{{ url('/customer-rights') }}" class="drawer-nav-link {{ request()->is('*customer-rights*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     </span>
-                    <span>نظرسنجی کیفیت خدمت</span>
+                    <span>منشور حقوق مشتریان</span>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
@@ -1468,38 +1478,105 @@
             <a href="{{ url('/regulations') }}" class="drawer-nav-link {{ request()->is('*regulations*') ? 'active' : '' }}">
                 <div class="drawer-link-inner">
                     <span class="drawer-link-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </span>
-                    <span>ضوابط اجرایی وزارت صمت</span>
+                    <span>ضوابط صمت (ماده ۱۳)</span>
                 </div>
                 <span class="drawer-link-arrow">‹</span>
             </a>
 
+            <!-- Dropdown 3 in Mobile: شکایات و نظرسنجی (عیناً مانند دسکتاپ) -->
+            <div class="drawer-section-heading">شکایات و نظرسنجی</div>
+
+            <a href="{{ url('/complaints') }}" class="drawer-nav-link {{ request()->is('*complaints*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon" style="color: #e11d48;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </span>
+                    <span>ثبت شکایات و بازرسی</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/survey') }}" class="drawer-nav-link {{ request()->is('*survey*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon" style="color: #f59e0b;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </span>
+                    <span>نظرسنجی رضایت مشتری</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <a href="{{ url('/tickets') }}" class="drawer-nav-link {{ request()->is('*tickets*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon" style="color: #2563eb;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </span>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <span>ثبت و پیگیری تیکت پشتیبانی</span>
+                        <span class="nav-mini-badge" style="background:#eff6ff; color:#2563eb; font-size:0.65rem; padding: 1px 6px; border-radius: 6px; font-weight: 800;">۲۴ ساعته</span>
+                    </div>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <!-- Contact Link (همانند دسکتاپ) -->
+            <div class="drawer-section-heading">ارتباطات</div>
+            <a href="{{ url('/contact') }}" class="drawer-nav-link {{ request()->is('*contact*') ? 'active' : '' }}">
+                <div class="drawer-link-inner">
+                    <span class="drawer-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </span>
+                    <span>تماس با ما</span>
+                </div>
+                <span class="drawer-link-arrow">‹</span>
+            </a>
+
+            <!-- Dynamic Custom CMS Links (همانند دسکتاپ) -->
+            @php
+                $excludedWords = ['درباره', 'وبلاگ', 'بلاگ', 'about', 'blog', 'اصلی', 'استعلام', 'پیگیری', 'گارانتی', 'منشور', 'ارسال', 'فاکتور', 'نظرسنجی', 'شکایت', 'تماس', 'نمایندگان', 'تیکت', 'قوانین', 'تعرفه'];
+                $excludedUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track', '/representatives', 'representatives', '/agencies', 'agencies', '/tickets', 'tickets'];
+            @endphp
             @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
                 @foreach($headerMenuItems as $navItem)
-                    <a href="{{ url($navItem->url) }}" class="drawer-nav-link" target="{{ $navItem->target ?? '_self' }}">
-                        <div class="drawer-link-inner">
-                            <span class="drawer-link-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-                            </span>
-                            <span>{{ $navItem->title }}</span>
-                            @if(!empty($navItem->badge))
-                                <span style="font-size: 0.68rem; background: #eff6ff; color: #2563eb; padding: 1px 6px; border-radius: 6px; margin-right: 6px;">{{ $navItem->badge }}</span>
-                            @endif
-                        </div>
-                        <span class="drawer-link-arrow">‹</span>
-                    </a>
+                    @php
+                        $cUrl = '/' . ltrim($navItem->url, '/');
+                        $isExcluded = in_array($cUrl, $excludedUrls) || in_array($navItem->url, $excludedUrls);
+                        if (!$isExcluded) {
+                            foreach ($excludedWords as $ew) {
+                                if (mb_stripos($navItem->title, $ew) !== false || mb_stripos($navItem->url, $ew) !== false) {
+                                    $isExcluded = true;
+                                    break;
+                                }
+                            }
+                        }
+                    @endphp
+                    @if(!$isExcluded)
+                        <a href="{{ url($navItem->url) }}" class="drawer-nav-link" target="{{ $navItem->target ?? '_self' }}">
+                            <div class="drawer-link-inner">
+                                <span class="drawer-link-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </span>
+                                <span>{{ $navItem->title }}</span>
+                                @if(!empty($navItem->badge))
+                                    <span class="nav-mini-badge" style="background: #eff6ff; color: #2563eb; font-size: 0.65rem; padding: 1px 6px; border-radius: 6px;">{{ $navItem->badge }}</span>
+                                @endif
+                            </div>
+                            <span class="drawer-link-arrow">‹</span>
+                        </a>
+                    @endif
                 @endforeach
             @endif
 
-            <!-- Footer shortcut -->
-            <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-light);">
-                <a href="https://taminkanisam.co.ir" class="drawer-nav-link" style="color: #2563eb; background: #eff6ff;">
+            <!-- Car Portal Quick Link -->
+            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #e2e8f0;">
+                <a href="https://taminkanisam.co.ir" target="_blank" class="drawer-nav-link" style="background: #f8fafc; border: 1px solid #e2e8f0;">
                     <div class="drawer-link-inner">
-                        <span class="drawer-link-icon" style="background: #2563eb; color: #ffffff;">
+                        <span class="drawer-link-icon" style="background: #ffffff; color: #2563eb;">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                         </span>
-                        <span style="font-weight: 700;">سایت اصلی تامین کانی سام</span>
+                        <span style="font-weight: 700;">سایت خودرویی تامین کانی سام</span>
                     </div>
                     <span class="drawer-link-arrow" style="color: #2563eb;">‹</span>
                 </a>
