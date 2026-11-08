@@ -1184,9 +1184,14 @@
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <div class="nav-dropdown-menu">
-                        <a href="{{ url('/invoice-sample') }}" class="nav-dropdown-item {{ request()->is('*invoice-sample*') ? 'active' : '' }}">
+                        <a href="{{ url('/invoice-sample') }}" class="nav-dropdown-item {{ request()->is('*invoice-sample*') || request()->is('*tariff*') ? 'active' : '' }}">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <span>تعرفه و فاکتور رسمی اتحادیه</span>
+                            <span>نرخ‌نامه و تعرفه مصوب اتحادیه (۱۴۰۵)</span>
+                            <span class="nav-mini-badge" style="background:#eff6ff; color:#2563eb; font-size:0.65rem;">ابلاغیه رسمی</span>
+                        </a>
+                        <a href="{{ url('/invoice-sample') }}?tab=invoice" class="nav-dropdown-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            <span>نمونه صورتحساب رسمی (ماده ۱۶)</span>
                         </a>
                         <a href="{{ url('/warranty-terms') }}" class="nav-dropdown-item {{ request()->is('*warranty-terms*') ? 'active' : '' }}">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>

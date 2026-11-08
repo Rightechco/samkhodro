@@ -54,6 +54,7 @@ $registerMobileRoutes = function () {
     Route::post('/complaints/store', [MobileServiceController::class, 'storeComplaint'])->name('mob.complaints.store');
     Route::match(['get', 'post'], '/complaints/track', [MobileServiceController::class, 'trackComplaint'])->name('mob.complaints.track');
     Route::get('/invoice-sample', [MobileServiceController::class, 'invoiceSample'])->name('mob.invoice-sample');
+    Route::get('/tariff', [MobileServiceController::class, 'invoiceSample'])->name('mob.tariff');
     Route::get('/shipping-guide', [MobileServiceController::class, 'shippingGuide'])->name('mob.shipping-guide');
     Route::get('/regulations', [MobileServiceController::class, 'regulations'])->name('mob.regulations');
 

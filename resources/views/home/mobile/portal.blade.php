@@ -3116,19 +3116,158 @@
              PAGE 6: INVOICES & TARIFFS (tab-invoices)
              =================================================================== -->
         <div class="erp-view {{ $activeTab === 'tab-invoices' ? 'active' : '' }}" id="tab-invoices" data-title="فاکتورها و تعرفه">
-            <div class="erp-panel">
-                <div class="erp-panel-header">
-                    <div class="erp-panel-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        <span>صورتحساب و تعرفه خدمات غیرگارانتی و گارانتی</span>
-                    </div>
-                    <a href="{{ url('/invoice-sample') }}" target="_blank" class="btn-table-action primary">
-                        مشاهده نمونه فاکتور رسمی اتحادیه
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#eff6ff; color:#1d4ed8;">ابلاغیه رسمی نرخ‌گذاری سال ۱۴۰۵</span>
+                    <h1 class="erp-page-title">نرخ‌نامه و تعرفه مصوب اتحادیه دستگاه‌های مخابراتی تهران</h1>
+                    <p class="erp-page-desc">سقف مصوب اجرت خدمات سخت‌افزاری و نرم‌افزاری تلفن همراه بر اساس ارزش روز گوشی (نرخ‌ها به تومان) به انضمام ضوابط و تبصره‌های ماده ۱۶ صمت.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ url('/invoice-sample') }}" target="_blank" class="erp-btn" style="background: #2563eb; color: #ffffff; text-decoration: none; font-size: 0.82rem; padding: 8px 16px; border-radius: 10px;">
+                        <span>مشاهده صفحه رسمی و چاپ ↗</span>
                     </a>
                 </div>
-                <p style="font-size: 0.85rem; color: #475569; line-height: 1.8;">
-                    تمامی مبالغ و اجرت تعمیرات بر اساس نرخ‌نامه مصوب اتحادیه صنف فناوران رایانه و مخابرات و سازمان حمایت از مصرف‌کنندگان محاسبه می‌گردد. برای کلیه تعمیرات غیرگارانتی، داغی قطعه تعویض شده به مشتری تحویل گردیده و قطعه نو دارای ۶ ماه ضمانت تعویض می‌باشد.
-                </p>
+            </div>
+
+            <!-- Union Tariff Box Inside ERP -->
+            <div class="erp-card" style="margin-bottom: 24px;">
+                <div style="background: #f8fafc; border-right: 4px solid #2563eb; border-radius: 10px; padding: 14px 18px; margin-bottom: 18px; font-size: 0.85rem; line-height: 1.8; color: #1e293b;">
+                    <strong>ابلاغیه رسمی کارگروه نرخ‌گذاری اتحادیه دستگاه‌های مخابراتی و ارتباطی شهرستان تهران (سال ۱۴۰۵):</strong>
+                    تعرفه مصوب هیئت مدیره اتحادیه جهت اجرا در کلیه شعب و نمایندگی‌های خدمات پس از فروش تلفن همراه ابلاغ گردیده و رعایت دقیق آن الزامی می‌باشد.
+                </div>
+
+                <div class="erp-table-responsive" style="overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px;">
+                    <table class="erp-table" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.81rem; min-width: 1100px;">
+                        <thead>
+                            <tr style="background: #0f172a; color: #ffffff;">
+                                <th rowspan="2" style="padding: 12px; border: 1px solid #334155; text-align: right; min-width: 260px;">شرح خدمات و تعمیرات</th>
+                                <th colspan="9" style="padding: 10px; border: 1px solid #334155; background: #1e293b; color: #60a5fa; font-weight: 800;">شرح ارزش و قیمت گوشی (میلیون تومان)</th>
+                            </tr>
+                            <tr style="background: #1e293b; color: #f1f5f9;">
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 80px;">۰ - ۱۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 80px;">۱۰ - ۳۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 80px;">۳۰ - ۶۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 86px;">۶۰ - ۱۰۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 90px;">۱۰۰ - ۲۰۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 96px;">۲۰۰ - ۳۰۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 96px;">۳۰۰ - ۳۵۰</th>
+                                <th style="padding: 8px 4px; border: 1px solid #334155; min-width: 98px;">۳۵۰ - ۵۰۰</th>
+                                <th style="padding: 8px 6px; border: 1px solid #334155; min-width: 110px; background: #0f172a; color: #fbbf24;">۵۰۰ به بالا</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="background: #ffffff;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۱. نصب سیستم عامل (فلش و نرم‌افزار جانبی)</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۴۵۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۶۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۹۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۲۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۸۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۰/۶٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #f8fafc;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۲. رفع عیوب تخصصی نرم‌افزاری</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۶۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۲۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۸۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۰/۷٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #ffffff;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۳. تعمیرات سخت‌افزاری سطح یک (دوربین، فلت، باطری، مادربورد و...)</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۲۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۸۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۶,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۷,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۰/۹٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #f8fafc;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۴. تعویض تاچ و ال‌سی‌دی - تعویض قاب</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۸۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۲۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۸۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۷,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۹,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۲٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #ffffff;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۵. تعمیرات سخت‌افزاری سطح دو (کلیه قطعات و آی‌سی غیرچسبی)</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱,۲۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۴,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۷,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۴,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۶,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲۰,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۴٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #f8fafc;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۶. قطعات الکترونیکی (CPU، هارد و آی‌سی‌های چسبی)</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۴,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۰,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲۲,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۲۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۵٪ ارزش کالا</td>
+                            </tr>
+                            <tr style="background: #ffffff;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۷. تعویض طبقات برد (سوآپ) یک طبقه</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #94a3b8;">—</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #94a3b8;">—</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۷,۵۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۰,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۶,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; font-size: 0.74rem;">۲۵M پ / ۱۵M ب</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; font-size: 0.74rem;">۳۵M پ / ۳۰M ب</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af; font-size: 0.74rem;">۷٪ پ / ۶٪ ب</td>
+                            </tr>
+                            <tr style="background: #f8fafc;">
+                                <td style="padding: 10px 14px; border: 1px solid #e2e8f0; font-weight: 800; color: #0f172a; text-align: right;">۸. تعویض طبقات برد (سوآپ) دو طبقه</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #94a3b8;">—</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; color: #94a3b8;">—</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۸,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۱۲,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; font-size: 0.74rem;">۱۶,۰۰۰,۰۰۰ <span style="font-size:0.65rem; color:#2563eb;">(OVP)</span></td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; font-size: 0.74rem;">۲۵,۰۰۰,۰۰۰ <span style="font-size:0.65rem; color:#2563eb;">(OVP)</span></td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۳۰,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0;">۴۵,۰۰۰,۰۰۰</td>
+                                <td style="padding: 8px; border: 1px solid #e2e8f0; background: #eff6ff; font-weight: 800; color: #1e40af;">۹٪ ارزش کالا</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footnotes in Portal -->
+                <div style="margin-top: 18px; padding: 14px 18px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0; font-size: 0.82rem; color: #475569; line-height: 1.8;">
+                    <div style="font-weight: 800; color: #0f172a; margin-bottom: 6px;">ضوابط الزامی پذیرش و صدور فاکتور:</div>
+                    <ul style="padding-right: 18px; margin: 0;">
+                        <li><strong>تبصره ۱:</strong> ارائه رسید تعمیرات در هنگام پذیرش و درج کلیه اطلاعات گوشی الزامی است.</li>
+                        <li><strong>تبصره ۲:</strong> درج هزینه‌های قطعه و اجرت به صورت مجزا و تفکیک‌شده در فاکتور الزامی است.</li>
+                        <li><strong>تبصره ۴:</strong> قبل از آغاز تعمیر، قیمت قطعی کل کار به مشتری اعلام و موافقت اخذ گردد.</li>
+                        <li><strong>تبصره ۵:</strong> در تعمیرات همزمان سطح یک، تنها یک نرخ (بالاترین نرخ) دریافت می‌گردد.</li>
+                        <li><strong>تبصره ۶:</strong> سود فروش قطعه ۹٪ جداگانه محاسبه خواهد شد.</li>
+                        <li><strong>تبصره ۷:</strong> اجرت رفع خطای قطعات ۱۰٪ از قیمت قطعه می‌باشد.</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
