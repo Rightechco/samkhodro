@@ -1846,6 +1846,145 @@
         }
     }
 
+
+    /* =========================================================================
+       ULTRA-PREMIUM MODAL DESIGN (User Onboarding, Add/Edit User Modals)
+       ========================================================================= */
+    
+    /* Premium Input & Select & Responsive Modal Grid Controls */
+    .erp-input, .erp-select {
+        width: 100% !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #cbd5e1 !important;
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        font-family: inherit !important;
+        font-size: 0.90rem !important;
+        font-weight: 600 !important;
+        outline: none !important;
+        transition: all 0.2s ease !important;
+        box-sizing: border-box !important;
+    }
+    .erp-input:focus, .erp-select:focus {
+        border-color: #2563eb !important;
+        background: #ffffff !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+    }
+    .erp-modal-grid-2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 14px !important;
+    }
+    @media (max-width: 600px) {
+        .erp-modal-grid-2 {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+        .onboarding-modal-card {
+            padding: 22px 18px !important;
+            border-radius: 18px !important;
+        }
+    }
+
+    .onboarding-modal-backdrop {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(15, 23, 42, 0.7) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        z-index: 100050 !important;
+        display: none;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 16px !important;
+        box-sizing: border-box !important;
+    }
+    .onboarding-modal-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 24px !important;
+        max-width: 560px !important;
+        width: 100% !important;
+        padding: 28px 26px !important;
+        box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.3) !important;
+        position: relative !important;
+        animation: modalScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        box-sizing: border-box !important;
+        max-height: 92vh !important;
+        overflow-y: auto !important;
+    }
+    @keyframes modalScaleUp {
+        from { opacity: 0; transform: scale(0.94) translateY(12px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .onboarding-header {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+        margin-bottom: 22px !important;
+        padding-bottom: 16px !important;
+        border-bottom: 1.5px solid #f1f5f9 !important;
+        position: relative !important;
+    }
+    .onboarding-icon {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 14px !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+        color: #2563eb !important;
+        border: 1px solid #bfdbfe !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 1.4rem !important;
+        flex-shrink: 0 !important;
+    }
+    .onboarding-title {
+        font-size: 1.15rem !important;
+        font-weight: 900 !important;
+        color: #0f172a !important;
+        margin: 0 0 4px 0 !important;
+    }
+    .onboarding-subtitle {
+        font-size: 0.82rem !important;
+        color: #64748b !important;
+        margin: 0 !important;
+        line-height: 1.5 !important;
+    }
+    .onboarding-close-btn {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #64748b !important;
+        font-size: 1.2rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: all 0.2s !important;
+    }
+    .onboarding-close-btn:hover {
+        background: #fee2e2 !important;
+        color: #ef4444 !important;
+        border-color: #fecdd3 !important;
+    }
+    .form-group-custom {
+        margin-bottom: 14px !important;
+    }
+    .form-label-custom {
+        display: block !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+        color: #1e293b !important;
+        margin-bottom: 6px !important;
+    }
+
 </style>
 @endpush
 
@@ -5382,6 +5521,211 @@
             </div>
         </div>
 
+<!-- ===================================================================
+             PAGE 12: USER & ROLE MANAGEMENT (tab-users)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-users' ? 'active' : '' }}" id="tab-users" data-title="مدیریت کاربران و نقش‌ها">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background: #eff6ff; color: #2563eb;">امنیت، کاربران و سطوح دسترسی RBAC</span>
+                    <h1 class="erp-page-title">مدیریت کاربران، نمایندگان و پرسنل</h1>
+                    <p class="erp-page-desc">کنترل سطوح دسترسی، ایجاد کاربر جدید با نقش معین، تغییر کلمه عبور و مدیریت وضعیت فعالیت در سامانه خدمات پس از فروش.</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" class="erp-btn erp-btn-primary" onclick="openAddUserModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        <span>افزودن کاربر جدید با تعیین نقش</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Role Demo Credentials Showcase Bar -->
+            <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1.5px solid #bfdbfe; border-radius: 16px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #dbeafe; padding-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.2rem;">🔑</span>
+                        <strong style="color: #1e3a8a; font-size: 0.92rem;">نام‌های کاربری و کلمات عبور پیش‌فرض نقش‌های سامانه جهت ورود و تست سریع:</strong>
+                    </div>
+                    <span style="font-size: 0.74rem; background: #dbeafe; color: #1e40af; padding: 3px 12px; border-radius: 99px; font-weight: 800;">
+                        احراز هویت دوگانه: رمز عبور + OTP پیامک ملی‌پيامک
+                    </span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px;">
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #e11d48;">👑 مدیر ارشد سامانه</span>
+                            <span style="font-size: 0.70rem; background: #ffe4e6; color: #be123c; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۳+</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">admin</strong> | کلمه عبور: <strong style="color:#0f172a;">admin</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #7c3aed;">🔧 تکنسین فنی کارگاه</span>
+                            <span style="font-size: 0.70rem; background: #f5f3ff; color: #6d28d9; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۱</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">technician</strong> | کلمه عبور: <strong style="color:#0f172a;">technician</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #2563eb;">📋 پذیرش و نماینده شعب</span>
+                            <span style="font-size: 0.70rem; background: #eff6ff; color: #1d4ed8; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۲</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">agent</strong> | کلمه عبور: <strong style="color:#0f172a;">agent</strong></div>
+                    </div>
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: 800; font-size: 0.82rem; color: #059669;">👤 مشتری گرامی سامانه</span>
+                            <span style="font-size: 0.70rem; background: #ecfdf5; color: #047857; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۰</span>
+                        </div>
+                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">customer</strong> | کلمه عبور: <strong style="color:#0f172a;">customer</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Summary KPI Cards -->
+            @php
+                $uList = isset($systemUsers) ? $systemUsers : collect();
+                $countAdmin = $uList->where('level', '>=', 3)->count();
+                $countAgent = $uList->where('level', 2)->count();
+                $countTech = $uList->where('level', 1)->count();
+                $countCustomer = $uList->where('level', '<=', 0)->count();
+            @endphp
+            <div class="erp-grid-4" style="margin-bottom: 24px;">
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('all')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
+                    <div>
+                        <div class="erp-kpi-label">کل کاربران سامانه</div>
+                        <div class="erp-kpi-val">{{ $uList->count() }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('3')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #fff1f2; color: #e11d48;">👑</div>
+                    <div>
+                        <div class="erp-kpi-label">مدیران ارشد</div>
+                        <div class="erp-kpi-val">{{ $countAdmin }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('2')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #1d4ed8;">🏢</div>
+                    <div>
+                        <div class="erp-kpi-label">مسئولان شعب و نمایندگان</div>
+                        <div class="erp-kpi-val">{{ $countAgent }} نفر</div>
+                    </div>
+                </div>
+                <div class="erp-card erp-kpi-card" onclick="filterUserRole('1')" style="cursor: pointer;">
+                    <div class="erp-kpi-icon" style="background: #f5f3ff; color: #7c3aed;">🔧</div>
+                    <div>
+                        <div class="erp-kpi-label">تکنسین‌های فنی کارگاه</div>
+                        <div class="erp-kpi-val">{{ $countTech }} نفر</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Toolbar -->
+            <div class="erp-card" style="margin-bottom: 20px;">
+                <div class="erp-card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="userRoleFilterButtons">
+                        <button type="button" class="btn-table-action primary" onclick="filterUserRole('all', this)">همه کاربران ({{ $uList->count() }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('3', this)">مدیران ارشد ({{ $countAdmin }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('2', this)">نمایندگان شعب ({{ $countAgent }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('1', this)">کارشناسان فنی ({{ $countTech }})</button>
+                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('0', this)">مشتریان ({{ $countCustomer }})</button>
+                    </div>
+                    <div style="max-width: 320px; width: 100%;">
+                        <input type="text" id="searchUserTableInput" onkeyup="searchUserTable()" class="erp-input" placeholder="🔍 جستجو نام، شماره یا نقش..." style="height: 42px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="erp-card">
+                <div class="erp-card-body" style="padding: 0;">
+                    <div class="erp-table-wrap">
+                        <table class="erp-table" id="systemUsersTable">
+                            <thead>
+                                <tr>
+                                    <th>شناسه</th>
+                                    <th>مشخصات کاربر</th>
+                                    <th>شماره همراه</th>
+                                    <th>ایمیل</th>
+                                    <th>نقش و سطح دسترسی</th>
+                                    <th>شعبه / برند</th>
+                                    <th>وضعیت</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($uList as $su)
+                                    @php
+                                        $roleSlug = 'customer';
+                                        $roleBadgeText = 'مشتری';
+                                        $roleBadgeBg = '#ecfdf5';
+                                        $roleBadgeColor = '#059669';
+                                        if ($su->level >= 3) {
+                                            $roleSlug = 'admin';
+                                            $roleBadgeText = 'مدیر ارشد سامانه';
+                                            $roleBadgeBg = '#fff1f2';
+                                            $roleBadgeColor = '#e11d48';
+                                        } elseif ($su->level == 2) {
+                                            $roleSlug = 'agent';
+                                            $roleBadgeText = 'نماینده رسمی / پذیرش';
+                                            $roleBadgeBg = '#eff6ff';
+                                            $roleBadgeColor = '#2563eb';
+                                        } elseif ($su->level == 1) {
+                                            $roleSlug = 'technician';
+                                            $roleBadgeText = 'کارشناس ارشد فنی';
+                                            $roleBadgeBg = '#f5f3ff';
+                                            $roleBadgeColor = '#7c3aed';
+                                        }
+                                        $isActive = ($su->status ?? 'active') === 'active';
+                                    @endphp
+                                    <tr class="user-row" data-level="{{ $su->level }}" data-name="{{ $su->name }}" data-phone="{{ $su->number }}" data-email="{{ $su->email }}">
+                                        <td><code>#{{ $su->id }}</code></td>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <div style="width: 38px; height: 38px; border-radius: 10px; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }}; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1rem;">
+                                                    {{ mb_substr($su->name, 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <div style="font-weight: 800; color: #0f172a;">{{ $su->name }}</div>
+                                                    @if(!empty($su->national_code))
+                                                        <div style="font-size: 0.72rem; color: #64748b;">کد ملی: {{ $su->national_code }}</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span style="font-family: monospace; font-weight: 800; color: #2563eb; direction: ltr; display: inline-block;">{{ $su->number }}</span></td>
+                                        <td><span style="font-size: 0.78rem; color: #475569; direction: ltr; display: inline-block;">{{ $su->email }}</span></td>
+                                        <td>
+                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }};">
+                                                {{ $roleBadgeText }}
+                                            </span>
+                                        </td>
+                                        <td>{{ $su->branch_name ?? ($su->device_brand ?? '-') }}</td>
+                                        <td>
+                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $isActive ? '#ecfdf5' : '#fff1f2' }}; color: {{ $isActive ? '#059669' : '#e11d48' }};">
+                                                {{ $isActive ? 'فعال' : 'مسدود' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div style="display: flex; gap: 6px;">
+                                                <button type="button" class="btn-table-action" style="padding: 6px 12px; font-size: 0.76rem; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;" onclick='openEditUserModal(@json($su))'>
+                                                    ویرایش / نقش
+                                                </button>
+                                                <button type="button" class="btn-table-action" style="padding: 6px 10px; font-size: 0.76rem; background: #f8fafc; color: #475569; border: 1px solid #cbd5e1;" onclick="toggleUserStatusAjax({{ $su->id }})">
+                                                    {{ $isActive ? 'مسدود' : 'فعال' }}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 
@@ -6597,216 +6941,10 @@
     </div>
 </div>
 
-
-
-        <!-- ===================================================================
-             PAGE 12: USER & ROLE MANAGEMENT (tab-users)
-             =================================================================== -->
-        <div class="erp-view {{ $activeTab === 'tab-users' ? 'active' : '' }}" id="tab-users" data-title="مدیریت کاربران و نقش‌ها">
-            <div class="erp-page-head">
-                <div class="erp-page-meta">
-                    <span class="erp-page-badge" style="background: #eff6ff; color: #2563eb;">امنیت، کاربران و سطوح دسترسی RBAC</span>
-                    <h1 class="erp-page-title">مدیریت کاربران، نمایندگان و پرسنل</h1>
-                    <p class="erp-page-desc">کنترل سطوح دسترسی، ایجاد کاربر جدید با نقش معین، تغییر کلمه عبور و مدیریت وضعیت فعالیت در سامانه خدمات پس از فروش.</p>
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    <button type="button" class="erp-btn erp-btn-primary" onclick="openAddUserModal()">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        <span>افزودن کاربر جدید با تعیین نقش</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Role Demo Credentials Showcase Bar -->
-            <div style="background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1.5px solid #bfdbfe; border-radius: 16px; padding: 18px 20px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);">
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid #dbeafe; padding-bottom: 10px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 1.2rem;">🔑</span>
-                        <strong style="color: #1e3a8a; font-size: 0.92rem;">نام‌های کاربری و کلمات عبور پیش‌فرض نقش‌های سامانه جهت ورود و تست سریع:</strong>
-                    </div>
-                    <span style="font-size: 0.74rem; background: #dbeafe; color: #1e40af; padding: 3px 12px; border-radius: 99px; font-weight: 800;">
-                        احراز هویت دوگانه: رمز عبور + OTP پیامک ملی‌پيامک
-                    </span>
-                </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px;">
-                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-weight: 800; font-size: 0.82rem; color: #e11d48;">👑 مدیر ارشد سامانه</span>
-                            <span style="font-size: 0.70rem; background: #ffe4e6; color: #be123c; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۳+</span>
-                        </div>
-                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">admin</strong> | کلمه عبور: <strong style="color:#0f172a;">admin</strong></div>
-                    </div>
-                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-weight: 800; font-size: 0.82rem; color: #7c3aed;">🔧 تکنسین فنی کارگاه</span>
-                            <span style="font-size: 0.70rem; background: #f5f3ff; color: #6d28d9; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۱</span>
-                        </div>
-                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">technician</strong> | کلمه عبور: <strong style="color:#0f172a;">technician</strong></div>
-                    </div>
-                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-weight: 800; font-size: 0.82rem; color: #2563eb;">📋 پذیرش و نماینده شعب</span>
-                            <span style="font-size: 0.70rem; background: #eff6ff; color: #1d4ed8; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۲</span>
-                        </div>
-                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">agent</strong> | کلمه عبور: <strong style="color:#0f172a;">agent</strong></div>
-                    </div>
-                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-weight: 800; font-size: 0.82rem; color: #059669;">👤 مشتری گرامی سامانه</span>
-                            <span style="font-size: 0.70rem; background: #ecfdf5; color: #047857; padding: 1px 6px; border-radius: 4px; font-weight: 700;">سطح ۰</span>
-                        </div>
-                        <div style="font-size: 0.76rem; color: #475569; font-family: monospace;">نام کاربری: <strong style="color:#0f172a;">customer</strong> | کلمه عبور: <strong style="color:#0f172a;">customer</strong></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Role Summary KPI Cards -->
-            @php
-                $uList = isset($systemUsers) ? $systemUsers : collect();
-                $countAdmin = $uList->where('level', '>=', 3)->count();
-                $countAgent = $uList->where('level', 2)->count();
-                $countTech = $uList->where('level', 1)->count();
-                $countCustomer = $uList->where('level', '<=', 0)->count();
-            @endphp
-            <div class="erp-grid-4" style="margin-bottom: 24px;">
-                <div class="erp-card erp-kpi-card" onclick="filterUserRole('all')" style="cursor: pointer;">
-                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #2563eb;">👥</div>
-                    <div>
-                        <div class="erp-kpi-label">کل کاربران سامانه</div>
-                        <div class="erp-kpi-val">{{ $uList->count() }} نفر</div>
-                    </div>
-                </div>
-                <div class="erp-card erp-kpi-card" onclick="filterUserRole('3')" style="cursor: pointer;">
-                    <div class="erp-kpi-icon" style="background: #fff1f2; color: #e11d48;">👑</div>
-                    <div>
-                        <div class="erp-kpi-label">مدیران ارشد</div>
-                        <div class="erp-kpi-val">{{ $countAdmin }} نفر</div>
-                    </div>
-                </div>
-                <div class="erp-card erp-kpi-card" onclick="filterUserRole('2')" style="cursor: pointer;">
-                    <div class="erp-kpi-icon" style="background: #eff6ff; color: #1d4ed8;">🏢</div>
-                    <div>
-                        <div class="erp-kpi-label">مسئولان شعب و نمایندگان</div>
-                        <div class="erp-kpi-val">{{ $countAgent }} نفر</div>
-                    </div>
-                </div>
-                <div class="erp-card erp-kpi-card" onclick="filterUserRole('1')" style="cursor: pointer;">
-                    <div class="erp-kpi-icon" style="background: #f5f3ff; color: #7c3aed;">🔧</div>
-                    <div>
-                        <div class="erp-kpi-label">تکنسین‌های فنی کارگاه</div>
-                        <div class="erp-kpi-val">{{ $countTech }} نفر</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filter & Search Toolbar -->
-            <div class="erp-card" style="margin-bottom: 20px;">
-                <div class="erp-card-body" style="padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="userRoleFilterButtons">
-                        <button type="button" class="btn-table-action primary" onclick="filterUserRole('all', this)">همه کاربران ({{ $uList->count() }})</button>
-                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('3', this)">مدیران ارشد ({{ $countAdmin }})</button>
-                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('2', this)">نمایندگان شعب ({{ $countAgent }})</button>
-                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('1', this)">کارشناسان فنی ({{ $countTech }})</button>
-                        <button type="button" class="btn-table-action outline" onclick="filterUserRole('0', this)">مشتریان ({{ $countCustomer }})</button>
-                    </div>
-                    <div style="max-width: 320px; width: 100%;">
-                        <input type="text" id="searchUserTableInput" onkeyup="searchUserTable()" class="erp-input" placeholder="🔍 جستجو نام، شماره یا نقش..." style="height: 42px;">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Users Table -->
-            <div class="erp-card">
-                <div class="erp-card-body" style="padding: 0;">
-                    <div class="erp-table-wrap">
-                        <table class="erp-table" id="systemUsersTable">
-                            <thead>
-                                <tr>
-                                    <th>شناسه</th>
-                                    <th>مشخصات کاربر</th>
-                                    <th>شماره همراه</th>
-                                    <th>ایمیل</th>
-                                    <th>نقش و سطح دسترسی</th>
-                                    <th>شعبه / برند</th>
-                                    <th>وضعیت</th>
-                                    <th>عملیات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($uList as $su)
-                                    @php
-                                        $roleSlug = 'customer';
-                                        $roleBadgeText = 'مشتری';
-                                        $roleBadgeBg = '#ecfdf5';
-                                        $roleBadgeColor = '#059669';
-                                        if ($su->level >= 3) {
-                                            $roleSlug = 'admin';
-                                            $roleBadgeText = 'مدیر ارشد سامانه';
-                                            $roleBadgeBg = '#fff1f2';
-                                            $roleBadgeColor = '#e11d48';
-                                        } elseif ($su->level == 2) {
-                                            $roleSlug = 'agent';
-                                            $roleBadgeText = 'نماینده رسمی / پذیرش';
-                                            $roleBadgeBg = '#eff6ff';
-                                            $roleBadgeColor = '#2563eb';
-                                        } elseif ($su->level == 1) {
-                                            $roleSlug = 'technician';
-                                            $roleBadgeText = 'کارشناس ارشد فنی';
-                                            $roleBadgeBg = '#f5f3ff';
-                                            $roleBadgeColor = '#7c3aed';
-                                        }
-                                        $isActive = ($su->status ?? 'active') === 'active';
-                                    @endphp
-                                    <tr class="user-row" data-level="{{ $su->level }}" data-name="{{ $su->name }}" data-phone="{{ $su->number }}" data-email="{{ $su->email }}">
-                                        <td><code>#{{ $su->id }}</code></td>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 10px;">
-                                                <div style="width: 38px; height: 38px; border-radius: 10px; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }}; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1rem;">
-                                                    {{ mb_substr($su->name, 0, 1) }}
-                                                </div>
-                                                <div>
-                                                    <div style="font-weight: 800; color: #0f172a;">{{ $su->name }}</div>
-                                                    @if(!empty($su->national_code))
-                                                        <div style="font-size: 0.72rem; color: #64748b;">کد ملی: {{ $su->national_code }}</div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span style="font-family: monospace; font-weight: 800; color: #2563eb; direction: ltr; display: inline-block;">{{ $su->number }}</span></td>
-                                        <td><span style="font-size: 0.78rem; color: #475569; direction: ltr; display: inline-block;">{{ $su->email }}</span></td>
-                                        <td>
-                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $roleBadgeBg }}; color: {{ $roleBadgeColor }};">
-                                                {{ $roleBadgeText }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $su->branch_name ?? ($su->device_brand ?? '-') }}</td>
-                                        <td>
-                                            <span style="display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.74rem; font-weight: 800; background: {{ $isActive ? '#ecfdf5' : '#fff1f2' }}; color: {{ $isActive ? '#059669' : '#e11d48' }};">
-                                                {{ $isActive ? 'فعال' : 'مسدود' }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div style="display: flex; gap: 6px;">
-                                                <button type="button" class="btn-table-action" style="padding: 6px 12px; font-size: 0.76rem; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;" onclick='openEditUserModal(@json($su))'>
-                                                    ویرایش / نقش
-                                                </button>
-                                                <button type="button" class="btn-table-action" style="padding: 6px 10px; font-size: 0.76rem; background: #f8fafc; color: #475569; border: 1px solid #cbd5e1;" onclick="toggleUserStatusAjax({{ $su->id }})">
-                                                    {{ $isActive ? 'مسدود' : 'فعال' }}
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADD USER MODAL -->
+<!-- ADD USER MODAL -->
         <div class="onboarding-modal-backdrop" id="addUserModal" style="display: none;">
             <div class="onboarding-modal-card">
+                <button type="button" class="onboarding-close-btn" onclick="closeAddUserModal(); closeEditUserModal();">&times;</button>
                 <div class="onboarding-header">
                     <div class="onboarding-icon">👤</div>
                     <div>
@@ -6859,57 +6997,63 @@
             </div>
         </div>
 
-        <!-- EDIT USER MODAL -->
+        <!-- EDIT USER MODAL (Ultra-Premium Floating Dialog) -->
         <div class="onboarding-modal-backdrop" id="editUserModal" style="display: none;">
             <div class="onboarding-modal-card">
+                <button type="button" class="onboarding-close-btn" onclick="closeEditUserModal()">&times;</button>
                 <div class="onboarding-header">
                     <div class="onboarding-icon">⚙️</div>
                     <div>
-                        <h3 class="onboarding-title">ویرایش مشخصات و تغییر نقش کاربر</h3>
-                        <p class="onboarding-subtitle">تغییر سطح دسترسی، اطلاعات هویتی و بازنشانی رمز عبور</p>
+                        <h3 class="onboarding-title">ویرایش مشخصات و نقش سازمانی کاربر</h3>
+                        <p class="onboarding-subtitle">تغییر سطح دسترسی RBAC، اطلاعات هویتی و تنظیم رمز عبور اختصاصی</p>
                     </div>
                 </div>
                 <form id="editUserForm" onsubmit="handleEditUserSubmit(event)">
                     @csrf
                     <input type="hidden" id="editUserId" name="user_id">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="erp-modal-grid-2">
                         <div class="form-group-custom">
-                            <label class="form-label-custom">نام و نام خانوادگی *</label>
-                            <input type="text" id="editUserName" name="name" class="erp-input" required>
+                            <label class="form-label-custom">نام و نام خانوادگی کامل *</label>
+                            <input type="text" id="editUserName" name="name" class="erp-input" placeholder="مثال: مهندس رحیمی" required>
                         </div>
                         <div class="form-group-custom">
-                            <label class="form-label-custom">شماره همراه *</label>
-                            <input type="text" id="editUserNumber" name="number" class="erp-input" style="direction: ltr;" required>
+                            <label class="form-label-custom">شماره همراه (شناسه ورود) *</label>
+                            <input type="text" id="editUserNumber" name="number" class="erp-input" style="direction: ltr;" placeholder="0912..." required>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="erp-modal-grid-2">
                         <div class="form-group-custom">
-                            <label class="form-label-custom">آدرس ایمیل *</label>
-                            <input type="email" id="editUserEmail" name="email" class="erp-input" style="direction: ltr;" required>
+                            <label class="form-label-custom">پست الکترونیکی (ایمیل) *</label>
+                            <input type="email" id="editUserEmail" name="email" class="erp-input" style="direction: ltr;" placeholder="name@taminkanisam.co.ir" required>
                         </div>
                         <div class="form-group-custom">
-                            <label class="form-label-custom">نقش سازمانی *</label>
+                            <label class="form-label-custom">سطح دسترسی و نقش سازمانی *</label>
                             <select id="editUserLevel" name="level" class="erp-select" required>
-                                <option value="0">مشتری حقیقی (Level 0)</option>
-                                <option value="1">کارشناس ارشد فنی کارگاه (Level 1)</option>
-                                <option value="2">مسئول شعبه / نماینده رسمی (Level 2)</option>
-                                <option value="3">مدیر ارشد سامانه (Level 3)</option>
+                                <option value="0">👤 سطح ۰: مشتری حقیقی سامانه (Customer)</option>
+                                <option value="1">🔧 سطح ۱: کارشناس ارشد فنی کارگاه (Technician)</option>
+                                <option value="2">📋 سطح ۲: مسئول پذیرش و نماینده رسمی (Reception / Agency)</option>
+                                <option value="3">👑 سطح ۳+: مدیر ارشد سامانه (Super Admin)</option>
                             </select>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="erp-modal-grid-2">
                         <div class="form-group-custom">
-                            <label class="form-label-custom">رمز عبور جدید (اختیاری جهت بازنشانی)</label>
-                            <input type="password" name="password" class="erp-input" placeholder="در صورت تغییر پر شود">
+                            <label class="form-label-custom">کلمه عبور جدید (در صورت تمایل به تغییر)</label>
+                            <input type="password" name="password" class="erp-input" placeholder="حداقل ۴ کاراکتر">
                         </div>
                         <div class="form-group-custom">
-                            <label class="form-label-custom">شعبه / نمایندگی</label>
-                            <input type="text" id="editUserBranch" name="branch_name" class="erp-input">
+                            <label class="form-label-custom">شعبه / نمایندگی مربوطه</label>
+                            <input type="text" id="editUserBranch" name="branch_name" class="erp-input" placeholder="مثال: دفتر مرکزی تبریز">
                         </div>
                     </div>
-                    <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                        <button type="button" class="btn-table-action outline" onclick="closeEditUserModal()">انصراف</button>
-                        <button type="submit" class="btn-table-action primary" id="btnSubmitEditUser">ذخیره تغییرات کاربر</button>
+                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
+                        <button type="button" class="btn-table-action" onclick="closeEditUserModal()" style="padding: 10px 22px; border-radius: 10px; font-weight: 800; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; cursor: pointer;">
+                            انصراف
+                        </button>
+                        <button type="submit" class="btn-table-action primary" id="btnSubmitEditUser" style="padding: 10px 26px; border-radius: 10px; font-weight: 800; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; border: none; cursor: pointer; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3); display: inline-flex; align-items: center; gap: 6px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>ذخیره تغییرات کاربر</span>
+                        </button>
                     </div>
                 </form>
             </div>
