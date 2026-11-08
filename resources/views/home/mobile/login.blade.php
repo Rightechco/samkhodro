@@ -507,11 +507,45 @@
         }
     }
 
-    function backToStep1() {
-        document.getElementById('otpStep2').style.display = 'none';
-        document.getElementById('otpStep1').style.display = 'block';
-        document.getElementById('inputOtpCode').value = '';
-        if (timerInterval) clearInterval(timerInterval);
+        function handleResendOtp() {
+        document.getElementById('inputPhone').value = currentPhone;
+        handleSendOtp(new Event('submit'));
     }
 
-    
+    // Password Login
+    async function handlePasswordLogin(e) {
+        e.preventDefault();
+        const u = document.getElementById('inputUsername').value.trim();
+        const p = document.getElementById('inputPassword').value;
+
+        const btn = document.getElementById('btnPassLogin');
+        btn.disabled = true;
+        btn.innerHTML = '<span>در حال بررسی...</span>';
+
+        try {
+            const res = await fetch("{{ route('mob.login.password') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ username: u, password: p })
+            });
+            const data = await res.json();
+            if (res.ok && data.status === 'success') {
+                showAlert('ورود موفقیت‌آمیز بود.', true);
+                window.location.href = data.redirect;
+            } else {
+                showAlert(data.message || 'اطلاعات ورود نادرست است.');
+                btn.disabled = false;
+                btn.innerHTML = '<span>ورود به پنل مدیریت</span>';
+            }
+        } catch (err) {
+            showAlert('خطای برقراری ارتباط.');
+            btn.disabled = false;
+            btn.innerHTML = '<span>ورود به پنل مدیریت</span>';
+        }
+    }
+</script>
+@endpush
