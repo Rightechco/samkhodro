@@ -1159,7 +1159,59 @@
             }
         }
 
-    </style>
+    
+    /* ULTRA-PREMIUM MOBILE HEADER OPTIMIZATION */
+    @media (max-width: 991px) {
+        .portal-topbar {
+            height: 62px !important;
+            padding: 0 12px !important;
+            box-shadow: 0 2px 14px rgba(15, 23, 42, 0.06) !important;
+        }
+        .portal-topbar-inner {
+            height: 62px !important;
+            padding: 0 !important;
+            gap: 8px !important;
+        }
+        .portal-logo-sub {
+            display: none !important;
+        }
+        .portal-system-tag {
+            display: none !important;
+        }
+        .portal-hotline-pill, .btn-view-site {
+            display: none !important;
+        }
+        .portal-user-chip-text {
+            display: none !important;
+        }
+        .portal-user-chip {
+            padding: 4px !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        .btn-topbar-logout {
+            width: 34px !important;
+            height: 34px !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .portal-logo-title {
+            font-size: 0.95rem !important;
+        }
+        .portal-logo-icon {
+            width: 32px !important;
+            height: 32px !important;
+        }
+        .portal-drawer-toggle {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 10px !important;
+        }
+    }
+
+</style>
     @stack('styles')
 </head>
 <body>

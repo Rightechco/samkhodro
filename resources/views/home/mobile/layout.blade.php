@@ -15,6 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+    
         /* ========================================================
            LOCAL VAZIRMATN FONT FACES
            ======================================================== */
@@ -1238,34 +1245,30 @@
                     </div>
                 </div>
 
-                <a href="{{ url('/blog') }}" class="nav-item-link {{ request()->is('*blog*') ? 'active' : '' }}">
-                    <span>وبلاگ</span>
-                </a>
-                <a href="{{ url('/about') }}" class="nav-item-link {{ request()->is('*about*') ? 'active' : '' }}">
-                    <span>درباره ما</span>
-                </a>
                 <a href="{{ url('/contact') }}" class="nav-item-link {{ request()->is('*contact*') ? 'active' : '' }}">
                     <span>تماس با ما</span>
                 </a>
 
-                {{-- آیتم‌های داینامیک سفارشی جدید (جلوگیری از تکرار منوهای پیش‌فرض سیستم) --}}
+                {{-- آیتم‌های داینامیک سفارشی جدید (فقط صفحات جدید مدیریت شده در CMS) --}}
                 @php
-                    $builtInUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track', '/representatives', 'representatives', '/agencies', 'agencies', '/tickets', 'tickets'];
-                    $builtInTitles = ['صفحه اصلی', 'استعلام اصالت', 'پیگیری پرونده', 'شرایط گارانتی', 'منشور حقوق مشتریان', 'راهنمای ارسال کالا', 'فاکتور رسمی', 'وبلاگ تخصصی', 'نظرسنجی خدمات', 'شکایات و بازرسی', 'درباره ما', 'تماس با ما', 'نمایندگان', 'تیکت'];
+                    $excludedWords = ['درباره', 'وبلاگ', 'بلاگ', 'about', 'blog', 'اصلی', 'استعلام', 'پیگیری', 'گارانتی', 'منشور', 'ارسال', 'فاکتور', 'نظرسنجی', 'شکایت', 'تماس', 'نمایندگان', 'تیکت', 'قوانین', 'تعرفه'];
+                    $excludedUrls = ['/', '/#inquiry-section', '#inquiry-section', '/service-portal', '/invoice-sample', '/warranty-terms', '/shipping-guide', '/customer-rights', '/regulations', '/complaints', '/survey', '/blog', '/about', '/contact', '/track', 'track', '/representatives', 'representatives', '/agencies', 'agencies', '/tickets', 'tickets'];
                 @endphp
                 @if(isset($headerMenuItems) && count($headerMenuItems) > 0)
                     @foreach($headerMenuItems as $navItem)
                         @php
-                            $cleanNavUrl = '/' . ltrim($navItem->url, '/');
-                            $isBuiltInTitle = false;
-                            foreach ($builtInTitles as $bt) {
-                                if (mb_strpos($navItem->title, $bt) !== false) {
-                                    $isBuiltInTitle = true;
-                                    break;
+                            $cUrl = '/' . ltrim($navItem->url, '/');
+                            $isExcluded = in_array($cUrl, $excludedUrls) || in_array($navItem->url, $excludedUrls);
+                            if (!$isExcluded) {
+                                foreach ($excludedWords as $ew) {
+                                    if (mb_stripos($navItem->title, $ew) !== false || mb_stripos($navItem->url, $ew) !== false) {
+                                        $isExcluded = true;
+                                        break;
+                                    }
                                 }
                             }
                         @endphp
-                        @if(!in_array($cleanNavUrl, $builtInUrls) && !in_array($navItem->url, $builtInUrls) && !$isBuiltInTitle)
+                        @if(!$isExcluded)
                             <a href="{{ url($navItem->url) }}" class="nav-item-link" target="{{ $navItem->target ?? '_self' }}">
                                 <span>{{ $navItem->title }}</span>
                                 @if(!empty($navItem->badge))
@@ -1563,9 +1566,19 @@
                 <p class="footer-about-text">
                     {{ $siteSettings['footer_about'] ?? 'سام موبایل، مرکز تخصصی خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تلفن‌های همراه و تجهیزات هوشمند وارداتی شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان و مصوبات وزارت صنعت، معدن و تجارت.' }}
                 </p>
-                <div style="display: flex; gap: 8px;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                     <span style="font-size: 0.76rem; background: var(--bg-subtle); border: 1px solid var(--border-light); padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 600; color: var(--text-muted);">ضمانت اصالت قطعات</span>
                     <span style="font-size: 0.76rem; background: var(--bg-subtle); border: 1px solid var(--border-light); padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 600; color: var(--text-muted);">پشتیبانی ۵ ساله</span>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="{{ url('/about') }}" style="font-size: 0.8rem; background: #ffffff; border: 1.5px solid #bfdbfe; padding: 6px 14px; border-radius: var(--radius-pill); font-weight: 800; color: #1d4ed8; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.08);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        <span>درباره تامین کانی سام</span>
+                    </a>
+                    <a href="{{ url('/blog') }}" style="font-size: 0.8rem; background: #ffffff; border: 1.5px solid #a7f3d0; padding: 6px 14px; border-radius: var(--radius-pill); font-weight: 800; color: #047857; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(5,150,105,0.08);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <span>وبلاگ تخصصی صمت</span>
+                    </a>
                 </div>
             </div>
 
@@ -1579,6 +1592,8 @@
                     <li><a href="{{ url('/invoice-sample') }}">نمونه فاکتور رسمی اتحادیه</a></li>
                     <li><a href="{{ url('/customer-rights') }}">منشور حقوق مشتریان</a></li>
                     <li><a href="{{ url('/survey') }}">نظرسنجی کیفیت خدمات</a></li>
+                    <li><a href="{{ url('/blog') }}" style="font-weight: 700; color: #2563eb;">وبلاگ و آموزش‌های تخصصی</a></li>
+                    <li><a href="{{ url('/about') }}" style="font-weight: 700; color: #2563eb;">معرفی و درباره شرکت</a></li>
                 </ul>
             </div>
 

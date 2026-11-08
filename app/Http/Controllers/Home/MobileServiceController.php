@@ -1237,9 +1237,58 @@ class MobileServiceController extends Controller
             }
         }
 
+                // محاسبه باشگاه مشتریان جامع (CRM 360)
+        $customers = collect();
+        if (Schema::hasTable('mobile_service_orders')) {
+            $ordersGrouped = DB::table('mobile_service_orders')->orderBy('id', 'desc')->get()->groupBy('customer_phone');
+            foreach ($ordersGrouped as $phone => $orderList) {
+                if (empty($phone)) continue;
+                $first = $orderList->first();
+                $totalDevices = $orderList->count();
+                $totalCost = $orderList->sum('total_cost');
+                $activeWarranties = $orderList->where('is_under_warranty', true)->count();
+                $tier = 'عادی';
+                $tierClass = 'tier-regular';
+                if ($totalDevices >= 3 || $totalCost >= 50000000) {
+                    $tier = 'طلایی (VIP)';
+                    $tierClass = 'tier-vip';
+                } elseif ($totalDevices >= 2) {
+                    $tier = 'نقره‌ای';
+                    $tierClass = 'tier-silver';
+                }
+
+                $customers->push((object)[
+                    'id' => $first->id,
+                    'name' => $first->customer_name ?: 'مشتری گرامی',
+                    'phone' => $phone,
+                    'national_code' => $first->customer_national_code ?: '-',
+                    'city' => $first->customer_city ?: ($first->customer_province ?: 'تبریز'),
+                    'province' => $first->customer_province ?: 'آذربایجان شرقی',
+                    'address' => $first->customer_address ?: '-',
+                    'total_devices' => $totalDevices,
+                    'active_warranties' => $activeWarranties,
+                    'total_cost' => $totalCost,
+                    'last_visit' => $first->created_at,
+                    'tier' => $tier,
+                    'tier_class' => $tierClass,
+                    'devices' => $orderList->map(function($o) {
+                        return [
+                            'tracking_code' => $o->tracking_code,
+                            'brand' => $o->device_brand,
+                            'model' => $o->device_model,
+                            'imei' => $o->imei,
+                            'status' => $o->status,
+                            'total_cost' => $o->total_cost,
+                            'created_at' => $o->created_at,
+                        ];
+                    })->values()->toArray(),
+                ]);
+            }
+        }
+
         return view('home.mobile.portal', compact(
             'orders', 'stats', 'partsInventory', 'technicians', 'statusFilter', 'user',
-            'siteSettings', 'headerMenuItems', 'cmsPages', 'blogPosts', 'surveyCampaigns', 'surveysList', 'surveyStats', 'agencies', 'tickets', 'complaints', 'chatMessages'
+            'siteSettings', 'headerMenuItems', 'cmsPages', 'blogPosts', 'surveyCampaigns', 'surveysList', 'surveyStats', 'agencies', 'tickets', 'complaints', 'chatMessages', 'customers'
         ));
         } catch (\Throwable $e) {
             return response('ADMIN PORTAL ERROR: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine(), 500);
@@ -1581,27 +1630,51 @@ class MobileServiceController extends Controller
      */
     public function storeSurvey(Request $request)
     {
-        $request->validate([
-            'speed_score' => 'required|integer|between:1,5',
-            'quality_score' => 'required|integer|between:1,5',
-            'behavior_score' => 'required|integer|between:1,5',
-            'cost_score' => 'required|integer|between:1,5',
-            'overall_score' => 'required|integer|between:1,5',
-        ]);
+        $speed = (int)($request->input('speed_score') ?: ($request->input('rating_speed') ?: 5));
+        $quality = (int)($request->input('quality_score') ?: ($request->input('rating_quality') ?: 5));
+        $behavior = (int)($request->input('behavior_score') ?: ($request->input('rating_behavior') ?: 5));
+        $cost = (int)($request->input('cost_score') ?: ($request->input('rating_cost') ?: 5));
+        $overall = (int)($request->input('overall_score') ?: ($request->input('rating_overall') ?: 5));
+        $suggestions = $request->input('suggestions') ?: $request->input('feedback');
+        $code = $request->input('service_tracking_code') ?: ($request->input('tracking_code') ?: ('SRV-' . rand(10000, 99999)));
+        $name = $request->input('customer_name') ?: 'مشتری گرامی';
+        $phone = $request->input('customer_phone');
 
-        DB::table('mobile_surveys')->insert([
-            'customer_name' => $request->customer_name,
-            'customer_phone' => $request->customer_phone,
-            'service_tracking_code' => $request->service_tracking_code,
-            'speed_score' => $request->speed_score,
-            'quality_score' => $request->quality_score,
-            'behavior_score' => $request->behavior_score,
-            'cost_score' => $request->cost_score,
-            'overall_score' => $request->overall_score,
-            'suggestions' => $request->suggestions,
+        $surveyData = [
+            'customer_name' => $name,
+            'customer_phone' => $phone,
+            'tracking_code' => $code,
+            'service_tracking_code' => $code,
+            'speed_score' => $speed,
+            'rating_speed' => $speed,
+            'quality_score' => $quality,
+            'rating_quality' => $quality,
+            'behavior_score' => $behavior,
+            'rating_behavior' => $behavior,
+            'cost_score' => $cost,
+            'rating_cost' => $cost,
+            'overall_score' => $overall,
+            'rating_overall' => $overall,
+            'suggestions' => $suggestions,
+            'feedback' => $suggestions,
+            'status' => 'approved',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-        ]);
+        ];
+
+        // Filter only existing columns
+        $existingCols = Schema::getColumnListing('mobile_surveys');
+        $insertData = array_intersect_key($surveyData, array_flip($existingCols));
+
+        DB::table('mobile_surveys')->insert($insertData);
+
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'status' => 'success',
+                'message' => 'دیدگاه و ارزیابی شما با موفقیت ثبت شد. از همراهی شما با سام موبایل سپاسگزاریم.'
+            ]);
+        }
 
         return redirect()->back()->with('success', 'دیدگاه شما با موفقیت ثبت شد. از همراهی شما با سام موبایل سپاسگزاریم.');
     }
@@ -1619,39 +1692,81 @@ class MobileServiceController extends Controller
      */
     public function storeComplaint(Request $request)
     {
+        if (!$request->has('phone') && $request->has('customer_phone')) $request->merge(['phone' => $request->input('customer_phone')]);
+        if (!$request->has('full_name') && $request->has('customer_name')) $request->merge(['full_name' => $request->input('customer_name')]);
+        if (!$request->has('subject') && $request->has('complaint_type')) $request->merge(['subject' => $request->input('complaint_type')]);
+        if (!$request->has('description') && $request->has('message')) $request->merge(['description' => $request->input('message')]);
+
         $request->validate([
-            'full_name' => 'required|string|max:150',
-            'phone' => 'required|string|max:20',
-            'subject' => 'required|string|max:200',
+            'full_name' => 'nullable|string|max:150',
+            'phone' => 'required|string|max:25',
+            'subject' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
         $trackingCode = 'CMP-' . rand(10000, 99999);
+        $name = $request->input('full_name') ?: ($request->input('customer_name') ?: 'مشتری گرامی');
+        $phone = $request->input('phone') ?: $request->input('customer_phone');
+        $subject = $request->input('subject') ?: $request->input('complaint_type');
+        $desc = $request->input('description') ?: $request->input('message');
 
-        DB::table('mobile_complaints')->insert([
-            'tracking_code' => $trackingCode,
-            'full_name' => $request->full_name,
-            'phone' => $request->phone,
-            'national_code' => $request->national_code,
-            'subject' => $request->subject,
-            'service_tracking_code' => $request->service_tracking_code,
-            'description' => $request->description,
-            'status' => 'registered',
-            'admin_reply' => null,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        // ارسال پیامک کد رهگیری شکایت به کاربر
-        try {
-            $loginSms = Setting::where('key', 'loginSms')->pluck('value')->first();
-            $patternId = $loginSms ?: '3';
-            $this->sendSms($request->phone, [$trackingCode], $patternId);
-        } catch (\Exception $e) {
-            // Log silently
+        $attachmentUrl = null;
+        if ($request->hasFile('attachment')) {
+            try {
+                $file = $request->file('attachment');
+                $ext = $file->getClientOriginalExtension();
+                $fname = 'cmp_' . time() . '_' . rand(100, 999) . '.' . $ext;
+                $dest = public_path('uploads/complaints');
+                if (!file_exists($dest)) @mkdir($dest, 0755, true);
+                $file->move($dest, $fname);
+                $attachmentUrl = asset('uploads/complaints/' . $fname);
+            } catch (\Throwable $e) {}
         }
 
-        return redirect()->back()->with('success', "شکایت شما ثبت شد. کد پیگیری رسمی: {$trackingCode} (ظرف حداکثر ۴۸ ساعت کاری رسیدگی خواهد شد).");
+        $allData = [
+            'tracking_code' => $trackingCode,
+            'full_name' => $name,
+            'customer_name' => $name,
+            'phone' => $phone,
+            'customer_phone' => $phone,
+            'national_code' => $request->input('national_code'),
+            'branch_name' => $request->input('branch_name', 'دفتر مرکزی تبریز'),
+            'imei' => $request->input('imei'),
+            'device_model' => $request->input('device_model'),
+            'service_tracking_code' => $request->input('service_tracking_code'),
+            'subject' => $subject,
+            'complaint_type' => $subject,
+            'description' => $desc,
+            'message' => $desc,
+            'attachment_url' => $attachmentUrl,
+            'status' => 'pending',
+            'admin_reply' => null,
+            'investigation_result' => null,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+
+        // Filter only existing columns
+        $existingCols = Schema::getColumnListing('mobile_complaints');
+        $insertData = array_intersect_key($allData, array_flip($existingCols));
+
+        DB::table('mobile_complaints')->insert($insertData);
+
+        // SMS notification
+        try {
+            $msg = "مشتری گرامی سام موبایل، شکایت شما با کد رهگیری {$trackingCode} در سامانه بازرسی ثبت شد. پیگیری: mob.taminkanisam.co.ir/complaints";
+            $this->logSms($name, $phone, $trackingCode, $msg, 'sent');
+        } catch (\Throwable $e) {}
+
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'tracking_code' => $trackingCode,
+                'message' => 'شکایت شما با موفقیت در واحد بازرسی و نظارت گارانتی سام موبایل ثبت گردید.'
+            ]);
+        }
+
+        return redirect()->back()->with('success', "شکایت شما ثبت شد. کد پیگیری رسمی: {$trackingCode} (ظرف حداکثر ۲۴ ساعت کاری رسیدگی خواهد شد).");
     }
 
     /**
@@ -1659,19 +1774,53 @@ class MobileServiceController extends Controller
      */
     public function trackComplaint(Request $request)
     {
-        $code = trim($request->query('code', ''));
-        $complaint = null;
+        $code = trim($request->input('tracking_code') ?: ($request->input('code') ?: $request->query('tracking_code', $request->query('code', ''))));
+        $phone = trim($request->input('phone') ?: $request->query('phone', ''));
 
-        if ($code) {
-            $complaint = DB::table('mobile_complaints')
-                ->where('tracking_code', $code)
-                ->orWhere('phone', $code)
-                ->first();
+        if (!$code) {
+            return response()->json(['status' => 'error', 'message' => 'لطفا کد پیگیری شکایت را وارد نمایید.'], 400);
+        }
+
+        $query = DB::table('mobile_complaints')->where(function($q) use ($code) {
+            $q->where('tracking_code', $code)
+              ->orWhere('phone', $code)
+              ->orWhere('customer_phone', $code);
+        });
+
+        if ($phone) {
+            $query->where(function($q) use ($phone) {
+                $q->where('phone', 'like', "%{$phone}%")
+                  ->orWhere('customer_phone', 'like', "%{$phone}%");
+            });
+        }
+
+        $cmp = $query->first();
+
+        if (!$cmp) {
+            return response()->json([
+                'status' => 'error',
+                'found' => false,
+                'message' => 'شکایتی با این مشخصات در سامانه بازرسی یافت نشد.'
+            ], 404);
         }
 
         return response()->json([
-            'found' => (bool)$complaint,
-            'complaint' => $complaint,
+            'status' => 'success',
+            'found' => true,
+            'complaint' => [
+                'tracking_code' => $cmp->tracking_code,
+                'full_name' => $cmp->full_name ?: ($cmp->customer_name ?? 'مشتری گرامی'),
+                'phone' => $cmp->phone ?: ($cmp->customer_phone ?? '-'),
+                'subject' => $cmp->subject ?: ($cmp->complaint_type ?? 'شکایت گارانتی'),
+                'description' => $cmp->description ?: ($cmp->message ?? ''),
+                'branch_name' => $cmp->branch_name ?? 'دفتر مرکزی',
+                'device_model' => $cmp->device_model ?? 'گوشی هوشمند',
+                'imei' => $cmp->imei ?? '',
+                'status' => $cmp->status,
+                'admin_reply' => $cmp->admin_reply ?: ($cmp->investigation_result ?? null),
+                'attachment_url' => $cmp->attachment_url ?? null,
+                'created_at' => self::toJalali($cmp->created_at, 'Y/m/d - H:i'),
+            ]
         ]);
     }
 
@@ -3237,9 +3386,13 @@ class MobileServiceController extends Controller
      */
     public function storePublicTicket(Request $request)
     {
+        if (!$request->has('customer_phone') && $request->has('phone')) $request->merge(['customer_phone' => $request->input('phone')]);
+        if (!$request->has('customer_name') && $request->has('name')) $request->merge(['customer_name' => $request->input('name')]);
+        if (!$request->has('customer_name') && $request->has('full_name')) $request->merge(['customer_name' => $request->input('full_name')]);
+
         $request->validate([
             'customer_name' => 'required|string|max:150',
-            'customer_phone' => 'required|string|max:20',
+            'customer_phone' => 'required|string|max:25',
             'subject' => 'required|string|max:200',
             'message' => 'required|string',
         ]);

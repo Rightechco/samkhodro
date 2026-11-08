@@ -52,7 +52,7 @@ $registerMobileRoutes = function () {
     Route::post('/survey/store', [MobileServiceController::class, 'storeSurvey'])->name('mob.survey.store');
     Route::get('/complaints', [MobileServiceController::class, 'complaints'])->name('mob.complaints');
     Route::post('/complaints/store', [MobileServiceController::class, 'storeComplaint'])->name('mob.complaints.store');
-    Route::get('/complaints/track', [MobileServiceController::class, 'trackComplaint'])->name('mob.complaints.track');
+    Route::match(['get', 'post'], '/complaints/track', [MobileServiceController::class, 'trackComplaint'])->name('mob.complaints.track');
     Route::get('/invoice-sample', [MobileServiceController::class, 'invoiceSample'])->name('mob.invoice-sample');
     Route::get('/shipping-guide', [MobileServiceController::class, 'shippingGuide'])->name('mob.shipping-guide');
     Route::get('/regulations', [MobileServiceController::class, 'regulations'])->name('mob.regulations');
@@ -100,7 +100,7 @@ Route::get('/api/agencies', [MobileServiceController::class, 'agenciesApi']);
 
 Route::get('/tickets', [MobileServiceController::class, 'publicTickets'])->name('mob.tickets');
 Route::post('/tickets/store', [MobileServiceController::class, 'storePublicTicket'])->name('mob.tickets.store');
-Route::post('/tickets/track', [MobileServiceController::class, 'trackPublicTicket'])->name('mob.tickets.track');
+Route::match(['get', 'post'], '/tickets/track', [MobileServiceController::class, 'trackPublicTicket'])->name('mob.tickets.track');
 
 Route::get('/internal-chat/messages', [MobileServiceController::class, 'getChatMessages']);
 Route::post('/internal-chat/send', [MobileServiceController::class, 'sendChatMessage']);

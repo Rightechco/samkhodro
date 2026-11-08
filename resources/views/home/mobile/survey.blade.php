@@ -118,7 +118,8 @@
             </div>
 
             <div style="margin-top: 26px; text-align: center;">
-                <button type="submit" class="btn-glow" style="padding: 14px 44px; font-size: 16px;">
+                <button type="submit" id="btnSubmitSurvey" class="btn-glow" style="padding: 16px 48px; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; border: none; border-radius: 14px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; font-weight: 800; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35); transition: all 0.25s ease;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     <span>ثبت و ارسال نهایی نظرسنجی</span>
                 </button>
             </div>
@@ -265,29 +266,49 @@
         });
     });
 
-    function submitSurvey(e) {
+    async function submitSurvey(e) {
         e.preventDefault();
-        const formData = new FormData(document.getElementById('surveyForm'));
+        const form = document.getElementById('surveyForm');
+        const btn = document.getElementById('btnSubmitSurvey');
+        const originalText = btn.innerHTML;
+
+        btn.disabled = true;
+        btn.innerHTML = `
+            <svg style="animation: spin 1s linear infinite;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+            <span>در حال ثبت و پردازش امتیازات...</span>
+        `;
+
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch('{{ route("mob.survey.store") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.success) {
-                document.getElementById('surveyForm').style.display = 'none';
-                document.getElementById('surveySuccessAlert').style.display = 'block';
+        try {
+            const res = await fetch('{{ route("mob.survey.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            if (result.success || result.status === 'success') {
+                form.style.display = 'none';
+                const successBox = document.getElementById('surveySuccessAlert');
+                if (successBox) {
+                    successBox.style.display = 'block';
+                    successBox.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                alert('خطا در ثبت نظرسنجی: ' + (result.message || 'لطفا مقادیر را بررسی نمایید.'));
             }
-        })
-        .catch(err => {
-            alert('خطای اتصال به سرور.');
-        });
+        } catch (err) {
+            alert('خطای ارتباط با سرور: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     }
 </script>
 @endpush

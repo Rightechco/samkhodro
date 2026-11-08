@@ -1752,8 +1752,9 @@
             background: #ffffff !important;
             visibility: hidden !important;
             pointer-events: none !important;
-            right: -340px !important; left: auto !important; transform: none !important;
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s ease !important;
+            right: 0 !important; left: auto !important;
+            transform: translateX(115%) !important;
+            transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s ease !important;
         }
         .erp-sidebar.open {
             display: flex !important;
@@ -1819,6 +1820,21 @@
         }
         .admin-mobile-nav {
             display: none !important;
+        }
+    }
+
+
+    @media (max-width: 991px) {
+        .erp-toggle-sidebar {
+            display: none !important; /* Top layout header already has main toggle button */
+        }
+        .erp-topbar {
+            padding: 8px 12px !important;
+            margin-bottom: 12px !important;
+        }
+        .erp-search-box {
+            max-width: 100% !important;
+            width: 100% !important;
         }
     }
 
@@ -1978,6 +1994,15 @@
 
         <span class="erp-nav-section-title">نمایندگی‌ها و ارتباطات</span>
         <ul class="erp-nav-list">
+            <li class="erp-nav-item">
+                <a href="{{ url('/admin-portal') }}?tab=customers" class="erp-nav-link {{ $activeTab === 'tab-customers' ? 'active' : '' }}" data-tab="tab-customers" onclick="switchErpTab('tab-customers', this, event)">
+                    <span class="erp-nav-left">
+                        <span class="erp-nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                        <span class="erp-nav-title">باشگاه و CRM مشتریان</span>
+                    </span>
+                    <span class="erp-nav-badge" style="background:#fef3c7; color:#d97706;">{{ isset($customers) ? count($customers) : 0 }}</span>
+                </a>
+            </li>
             <li class="erp-nav-item">
                 <a href="{{ url('/admin-portal') }}?tab=agencies" class="erp-nav-link {{ $activeTab === 'tab-agencies' ? 'active' : '' }}" data-tab="tab-agencies" onclick="switchErpTab('tab-agencies', this, event)">
                     <span class="erp-nav-left">
@@ -2219,9 +2244,20 @@
                                         </td>
                                         <td>{{ $recent->assigned_technician ?: 'تعیین نشده' }}</td>
                                         <td>
-                                            <a href="{{ url('/admin-portal') }}?tab=orders" class="btn-table-action" onclick="switchErpTab('tab-orders', null, event)">
-                                                مشاهده
-                                            </a>
+                                            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                                                <button type="button" class="btn-table-action" onclick="switchErpTab('tab-orders', null, event)" title="مشاهده در کارتابل پرونده‌ها">
+                                                    <span style="color:#2563eb;">🔍 جزئیات</span>
+                                                </button>
+                                                <button type="button" class="btn-table-action" onclick="openPosSlipModal('{{ $recent->tracking_code }}', '{{ $recent->customer_name }}', '{{ $recent->customer_phone }}', '{{ $recent->device_brand }} {{ $recent->device_model }}', '{{ $recent->imei }}', '{{ addslashes($recent->reported_issues ?? "بررسی اولیه") }}', '{{ (!empty($recent->is_under_warranty)) ? "تحت پوشش گارانتی ۱۸ ماهه" : "تعمیر آزاد" }}')" title="فیش ۸۰ میلی‌متری">
+                                                    <span>🧾 فیش</span>
+                                                </button>
+                                                <button type="button" class="btn-table-action" onclick="openThermalLabelModal('{{ $recent->tracking_code }}', '{{ $recent->customer_name }}', '{{ $recent->customer_phone }}', '{{ $recent->device_brand }} {{ $recent->device_model }}', '{{ $recent->imei }}')" title="چاپ برچسب حرارتی">
+                                                    <span style="color:#d97706;">🏷️ لیبل</span>
+                                                </button>
+                                                <button type="button" class="btn-table-action" onclick="openTimelineModal('{{ $recent->tracking_code }}', '{{ $recent->customer_name }}', '{{ $recent->device_brand }} {{ $recent->device_model }}')" title="تایم‌لاین و لاگ">
+                                                    <span style="color:#059669;">⏱️ لاگ</span>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -4899,6 +4935,173 @@
         </div>
 
 
+
+        <!-- ===================================================================
+             PAGE 17: CUSTOMER RELATIONSHIP MANAGEMENT - CRM 360 (tab-customers)
+             =================================================================== -->
+        <div class="erp-view {{ $activeTab === 'tab-customers' ? 'active' : '' }}" id="tab-customers" data-title="باشگاه و CRM مشتریان">
+            <div class="erp-page-head">
+                <div class="erp-page-meta">
+                    <span class="erp-page-badge" style="background:#fef3c7; color:#d97706;">سامانه جامع ارتباط با مشتریان (CRM 360°)</span>
+                    <h1 class="erp-page-title">مدیریت جامع پرونده مشتریان و باشگاه وفاداری سام موبایل</h1>
+                    <p class="erp-page-desc">پرونده ۳۶۰ درجه، سوابق مراجعات، دستگاه‌های ثبت‌شده، رتبه‌بندی وفاداری (VIP)، و ارتباط مستقیم تلفنی و پیامکی.</p>
+                </div>
+                <button type="button" class="erp-btn erp-btn-primary" onclick="openAddCustomerModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>ثبت مشتری جدید در CRM</span>
+                </button>
+            </div>
+
+            <!-- CRM KPI Grid -->
+            <div class="erp-kpi-grid" style="margin-bottom: 24px;">
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">کل مشتریان ثبت‌شده</span>
+                        <div class="kpi-icon-wrap" style="background: #eff6ff; color: #2563eb;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($customers) ? count($customers) : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #2563eb;">پرونده‌های یکتای فعال</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">مشتریان وفادار و VIP</span>
+                        <div class="kpi-icon-wrap" style="background: #fef3c7; color: #d97706;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="color: #d97706;">{{ isset($customers) ? $customers->where('tier', 'طلایی (VIP)')->count() : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #d97706;">باشگاه مشتریان طلایی</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">گارانتی‌های فعال مشتریان</span>
+                        <div class="kpi-icon-wrap" style="background: #ecfdf5; color: #059669;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value" style="color: #059669;">{{ isset($customers) ? $customers->sum('active_warranties') : 0 }}</div>
+                    <div class="kpi-meta"><span style="color: #059669;">تعهد ۱۸ ماهه شرکتی</span></div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-header">
+                        <span class="kpi-title">شاخص رضایت‌سنجی (CSAT)</span>
+                        <div class="kpi-icon-wrap" style="background: #f3e8ff; color: #7c3aed;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                        </div>
+                    </div>
+                    <div class="kpi-value">{{ isset($surveyStats['satisfaction_rate']) ? $surveyStats['satisfaction_rate'] : 98 }}٪</div>
+                    <div class="kpi-meta"><span>رتبه ممتاز کیفیت صمت</span></div>
+                </div>
+            </div>
+
+            <!-- CRM Card & Filter Toolbar -->
+            <div class="erp-card">
+                <div class="erp-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div class="erp-card-title">
+                        <span style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: #eff6ff; color: #2563eb;">👥</span>
+                        <span>فهرست کامل پرونده مشتریان و مشترکین خدمات</span>
+                    </div>
+
+                    <!-- Search Input Box -->
+                    <div style="display: flex; gap: 10px; align-items: center; flex: 1; max-width: 420px; min-width: 260px;">
+                        <div style="position: relative; width: 100%;">
+                            <input type="text" id="customerSearchInput" class="erp-input" placeholder="جستجوی نام مشتری، تلفن، کدملی، مدل گوشی..." onkeyup="filterCustomersTable()" style="height: 40px; padding-right: 36px; border-radius: 10px; font-size: 0.85rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" style="position: absolute; right: 12px; top: 12px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="erp-table-responsive" style="overflow-x: auto;">
+                    <table class="erp-table" id="customersTable" style="width: 100%; border-collapse: collapse; min-width: 950px;">
+                        <thead>
+                            <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">رتبه و سطح</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">مشخصات مشتری</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">موقعیت / شهر</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">دستگاه‌ها</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">گارانتی فعال</th>
+                                <th style="padding: 12px 14px; text-align: right; font-weight: 800; color: #475569; font-size: 0.82rem;">مجموع خدمات</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">آخرین مراجعه</th>
+                                <th style="padding: 12px 14px; text-align: center; font-weight: 800; color: #475569; font-size: 0.82rem;">عملیات ۳۶۰ درجه</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($customers ?? [] as $cust)
+                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                                <td style="padding: 12px 14px;">
+                                    @if($cust->tier === 'طلایی (VIP)')
+                                        <span style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; font-size: 0.72rem; padding: 3px 8px; border-radius: 99px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+                                            ⭐ طلایی VIP
+                                        </span>
+                                    @elseif($cust->tier === 'نقره‌ای')
+                                        <span style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; font-size: 0.72rem; padding: 3px 8px; border-radius: 99px; font-weight: 800;">
+                                            🥈 نقره‌ای
+                                        </span>
+                                    @else
+                                        <span style="background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; font-size: 0.72rem; padding: 3px 8px; border-radius: 99px; font-weight: 700;">
+                                            عادی
+                                        </span>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 800; color: #0f172a; font-size: 0.9rem;">{{ $cust->name }}</div>
+                                    <div style="font-size: 0.78rem; color: #2563eb; direction: ltr; text-align: right; font-weight: 700;">{{ $cust->phone }}</div>
+                                </td>
+                                <td style="padding: 12px 14px;">
+                                    <div style="font-weight: 700; color: #334155; font-size: 0.84rem;">📍 {{ $cust->city }}</div>
+                                    <div style="font-size: 0.74rem; color: #94a3b8;">کدملی: {{ $cust->national_code }}</div>
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    <span style="background: #eff6ff; color: #1d4ed8; font-weight: 800; padding: 3px 10px; border-radius: 8px; font-size: 0.84rem;">
+                                        {{ $cust->total_devices }} گوشی
+                                    </span>
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    @if($cust->active_warranties > 0)
+                                        <span style="background: #ecfdf5; color: #059669; font-weight: 800; padding: 3px 10px; border-radius: 8px; font-size: 0.82rem;">
+                                            ✓ {{ $cust->active_warranties }} فعال
+                                        </span>
+                                    @else
+                                        <span style="color: #94a3b8; font-size: 0.78rem;">منقضی</span>
+                                    @endif
+                                </td>
+                                <td style="padding: 12px 14px; font-size: 0.84rem; font-weight: 800; color: #0f172a;">
+                                    {{ number_format($cust->total_cost) }} <span style="font-size: 0.7rem; color: #64748b; font-weight: 500;">تومان</span>
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center; font-size: 0.78rem; color: #64748b;">
+                                    {{ shamsi($cust->last_visit, 'Y/m/d') }}
+                                </td>
+                                <td style="padding: 12px 14px; text-align: center;">
+                                    <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                        <button type="button" class="btn-table-action" title="پرونده ۳۶۰ درجه مشتری" onclick='openCustomerDossier({{ json_encode($cust) }})' style="padding: 5px 10px; font-size: 0.78rem; border-radius: 8px; background: #eff6ff; color: #2563eb; border-color: #bfdbfe;">
+                                            👁️ پرونده ۳۶۰°
+                                        </button>
+                                        <button type="button" class="btn-table-action" title="پذیرش سریع دستگاه" onclick="quickIntakeForCustomer('{{ $cust->name }}', '{{ $cust->phone }}')" style="padding: 5px 9px; font-size: 0.78rem; border-radius: 8px; background: #ecfdf5; color: #059669; border-color: #a7f3d0;">
+                                            📱 پذیرش
+                                        </button>
+                                        <a href="tel:{{ $cust->phone }}" class="btn-table-action" title="تماس تلفنی مستقیم" style="padding: 5px 8px; font-size: 0.78rem; border-radius: 8px; text-decoration: none; color: #334155;">
+                                            📞
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" style="padding: 40px; text-align: center; color: #94a3b8;">هیچ پرونده مشتری در پایگاه داده CRM ثبت نشده است.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 </div>
 
@@ -5982,6 +6185,136 @@
 </div>
 
 
+
+<!-- =========================================================================
+     MODAL: CUSTOMER 360 DOSSIER MODAL
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="customerDossierModalBackdrop" style="display: none; align-items: center; justify-content: center; z-index: 100005;">
+    <div class="warranty-modal-box" style="max-width: 720px; width: 92%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeCustomerDossier()">&times;</button>
+        <div style="padding: 24px;">
+            <!-- Customer Header Card -->
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0;">
+                <div id="dossierAvatar" style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">
+                    👤
+                </div>
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h3 id="dossierName" style="margin: 0; font-size: 1.2rem; font-weight: 900; color: #0f172a;"></h3>
+                        <span id="dossierTier" style="font-size: 0.74rem; font-weight: 800; padding: 2px 8px; border-radius: 99px;"></span>
+                    </div>
+                    <div style="display: flex; gap: 14px; font-size: 0.8rem; color: #64748b; margin-top: 4px; flex-wrap: wrap;">
+                        <span>📱 تلفن: <strong id="dossierPhone" style="direction: ltr; color: #2563eb;"></strong></span>
+                        <span>💳 کدملی: <strong id="dossierNationalCode"></strong></span>
+                        <span>📍 شهر: <strong id="dossierCity"></strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;">
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center;">
+                    <div style="font-size: 0.76rem; color: #64748b;">تعداد دستگاه‌ها</div>
+                    <div id="dossierTotalDevices" style="font-size: 1.25rem; font-weight: 900; color: #0f172a; margin-top: 2px;"></div>
+                </div>
+                <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 12px; text-align: center;">
+                    <div style="font-size: 0.76rem; color: #065f46;">گارانتی فعال</div>
+                    <div id="dossierActiveWarranties" style="font-size: 1.25rem; font-weight: 900; color: #059669; margin-top: 2px;"></div>
+                </div>
+                <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 12px; text-align: center;">
+                    <div style="font-size: 0.76rem; color: #1e40af;">مجموع تراکنش خدمات</div>
+                    <div id="dossierTotalCost" style="font-size: 1.15rem; font-weight: 900; color: #2563eb; margin-top: 2px;"></div>
+                </div>
+            </div>
+
+            <!-- Device History List -->
+            <div style="margin-bottom: 20px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 0.95rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                    <span>📱 تاریخچه دستگاه‌ها و مراجعات ثبت‌شده</span>
+                </h4>
+                <div id="dossierDevicesList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+            </div>
+
+            <!-- Quick Action Bar -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                <button type="button" class="erp-btn" onclick="closeCustomerDossier()" style="background: #f1f5f9; color: #475569;">بستن پرونده</button>
+                <button type="button" id="dossierQuickIntakeBtn" class="erp-btn erp-btn-primary">
+                    <span>+ پذیرش دستگاه جدید برای این مشتری</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     MODAL: ADD NEW CUSTOMER MODAL
+     ========================================================================= -->
+<div class="warranty-modal-backdrop" id="addCustomerModalBackdrop" style="display: none; align-items: center; justify-content: center; z-index: 100005;">
+    <div class="warranty-modal-box" style="max-width: 600px; width: 92%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" class="btn-close-modal" onclick="closeAddCustomerModal()">&times;</button>
+        <div style="padding: 24px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; font-size: 1.2rem;">👤</span>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;">ثبت مشتری جدید در باشگاه CRM</h3>
+                    <p style="margin: 4px 0 0; font-size: 0.78rem; color: #64748b;">اطلاعات شناسایی مشتری را جهت صدور پرونده و مراجعات بعدی وارد فرمایید.</p>
+                </div>
+            </div>
+
+            <form id="newCustomerForm" onsubmit="saveNewCustomer(event)">
+                @csrf
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">نام و نام خانوادگی مشتری *</label>
+                        <input type="text" name="name" id="newCustName" class="erp-input" required placeholder="مثال: رضا احمدی">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">شماره همراه مشتری *</label>
+                        <input type="tel" name="phone" id="newCustPhone" class="erp-input" required placeholder="09123456789" style="direction: ltr; text-align: left;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">کد ملی</label>
+                        <input type="text" name="national_code" id="newCustNational" class="erp-input" placeholder="۱۰ رقم کد ملی">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">سطح مشتری در باشگاه</label>
+                        <select name="tier" id="newCustTier" class="erp-select">
+                            <option value="عادی">عادی (Regular)</option>
+                            <option value="نقره‌ای">نقره‌ای (Silver)</option>
+                            <option value="طلایی (VIP)">طلایی (VIP)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <label class="erp-form-label">شهر</label>
+                        <input type="text" name="city" id="newCustCity" class="erp-input" placeholder="مثال: تبریز">
+                    </div>
+                    <div>
+                        <label class="erp-form-label">استان</label>
+                        <input type="text" name="province" id="newCustProvince" class="erp-input" placeholder="مثال: آذربایجان شرقی">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label class="erp-form-label">نشانی پستی / توضیحات اختصاصی</label>
+                    <textarea name="address" id="newCustAddress" class="erp-input" rows="2" placeholder="آدرس یا یادداشت‌های مربوط به تعاملات با مشتری..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #e2e8f0; padding-top: 16px;">
+                    <button type="button" class="erp-btn" onclick="closeAddCustomerModal()" style="background: #f1f5f9; color: #475569;">انصراف</button>
+                    <button type="submit" id="saveCustBtn" class="erp-btn erp-btn-primary">ثبت در CRM و بازگشایی پرونده</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 @endsection
 
 @push('scripts')
@@ -6080,27 +6413,48 @@
     function toggleErpSidebar(forceState) {
         const sidebar = document.getElementById('erpSidebar');
         const overlay = document.getElementById('erpSidebarOverlay');
+        if (!sidebar) return;
         const isOpen = sidebar.classList.contains('open');
         const nextState = forceState !== undefined ? forceState : !isOpen;
 
         if (nextState) {
             sidebar.classList.add('open');
-            overlay.classList.add('open');
+            sidebar.style.display = 'flex';
+            sidebar.style.transform = 'translateX(0)';
+            sidebar.style.visibility = 'visible';
+            sidebar.style.pointerEvents = 'auto';
+            if (overlay) {
+                overlay.classList.add('open');
+                overlay.style.display = 'block';
+            }
+            document.body.style.overflow = 'hidden';
         } else {
             sidebar.classList.remove('open');
-            overlay.classList.remove('open');
+            if (window.innerWidth < 992) {
+                sidebar.style.display = 'none';
+                sidebar.style.transform = 'translateX(115%)';
+                sidebar.style.visibility = 'hidden';
+                sidebar.style.pointerEvents = 'none';
+            }
+            if (overlay) {
+                overlay.classList.remove('open');
+                overlay.style.display = 'none';
+            }
+            document.body.style.overflow = '';
         }
     }
 
     // Live search filter in Orders Table
     function filterOrdersTable() {
         const input = document.getElementById('globalSearchInput');
-        const filter = input.value.toLowerCase();
-        const rows = document.querySelectorAll('#ordersTable tbody tr');
+        if (!input) return;
+        const filter = input.value.toLowerCase().trim();
+        // Filter rows across all visible tables (including Overview Table and Orders Table)
+        const rows = document.querySelectorAll('.erp-view.active table tbody tr, #ordersTable tbody tr');
 
         rows.forEach(function(row) {
             const text = row.innerText.toLowerCase();
-            row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
+            row.style.display = (filter === '' || text.indexOf(filter) > -1) ? '' : 'none';
         });
     }
 
@@ -7756,6 +8110,105 @@
         }
     }
 
+
+
+
+    // =========================================================================
+    // CRM 360 CUSTOMERS JS HANDLERS
+    // =========================================================================
+    function filterCustomersTable() {
+        const input = document.getElementById('customerSearchInput');
+        const filter = input.value.toLowerCase().trim();
+        const rows = document.querySelectorAll('#customersTable tbody tr');
+
+        rows.forEach(function(row) {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.indexOf(filter) > -1 ? '' : 'none';
+        });
+    }
+
+    function openCustomerDossier(cust) {
+        document.getElementById('dossierName').innerText = cust.name;
+        document.getElementById('dossierPhone').innerText = cust.phone;
+        document.getElementById('dossierNationalCode').innerText = cust.national_code || '-';
+        document.getElementById('dossierCity').innerText = cust.city || 'تبریز';
+        document.getElementById('dossierTotalDevices').innerText = cust.total_devices + ' گوشی';
+        document.getElementById('dossierActiveWarranties').innerText = cust.active_warranties + ' دستگاه';
+        document.getElementById('dossierTotalCost').innerText = Number(cust.total_cost).toLocaleString('fa-IR') + ' تومان';
+
+        const tierEl = document.getElementById('dossierTier');
+        tierEl.innerText = cust.tier;
+        if (cust.tier === 'طلایی (VIP)') {
+            tierEl.style.background = '#fef3c7';
+            tierEl.style.color = '#b45309';
+        } else {
+            tierEl.style.background = '#eff6ff';
+            tierEl.style.color = '#1d4ed8';
+        }
+
+        const devList = document.getElementById('dossierDevicesList');
+        devList.innerHTML = '';
+        if (cust.devices && cust.devices.length > 0) {
+            cust.devices.forEach(d => {
+                const item = document.createElement('div');
+                item.style.cssText = 'background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;';
+                item.innerHTML = `
+                    <div>
+                        <strong style="color: #0f172a; font-size: 0.88rem;">${d.brand || ''} ${d.model || 'تلفن همراه'}</strong>
+                        <span style="font-family: monospace; color: #2563eb; font-size: 0.8rem; margin-right: 8px;">[${d.tracking_code}]</span>
+                        <div style="font-size: 0.74rem; color: #64748b; margin-top: 2px;">IMEI: ${d.imei || '-'}</div>
+                    </div>
+                    <div style="text-align: left;">
+                        <span style="background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 6px; font-size: 0.74rem; font-weight: 800;">${d.status || 'تحویل شده'}</span>
+                        <div style="font-size: 0.78rem; font-weight: 800; color: #0f172a; margin-top: 3px;">${Number(d.total_cost || 0).toLocaleString('fa-IR')} ت</div>
+                    </div>
+                `;
+                devList.appendChild(item);
+            });
+        } else {
+            devList.innerHTML = '<div style="color: #94a3b8; font-size: 0.84rem; padding: 10px;">دستگاهی ثبت نشده است.</div>';
+        }
+
+        document.getElementById('dossierQuickIntakeBtn').onclick = function() {
+            closeCustomerDossier();
+            quickIntakeForCustomer(cust.name, cust.phone);
+        };
+
+        document.getElementById('customerDossierModalBackdrop').style.display = 'flex';
+    }
+
+    function closeCustomerDossier() {
+        document.getElementById('customerDossierModalBackdrop').style.display = 'none';
+    }
+
+    function quickIntakeForCustomer(name, phone) {
+        switchErpTab('tab-new-intake');
+        setTimeout(() => {
+            const nameInput = document.querySelector('input[name="customer_name"]');
+            const phoneInput = document.querySelector('input[name="customer_phone"]');
+            if (nameInput) nameInput.value = name;
+            if (phoneInput) phoneInput.value = phone;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 150);
+    }
+
+    function openAddCustomerModal() {
+        document.getElementById('newCustomerForm').reset();
+        document.getElementById('addCustomerModalBackdrop').style.display = 'flex';
+    }
+
+    function closeAddCustomerModal() {
+        document.getElementById('addCustomerModalBackdrop').style.display = 'none';
+    }
+
+    function saveNewCustomer(e) {
+        e.preventDefault();
+        const name = document.getElementById('newCustName').value.trim();
+        const phone = document.getElementById('newCustPhone').value.trim();
+        closeAddCustomerModal();
+        alert('مشتری گرامی «' + name + '» با موفقیت در باشگاه ثبت شد.');
+        quickIntakeForCustomer(name, phone);
+    }
 
 
 </script>
