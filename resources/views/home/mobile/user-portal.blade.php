@@ -12,7 +12,7 @@
     }
 @endphp
 
-@section('title', 'پنل کاربری و پیگیری آنلاین خدمات | سام موبایل')
+@section('title', 'پنل کاربری و پیگیری آنلاین خدمات | تامین کانی سام (موبایل)')
 @section('header_title', 'میز کاربری مشتریان')
 
 @php
@@ -24,7 +24,7 @@
     // محاسبه درصد تکمیل پروفایل
     $completionScore = 20; // شماره موبایل همیشه هست
     if ($user) {
-        if (!empty($user->name) && $user->name !== 'کاربر سام موبایل') $completionScore += 15;
+        if (!empty($user->name) && $user->name !== 'کاربر تامین کانی سام (موبایل)') $completionScore += 15;
         if (!empty($user->email) && !str_contains($user->email, '@taminkanisam.co.ir')) $completionScore += 15;
         if (!empty($user->national_code)) $completionScore += 15;
         if (!empty($user->phone_landline)) $completionScore += 10;
@@ -736,7 +736,7 @@
                 {{ mb_substr($user ? $user->name : 'ص', 0, 1) }}
             </div>
             <div class="customer-meta">
-                <div class="customer-name">{{ $user ? $user->name : 'مشتری گرامی سام موبایل' }}</div>
+                <div class="customer-name">{{ $user ? $user->name : 'مشتری گرامی تامین کانی سام (موبایل)' }}</div>
                 <div class="customer-phone">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                     <span>{{ $userPhone }}</span>
@@ -891,7 +891,7 @@
                         <div style="color: #64748b; font-size: 0.78rem; display: flex; align-items: center; gap: 6px; margin-top: 6px;">
                             <span>وضعیت پوشش:</span>
                             <span style="font-weight: 800; color: {{ ($order->warranty_status == 'under_warranty' || !empty($order->is_under_warranty)) ? '#059669' : '#b45309' }};">
-                                {{ ($order->warranty_status == 'under_warranty' || !empty($order->is_under_warranty)) ? 'تحت پوشش گارانتی ۱۸ ماهه رسمی سام موبایل' : 'خدمات آزاد مطابق نرخ تعرفه خدمات غیر گارانتی' }}
+                                {{ ($order->warranty_status == 'under_warranty' || !empty($order->is_under_warranty)) ? 'تحت پوشش گارانتی ۱۸ ماهه رسمی تامین کانی سام (موبایل)' : 'خدمات آزاد مطابق نرخ تعرفه خدمات غیر گارانتی' }}
                             </span>
                         </div>
 
@@ -958,7 +958,7 @@
                         <div class="form-group-custom">
                             <label class="form-label-custom">وضعیت گارانتی</label>
                             <select name="warranty_status" class="form-select-custom">
-                                <option value="under_warranty">دارای گارانتی ۱۸ ماهه رسمی سام موبایل</option>
+                                <option value="under_warranty">دارای گارانتی ۱۸ ماهه رسمی تامین کانی سام (موبایل)</option>
                                 <option value="out_of_warranty">تعمیر آزاد غیرگارانتی (طبق تعرفه مصوب اتحادیه)</option>
                             </select>
                         </div>
@@ -1432,7 +1432,7 @@
                     </div>
                     <div>
                         <div style="font-size: 1.25rem; font-weight: 900; margin-bottom: 4px;">
-                            {{ $user ? $user->name : 'مشتری گرامی سام موبایل' }}
+                            {{ $user ? $user->name : 'مشتری گرامی تامین کانی سام (موبایل)' }}
                         </div>
                         <div style="font-size: 0.82rem; color: #93c5fd; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                             <span style="background: rgba(59, 130, 246, 0.25); padding: 2px 10px; border-radius: 99px; border: 1px solid rgba(147, 197, 253, 0.3);">

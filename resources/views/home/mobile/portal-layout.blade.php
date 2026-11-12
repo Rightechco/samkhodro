@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'سامانه مدیریت خدمات پس از فروش | سام موبایل')</title>
+    <title>@yield('title', 'سامانه مدیریت خدمات پس از فروش | تامین کانی سام (موبایل)')</title>
 
     <!-- Vazirmatn Font CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1233,7 +1233,7 @@
                     </div>
                     <div class="portal-logo-text">
                         <span class="portal-logo-title">
-                            سام موبایل
+                            تامین کانی سام (موبایل)
                             <span class="portal-system-tag">{{ request()->is('*user-portal*') ? 'میز کاربری' : 'سامانه مدیریت خدمات' }}</span>
                             <span class="mobile-portal-badge {{ request()->is('*user-portal*') ? 'badge-user' : 'badge-admin' }}">{{ request()->is('*user-portal*') ? 'پنل کاربری' : 'مدیریت' }}</span>
                         </span>
@@ -1300,7 +1300,7 @@
     <footer class="portal-footer">
         <div class="portal-footer-inner">
             <div class="portal-footer-info">
-                <strong>سامانه یکپارچه مدیریت خدمات پس از فروش و نمایندگی‌های سام موبایل</strong>
+                <strong>سامانه یکپارچه مدیریت خدمات پس از فروش و نمایندگی‌های تامین کانی سام (موبایل)</strong>
                 <span>شرکت تامین کانی سام (سهامی خاص) - انطباق کامل با ماده ۱۳ ضوابط اجرایی سازمان حمایت از حقوق مصرف‌کنندگان</span>
                 <span>نشانی: تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸ | مرکز تماس: ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)</span>
             </div>

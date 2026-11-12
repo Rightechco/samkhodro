@@ -1,7 +1,7 @@
 @extends('home.mobile.layout')
 
-@section('title', 'سامانه ثبت و پیگیری تیکت پشتیبانی | سام موبایل')
-@section('meta_description', 'ارتباط مستقیم با کارشناسان فنی و پذیرش گارانتی ۱۸ ماهه سام موبایل از طریق سامانه تیکتینگ ۲۴ ساعته')
+@section('title', 'سامانه ثبت و پیگیری تیکت پشتیبانی | تامین کانی سام (موبایل)')
+@section('meta_description', 'ارتباط مستقیم با کارشناسان فنی و پذیرش گارانتی ۱۸ ماهه تامین کانی سام (موبایل) از طریق سامانه تیکتینگ ۲۴ ساعته')
 
 @section('content')
 <div class="container" style="max-width: 1000px; margin: 0 auto; padding: 24px 16px 80px;">
@@ -12,7 +12,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span>پشتیبانی و تیکتینگ آنلاین ۲۴ ساعته</span>
         </span>
-        <h1 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">سامانه ارتباط برخط و پشتیبانی تیکتینگ سام موبایل</h1>
+        <h1 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">سامانه ارتباط برخط و پشتیبانی تیکتینگ تامین کانی سام (موبایل)</h1>
         <p style="font-size: 0.88rem; color: #475569; margin: 0; line-height: 1.6;">
             ثبت درخواست‌های فنی، استعلام گارانتی ۱۸ ماهه، پیگیری قطعات و ارتباط با شعب سراسر کشور همراه با تخصیص آنی کد رهگیری و پیامک اطلاع‌رسانی
         </p>
@@ -261,7 +261,7 @@
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                                     <strong style="color: #047857; display: flex; align-items: center; gap: 6px;">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                                        پاسخ رسمی پشتیبانی سام موبایل:
+                                        پاسخ رسمی پشتیبانی تامین کانی سام (موبایل):
                                     </strong>
                                     ${tk.shamsi_reply_date ? `<span style="font-size: 0.74rem; color: #047857;">تاریخ پاسخ: ${tk.shamsi_reply_date}</span>` : ''}
                                 </div>

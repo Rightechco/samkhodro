@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| سام موبایل (mob.taminkanisam.co.ir) - سامانه رسمی خدمات پس از فروش و گارانتی
+| تامین کانی سام (موبایل) (mob.taminkanisam.co.ir) - سامانه رسمی خدمات پس از فروش و گارانتی
 |--------------------------------------------------------------------------
 */
 $registerMobileRoutes = function () {
@@ -128,7 +128,7 @@ Route::post('/admin-portal/profile', [MobileServiceController::class, 'saveUserP
 
 };
 
-// شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های سام موبایل در ریشه لود می‌شوند
+// شناسایی هوشمند هاست: چنانچه ساب‌دومین mob باشد فقط روت‌های تامین کانی سام (موبایل) در ریشه لود می‌شوند
 $currentHttpHost = isset($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : '';
 if (strpos($currentHttpHost, 'mob.') === 0) {
     $registerMobileRoutes();

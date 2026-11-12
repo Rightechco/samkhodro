@@ -1,7 +1,7 @@
 @extends('home.mobile.layout')
 
-@section('title', 'شرایط و ضوابط ۱۸ ماهه گارانتی و آموزش فعال‌سازی همتا | سام موبایل')
-@section('meta_description', 'شرایط رسمی ۱۸ ماهه گارانتی تلفن همراه شرکت تامین کانی سام (سام موبایل)، تعهدات خدمات پس از فروش و راهنمای ۱۰ مرحله‌ای فعال‌سازی سامانه همتا')
+@section('title', 'شرایط و ضوابط ۱۸ ماهه گارانتی و آموزش فعال‌سازی همتا | تامین کانی سام (موبایل)')
+@section('meta_description', 'شرایط رسمی ۱۸ ماهه گارانتی تلفن همراه شرکت تامین کانی سام (موبایل)، تعهدات خدمات پس از فروش و راهنمای ۱۰ مرحله‌ای فعال‌سازی سامانه همتا')
 
 @section('content')
 <div class="container" style="max-width: 1280px; margin: 0 auto; padding: 24px 16px 60px;">
@@ -9,7 +9,7 @@
     <!-- Page Header Header -->
     <div class="wt-page-header">
         <span class="wt-badge-pill">ضوابط و تعهدات رسمی</span>
-        <h1 class="wt-title">شرایط گارانتی ۱۸ ماهه شرکت تامین کانی سام (سام موبایل)</h1>
+        <h1 class="wt-title">شرایط گارانتی ۱۸ ماهه شرکت تامین کانی سام (موبایل)</h1>
         <p class="wt-subtitle">آشنایی کامل با دامنه پوشش طلایی، تعهدات شرکت طبق ضوابط اجرایی صمت و راهنمای ۱۰ مرحله‌ای فعال‌سازی همتا</p>
     </div>
 
@@ -21,7 +21,7 @@
             <p class="wt-showcase-sub">تمامی گوشی‌های وارداتی دارای کارت ضمانت فیزیکی و دیجیتال همراه با هولوگرام امنیتی و QR کد استعلام لحظه‌ای می‌باشند.</p>
         </div>
         <div class="wt-card-preview-area">
-            <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی ۱۸ ماهه سام موبایل" class="wt-card-img" onerror="this.onerror=null; this.src='/assets/images/mobile/banner-1.jpg';">
+            <img src="/assets/images/mobile/warranty-card.jpg" alt="کارت گارانتی ۱۸ ماهه تامین کانی سام (موبایل)" class="wt-card-img" onerror="this.onerror=null; this.src='/assets/images/mobile/banner-1.jpg';">
         </div>
         <div class="wt-showcase-footer">
             <div class="wt-footer-meta-item">
@@ -84,7 +84,7 @@
                 <span class="wt-step-num">۵</span>
                 <div class="wt-step-text">
                     <strong>کد فعال‌سازی ۶ رقمی:</strong>
-                    کد فعال‌سازی ۶ رقمی مندرج روی کارت گارانتی سام موبایل را وارد فرمایید.
+                    کد فعال‌سازی ۶ رقمی مندرج روی کارت گارانتی تامین کانی سام (موبایل) را وارد فرمایید.
                 </div>
             </div>
             <div class="wt-step-item">
@@ -129,7 +129,7 @@
     <div style="margin-top: 48px;">
         <div class="wt-section-head">
             <span class="wt-badge-pill">پوشش‌های طلایی</span>
-            <h2 class="wt-section-title">دامنه و تعهدات ۱۸ ماهه گارانتی سام موبایل</h2>
+            <h2 class="wt-section-title">دامنه و تعهدات ۱۸ ماهه گارانتی تامین کانی سام (موبایل)</h2>
             <p class="wt-section-desc">کلیه تعهدات به صورت رسمی و مطابق با استانداردهای سازمان حمایت از مصرف‌کنندگان اجرا می‌گردد:</p>
         </div>
 
@@ -170,7 +170,7 @@
                 </div>
                 <div>
                     <h3 class="wt-term-title">تضمین ۶ ماهه قطعات تعویضی</h3>
-                    <p class="wt-term-body">کلیه قطعات و خدمات ارائه شده در مرکز خدمات پس از فروش سام موبایل دارای ۶ ماه ضمانت بی‌قیدوشرط تعویض قطعه می‌باشند.</p>
+                    <p class="wt-term-body">کلیه قطعات و خدمات ارائه شده در مرکز خدمات پس از فروش تامین کانی سام (موبایل) دارای ۶ ماه ضمانت بی‌قیدوشرط تعویض قطعه می‌باشند.</p>
                 </div>
             </div>
         </div>

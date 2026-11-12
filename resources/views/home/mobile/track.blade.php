@@ -1,6 +1,6 @@
 @extends('home.mobile.layout')
 
-@section('title', 'پیگیری وضعیت پرونده و تعمیر دستگاه | سام موبایل تامین کانی سام')
+@section('title', 'پیگیری وضعیت پرونده و تعمیر دستگاه | تامین کانی سام (موبایل)')
 
 @section('content')
 <div class="page-container" style="max-width: 900px; margin: 30px auto; padding: 0 16px;">

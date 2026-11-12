@@ -13,7 +13,7 @@
 @endphp
 
 
-@section('title', 'میز مدیریت خدمات پس از فروش و گارانتی | سام موبایل')
+@section('title', 'میز مدیریت خدمات پس از فروش و گارانتی | تامین کانی سام (موبایل)')
 @section('header_title', 'میز مدیریت خدمات')
 
 @php
@@ -2009,7 +2009,7 @@
                 {{ mb_substr($user ? $user->name : 'مدیر', 0, 1) }}
             </div>
             <div class="erp-user-meta">
-                <div class="erp-user-name">{{ $user ? $user->name : 'مدیریت خدمات سام موبایل' }}</div>
+                <div class="erp-user-name">{{ $user ? $user->name : 'مدیریت خدمات تامین کانی سام (موبایل)' }}</div>
                 <div class="erp-user-role">
                     <span class="erp-pulse-dot"></span>
                     <span>مدیر ارشد سامانه (ماده ۱۳)</span>
@@ -2260,7 +2260,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
                 <div class="erp-breadcrumb">
-                    <span>سام موبایل</span>
+                    <span>تامین کانی سام (موبایل)</span>
                     <span>/</span>
                     <span>سامانه جامع خدمات</span>
                     <span>/</span>
@@ -2749,7 +2749,7 @@
                                     <span class="req">*</span>
                                 </label>
                                 <select name="is_under_warranty" id="intakeWarrantySelect" class="erp-form-select" onchange="syncIntakeReceipt()">
-                                    <option value="1" selected>تحت پوشش گارانتی ۱۸ ماهه رسمی سام موبایل (تامین کانی سام)</option>
+                                    <option value="1" selected>تحت پوشش گارانتی ۱۸ ماهه رسمی تامین کانی سام (موبایل)</option>
                                     <option value="0">تعمیرات آزاد / فاقد گارانتی شرکتی (طبق تعرفه مصوب اتحادیه)</option>
                                 </select>
                             </div>
@@ -2788,7 +2788,7 @@
                             <label class="erp-form-label">اقلام و متعلقات تحویل گرفته شده از مشتری</label>
                             <div class="erp-tag-chips">
                                 <label class="erp-tag-chip active"><input type="checkbox" name="accessories[]" value="جعبه اصلی" checked style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>📦 جعبه دستگاه</span></label>
-                                <label class="erp-tag-chip active"><input type="checkbox" name="accessories[]" value="کارت گارانتی سام موبایل" checked style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>🛡️ کارت گارانتی ۱۸ ماهه</span></label>
+                                <label class="erp-tag-chip active"><input type="checkbox" name="accessories[]" value="کارت گارانتی تامین کانی سام (موبایل)" checked style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>🛡️ کارت گارانتی ۱۸ ماهه</span></label>
                                 <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="آداپتور و کابل شارژ" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>🔌 آداپتور شارژر و کابل</span></label>
                                 <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="سیم‌کارت و رم میکرو" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>💳 سیم‌کارت / کارت حافظه</span></label>
                                 <label class="erp-tag-chip"><input type="checkbox" name="accessories[]" value="قاب و کاور محافظ" style="display:none;" onchange="toggleCheckboxChip(this); syncIntakeReceipt();"><span>📱 قاب و گلس محافظ</span></label>
@@ -2837,7 +2837,7 @@
                             <div style="width: 34px; height: 34px; border-radius: 8px; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.05rem;">س</div>
                             <div style="text-align: right;">
                                 <div style="font-size: 0.98rem; font-weight: 900; color: #0f172a;">شرکت تامین کانی سام</div>
-                                <div style="font-size: 0.7rem; color: #64748b;">واحد تخصصی خدمات پس از فروش سام موبایل</div>
+                                <div style="font-size: 0.7rem; color: #64748b;">واحد تخصصی خدمات پس از فروش تامین کانی سام (موبایل)</div>
                             </div>
                         </div>
                         <div>
@@ -3109,7 +3109,7 @@
         <div class="erp-page-head" style="margin-bottom: 24px;">
             <div class="erp-page-meta">
                 <span class="erp-page-badge" style="background:#e0e7ff; color:#3730a3;">کاتالوگ انبار مرکزی تبریز</span>
-                <h1 class="erp-page-title">انبار جامع قطعات یدکی اورجینال سام موبایل با تصاویر فیزیکی</h1>
+                <h1 class="erp-page-title">انبار جامع قطعات یدکی اورجینال تامین کانی سام (موبایل) با تصاویر فیزیکی</h1>
                 <p class="erp-page-desc">موجودی لحظه‌ای نمایشگرهای Dynamic AMOLED، باتری‌های اصلی، فلت‌های شارژ، چیپ‌ست‌ها و ماژول‌های دوربین شرکتی.</p>
             </div>
             <div style="display: flex; gap: 10px;">
@@ -3662,10 +3662,10 @@
                             <label class="form-label-custom">الگوی متن پیامک</label>
                             <select id="smsTemplate" class="form-select-custom" onchange="applySmsTemplate(this.value)">
                                 <option value="">-- انتخاب متن آماده یا نگارش دستی --</option>
-                                <option value="مشتری گرامی سام موبایل، پرونده دستگاه شما با کد رهگیری [CODE] در سامانه خدمات ثبت گردید. پیگیری: mob.taminkanisam.co.ir">اعلام کد رهگیری پذیرش جدید</option>
-                                <option value="دستگاه شما در سام موبایل با موفقیت تعمیر گردید و آماده ترخیص می‌باشد. ساعات مراجعه: ۹ الی ۱۷. تلفن: ۰۴۱-۳۶۶۸۹۰۰۰">اعلام پایان تعمیر و آماده تحویل</option>
-                                <option value="گارانتی ۱۸ ماهه طلایی دستگاه شما در سام موبایل فعال گردید. مشاهده کارت گارانتی دیجیتال: mob.taminkanisam.co.ir">اعلام فعال‌سازی گارانتی ۱۸ ماهه</option>
-                                <option value="مشتری گرامی، با سپاس از اعتماد شما به سام موبایل، خواهشمندیم نظر خود را در لینک زیر ثبت فرمایید: mob.taminkanisam.co.ir/survey">لینک نظرسنجی رضایت مشتری</option>
+                                <option value="مشتری گرامی تامین کانی سام (موبایل)، پرونده دستگاه شما با کد رهگیری [CODE] در سامانه خدمات ثبت گردید. پیگیری: mob.taminkanisam.co.ir">اعلام کد رهگیری پذیرش جدید</option>
+                                <option value="دستگاه شما در تامین کانی سام (موبایل) با موفقیت تعمیر گردید و آماده ترخیص می‌باشد. ساعات مراجعه: ۹ الی ۱۷. تلفن: ۰۴۱-۳۶۶۸۹۰۰۰">اعلام پایان تعمیر و آماده تحویل</option>
+                                <option value="گارانتی ۱۸ ماهه طلایی دستگاه شما در تامین کانی سام (موبایل) فعال گردید. مشاهده کارت گارانتی دیجیتال: mob.taminkanisam.co.ir">اعلام فعال‌سازی گارانتی ۱۸ ماهه</option>
+                                <option value="مشتری گرامی، با سپاس از اعتماد شما به تامین کانی سام (موبایل)، خواهشمندیم نظر خود را در لینک زیر ثبت فرمایید: mob.taminkanisam.co.ir/survey">لینک نظرسنجی رضایت مشتری</option>
                             </select>
                         </div>
                     </div>
@@ -3798,7 +3798,7 @@
                         <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                             <div>
                                 <label class="erp-form-label">عنوان رسمی سامانه (Title)</label>
-                                <input type="text" name="site_title" class="erp-form-input" value="{{ $siteSettings['site_title'] ?? 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه سام موبایل (شرکت تامین کانی سام)' }}">
+                                <input type="text" name="site_title" class="erp-form-input" value="{{ $siteSettings['site_title'] ?? 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه تامین کانی سام (موبایل)' }}">
                             </div>
                             <div>
                                 <label class="erp-form-label">شعار و زیرعنوان برند</label>
@@ -3852,7 +3852,7 @@
                     <span style="font-size: 0.72rem; color: #64748b;">همگام‌سازی لحظه‌ای با سرور</span>
                 </div>
                 <div class="header-sim-bar">
-                    <span style="font-size: 0.8rem; font-weight: 800; color: #2563eb; padding: 4px 10px; background: #dbeafe; border-radius: 8px;">سام موبایل 📱</span>
+                    <span style="font-size: 0.8rem; font-weight: 800; color: #2563eb; padding: 4px 10px; background: #dbeafe; border-radius: 8px;">تامین کانی سام (موبایل) 📱</span>
                     @foreach($headerMenuItems ?? [] as $mItem)
                         <span class="header-sim-link">
                             {{ $mItem->title }}
@@ -3957,7 +3957,7 @@
                         <div class="erp-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                             <div style="grid-column: 1 / -1;">
                                 <label class="erp-form-label">پاراگراف معرفی رسمی شرکت در فوتر</label>
-                                <textarea name="footer_about" class="erp-form-input" rows="3">{{ $siteSettings['footer_about'] ?? 'سام موبایل، واحد تخصصی گارانتی و خدمات پس از فروش شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.' }}</textarea>
+                                <textarea name="footer_about" class="erp-form-input" rows="3">{{ $siteSettings['footer_about'] ?? 'تامین کانی سام (موبایل)، واحد تخصصی گارانتی و خدمات پس از فروش. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.' }}</textarea>
                             </div>
                             <div style="grid-column: 1 / -1;">
                                 <label class="erp-form-label">متن کپی‌رایت حقوقی انتهای فوتر</label>
@@ -4212,7 +4212,7 @@
                     </div>
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">کلمات کلیدی سئو (با کاما جدا کنید)</label>
-                        <input type="text" name="meta_keywords" id="pageInputMetaKeywords" class="erp-form-input" placeholder="گارانتی, سام موبایل, تعمیرات, تامین کانی سام">
+                        <input type="text" name="meta_keywords" id="pageInputMetaKeywords" class="erp-form-input" placeholder="گارانتی, تامین کانی سام (موبایل), تعمیرات, تامین کانی سام">
                     </div>
                     <div style="grid-column: 1 / -1;">
                         <label class="erp-form-label">محتوای متنی برگه (HTML یا متن)</label>
@@ -4364,7 +4364,7 @@
                         📝
                     </div>
                     <div>
-                        <h3 style="font-size: 1.15rem; font-weight: 900; color: #0f172a; margin: 0;">نگارش مقاله جدید در استودیوی سئو سام موبایل</h3>
+                        <h3 style="font-size: 1.15rem; font-weight: 900; color: #0f172a; margin: 0;">نگارش مقاله جدید در استودیوی سئو تامین کانی سام (موبایل)</h3>
                         <span style="font-size: 0.78rem; color: #64748b;">تولید محتوا، بهینه‌سازی تگ‌های متای گوگل و تحلیل لحظه‌ای سلامت ارگانیک</span>
                     </div>
                 </div>
@@ -4498,7 +4498,7 @@
 
                             <div>
                                 <label class="erp-form-label">کلمات کلیدی سئو (Meta Keywords)</label>
-                                <input type="text" name="meta_keywords" class="erp-form-input" placeholder="تعمیر گوشی, گارانتی سام موبایل, تامین کانی سام, تعویض قطعات">
+                                <input type="text" name="meta_keywords" class="erp-form-input" placeholder="تعمیر گوشی, گارانتی تامین کانی سام (موبایل), تعویض قطعات">
                             </div>
 
                             <div style="grid-column: 1 / -1;">
@@ -4930,7 +4930,7 @@
             <div class="erp-page-head">
                 <div class="erp-page-meta">
                     <span class="erp-page-badge" style="background:#eff6ff; color:#2563eb;">شبکه پیام‌رسانی بلادرنگ داخلی</span>
-                    <h1 class="erp-page-title">تالار گفتگو و هماهنگی درون‌سازمانی سام موبایل</h1>
+                    <h1 class="erp-page-title">تالار گفتگو و هماهنگی درون‌سازمانی تامین کانی سام (موبایل)</h1>
                     <p class="erp-page-desc">ارتباط برخط کارشناسان دفتر مرکزی، پذیرش، تکنسین‌های فنی و انبار قطعات با مدیران شعب استانی.</p>
                 </div>
                 <div style="display: flex; gap: 8px;">
@@ -5285,7 +5285,7 @@
             <div class="erp-page-head">
                 <div class="erp-page-meta">
                     <span class="erp-page-badge" style="background:#fef3c7; color:#d97706;">سامانه جامع ارتباط با مشتریان (CRM 360°)</span>
-                    <h1 class="erp-page-title">مدیریت جامع پرونده مشتریان و باشگاه وفاداری سام موبایل</h1>
+                    <h1 class="erp-page-title">مدیریت جامع پرونده مشتریان و باشگاه وفاداری تامین کانی سام (موبایل)</h1>
                     <p class="erp-page-desc">پرونده ۳۶۰ درجه، سوابق مراجعات، دستگاه‌های ثبت‌شده، رتبه‌بندی وفاداری (VIP)، و ارتباط مستقیم تلفنی و پیامکی.</p>
                 </div>
                 <button type="button" class="erp-btn erp-btn-primary" onclick="openAddCustomerModal()">
@@ -5456,7 +5456,7 @@
                     </div>
                     <div>
                         <div style="font-size: 1.35rem; font-weight: 900; margin-bottom: 6px;">
-                            {{ $user ? $user->name : 'مدیر ارشد سامانه خدمات سام موبایل' }}
+                            {{ $user ? $user->name : 'مدیر ارشد سامانه خدمات تامین کانی سام (موبایل)' }}
                         </div>
                         <div style="display: flex; gap: 8px; flex-wrap: wrap; font-size: 0.80rem;">
                             <span style="background: rgba(37, 99, 235, 0.25); color: #93c5fd; padding: 4px 12px; border-radius: 99px; border: 1px solid rgba(96, 165, 250, 0.3);">
@@ -5738,7 +5738,7 @@
         
         <div style="text-align: center; margin-bottom: 16px;">
             <div style="display: inline-flex; align-items: center; gap: 6px; background: #eff6ff; color: #1d4ed8; padding: 4px 12px; border-radius: 99px; font-size: 0.72rem; font-weight: 800; margin-bottom: 6px; border: 1px solid #bfdbfe;">
-                <span>🛡️ کارت گارانتی هوشمند سام موبایل</span>
+                <span>🛡️ کارت گارانتی هوشمند تامین کانی سام (موبایل)</span>
             </div>
             <h3 style="font-size: 1.15rem; font-weight: 900; color: #0f172a; margin: 0 0 4px 0;">کارت گارانتی ۱۸ ماهه گوشی همراه</h3>
             <span style="font-size: 0.76rem; color: #64748b; font-weight: 600;">شرکت تامین کانی سام | مطابق با ضوابط ماده ۱۳ سامانه جامع گارانتی</span>
@@ -6126,7 +6126,7 @@
             <div style="margin-bottom: 12px;">
                 <label class="erp-form-label">الگوهای آماده پاسخ شرکتی (با ۱ کلیک درج می‌شود):</label>
                 <div style="display: flex; flex-wrap: wrap;">
-                    <span class="quick-reply-pill" onclick="insertQuickReply('با سلام و احترام، از بازخورد ارزشمند و ابراز رضایت شما از خدمات سام موبایل صمیمانه سپاسگزاریم. پایداری خدمات و رضایت ۱۰۰٪ شما افتخار شرکت تامین کانی سام است.')">💎 تشکر و قدردانی</span>
+                    <span class="quick-reply-pill" onclick="insertQuickReply('با سلام و احترام، از بازخورد ارزشمند و ابراز رضایت شما از خدمات تامین کانی سام (موبایل) صمیمانه سپاسگزاریم. پایداری خدمات و رضایت ۱۰۰٪ شما افتخار شرکت تامین کانی سام است.')">💎 تشکر و قدردانی</span>
                     <span class="quick-reply-pill" onclick="insertQuickReply('با سلام، از بازخورد فنی شما متشکریم. مورد اظهارشده جهت ارتقای استانداردهای واحد فنی و بازرسی کارگاه مرکزی تبریز ثبت و پیگیری گردید.')">🔧 پیگیری فنی</span>
                     <span class="quick-reply-pill" onclick="insertQuickReply('با سلام و پوزش بابت هرگونه معطلی، همکاران واحد ارتباط با مشتریان (CRM) جهت هماهنگی و جلب رضایت کامل شما با شماره ثبت‌شده تماس خواهند گرفت.')">📞 پیگیری واحد CRM</span>
                 </div>
@@ -6312,7 +6312,7 @@
         <!-- The Actual Label Box -->
         <div class="thermal-label-preview" id="thermalLabelContent">
             <div class="thermal-label-head">
-                <strong style="font-size: 0.82rem; color: #000;">سام موبایل (تامین کانی سام)</strong>
+                <strong style="font-size: 0.82rem; color: #000;">تامین کانی سام (موبایل)</strong>
                 <span id="lblDate" style="font-size: 0.65rem; color: #333;">۱۴۰۳/۰۸/۱۵</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -6355,7 +6355,7 @@
         <div class="pos-slip-preview" id="posSlipContent">
             <div style="text-align: center; border-bottom: 1.5px dashed #000; padding-bottom: 12px; margin-bottom: 12px;">
                 <div style="font-size: 1rem; font-weight: 900; color: #000;">شرکت تامین کانی سام</div>
-                <div style="font-size: 0.8rem; font-weight: 800; color: #000;">مرکز خدمات تخصصی سام موبایل</div>
+                <div style="font-size: 0.8rem; font-weight: 800; color: #000;">مرکز خدمات تخصصی تامین کانی سام (موبایل)</div>
                 <div style="font-size: 0.68rem; color: #333; margin-top: 4px;">تبریز، فرشته شمالی، خیابان محمدپورصبور، پلاک ۷۸</div>
                 <div style="font-size: 0.68rem; color: #333;">مرکز تماس: ۳۶۶۸۹۰۰۰-۰۴۱</div>
             </div>
@@ -7291,18 +7291,18 @@
         }
         
         if (type === 'standard') {
-            document.getElementById('pageInputTitle').value = 'درباره خدمات تخصصی سام موبایل';
+            document.getElementById('pageInputTitle').value = 'درباره خدمات تخصصی تامین کانی سام (موبایل)';
             document.getElementById('pageInputSlug').value = 'about-sam-services';
             document.getElementById('pageInputCategory').value = 'شرکتی';
-            document.getElementById('pageInputMetaTitle').value = 'درباره خدمات تخصصی و کارگاه مرکزی سام موبایل تبریز';
+            document.getElementById('pageInputMetaTitle').value = 'درباره خدمات تخصصی و کارگاه مرکزی تامین کانی سام (موبایل) تبریز';
             document.getElementById('pageInputMetaDesc').value = 'معرفی تجهیزات فوق پیشرفته، مهندسین مجرب و استانداردهای گارانتی ۱۸ ماهه شرکت تامین کانی سام در تبریز و سراسر کشور.';
-            document.getElementById('pageInputMetaKeywords').value = 'درباره ما, سام موبایل, گارانتی گوشی تبریز, تامین کانی سام';
-            document.getElementById('pageInputContent').value = '<h3>مرکز تخصصی خدمات پس از فروش سام موبایل</h3>\n<p>شرکت تامین کانی سام با بهره‌گیری از پیشرفته‌ترین تجهیزات تست و عیب‌یابی سخت‌افزاری و قطعات ۱۰۰٪ اورجینال، خدمات گارانتی و تعمیرات تخصصی تلفن‌های همراه را با ضمانت رسمی ۱۸ ماهه ارائه می‌نماید.</p>\n<h4>مزایای خدمات ما:</h4>\n<ul>\n<li>تخصیص آنی کد رهگیری و استعلام برخط وضعیت</li>\n<li>پایش مداوم کیفیت و کنترل کیفی دو مرحله‌ای (QC)</li>\n<li>تحویل در سریع‌ترین زمان ممکن طبق ماده ۱۳ آیین‌نامه حمایت از مصرف‌کنندگان</li>\n</ul>';
+            document.getElementById('pageInputMetaKeywords').value = 'درباره ما, تامین کانی سام (موبایل), گارانتی گوشی تبریز, تامین کانی سام';
+            document.getElementById('pageInputContent').value = '<h3>مرکز تخصصی خدمات پس از فروش تامین کانی سام (موبایل)</h3>\n<p>شرکت تامین کانی سام با بهره‌گیری از پیشرفته‌ترین تجهیزات تست و عیب‌یابی سخت‌افزاری و قطعات ۱۰۰٪ اورجینال، خدمات گارانتی و تعمیرات تخصصی تلفن‌های همراه را با ضمانت رسمی ۱۸ ماهه ارائه می‌نماید.</p>\n<h4>مزایای خدمات ما:</h4>\n<ul>\n<li>تخصیص آنی کد رهگیری و استعلام برخط وضعیت</li>\n<li>پایش مداوم کیفیت و کنترل کیفی دو مرحله‌ای (QC)</li>\n<li>تحویل در سریع‌ترین زمان ممکن طبق ماده ۱۳ آیین‌نامه حمایت از مصرف‌کنندگان</li>\n</ul>';
         } else if (type === 'faq') {
             document.getElementById('pageInputTitle').value = 'پرسش‌های متداول و راهنمای پذیرش گارانتی';
             document.getElementById('pageInputSlug').value = 'faq-warranty';
             document.getElementById('pageInputCategory').value = 'راهنما';
-            document.getElementById('pageInputMetaTitle').value = 'سوالات متداول گارانتی ۱۸ ماهه و فرایند تعمیر گوشی - سام موبایل';
+            document.getElementById('pageInputMetaTitle').value = 'سوالات متداول گارانتی ۱۸ ماهه و فرایند تعمیر گوشی - تامین کانی سام (موبایل)';
             document.getElementById('pageInputMetaDesc').value = 'پاسخ به کلیه پرسش‌های متداول در خصوص شرایط ابطال گارانتی، هزینه قطعات، مدت زمان ترخیص و نحوه پیگیری آنلاین پرونده.';
             document.getElementById('pageInputMetaKeywords').value = 'سوالات متداول, گارانتی گوشی, پیگیری تعمیرات, هزینه تعمیر موبایل';
             document.getElementById('pageInputContent').value = '<h3>پرسش‌های پرتکرار مشتریان گرامی</h3>\n<h4>۱. شرایط پذیرش تحت گارانتی ۱۸ ماهه چیست؟</h4>\n<p>دستگاه نباید دچار آب‌خوردگی، شکستگی فیزیکی ناشی از ضربه یا تعمیر توسط تعمیرکاران غیرمجاز شده باشد. شماره سریال IMEI باید با کارت گارانتی مطابقت داشته باشد.</p>\n<h4>۲. چگونه وضعیت تعمیر گوشی خود را پیگیری کنم؟</h4>\n<p>با مراجعه به صفحه پیگیری خدمات در سایت و درج شماره پیگیری یا IMEI، آخرین وضعیت مرحله تعمیر، نام تکنسین و فاکتور را مشاهده فرمایید.</p>';
@@ -7318,9 +7318,9 @@
             document.getElementById('pageInputTitle').value = 'دفاتر پذیرش و اطلاعات ارتباطی';
             document.getElementById('pageInputSlug').value = 'service-branches-contact';
             document.getElementById('pageInputCategory').value = 'تماس';
-            document.getElementById('pageInputMetaTitle').value = 'دفتر مرکزی پذیرش و نمایندگی‌های استانی سام موبایل';
+            document.getElementById('pageInputMetaTitle').value = 'دفتر مرکزی پذیرش و نمایندگی‌های استانی تامین کانی سام (موبایل)';
             document.getElementById('pageInputMetaDesc').value = 'آدرس کارگاه مرکزی پذیرش تبریز، تلفن‌های مستقیم واحد CRM و راهنمای ارسال پستی کالا از شهرستان‌ها.';
-            document.getElementById('pageInputMetaKeywords').value = 'آدرس گارانتی تبریز, تلفن سام موبایل, دفتر پذیرش تعمیرات گوشی';
+            document.getElementById('pageInputMetaKeywords').value = 'آدرس گارانتی تبریز, تلفن تامین کانی سام (موبایل), دفتر پذیرش تعمیرات گوشی';
             document.getElementById('pageInputContent').value = '<h3>اطلاعات دفتر مرکزی و کارگاه پذیرش</h3>\n<p><strong>آدرس:</strong> تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</p>\n<p><strong>تلفن مستقیم:</strong> ۰۴۱-۳۶۶۸۹۰۰۰</p>\n<p><strong>ساعات پاسخگویی:</strong> شنبه تا چهارشنبه ۹:۰۰ الی ۱۸:۰۰ | پنجشنبه‌ها ۹:۰۰ الی ۱۴:۰۰</p>\n<p>مشتریان محترم سایر استان‌ها می‌توانند دستگاه خود را از طریق پست پیشتاز به آدرس فوق و کد پستی مرکز ارسال نمایند.</p>';
         }
         
@@ -8367,17 +8367,17 @@
 
         let msg = '';
         if (status === 'pending') {
-            msg = `${name} عزیز، دستگاه ${device} با کد پیگیری ${code} در مرکز خدمات سام موبایل پذیرش گردید و در صف بررسی اولیه قرار گرفت. پیگیری: mob.taminkanisam.co.ir`;
+            msg = `${name} عزیز، دستگاه ${device} با کد پیگیری ${code} در مرکز خدمات تامین کانی سام (موبایل) پذیرش گردید و در صف بررسی اولیه قرار گرفت. پیگیری: mob.taminkanisam.co.ir`;
         } else if (status === 'in_progress') {
-            msg = `${name} گرامی، دستگاه ${device} با کد پیگیری ${code} توسط تکنسین فنی سام موبایل در دست عیب‌یابی و تعمیر قرار دارد.`;
+            msg = `${name} گرامی، دستگاه ${device} با کد پیگیری ${code} توسط تکنسین فنی تامین کانی سام (موبایل) در دست عیب‌یابی و تعمیر قرار دارد.`;
         } else if (status === 'waiting_parts') {
             msg = `${name} گرامی، پرونده ${code} جهت تخصیص قطعات یدکی اورجینال در سامانه انبار ثبت گردید و روند تعمیر ادامه دارد.`;
         } else if (status === 'ready') {
             msg = `${name} عزیز، تعمیر دستگاه ${device} (کد: ${code}) با موفقیت به پایان رسید و کنترل کیفی تایید شد. جهت تحویل به مرکز خدمات مراجعه فرمایید.`;
         } else if (status === 'delivered') {
-            msg = `${name} گرامی، دستگاه ${device} تحویل گردید. گارانتی ۱۸ ماهه رسمی خدمات سام موبایل برای شما فعال شد. سپاس از اعتماد شما.`;
+            msg = `${name} گرامی، دستگاه ${device} تحویل گردید. گارانتی ۱۸ ماهه رسمی خدمات تامین کانی سام (موبایل) برای شما فعال شد. سپاس از اعتماد شما.`;
         } else {
-            msg = `${name} گرامی، وضعیت پرونده ${code} در سامانه سام موبایل به‌روزرسانی شد. مشاهده جزئیات: mob.taminkanisam.co.ir`;
+            msg = `${name} گرامی، وضعیت پرونده ${code} در سامانه تامین کانی سام (موبایل) به‌روزرسانی شد. مشاهده جزئیات: mob.taminkanisam.co.ir`;
         }
         txtArea.value = msg;
     }

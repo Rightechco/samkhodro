@@ -1,6 +1,6 @@
 @extends('home.mobile.layout')
 
-@section('title', 'نرخ تعرفه خدمات غیر گارانتی و فاکتور رسمی | سام موبایل')
+@section('title', 'نرخ تعرفه خدمات غیر گارانتی و فاکتور رسمی | تامین کانی سام (موبایل)')
 
 @section('content')
 <div class="container" style="max-width: 1400px; margin: 0 auto; padding: 20px 16px 80px;">
@@ -309,10 +309,10 @@
                             <td style="padding: 10px 6px; border: 1px solid #e2e8f0; font-weight: 700; color: #334155;">۸,۰۰۰,۰۰۰</td>
                             <td style="padding: 10px 6px; border: 1px solid #e2e8f0; font-weight: 700; color: #334155;">۱۲,۰۰۰,۰۰۰</td>
                             <td style="padding: 8px 4px; border: 1px solid #e2e8f0; font-size: 0.74rem; font-weight: 700; color: #334155; line-height: 1.3;">
-                                ۱۶,۰۰۰,۰۰۰<br><span style="font-size: 0.64rem; color: #2563eb; font-weight: 600;">(IC charge-OVP سام موبایل و برندهای تحت پوشش)</span>
+                                ۱۶,۰۰۰,۰۰۰<br><span style="font-size: 0.64rem; color: #2563eb; font-weight: 600;">(IC charge-OVP تامین کانی سام (موبایل) و برندهای تحت پوشش)</span>
                             </td>
                             <td style="padding: 8px 4px; border: 1px solid #e2e8f0; font-size: 0.74rem; font-weight: 700; color: #334155; line-height: 1.3;">
-                                ۲۵,۰۰۰,۰۰۰<br><span style="font-size: 0.64rem; color: #2563eb; font-weight: 600;">(IC charge-OVP سام موبایل و برندهای تحت پوشش)</span>
+                                ۲۵,۰۰۰,۰۰۰<br><span style="font-size: 0.64rem; color: #2563eb; font-weight: 600;">(IC charge-OVP تامین کانی سام (موبایل) و برندهای تحت پوشش)</span>
                             </td>
                             <td style="padding: 10px 6px; border: 1px solid #e2e8f0; font-weight: 700; color: #334155;">۳۰,۰۰۰,۰۰۰</td>
                             <td style="padding: 10px 6px; border: 1px solid #e2e8f0; font-weight: 700; color: #334155;">۴۵,۰۰۰,۰۰۰</td>
@@ -388,7 +388,7 @@
                 <div class="inv-header-right">
                     <div class="inv-logo-text">
                         <h2>شرکت تامین کانی سام</h2>
-                        <span>واحد خدمات پس از فروش و گارانتی رسمی سام موبایل</span>
+                        <span>واحد خدمات پس از فروش و گارانتی رسمی تامین کانی سام (موبایل)</span>
                     </div>
                 </div>
 
@@ -505,7 +505,7 @@
                 <div class="inv-summary-notes">
                     <div style="font-weight: 800; color: #0f172a; margin-bottom: 4px;">توضیحات و شرایط گارانتی قطعه:</div>
                     <p style="margin: 0; font-size: 11.5px; color: #475569; line-height: 1.7;">
-                        ۱. قطعه تعویض شده فوق دارای ۶ ماه گارانتی تعویض کتبی سام موبایل می‌باشد.<br>
+                        ۱. قطعه تعویض شده فوق دارای ۶ ماه گارانتی تعویض کتبی تامین کانی سام (موبایل) می‌باشد.<br>
                         ۲. داغی قطعه مستهلک تعویض شده به مشتری محترم تحویل داده شد.<br>
                         ۳. دستگاه در حضور مشتری تست کامل گردید و با سلامت ۱۰۰٪ تحویل شد.
                     </p>
@@ -652,7 +652,7 @@
         // Row 6: سوآپ یک طبقه
         ['—', '—', '۵,۰۰۰,۰۰۰', '۷,۵۰۰,۰۰۰', '۱۰,۰۰۰,۰۰۰', '۱۶,۰۰۰,۰۰۰', '۲۵,۰۰۰,۰۰۰ (پایین) / ۱۵,۰۰۰,۰۰۰ (بالا)', '۳۵,۰۰۰,۰۰۰ (پایین) / ۳۰,۰۰۰,۰۰۰ (بالا)', '۷٪ (پایین) / ۶٪ (بالا)'],
         // Row 7: سوآپ دو طبقه
-        ['—', '—', '۸,۰۰۰,۰۰۰', '۱۲,۰۰۰,۰۰۰', '۱۶,۰۰۰,۰۰۰ (IC charge-OVP سام موبایل)', '۲۵,۰۰۰,۰۰۰ (IC charge-OVP سام موبایل)', '۳۰,۰۰۰,۰۰۰', '۴۵,۰۰۰,۰۰۰', '۹ درصد ارزش کالا']
+        ['—', '—', '۸,۰۰۰,۰۰۰', '۱۲,۰۰۰,۰۰۰', '۱۶,۰۰۰,۰۰۰ (IC charge-OVP تامین کانی سام (موبایل))', '۲۵,۰۰۰,۰۰۰ (IC charge-OVP تامین کانی سام (موبایل))', '۳۰,۰۰۰,۰۰۰', '۴۵,۰۰۰,۰۰۰', '۹ درصد ارزش کالا']
     ];
 
     function calculateTariffFee() {

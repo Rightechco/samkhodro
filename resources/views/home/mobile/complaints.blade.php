@@ -1,6 +1,6 @@
 @extends('home.mobile.layout')
 
-@section('title', 'سامانه ثبت و رسیدگی به شکایات تلفن همراه (ماده ۱۳) | سام موبایل')
+@section('title', 'سامانه ثبت و رسیدگی به شکایات تلفن همراه (ماده ۱۳) | تامین کانی سام (موبایل)')
 @section('meta_description', 'سامانه ثبت رسمی شکایات خریداران تلفن همراه و تبلت شرکت تامین کانی سام تحت نظارت سازمان حمایت از حقوق مصرف‌کنندگان')
 
 @push('styles')
@@ -425,7 +425,7 @@
                         ${cmp.admin_reply ? `
                             <div style="background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 16px; font-size: 0.88rem; color: #065f46; line-height: 1.6;">
                                 <strong style="color: #047857; display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 0.95rem;">
-                                    ⚖️ گزارش و پاسخ رسمی واحد بازرسی سام موبایل:
+                                    ⚖️ گزارش و پاسخ رسمی واحد بازرسی تامین کانی سام (موبایل):
                                 </strong>
                                 ${cmp.admin_reply}
                             </div>

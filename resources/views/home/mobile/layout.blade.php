@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('title', 'سام موبایل | خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تامین کانی سام')</title>
-    <meta name="description" content="@yield('meta_description', 'سامانه رسمی خدمات پس از فروش، گارانتی ۱۸ ماهه تلفن همراه و تبلت شرکت تامین کانی سام (سام موبایل). استعلام اصالت، رهگیری آنلاین تعمیرات، منشور حقوق مشتریان و ثبت خدمت مطابق ضوابط ماده ۱۳ وزارت صمت.')">
+    <title>@yield('title', 'تامین کانی سام (موبایل) | خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه')</title>
+    <meta name="description" content="@yield('meta_description', 'سامانه رسمی خدمات پس از فروش، گارانتی ۱۸ ماهه تلفن همراه و تبلت شرکت تامین کانی سام (موبایل). استعلام اصالت، رهگیری آنلاین تعمیرات، منشور حقوق مشتریان و ثبت خدمت مطابق ضوابط ماده ۱۳ وزارت صمت.')">
 
     <!-- Fonts: Local Vazirmatn + CDN Fallback -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1134,7 +1134,7 @@
         <div class="top-announcement-inner">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span class="top-badge-live">پاسخگویی آنلاین</span>
-                <span>سامانه رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه سام موبایل (تامین کانی سام)</span>
+                <span>سامانه رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه تامین کانی سام (موبایل)</span>
             </div>
             <div class="top-info-links">
                 <a href="tel:{{ preg_replace('/[^0-9]/', '', $siteSettings['phone'] ?? '04136689000') }}" class="top-info-item">
@@ -1158,7 +1158,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 </div>
                 <div class="brand-titles">
-                    <span class="brand-name">سام موبایل</span>
+                    <span class="brand-name">تامین کانی سام (موبایل)</span>
                     <span class="brand-app-badge">✓ گارانتی رسمی</span>
                     <span class="brand-sub">خدمات پس از فروش تامین کانی سام</span>
                 </div>
@@ -1329,7 +1329,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 </div>
                 <div style="display: flex; flex-direction: column;">
-                    <span class="brand-name" style="font-size: 1.05rem;">سام موبایل</span>
+                    <span class="brand-name" style="font-size: 1.05rem;">تامین کانی سام (موبایل)</span>
                     <span style="font-size: 0.72rem; color: #059669; font-weight: 700;">گارانتی ۱۸ ماهه رسمی</span>
                 </div>
             </div>
@@ -1641,12 +1641,12 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                     </div>
                     <div class="brand-titles">
-                        <span class="brand-name" style="font-size: 1.15rem;">سام موبایل</span>
+                        <span class="brand-name" style="font-size: 1.15rem;">تامین کانی سام (موبایل)</span>
                         <span class="brand-sub">شرکت تامین کانی سام</span>
                     </div>
                 </div>
                 <p class="footer-about-text">
-                    {{ $siteSettings['footer_about'] ?? 'سام موبایل، مرکز تخصصی خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تلفن‌های همراه و تجهیزات هوشمند وارداتی شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان و مصوبات وزارت صنعت، معدن و تجارت.' }}
+                    {{ $siteSettings['footer_about'] ?? 'تامین کانی سام (موبایل)، مرکز تخصصی خدمات پس از فروش و گارانتی رسمی ۱۸ ماهه تلفن‌های همراه و تجهیزات هوشمند وارداتی شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان و مصوبات وزارت صنعت، معدن و تجارت.' }}
                 </p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
                     <span style="font-size: 0.76rem; background: var(--bg-subtle); border: 1px solid var(--border-light); padding: 4px 10px; border-radius: var(--radius-pill); font-weight: 600; color: var(--text-muted);">ضمانت اصالت قطعات</span>
@@ -1762,7 +1762,7 @@
         <div class="footer-bottom-bar">
             <div class="footer-bottom-inner">
                 <div>
-                    {{ $siteSettings['footer_copyright'] ?? 'کلیه حقوق مادی و معنوی متعلق به سام موبایل (شرکت تامین کانی سام) می‌باشد.' }}
+                    {{ $siteSettings['footer_copyright'] ?? 'کلیه حقوق مادی و معنوی متعلق به تامین کانی سام (موبایل) می‌باشد.' }}
                 </div>
                 <div style="display: flex; gap: 16px;">
                     <span>پشتیبانی فنی: شرکت تامین کانی سام</span>

@@ -1,11 +1,11 @@
 @extends('home.mobile.layout')
 
-@section('title', $single ? ($post->meta_title ?: $post->title) : 'وبلاگ تخصصی و مقالات آموزشی سام موبایل | شرکت تامین کانی سام')
+@section('title', $single ? ($post->meta_title ?: $post->title) : 'وبلاگ تخصصی و مقالات آموزشی تامین کانی سام (موبایل)')
 
 @section('seo_meta')
 @if($single)
     <meta name="description" content="{{ $post->meta_description ?: $post->excerpt }}">
-    <meta name="keywords" content="{{ $post->meta_keywords ?: 'تعمیرات گوشی, گارانتی سام موبایل, تامین کانی سام' }}">
+    <meta name="keywords" content="{{ $post->meta_keywords ?: 'تعمیرات گوشی, گارانتی تامین کانی سام (موبایل)' }}">
     <link rel="canonical" href="{{ $post->canonical_url ?: url('/blog/' . $post->slug) }}">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
@@ -136,7 +136,7 @@
         <!-- Blog Listing Index View -->
         <div style="text-align: center; margin-bottom: 35px;">
             <span style="background: #eff6ff; color: #2563eb; font-weight: 800; font-size: 0.8rem; padding: 6px 16px; border-radius: 30px; border: 1px solid #bfdbfe;">
-                مجله تخصصی سام موبایل
+                مجله تخصصی تامین کانی سام (موبایل)
             </span>
             <h1 style="font-size: 1.85rem; font-weight: 900; color: #0f172a; margin-top: 14px; margin-bottom: 8px;">
                 وبلاگ آموزشی و مقالات تخصصی تلفن همراه

@@ -1,7 +1,7 @@
 @extends('home.mobile.layout')
 
-@section('title', 'لیست نمایندگان رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه | سام موبایل')
-@section('meta_description', 'لیست شعب و نمایندگی‌های رسمی خدمات پس از فروش سام موبایل (تامین کانی سام) در سراسر کشور با نقشه آنلاین، شماره تماس و آدرس دقیق')
+@section('title', 'لیست نمایندگان رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه | تامین کانی سام (موبایل)')
+@section('meta_description', 'لیست شعب و نمایندگی‌های رسمی خدمات پس از فروش تامین کانی سام (موبایل) در سراسر کشور با نقشه آنلاین، شماره تماس و آدرس دقیق')
 
 @push('styles')
 <!-- Leaflet CSS -->
@@ -386,7 +386,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span>شبکه رسمی خدمات پس از فروش و گارانتی ۱۸ ماهه (ماده ۱۳)</span>
         </div>
-        <h1 class="rep-title">شعب و نمایندگی‌های رسمی خدمات سام موبایل در سراسر کشور</h1>
+        <h1 class="rep-title">شعب و نمایندگی‌های رسمی خدمات تامین کانی سام (موبایل) در سراسر کشور</h1>
         <p class="rep-subtitle">
             کلیه شعب زیر به عنوان نمایندگان رسمی شرکت تامین کانی سام، موظف به پذیرش، عیب‌یابی تخصصی، تامین قطعات ۱۰۰٪ اورجینال و ارائه کلیه تعهدات ۱۸ ماهه گارانتی طبق ضوابط سازمان حمایت از حقوق مصرف‌کنندگان می‌باشند.
         </p>
@@ -517,7 +517,7 @@
         // OpenStreetMap Tile Layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '© OpenStreetMap contributors | سام موبایل'
+            attribution: '© OpenStreetMap contributors | تامین کانی سام (موبایل)'
         }).addTo(map);
 
         // Custom DivIcon

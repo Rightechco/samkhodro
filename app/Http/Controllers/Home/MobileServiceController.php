@@ -646,7 +646,7 @@ class MobileServiceController extends Controller
     }
 
     /**
-     * صفحه اصلی سام موبایل (mob.taminkanisam.co.ir)
+     * صفحه اصلی تامین کانی سام (موبایل) (mob.taminkanisam.co.ir)
      */
     public function index()
     {
@@ -838,7 +838,7 @@ class MobileServiceController extends Controller
         $user = User::where('number', $phone)->orWhere('number', ltrim($phone, '0'))->first();
         if (!$user) {
             $user = User::create([
-                'name' => 'کاربر سام موبایل',
+                'name' => 'کاربر تامین کانی سام (موبایل)',
                 'number' => $phone,
                 'email' => $phone . '@taminkanisam.co.ir',
                 'password' => Hash::make(Str::random(16)),
@@ -905,7 +905,7 @@ class MobileServiceController extends Controller
             $user = User::where('email', 'admin@taminkanisam.co.ir')->orWhere('number', '09120000001')->orWhere('number', 9120000001)->first();
             if (!$user) {
                 $user = User::create([
-                    'name' => 'مدیریت ارشد خدمات سام موبایل',
+                    'name' => 'مدیریت ارشد خدمات تامین کانی سام (موبایل)',
                     'email' => 'admin@taminkanisam.co.ir',
                     'number' => '09120000001',
                     'password' => Hash::make('admin'),
@@ -1552,7 +1552,7 @@ class MobileServiceController extends Controller
         ]);
 
         $user = $this->getCurrentAuthUser();
-        $customerName = $request->customer_name ?: ($user ? $user->name : 'مشتری سام موبایل');
+        $customerName = $request->customer_name ?: ($user ? $user->name : 'مشتری تامین کانی سام (موبایل)');
         $customerPhone = $request->customer_phone ?: ($user ? $user->number : session('mob_user_phone'));
 
         $lastId = DB::table('mobile_service_orders')->max('id') ?: 1000;
@@ -1946,11 +1946,11 @@ class MobileServiceController extends Controller
             return response()->json([
                 'success' => true,
                 'status' => 'success',
-                'message' => 'دیدگاه و ارزیابی شما با موفقیت ثبت شد. از همراهی شما با سام موبایل سپاسگزاریم.'
+                'message' => 'دیدگاه و ارزیابی شما با موفقیت ثبت شد. از همراهی شما با تامین کانی سام (موبایل) سپاسگزاریم.'
             ]);
         }
 
-        return redirect()->back()->with('success', 'دیدگاه شما با موفقیت ثبت شد. از همراهی شما با سام موبایل سپاسگزاریم.');
+        return redirect()->back()->with('success', 'دیدگاه شما با موفقیت ثبت شد. از همراهی شما با تامین کانی سام (موبایل) سپاسگزاریم.');
     }
 
     /**
@@ -2064,7 +2064,7 @@ class MobileServiceController extends Controller
 
         // SMS notification
         try {
-            $msg = "مشتری گرامی سام موبایل، شکایت شما با کد رهگیری {$trackingCode} در سامانه بازرسی ثبت شد. پیگیری: mob.taminkanisam.co.ir/complaints";
+            $msg = "مشتری گرامی تامین کانی سام (موبایل)، شکایت شما با کد رهگیری {$trackingCode} در سامانه بازرسی ثبت شد. پیگیری: mob.taminkanisam.co.ir/complaints";
             $this->logSms($name, $phone, $trackingCode, $msg, 'sent');
         } catch (\Throwable $e) {}
 
@@ -2072,7 +2072,7 @@ class MobileServiceController extends Controller
             return response()->json([
                 'status' => 'success',
                 'tracking_code' => $trackingCode,
-                'message' => 'شکایت شما با موفقیت در واحد بازرسی و نظارت گارانتی سام موبایل ثبت گردید.'
+                'message' => 'شکایت شما با موفقیت در واحد بازرسی و نظارت گارانتی تامین کانی سام (موبایل) ثبت گردید.'
             ]);
         }
 
@@ -2386,7 +2386,7 @@ class MobileServiceController extends Controller
             'final_payable' => $finalPayable,
             'payable_words' => $payableWords,
             'bracket' => $bracket,
-            'warranty_text' => $isUnderWarranty ? 'مشمول گارانتی ۱۸ ماهه رسمی سام موبایل' : 'تعمیر آزاد طبق نرخ تعرفه خدمات غیر گارانتی سال ۱۴۰۵',
+            'warranty_text' => $isUnderWarranty ? 'مشمول گارانتی ۱۸ ماهه رسمی تامین کانی سام (موبایل)' : 'تعمیر آزاد طبق نرخ تعرفه خدمات غیر گارانتی سال ۱۴۰۵',
         ];
     }
 
@@ -2523,14 +2523,14 @@ class MobileServiceController extends Controller
     private function seedInitialSettings()
     {
         $defaults = [
-            'site_title' => 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه سام موبایل (شرکت تامین کانی سام)',
+            'site_title' => 'سامانه رسمی خدمات و گارانتی ۱۸ ماهه تامین کانی سام (موبایل)',
             'site_slogan' => 'مرکز تخصصی تعمیرات و خدمات پس از فروش تلفن همراه و تجهیزات هوشمند',
             'phone' => '۰۴۱-۳۶۶۸۹۰۰۰',
             'support_phone' => '۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱)',
             'email' => 'info@taminkanisam.co.ir',
             'work_hours' => 'شنبه تا چهارشنبه ۹ الی ۱۸ | پنج‌شنبه‌ها ۹ الی ۱۴',
             'address' => 'تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸',
-            'footer_about' => 'سام موبایل، واحد تخصصی گارانتی و خدمات پس از فروش شرکت تامین کانی سام. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.',
+            'footer_about' => 'تامین کانی سام (موبایل)، واحد تخصصی گارانتی و خدمات پس از فروش. متعهد به رعایت دقیق ضوابط اجرایی ماده ۱۳ و تبصره ۵ ماده ۲۸ سازمان حمایت از مصرف‌کنندگان و تولیدکنندگان با تجهیزات مدرن عیب‌یابی و قطعات اورجینال.',
             'footer_copyright' => 'تمامی حقوق مادی و معنوی متعلق به شرکت تامین کانی سام (سهامی خاص) می‌باشد.',
             'trust_enamad_url' => 'https://trustseal.enamad.ir/?id=taminkanisam',
             'trust_samandehi_url' => 'https://logo.samandehi.ir/verify.aspx?id=taminkanisam',
@@ -2590,10 +2590,10 @@ class MobileServiceController extends Controller
                 'title' => 'درباره شرکت تامین کانی سام',
                 'slug' => 'about-us',
                 'category' => 'معرفی شرکت',
-                'content' => '<p>شرکت تامین کانی سام (سهامی خاص) با سال‌ها سابقه درخشان در حوزه واردات، توزیع و خدمات تخصصی پس از فروش کالاهای هوشمند و تلفن همراه در کشور، هم‌اکنون به عنوان یکی از پیشگامان این صنعت شناخته می‌شود.</p><p>واحد تخصصی «سام موبایل» مجهز به به‌روزترین دستگاه‌های تست مدار، تعویض گلس و فلت، پروگرام هارد و رفع عیوب پردازنده بوده و کلیه خدمات تحت نظارت مهندسین مجرب و با ارائه فاکتور رسمی منطبق بر ماده ۱۳ ضوابط فنی اتحادیه صنف دستگاه‌های صوتی، تصویری و تلفن همراه انجام می‌گردد.</p>',
+                'content' => '<p>شرکت تامین کانی سام (سهامی خاص) با سال‌ها سابقه درخشان در حوزه واردات، توزیع و خدمات تخصصی پس از فروش کالاهای هوشمند و تلفن همراه در کشور، هم‌اکنون به عنوان یکی از پیشگامان این صنعت شناخته می‌شود.</p><p>واحد تخصصی «تامین کانی سام (موبایل)» مجهز به به‌روزترین دستگاه‌های تست مدار، تعویض گلس و فلت، پروگرام هارد و رفع عیوب پردازنده بوده و کلیه خدمات تحت نظارت مهندسین مجرب و با ارائه فاکتور رسمی منطبق بر ماده ۱۳ ضوابط فنی اتحادیه صنف دستگاه‌های صوتی، تصویری و تلفن همراه انجام می‌گردد.</p>',
                 'meta_title' => 'درباره تامین کانی سام | خدمات رسمی پس از فروش تلفن همراه',
-                'meta_description' => 'معرفی شرکت تامین کانی سام، مرکز خدمات تخصصی و گارانتی رسمی ۱۸ ماهه تلفن همراه سام موبایل.',
-                'meta_keywords' => 'تامین کانی سام, سام موبایل, گارانتی گوشی, خدمات پس از فروش تبریز',
+                'meta_description' => 'معرفی شرکت تامین کانی سام، مرکز خدمات تخصصی و گارانتی رسمی ۱۸ ماهه تلفن همراه تامین کانی سام (موبایل).',
+                'meta_keywords' => 'تامین کانی سام (موبایل), گارانتی گوشی, خدمات پس از فروش تبریز',
                 'is_published' => true,
             ],
             [
@@ -2601,9 +2601,9 @@ class MobileServiceController extends Controller
                 'slug' => 'contact-us',
                 'category' => 'ارتباط با ما',
                 'content' => '<p>دفتر مرکزی و مرکز امور مشتریان شرکت تامین کانی سام در شهر تبریز واقع شده است. مشتریان گرامی از سراسر کشور می‌توانند جهت دریافت خدمات حضوری یا هماهنگی ارسال پستی کالا با کارشناسان ما تماس حاصل فرمایند.</p><p><strong>نشانی رسمی:</strong> تبریز، فرشته شمالی، خیابان محمدپورصبور، نبش خیابان استاد میرعلی تبریزی، پلاک ۷۸</p><p><strong>تلفن تماس:</strong> ۰۴۱-۳۶۶۸۹۰۰۰ (داخلی ۱ پشتیبانی فنی)</p>',
-                'meta_title' => 'تماس با سام موبایل و شرکت تامین کانی سام',
-                'meta_description' => 'اطلاعات تماس، تلفن، آدرس رسمی و ساعات کاری مرکز گارانتی و خدمات پس از فروش سام موبایل در تبریز.',
-                'meta_keywords' => 'تماس با تامین کانی سام, آدرس سام موبایل تبریز, تلفن گارانتی سام موبایل',
+                'meta_title' => 'تماس با شرکت تامین کانی سام (موبایل)',
+                'meta_description' => 'اطلاعات تماس، تلفن، آدرس رسمی و ساعات کاری مرکز گارانتی و خدمات پس از فروش تامین کانی سام (موبایل) در تبریز.',
+                'meta_keywords' => 'تماس با تامین کانی سام, آدرس تامین کانی سام (موبایل) تبریز, تلفن گارانتی تامین کانی سام (موبایل)',
                 'is_published' => true,
             ],
         ];
@@ -2623,17 +2623,17 @@ class MobileServiceController extends Controller
     {
         $posts = [
             [
-                'title' => 'راهنمای جامع فعال‌سازی و استعلام گارانتی ۱۸ ماهه سام موبایل',
+                'title' => 'راهنمای جامع فعال‌سازی و استعلام گارانتی ۱۸ ماهه تامین کانی سام (موبایل)',
                 'slug' => 'activate-warranty-guide',
                 'excerpt' => 'آموزش گام به گام استعلام اصالت گوشی و فعال‌سازی آنلاین گارانتی ۱۸ ماهه از طریق بارکد QR و کد IMEI.',
-                'content' => '<p>یکی از مهم‌ترین ارکان خرید تلفن همراه هوشمند، بهره‌مندی از خدمات پس از فروش و گارانتی معتبر شرکتی است. شرکت تامین کانی سام با راه‌اندازی سامانه هوشمند «سام موبایل»، امکان استعلام سریع و فعال‌سازی کارت گارانتی ۱۸ ماهه را بدون نیاز به مراجعه حضوری فراهم کرده است.</p><h3>مراحل استعلام و فعال‌سازی:</h3><ol><li>کد شناسه ۱۵ رقمی IMEI دستگاه خود را با شماره‌گیری #06#* استخراج نمایید.</li><li>کد IMEI را در بخش استعلام اصالت صفحه اصلی سایت وارد نموده و بر روی دکمه استعلام کلیک کنید.</li><li>پس از تایید اصالت کالا، مشخصات فردی خود را تکمیل کرده و کارت گارانتی رسمی ۱۸ ماهه را با بارکد اختصاصی دریافت و چاپ نمایید.</li></ol>',
+                'content' => '<p>یکی از مهم‌ترین ارکان خرید تلفن همراه هوشمند، بهره‌مندی از خدمات پس از فروش و گارانتی معتبر شرکتی است. شرکت تامین کانی سام با راه‌اندازی سامانه هوشمند «تامین کانی سام (موبایل)»، امکان استعلام سریع و فعال‌سازی کارت گارانتی ۱۸ ماهه را بدون نیاز به مراجعه حضوری فراهم کرده است.</p><h3>مراحل استعلام و فعال‌سازی:</h3><ol><li>کد شناسه ۱۵ رقمی IMEI دستگاه خود را با شماره‌گیری #06#* استخراج نمایید.</li><li>کد IMEI را در بخش استعلام اصالت صفحه اصلی سایت وارد نموده و بر روی دکمه استعلام کلیک کنید.</li><li>پس از تایید اصالت کالا، مشخصات فردی خود را تکمیل کرده و کارت گارانتی رسمی ۱۸ ماهه را با بارکد اختصاصی دریافت و چاپ نمایید.</li></ol>',
                 'featured_image' => 'https://images.unsplash.com/photo-1511707171634-5f897ff02560?auto=format&fit=crop&w=800&q=80',
                 'category' => 'آموزش گارانتی',
                 'author' => 'تیم فنی سام سرویس',
                 'read_time' => '۴ دقیقه',
-                'meta_title' => 'راهنمای استعلام و فعال‌سازی گارانتی ۱۸ ماهه سام موبایل',
-                'meta_description' => 'آموزش نحوه فعال‌سازی گارانتی رسمی ۱۸ ماهه گوشی هوشمند با کد IMEI و بارکد QR در سام موبایل تامین کانی سام.',
-                'meta_keywords' => 'استعلام گارانتی گوشی, فعالسازی گارانتی, سام موبایل, تامین کانی سام',
+                'meta_title' => 'راهنمای استعلام و فعال‌سازی گارانتی ۱۸ ماهه تامین کانی سام (موبایل)',
+                'meta_description' => 'آموزش نحوه فعال‌سازی گارانتی رسمی ۱۸ ماهه گوشی هوشمند با کد IMEI و بارکد QR در تامین کانی سام (موبایل).',
+                'meta_keywords' => 'استعلام گارانتی گوشی, فعالسازی گارانتی, تامین کانی سام (موبایل), تامین کانی سام',
                 'canonical_url' => 'https://mob.taminkanisam.co.ir/blog/activate-warranty-guide',
                 'views' => 480,
                 'is_published' => true,
@@ -2641,15 +2641,15 @@ class MobileServiceController extends Controller
             [
                 'title' => 'چگونه از سلامت باتری و پورت شارژ گوشی هوشمند محافظت کنیم؟',
                 'slug' => 'battery-health-tips',
-                'excerpt' => 'راهکارهای طلایی مهندسین ارشد کارگاه سام موبایل برای جلوگیری از افت ظرفیت باتری و خرابی سوکت شارژ.',
+                'excerpt' => 'راهکارهای طلایی مهندسین ارشد کارگاه تامین کانی سام (موبایل) برای جلوگیری از افت ظرفیت باتری و خرابی سوکت شارژ.',
                 'content' => '<p>باتری‌های لیتیوم-یون و لیتیوم-پلیمر به حرارت و ولتاژهای ناپایدار بسیار حساس هستند. در این مطلب تخصصی، نکات کلیدی افزایش طول عمر مفید باتری و پورت شارژ را بررسی می‌کنیم.</p><h3>نکات کلیدی مراقبت از باتری:</h3><ul><li>از شارژرهای اورجینال منطبق بر استاندارد PD یا Super Fast Charge کمپانی استفاده کنید.</li><li>گوشی را در محیط‌های بسیار گرم یا زیر نور مستقیم خورشید هنگام شارژ قرار ندهید.</li><li>بازه ایده‌آل شارژ باتری بین ۲۰ الی ۸۵ درصد است؛ از تخلیه کامل تا صفر درصد پرهیز فرمایید.</li></ul>',
                 'featured_image' => 'https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=800&q=80',
                 'category' => 'نگهداری سخت‌افزار',
                 'author' => 'مهندس علیرضا کاظمی',
                 'read_time' => '۵ دقیقه',
-                'meta_title' => 'راهنمای حفظ سلامت باتری گوشی | کارگاه تخصصی سام موبایل',
+                'meta_title' => 'راهنمای حفظ سلامت باتری گوشی | کارگاه تخصصی تامین کانی سام (موبایل)',
                 'meta_description' => 'بررسی راهکارهای افزایش طول عمر باتری و جلوگیری از خرابی پورت شارژ توسط کارشناسان تامین کانی سام.',
-                'meta_keywords' => 'سلامت باتری گوشی, شارژ صحیح موبایل, تعمیر پورت شارژ, سام موبایل',
+                'meta_keywords' => 'سلامت باتری گوشی, شارژ صحیح موبایل, تعمیر پورت شارژ, تامین کانی سام (موبایل)',
                 'canonical_url' => 'https://mob.taminkanisam.co.ir/blog/battery-health-tips',
                 'views' => 310,
                 'is_published' => true,
@@ -2683,7 +2683,7 @@ class MobileServiceController extends Controller
                 'is_active' => true,
             ],
             [
-                'title' => 'سنجش رضایت از گارانتی ۱۸ ماهه رسمی سام موبایل',
+                'title' => 'سنجش رضایت از گارانتی ۱۸ ماهه رسمی تامین کانی سام (موبایل)',
                 'description' => 'پایش کیفیت خدمات پس از فروش و پوشش طلایی ۱۸ ماهه دستگاه‌های وارداتی.',
                 'target_audience' => 'خریداران گوشی‌های با گارانتی فعال',
                 'questions_json' => json_encode([
@@ -2720,7 +2720,7 @@ class MobileServiceController extends Controller
                 'overall_score' => 5,
                 'suggestions' => 'تعویض پورت شارژ S24 Ultra زیر ۲ ساعت انجام شد و با قطعه کاملا اورجینال تحویل گرفتم. متشکرم.',
                 'status' => 'approved',
-                'admin_reply' => 'با سپاس از حسن اعتماد شما، خدمت‌رسانی سریع اولویت اصلی تیم سام موبایل است.',
+                'admin_reply' => 'با سپاس از حسن اعتماد شما، خدمت‌رسانی سریع اولویت اصلی تیم تامین کانی سام (موبایل) است.',
             ],
             [
                 'customer_name' => 'مهدی پوررضا',
@@ -3097,7 +3097,7 @@ class MobileServiceController extends Controller
 
         return view('home.mobile.page', [
             'title' => $page ? $page->title : 'درباره ما | شرکت تامین کانی سام',
-            'content' => $page ? $page->content : ($settings['footer_about'] ?? 'مرکز تخصصی خدمات و گارانتی ۱۸ ماهه سام موبایل.'),
+            'content' => $page ? $page->content : ($settings['footer_about'] ?? 'مرکز تخصصی خدمات و گارانتی ۱۸ ماهه تامین کانی سام (موبایل).'),
             'settings' => $settings,
             'pageType' => 'about',
         ]);
@@ -3663,7 +3663,7 @@ class MobileServiceController extends Controller
         $phone = $order->customer_phone;
 
         if ($notifyCustomer && !empty($phone)) {
-            $msg = "مشتری گرامی {$order->customer_name}\nدستگاه شما ({$order->device_brand} {$order->device_model}) با کد رهگیری {$code} به وضعیت «{$statusText}» تغییر یافت.\nپیگیری آنلاین:\nmob.taminkanisam.co.ir\nمرکز خدمات سام موبایل";
+            $msg = "مشتری گرامی {$order->customer_name}\nدستگاه شما ({$order->device_brand} {$order->device_model}) با کد رهگیری {$code} به وضعیت «{$statusText}» تغییر یافت.\nپیگیری آنلاین:\nmob.taminkanisam.co.ir\nمرکز خدمات تامین کانی سام (موبایل)";
             
             try {
                 if (method_exists($this, 'sendSms')) {
@@ -3683,7 +3683,7 @@ class MobileServiceController extends Controller
                 'phone' => $phone,
                 'message' => $msg,
                 'status' => $smsSent ? 'delivered' : 'failed',
-                'provider' => 'سامانه پیامک رسمی سام موبایل (IPPanel/Kavenegar)',
+                'provider' => 'سامانه پیامک رسمی تامین کانی سام (موبایل) (IPPanel/Kavenegar)',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -3725,7 +3725,7 @@ class MobileServiceController extends Controller
             'phone' => $phone,
             'message' => $message,
             'status' => $sent ? 'delivered' : 'sent',
-            'provider' => 'سامانه پیامک رسمی سام موبایل',
+            'provider' => 'سامانه پیامک رسمی تامین کانی سام (موبایل)',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -3756,9 +3756,9 @@ class MobileServiceController extends Controller
                     'tracking_code' => 'SAM-1403-9101',
                     'customer_name' => 'محمد امینی',
                     'phone' => '09123456789',
-                    'message' => 'مشتری گرامی محمد امینی، پذیرش دستگاه Galaxy S24 Ultra با کد رهگیری SAM-1403-9101 ثبت شد. سام موبایل',
+                    'message' => 'مشتری گرامی محمد امینی، پذیرش دستگاه Galaxy S24 Ultra با کد رهگیری SAM-1403-9101 ثبت شد. تامین کانی سام (موبایل)',
                     'status' => 'delivered',
-                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'provider' => 'سامانه پیامک رسمی تامین کانی سام (موبایل)',
                     'created_at' => now()->subHours(8),
                     'updated_at' => now()->subHours(8)
                 ],
@@ -3766,9 +3766,9 @@ class MobileServiceController extends Controller
                     'tracking_code' => 'SAM-1403-9101',
                     'customer_name' => 'محمد امینی',
                     'phone' => '09123456789',
-                    'message' => 'دستگاه شما با کد SAM-1403-9101 آزمون کنترل کیفی QC را با موفقیت گذراند و آماده ترخیص است. نشانی: تبریز، فرشته شمالی، پلاک ۷۸ - سام موبایل',
+                    'message' => 'دستگاه شما با کد SAM-1403-9101 آزمون کنترل کیفی QC را با موفقیت گذراند و آماده ترخیص است. نشانی: تبریز، فرشته شمالی، پلاک ۷۸ - تامین کانی سام (موبایل)',
                     'status' => 'delivered',
-                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'provider' => 'سامانه پیامک رسمی تامین کانی سام (موبایل)',
                     'created_at' => now()->subHours(1),
                     'updated_at' => now()->subHours(1)
                 ],
@@ -3776,9 +3776,9 @@ class MobileServiceController extends Controller
                     'tracking_code' => 'SAM-1403-9102',
                     'customer_name' => 'مریم باقری',
                     'phone' => '09351234567',
-                    'message' => 'مشتری گرامی مریم باقری، تعمیر دستگاه Redmi Note 13 Pro+ به پایان رسید و آماده تحویل است. سام موبایل',
+                    'message' => 'مشتری گرامی مریم باقری، تعمیر دستگاه Redmi Note 13 Pro+ به پایان رسید و آماده تحویل است. تامین کانی سام (موبایل)',
                     'status' => 'delivered',
-                    'provider' => 'سامانه پیامک رسمی سام موبایل',
+                    'provider' => 'سامانه پیامک رسمی تامین کانی سام (موبایل)',
                     'created_at' => now()->subHours(4),
                     'updated_at' => now()->subHours(4)
                 ]
@@ -4049,7 +4049,7 @@ class MobileServiceController extends Controller
 
         // ارسال پیامک ثبت تیکت به مشتری
         try {
-            $smsMsg = "مشتری گرامی سام موبایل، تیکت پشتیبانی شما با کد رهگیری {$trackingCode} ثبت گردید. پاسخ واحد مربوطه متعاقباً اعلام خواهد شد. پیگیری: mob.taminkanisam.co.ir/tickets";
+            $smsMsg = "مشتری گرامی تامین کانی سام (موبایل)، تیکت پشتیبانی شما با کد رهگیری {$trackingCode} ثبت گردید. پاسخ واحد مربوطه متعاقباً اعلام خواهد شد. پیگیری: mob.taminkanisam.co.ir/tickets";
             $this->logSms($request->input('customer_name'), $request->input('customer_phone'), $trackingCode, $smsMsg, 'sent');
         } catch (\Throwable $e) {}
 
@@ -4122,7 +4122,7 @@ class MobileServiceController extends Controller
 
         // ارسال پیامک به مشتری در صورت انتخاب
         if ($request->input('send_sms') && !empty($ticket->customer_phone)) {
-            $sms = "مشتری گرامی سام موبایل، پاسخ تیکت شما ({$ticket->tracking_code}) ثبت گردید. مشاهده پاسخ: mob.taminkanisam.co.ir/tickets";
+            $sms = "مشتری گرامی تامین کانی سام (موبایل)، پاسخ تیکت شما ({$ticket->tracking_code}) ثبت گردید. مشاهده پاسخ: mob.taminkanisam.co.ir/tickets";
             $this->logSms($ticket->customer_name ?? 'مشتری', $ticket->customer_phone, $ticket->tracking_code, $sms, 'sent');
         }
 
@@ -4160,7 +4160,7 @@ class MobileServiceController extends Controller
 
         // پیامک اطلاع‌رسانی بازرسی به شاکی
         if ($request->input('send_sms') && !empty($cmp->phone)) {
-            $sms = "مشتری گرامی، روند رسیدگی بازرسی به شکایت شما (کد: {$cmp->tracking_code}) در سام موبایل به‌روزرسانی شد. پیگیری: mob.taminkanisam.co.ir/complaints";
+            $sms = "مشتری گرامی، روند رسیدگی بازرسی به شکایت شما (کد: {$cmp->tracking_code}) در تامین کانی سام (موبایل) به‌روزرسانی شد. پیگیری: mob.taminkanisam.co.ir/complaints";
             $this->logSms($cmp->full_name, $cmp->phone, $cmp->tracking_code, $sms, 'sent');
         }
 
@@ -4205,7 +4205,7 @@ class MobileServiceController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'اطلاعات اولیه شما با موفقیت ثبت شد. به سامانه خدمات سام موبایل خوش آمدید!',
+            'message' => 'اطلاعات اولیه شما با موفقیت ثبت شد. به سامانه خدمات تامین کانی سام (موبایل) خوش آمدید!',
             'user' => [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -4389,7 +4389,7 @@ class MobileServiceController extends Controller
                 ->first();
             if (!$admin) {
                 User::create([
-                    'name' => 'مدیریت ارشد خدمات سام موبایل',
+                    'name' => 'مدیریت ارشد خدمات تامین کانی سام (موبایل)',
                     'email' => 'admin@taminkanisam.co.ir',
                     'number' => '09120000001',
                     'password' => Hash::make('admin'),

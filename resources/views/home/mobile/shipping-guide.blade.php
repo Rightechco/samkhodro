@@ -1,6 +1,6 @@
 @extends('home.mobile.layout')
 
-@section('title', 'راهنمای پذیرش، بسته‌بندی و ارسال کالا به مرکز خدمات | سام موبایل')
+@section('title', 'راهنمای پذیرش، بسته‌بندی و ارسال کالا به مرکز خدمات | تامین کانی سام (موبایل)')
 @section('meta_description', 'راهنمای گام به گام پذیرش، بسته‌بندی ایمن و ارسال پستی گوشی همراه به دفتر مرکزی خدمات پس از فروش شرکت تامین کانی سام در تبریز')
 
 @section('content')
@@ -10,14 +10,14 @@
     <div class="sg-page-header">
         <span class="sg-badge-pill">راهنمای مراجعین و ارسال پستی</span>
         <h1 class="sg-title">راهنمای پذیرش حضوری و ارسال پستی دستگاه به مرکز خدمات</h1>
-        <p class="sg-subtitle">راهنمای گام به گام مراحل ثبت درخواست، بسته‌بندی اصولی، ارسال پستی و پیگیری لحظه‌ای تعمیرات در سام موبایل</p>
+        <p class="sg-subtitle">راهنمای گام به گام مراحل ثبت درخواست، بسته‌بندی اصولی، ارسال پستی و پیگیری لحظه‌ای تعمیرات در تامین کانی سام (موبایل)</p>
     </div>
 
     <!-- Official Shipping Address Card (Tabriz Official Address) -->
     <div class="sg-address-box">
         <div class="sg-address-header">
             <span class="sg-badge-green">نشانی رسمی جهت ارسال پستی یا مراجعه حضوری</span>
-            <h2 class="sg-address-title">دفتر مرکزی خدمات پس از فروش و تعمیرگاه مرکزی سام موبایل</h2>
+            <h2 class="sg-address-title">دفتر مرکزی خدمات پس از فروش و تعمیرگاه مرکزی تامین کانی سام (موبایل)</h2>
         </div>
 
         <div class="sg-address-grid">
@@ -35,7 +35,7 @@
             </div>
             <div class="sg-addr-item">
                 <span class="sg-addr-lbl">گیرنده بسته:</span>
-                <strong class="sg-addr-val">واحد پذیرش و گارانتی سام موبایل (تامین کانی سام)</strong>
+                <strong class="sg-addr-val">واحد پذیرش و گارانتی تامین کانی سام (موبایل)</strong>
             </div>
         </div>
 
@@ -110,7 +110,7 @@
                 </div>
                 <div>
                     <h4 class="sg-tip-title">ارسال کارت گارانتی فیزیکی</h4>
-                    <p class="sg-tip-desc">حتماً کارت گارانتی هولوگرام‌دار سام موبایل را درون جعبه گوشی قرار دهید.</p>
+                    <p class="sg-tip-desc">حتماً کارت گارانتی هولوگرام‌دار تامین کانی سام (موبایل) را درون جعبه گوشی قرار دهید.</p>
                 </div>
             </div>
 

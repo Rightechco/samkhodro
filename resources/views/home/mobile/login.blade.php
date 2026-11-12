@@ -1,7 +1,7 @@
 @extends('home.mobile.layout')
 
-@section('title', 'ورود و ثبت‌نام سامانه خدمات سام موبایل | تایید پیامکی')
-@section('meta_description', 'ورود و ثبت‌نام در سامانه مدیریت خدمات و پیگیری تعمیرات سام موبایل (تامین کانی سام) با رمز یکبار مصرف پیامکی (OTP).')
+@section('title', 'ورود و ثبت‌نام سامانه خدمات تامین کانی سام (موبایل) | تایید پیامکی')
+@section('meta_description', 'ورود و ثبت‌نام در سامانه مدیریت خدمات و پیگیری تعمیرات تامین کانی سام (موبایل) با رمز یکبار مصرف پیامکی (OTP).')
 
 @push('styles')
 <style>
@@ -239,7 +239,7 @@
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
             </div>
             <h1 class="auth-title">ورود به سامانه خدمات</h1>
-            <p class="auth-subtitle">سامانه یکپارچه مدیریت خدمات و پیگیری تعمیرات سام موبایل (تامین کانی سام)</p>
+            <p class="auth-subtitle">سامانه یکپارچه مدیریت خدمات و پیگیری تعمیرات تامین کانی سام (موبایل)</p>
         </div>
 
         <!-- Mode Tabs -->
@@ -343,7 +343,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <div class="auth-security-text">
-                <strong>سامانه رسمی خدمات پس از فروش سام موبایل</strong>
+                <strong>سامانه رسمی خدمات پس از فروش تامین کانی سام (موبایل)</strong>
                 ورود ایمن مطابق با ماده ۱۳ ضوابط اجرایی خدمات و استانداردهای سازمان حمایت از حقوق مصرف‌کنندگان
             </div>
         </div>
